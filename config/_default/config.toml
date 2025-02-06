@@ -1,0 +1,37 @@
+[params]
+  paginate = 5
+  copyrightYears = "MMXXI - MMXXV"
+  enableBlogPost = true
+  enableTOC = true
+  subTitle = "Enthusiast & Sammler"
+  favicon_svg = "/images/cm.svg"
+
+  contacts = ['<h4 class="contact-link">Mail</h4><a href="mailto:mail@christianmahnke.de" title="E-Mail senden">mail@christianmahnke.de</a>']
+  disableScale = true
+  description = "Persönliche Homepage von Christian Mahnke"
+
+
+[params.author]
+    email = 'mail@christianmahnke.de'
+    name = 'Christian Mahnke'
+
+[params.preview]
+    outputPrefix = "ogPreview"
+    outputSuffix = ".png"
+    format =  "svg"
+    image = "front.png"
+    source = "post"
+    [params.preview.size]
+        height = 630
+        width = 1200
+    [params.preview.svg]
+        template = "./Source Files/Other/preview-template.svg"
+        scale = "width"
+        removeMissing = true
+
+
+[languages.de.params]
+
+[languages.en.params]
+    subTitle = "Enthusiast & collector"
+    contacts = ['<h4 class="contact-link">Mail</h4><a href="mailto:mail@christianmahnke.de" title="Send eMail">mail@christianmahnke.de</a>']

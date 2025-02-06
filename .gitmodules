@@ -1,0 +1,3 @@
+[submodule "themes/projektemacher-base"]
+	path = themes/projektemacher-base
+	url = https://github.com/cmahnke/projektemacher-base.git

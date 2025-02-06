@@ -1,0 +1,111 @@
+baseURL = 'https://never-build.goettingen.xyz/'
+languageCode = 'de'
+title = 'Never Build Göttingen'
+languagecode = "de"
+defaultcontentlanguage = "de"
+copyright = "Christian Mahnke"
+publishDir = "docs"
+canonifyurls = true
+disablePathToLower = true
+disableKinds = ["taxonomy"]
+ignoreErrors = ["error-disable-taxonomy"]
+theme = ["projektemacher-base"]
+enableGitInfo = true
+preserveTaxonomyNames = true
+enableRobotsTXT = true
+
+
+[markup]
+    defaultMarkdownHandler = 'goldmark'
+
+[markup.goldmark]
+    duplicateResourceFiles = true
+
+    [markup.goldmark.renderer]
+        unsafe= true
+
+    [markup.goldmark.extensions]
+        attribute = true
+        strikethrough = true
+
+    [markup.goldmark.extensions.extras]
+        [markup.goldmark.extensions.extras.insert]
+            enable = true
+        [markup.goldmark.extensions.extras.mark]
+            enable = true
+        [markup.goldmark.extensions.extras.subscript]
+            enable = true
+        [markup.goldmark.extensions.extras.superscript]
+            enable = true
+
+    [markup.goldmark.extensions.typographer]
+        apostrophe = '&rsquo;'
+        disable = false
+        ellipsis = '&hellip;'
+        emDash = '&mdash;'
+        enDash = '&ndash;'
+        leftAngleQuote = '&laquo;'
+        leftDoubleQuote = '&ldquo;'
+        leftSingleQuote = '&lsquo;'
+        rightAngleQuote = '&raquo;'
+        rightDoubleQuote = '&rdquo;'
+        rightSingleQuote = '&rsquo;'
+
+    [markup.goldmark.parser]
+        autoHeadingID = true
+        autoHeadingIDType = "github"
+
+        [markup.goldmark.parser.attribute]
+            block = true
+
+[markup.highlight]
+  noClasses = false
+
+[imaging]
+    quality = 95
+
+[mediaTypes]
+  [mediaTypes."application/geo+json"]
+    suffixes = ["geojson", "gjson"]
+  [mediaTypes."application/ld+json"]
+    suffixes = ["json", "jsonld"]
+  [mediaTypes."image/jxl"]
+    suffixes = ["jxl"]
+
+[outputFormats]
+  [outputFormats.geojson]
+    mediaType = "application/geo+json"
+    isPlainText = true
+    isHTML = false
+    baseName = "map"
+    notAlternative = true
+
+  [outputFormats.iiif]
+    mediaType = "application/ld+json"
+    isPlainText = true
+    isHTML = false
+    baseName = "manifest"
+    notAlternative = true
+
+  [outputFormats.iiif-manifest]
+    mediaType = "application/ld+json"
+    isPlainText = true
+    isHTML = false
+    baseName = "manifest"
+    notAlternative = true
+
+  [outputFormats.iiif-collection]
+    mediaType = "application/ld+json"
+    isPlainText = true
+    isHTML = false
+    baseName = "collection"
+    notAlternative = true
+
+
+[privacy]
+  [privacy.instagram]
+    disable = false
+    simple = false
+
+[sitemap]
+  changeFreq = 'weekly'

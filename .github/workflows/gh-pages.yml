@@ -1,0 +1,78 @@
+name: Publish on GitHub pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron:  '30 23 1 * 1'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HUGO_VERSION: 0.143.1
+  DEPENDENCY_MANAGER: yarn
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.2.0
+        with:
+          node-version-file: '.nvmrc'
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.4.0
+        with:
+          python-version: '3.12'
+
+      - name: Install required dependencies
+        run: |
+          ./scripts/github-setup.sh
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3.0.0
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Create IIIF derivates
+        run: docker run -e CHOWN_UID=${UID} -e URL_PREFIX="https://never-build.goettingen.xyz/" -v ${PWD}:${PWD} ghcr.io/cmahnke/iiif-action:latest-jxl-uploader sh -c "cd ${PWD} && ./scripts/iiif.sh"
+
+      - name: Generate Files
+        env:
+          SKIP_IIIF: yes
+        run: |
+          ./scripts/setup.sh
+
+      - name: Generate stats
+        run: |
+          ./themes/projektemacher-base/scripts/stat.sh
+
+      - name: Build Hugo site
+        run: hugo --printI18nWarnings --printUnusedTemplates
+
+      - name: Puppeteer
+        run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh
+
+      - name: Archive links
+        run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14
+
+      - name: Deploy site
+        uses: peaceiris/actions-gh-pages@v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          force_orphan: true

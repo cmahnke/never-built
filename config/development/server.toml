@@ -1,0 +1,11 @@
+[[headers]]
+  for = "/**"
+  [headers.values]
+    Upgrade-Insecure-Requests = "0"
+    X-Projektemacher = "true"
+    Content-Security-Policy = "default-src 'self' data: *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; img-src 'self' blob: data: https://zenodo.org; connect-src https://dpdb.webvr.rocks https://static.projektemacher.org ws://localhost:* 127.0.0.1:* localhost:* blob: data:; style-src 'self' 'unsafe-inline' 'unsafe-hashes' 127.0.0.1:* localhost:*;"
+    Referrer-Policy = 'strict-origin-when-cross-origin'
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "no-cache"
+    Connection = "keep-alive"
+    Keep-Alive = "timeout=5"
