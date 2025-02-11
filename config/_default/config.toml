@@ -1,14 +1,14 @@
 [params]
   paginate = 5
-  copyrightYears = "MMXXI - MMXXV"
+  copyrightYears = "MMXXV"
   enableBlogPost = true
   enableTOC = true
-  subTitle = "Enthusiast & Sammler"
   favicon_svg = "/images/cm.svg"
 
   contacts = ['<h4 class="contact-link">Mail</h4><a href="mailto:mail@christianmahnke.de" title="E-Mail senden">mail@christianmahnke.de</a>']
   disableScale = true
-  description = "Persönliche Homepage von Christian Mahnke"
+  description = "Das nicht gebaute Göttingen"
+  subTitle = "Das nicht gebaute Göttingen"
 
 
 [params.author]
@@ -28,10 +28,3 @@
         template = "./Source Files/Other/preview-template.svg"
         scale = "width"
         removeMissing = true
-
-
-[languages.de.params]
-
-[languages.en.params]
-    subTitle = "Enthusiast & collector"
-    contacts = ['<h4 class="contact-link">Mail</h4><a href="mailto:mail@christianmahnke.de" title="Send eMail">mail@christianmahnke.de</a>']

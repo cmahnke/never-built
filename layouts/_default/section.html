@@ -1,0 +1,54 @@
+{{ define "title" }}
+  {{- $title := "" -}}
+  {{- if ne .Params.metaPage true -}}
+    {{- if eq .CurrentSection.Title "" -}}
+      {{- $title = .Title -}}
+    {{- else if eq .CurrentSection.Title .Title -}}
+      {{- $title = .Title -}}
+    {{- else -}}
+      {{- $title = printf "%s: %s" .CurrentSection.Title .Title -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $title = .Title -}}
+  {{- end -}}
+
+  {{ $title }} · {{ .Site.Title }}
+{{ end }}
+
+{{ define "content" }}
+  <main role="main" class="section-single">
+    {{- if and (eq .Kind "section") .Content -}}
+      <div class="post section">
+        {{- partial "post-header.html" . -}}
+        <div class="post-body">
+          {{- partial "content.html" . -}}
+          {{- if ne .CurrentSection .FirstSection -}}
+            {{- partial "section-listing.html" . -}}
+          {{- end -}}
+          {{- partial "attachments.html" . -}}
+        </div>
+      </div>
+    {{- end -}}
+    <div class="article-list">
+      {{- $pages := .CurrentSection.RegularPages -}}
+      {{- if eq .Kind "section" -}}
+        {{- $pages = where $pages "Path" "!=" .Path -}}
+      {{- end -}}
+
+      {{- if eq .CurrentSection .FirstSection -}}
+        {{- range $pages -}}
+          <article class="list-item">
+            <h2 class="headline" itemprop="headline">
+              <a href="{{ .RelPermalink }}">{{.Title}}</a>
+            </h2>
+            <div>
+              {{- if .Description -}}
+                {{ .Description }}
+              {{- end -}}
+            </div>
+          </article>
+        {{- end -}}
+      {{- end -}}
+    </div>
+  </main>
+{{- end -}}

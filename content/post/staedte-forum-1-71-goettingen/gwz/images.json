@@ -1,0 +1,34 @@
+[
+  {
+    "image": "page064.jxl",
+    "areas": [
+      {
+        "name": "model",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 4697,
+          "y": 3124
+        }
+      }
+    ]
+  },
+  {
+    "image": "page065.jxl",
+    "areas": [
+      {
+        "name": "blueprint",
+        "position": {
+          "x": 1518,
+          "y": 0
+        },
+        "size": {
+          "x": 2959,
+          "y": 3157
+        }
+      }
+    ]
+  }
+]

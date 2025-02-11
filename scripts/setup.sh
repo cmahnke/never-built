@@ -5,6 +5,8 @@ set -e
 echo "Set SKIP_IIIF to something to disable generation of IIIF derivates"
 ./scripts/iiif.sh
 
+./scripts/extract_images.py
+
 echo "Calling theme scripts"
 for SCRIPT in $PWD/themes/projektemacher-base/scripts/init/*.sh ; do
     echo "Running $SCRIPT"

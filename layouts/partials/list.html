@@ -1,0 +1,25 @@
+<div class="list">
+    <div class="post">
+    {{ $pages := .Pages }}
+    {{ if .IsHome }}
+        {{ $pages = .Site.RegularPages }}
+    {{ end }}
+    {{ $pages = where $pages "Params.metaPage" "!=" true -}}
+    {{ $paginator := .Paginate (where $pages "Params.displayinlist" "!=" false) -}}
+    {{- range $paginator.Pages -}}
+        {{ partial "li.html" . }}
+    {{ end }}
+    </div>
+</div>
+{{ if or $paginator.HasPrev $paginator.HasNext -}}
+<div class="pagination">
+  <div class="pagination-links">
+    {{ if $paginator.HasPrev }}
+      <a class="pagination-prev" href="{{ $paginator.Prev.URL }}">&#x25C0; {{ i18n "next_page" }}</a>
+    {{ end }}
+    {{ if $paginator.HasNext }}
+      <a class="pagination-next" href="{{ $paginator.Next.URL }}">{{ i18n "previous_page" }} &#x25B6;</a>
+    {{ end }}
+  </div>
+</div>
+{{- end }}
