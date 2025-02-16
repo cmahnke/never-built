@@ -1,0 +1,22 @@
+<footer class="footer" role="contentinfo">
+	<div class="menu-container menu-footer" role="navigation">
+		<div class="menu">
+          <ul id="menu-footer-items" class="menu-footer-items">
+            {{- with .Site.Menus.main -}}
+                {{- range sort . -}}
+									{{- if ne (path.Base .URL) "/" -}}
+                    <li class='menu-item {{ if eq ("/") (.URL) }}menu-item-type-custom menu-item-object-custom{{ else }}menu-item-type-post_type menu-item-object-page{{ end }}'>
+                      <a href="{{ .URL | absLangURL }}">{{ .Name }}</a>
+                    </li>
+									{{- end -}}
+                {{- end -}}
+            {{- end -}}
+						<li class='menu-item privacy'>
+							<a href="/privacy">{{ i18n "privacyPolicy" | safeHTML }}</a>
+						</li>
+          </ul>
+        </div>
+    </div>
+
+   {{- partialCached "footer-content.html" . -}}
+</footer>

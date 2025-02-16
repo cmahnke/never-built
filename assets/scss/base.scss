@@ -1,4 +1,81 @@
 @use 'sass:color';
 @use "functions/color" as *;
 
+/*
+@import "terminal";
+*/
+
+$heading-font: 'League Spartan Variable', sans-serif;
+$special-font: 'Newsreader Variable', sans-serif;
+$text-font: 'Roboto Mono Variable', sans-serif;
+$text-color: rgba(255,255,255,.8);
+@import "fonts/league-spartan";
+@import "fonts/newsreader";
+@import "fonts/roboto-mono";
+@import "fonts/noto-serif-display";
 @import "normalize";
+@import "icons";
+@import "mirador";
+@import "ol-iiif";
+@import "iframe-consent";
+
+@import "share";
+
+$font-color-body: $text-color;
+$secondary-icon-color: #69c;
+$frame-bg-color: var(--base01);
+$color-body-text: var(white);
+$fullscreen-color: var(--base07);
+@import "menu";
+@import "featured";
+@import "list";
+@import "map";
+
+/* Site includes */
+@import "footer";
+/*
+$clipmask: '/images/svgs/glasses_background-clippath.svg#clipPath';
+@import "header";
+@import "nav";
+@import "page";
+@import "404";
+
+@import "tagcloud";
+*/
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,body {
+  margin: 0;
+  height: 100%;
+
+}
+
+h1, h2, h3 {
+  font-family: $heading-font;
+}
+
+body {
+  margin: 0;
+  place-items: center;
+  min-width: 100%;
+  min-height: 100vh;
+  width: 100%;
+  font-family: $text-font;
+
+
+  &.meta {
+    .post-body {
+      margin-bottom: 3.4em;
+    }
+  }
+
+  &.section {
+    .main .article-single {
+      max-width: unset;
+    }
+  }
+}

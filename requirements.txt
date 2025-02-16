@@ -1,0 +1,12 @@
+numpy<2
+opencv-python
+opencv-contrib-python-headless
+Pillow
+packaging
+#git+https://github.com/blurryface5178/halftoning.git
+PyWavelets
+torchvision
+#git+https://github.com/xinntao/Real-ESRGAN
+git+https://github.com/sberbank-ai/Real-ESRGAN
+# pip install huggingface_hub==0.25 --no-deps --force-reinstall
+#huggingface_hub==0.25

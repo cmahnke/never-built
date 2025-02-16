@@ -1,0 +1,10 @@
+<div class="featured">
+    <div class="post">
+    {{- $pages := .Site.RegularPages -}}
+    {{- $pages = where $pages "Params.featured" "=" true -}}
+    {{- $pages = where $pages "Kind" "!=" "section" -}}
+    {{- range $pages -}}
+      {{- partial "list-item.html" . -}}
+    {{- end -}}
+    </div>
+</div>

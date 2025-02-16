@@ -5,9 +5,10 @@
         {{ $pages = .Site.RegularPages }}
     {{ end }}
     {{ $pages = where $pages "Params.metaPage" "!=" true -}}
+    {{ $pages = where $pages "Kind" "!=" "section" -}}
     {{ $paginator := .Paginate (where $pages "Params.displayinlist" "!=" false) -}}
     {{- range $paginator.Pages -}}
-        {{ partial "li.html" . }}
+        {{ partial "list-item.html" . }}
     {{ end }}
     </div>
 </div>

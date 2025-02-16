@@ -15,6 +15,34 @@ preserveTaxonomyNames = true
 enableRobotsTXT = true
 
 
+[languages]
+  [languages.de]
+    languagename = "Deutsch"
+
+    [languages.de.params]
+
+    [languages.de.menu]
+
+      [[languages.de.menu.main]]
+        name = "Start"
+        URL = "/"
+        weight = 1
+
+      [[languages.de.menu.main]]
+        name = "Karte"
+        URL = "/map/"
+        weight = 2
+
+      [[languages.de.menu.main]]
+        name = "Links"
+        URL = "/links/"
+        weight = 3
+
+      [[languages.de.menu.main]]
+        name = "Über"
+        weight = 4
+        url = "/about/"
+
 [markup]
     defaultMarkdownHandler = 'goldmark'
 

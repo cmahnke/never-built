@@ -1,0 +1,20 @@
+
+:root {
+  --text-underline-thickness: 0.3ex;
+  --text-underline-color: #000;
+}
+
+footer a,
+.animated_underline {
+  background-image: linear-gradient(var(--text-underline-color), var(--text-underline-color));
+  background-position: 0 90%;
+  background-repeat: no-repeat;
+  background-size: 0 .3ex;
+  background-size: 0 var(--text-underline-thickness);
+
+  &:hover {
+    background-size: 100% .3ex;
+    background-size: 100% var(--text-underline-thickness);
+  }
+
+}

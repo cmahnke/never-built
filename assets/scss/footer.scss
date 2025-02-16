@@ -1,0 +1,85 @@
+.footer {
+  font-family: $heading-font, sans-serif;
+  padding-top: 1em;
+  margin-top: 1.4em;
+  width: 95%;
+  overflow: hidden;
+  border-top: 5px solid black;
+  font-size: x-large;
+  font-weight: 600;
+
+  .menu-container.menu-footer {
+    display: flex;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      height: 2px;
+    }
+
+    .menu {
+      width: 80%;
+      margin: auto;
+      background-clip: text;
+      color: transparent;
+      background-size: 200% 200%;
+      animation: moving-gradient alternate 5s infinite;
+      width: 100%;
+
+      .menu-footer-items {
+        padding-inline-start: unset;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-block-start: unset;
+        margin-block-end: unset;
+        height: 2rem;
+        align-items: center;
+
+
+        @media (max-width: 20em) {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  .footer-container {
+    padding-top: 1.2em;
+    background-image: url('/images/svgs/footer.svg');
+    background-size: cover;
+    height: 4rem;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    font-size: large;
+
+    .projektemacher {
+      img {
+        vertical-align: middle;
+      }
+    }
+
+    p {
+      font-size: 1em;
+      text-align: center;
+      margin-block-start: unset;
+      margin-block-end: unset;
+
+      @media (max-width: 30em) {
+        font-size: .8em;
+      }
+    }
+
+    .privacy {
+      font-size: smaller
+    }
+  }
+}

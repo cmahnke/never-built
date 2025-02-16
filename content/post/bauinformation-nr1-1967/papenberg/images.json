@@ -1,0 +1,19 @@
+[
+  {
+    "image": "page065.jxl",
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 4905,
+          "y": 2095
+        }
+      }
+    ]
+  }
+]

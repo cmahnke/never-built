@@ -1,5 +1,5 @@
 ---
-title: "Ausbau Geisteswissenschaftliches Zentrum - GWZ -"
+title: "Studentenwohnheim Papenberg"
 date: 2025-03-01T17:15:07+02:00
 tags:
 - high-rise
@@ -18,3 +18,5 @@ resources:
   params:
     iiif: page065/info.json
 ---
+
+Dieses futuristische Hochhaus für Studierende wurde nie gebaut...

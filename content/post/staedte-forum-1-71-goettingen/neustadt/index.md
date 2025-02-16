@@ -14,7 +14,7 @@ params:
     - 9.9326044
     - 51.5416565
 resources:
-- src: "page135.jxl"
+- src: "page136.jxl"
   params:
     iiif: page136/info.json
 - src: "page137.jxl"
