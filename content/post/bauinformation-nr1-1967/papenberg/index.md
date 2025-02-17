@@ -9,12 +9,14 @@ outputs:
   - html
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
+  cover: model.jpg
 #  geojson:
 #    coordinates:
 #    - 9.9326044
 #    - 51.5416565
 resources:
 - src: "page065.jxl"
+  name: preview
   params:
     iiif: page065/info.json
 ---

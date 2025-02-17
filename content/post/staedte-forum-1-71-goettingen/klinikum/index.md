@@ -1,6 +1,6 @@
 ---
-title: "Ausbau Geisteswissenschaftliches Zentrum - GWZ -"
-date: 2025-03-01T17:15:07+02:00
+title: "Medizinische Fakultät"
+date: 2025-03-08T17:15:07+02:00
 tags:
 - high-rise
 - university
@@ -9,12 +9,14 @@ outputs:
   - html
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
+  cover: model.jpg
   geojson:
     coordinates:
     - 9.9326044
     - 51.5416565
 resources:
 - src: "page066.jxl"
+  name: preview
   params:
     iiif: page066/info.json
 - src: "page067.jxl"

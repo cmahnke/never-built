@@ -68,3 +68,4 @@ content/**/manifest-enriched.json
 assets/css/
 models
 weights
+models-*

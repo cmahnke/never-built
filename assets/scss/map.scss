@@ -1,0 +1,167 @@
+.iframe-wrapper {
+  background: rgba(255,255,255,.2);
+  border-radius: 1em;
+  backdrop-filter: blur(5px);
+  /* border: 1px solid rgba(255,255,255,.3); */
+  box-shadow: 12px 12px 16px 0 rgba(0,0,0,.25),-8px -8px 12px 0 rgba(255,255,255,.3);
+  flex-direction: column;
+  padding: 1em;
+  margin-bottom: .8em;
+  margin-top: 2.4em;
+
+  @media (max-width: 30em) {
+    border-radius: unset;
+    box-shadow: unset;
+    padding: unset;
+  }
+
+  &+ .download-link {
+    margin-top: .4em;
+    display: flex;
+    justify-content: flex-end;
+    a {
+      color: rgba(255,255,255,.8);
+      font-size: small;
+    }
+  }
+
+  .opt-in-overlay {
+    color: rgba(255,255,255,.8);
+
+    .opt-in-header {
+      background-image: unset;
+      background-clip: unset;
+      color: unset;
+      text-align: center;
+    }
+
+    .opt-in-text {
+      text-align: center;
+    }
+
+    .opt-in-overlay-content {
+      border-radius: 1em;
+      background-color: rgba(169,211,223, .1);
+
+      @media (max-width: 30em) {
+        border-radius: unset;
+        background-color: unset;
+      }
+    }
+  }
+
+  .switch-wrapper {
+    @media (max-width: 30em) {
+      margin: .4em;
+    }
+  }
+}
+
+/*----------------------  MAPS ----------------------*/
+.map-wrapper {
+  min-height: 60vh;
+  height: 20em;
+  font-family: $text-font;
+
+  .map {
+      height: 100%;
+  }
+
+  .ol-viewport {
+    border-radius: 1em;
+
+    @media (max-width: 30em) {
+      border-radius: unset;
+    }
+  }
+
+  .ol-popup {
+    position: absolute;
+    min-width: 250px;
+    background-color: white;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    bottom: 12px;
+    left: -50px;
+    font-size: 1em;
+
+    @media (max-width: 30em) {
+      border-radius: unset;
+    }
+
+    .geojsonPopup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #272d2f;
+
+      .preview-img {
+        margin: .2em 0;
+      }
+    }
+
+    h1 {
+      font-family: $heading-font;
+      text-align: center;
+      font-size: 1.2em !important;
+      margin: .2em 0;
+    }
+
+    .title {
+      font-size: large;
+      display: none;
+    }
+
+    .popup-content {
+      font-weight: 500;
+      text-align: center;
+      font-size: 0.8em;
+    }
+
+    .link {
+      text-align: center;
+    }
+
+    .preview {
+      display: block;
+    }
+  }
+
+  .ol-popup::after,
+  .ol-popup::before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .ol-popup::after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+  }
+
+  .ol-popup::before {
+    border-top-color: #ccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+  }
+
+  .ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+  }
+
+  .ol-popup-closer::after {
+    content: "✖";
+  }
+}

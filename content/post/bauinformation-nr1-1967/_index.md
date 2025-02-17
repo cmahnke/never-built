@@ -9,6 +9,7 @@ outputs:
   - html
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
+  type: book
 resources:
 - src: "front.jxl"
   name: front

@@ -1,0 +1,21 @@
+{{- $render := "tag" -}}
+{{- if isset .Params "render" -}}
+  {{- $render = printf "tag-%s" (.Params.render) -}}
+{{- end -}}
+{{- if isset .Params "tags" -}}
+  <div class="tags">
+    {{- range $tag := .Params.tags -}}
+      {{- if hasPrefix $tag "hidden_" -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- if ne $tag "" -}}
+        {{- $i18nTag := i18n $tag -}}
+        {{- if eq $i18nTag "" -}}
+          <a href="{{ "tags/" | relLangURL }}{{ $tag | urlize }}" title="{{ $tag }}">#{{ partial (printf "tagcloud/%s.html" $render) $tag }}</a>
+        {{- else -}}
+          <a href="{{ "tags/" | relLangURL }}{{ $tag | urlize }}" title="{{ $i18nTag }}">#{{ $i18nTag }}</a>
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  </div>
+{{- end -}}

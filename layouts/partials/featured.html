@@ -1,10 +1,30 @@
+{{- $previewSize := "1536x" -}}
 <div class="featured">
-    <div class="post">
-    {{- $pages := .Site.RegularPages -}}
-    {{- $pages = where $pages "Params.featured" "=" true -}}
-    {{- $pages = where $pages "Kind" "!=" "section" -}}
-    {{- range $pages -}}
-      {{- partial "list-item.html" . -}}
+  {{- $pages := .Site.RegularPages -}}
+  {{- $pages = where $pages "Params.featured" "=" true -}}
+  {{- $pages = where $pages "Kind" "!=" "section" -}}
+  {{- range $page := $pages -}}
+    {{- $contextDir := path.Dir .File.Path -}}
+    {{- $preview := slice -}}
+    {{- with .Params.cover -}}
+      {{- if reflect.IsSlice . -}}
+        {{- $preview = . -}}
+      {{- else -}}
+        {{- $preview = slice . -}}
+      {{- end -}}
+      {{- range $preview -}}
+        {{- with $page.Resources.Get . -}}
+          {{ with .Resize $previewSize }}
+            <div class="featured-entry">
+              <img src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
+            </div>
+          {{- end -}}
+        {{- else -}}
+          {{- errorf "[partials/featured.html] Can't find %s for %s" $preview $page.File.Path -}}
+        {{- end -}}
+      {{- end -}}
+    {{- else -}}
+      {{- errorf "[partials/featured.html] Can't find $page.Params.cover for %s" $page.File.Path -}}
     {{- end -}}
-    </div>
+  {{- end -}}
 </div>

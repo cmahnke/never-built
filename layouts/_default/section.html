@@ -25,7 +25,11 @@
           {{- if ne .CurrentSection .FirstSection -}}
             {{- partial "section-listing.html" . -}}
           {{- end -}}
-          {{- partial "attachments.html" . -}}
+          {{- if and (isset .Params "type") (eq .Params.type "book") -}}
+            {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
+              {{- partial "iiif/iiif-content.html" . -}}
+            {{- end -}}
+          {{- end -}}
         </div>
       </div>
     {{- end -}}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 import argparse, pathlib, json, sys, math, glob, os
 from pathlib import Path
 import traceback
@@ -14,7 +14,7 @@ image_meta = "images.json"
 default_dir = "content/post"
 weights_dir = "./weights"
 model = None
-debug = True
+debug = False
 
 def find_directories(start, file):
     pattern = f"{start}/**/{file}"
@@ -49,6 +49,7 @@ def gitignore(dir, file):
 
 
 def extract(meta, dir):
+    global model
     for image_meta in meta:
         image_file = os.path.join(dir, image_meta["image"])
         if str(image_file).endswith('.jxl'):
@@ -84,9 +85,15 @@ def extract(meta, dir):
                         except Exception as e:
                             st = traceback.format_exc()
                             cprint(f"failed to call preprocessor {p}: {str(e)}\n{st}", "red")
+                            if debug:
+                                sys.exit(1)
+                            else:
+                                model = None
+                                break
 
                 with open(name, 'w') as f:
                     a.save(f)
+                    cprint(f"Saved {name}", "green")
                     gitignore(dir, name)
 
 def smoothen(im, params=None):
@@ -172,23 +179,28 @@ def normalize(im, params=None):
     return Image.fromarray(cv2.cvtColor(normalized, cv2.COLOR_GRAY2RGB))
 
 # See https://www.kaggle.com/code/djokester/image-super-resolution-upscaling-with-real-esrgan
-def enhance_ai(img, params=None, factor=4):
+def enhance_ai(img, params=None, factor=4, smoothen=False, weights="RealESRGAN_x{factor}plus.pth"):
     global model
+    from huggingface_hub import hf_hub_download
     def cached_download_stub(config_file_url, cache_dir="", force_filename=""):
-        hf_hub_download(config_file_url, cache_dir=cache_dir, force_filename=force_filename)
-
+        from RealESRGAN.model import HF_MODELS
+        import re
+        scale = re.sub(r'http.*_x(\d).pth', '\\1', config_file_url)
+        repo = HF_MODELS[int(scale)]['repo_id']
+        filename = HF_MODELS[int(scale)]['filename']
+        if debug:
+            cprint(f"Downloading {config_file_url} to {cache_dir} (repo: {repo}, filename: {filename})", "yellow")
+        return hf_hub_download(repo, filename, cache_dir=cache_dir, force_filename=force_filename)
 
     import torch
 
     from torchvision.transforms.functional import rgb_to_grayscale
-    #import torchvision
 
     import types, sys
     functional_tensor_mod = types.ModuleType('functional_tensor')
     functional_tensor_mod.rgb_to_grayscale = rgb_to_grayscale
 
     import huggingface_hub
-    #huggingface_hub.cached_download = types.FunctionType('cached_download', global())
     huggingface_hub.cached_download = cached_download_stub
 
     sys.modules.setdefault('torchvision.transforms.functional_tensor', functional_tensor_mod)
@@ -199,18 +211,30 @@ def enhance_ai(img, params=None, factor=4):
     if img.mode in ("RGBA", "L"):
         img = img.convert('RGB')
 
-    #device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    device = torch.device('mps' if torch.mps.is_available() else 'cpu')
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+    #elif torch.mps.is_available():
+    #    device = torch.device('mps')
+    else:
+        device = torch.device('cpu')
 
     if model is None:
+        weight_file = weights.format(**{"factor": factor})
         model = RealESRGAN(device, scale=factor)
-        model.load_weights(os.path.join(weights_dir, f"RealESRGAN_x{factor}.pth"))
+        #model.load_weights(f"RealESRGAN_x{factor}.pth")
+        #model_path = os.path.join(weights_dir, f"RealESRGAN_x{factor}.pth")
+        model_path = os.path.join(weights_dir, weight_file)
+        model.load_weights(os.path.abspath(model_path), download=False)
 
     with torch.no_grad():
         output_image = model.predict(img)
 
+    if smoothen:
+        output_image = output_image.filter(ImageFilter.SMOOTH)
     width, height = output_image.size
-    output_image.resize((int((1/factor)*width), (int((1/factor)*height))))
+    output_image = output_image.resize((int((1/factor)*width), (int((1/factor)*height))), Image.LANCZOS)
+    if debug:
+        cprint(f"Scaled from {width}x{height} to {output_image.size[0]}x{output_image.size[1]}", "yellow")
 
     return output_image
 
@@ -304,6 +328,10 @@ def main():
         debug = True
         import jxlpy
         print("jxlpy: {}, libjxl: {}, pillow: {}".format(jxlpy.__version__, jxlpy._jxl_version, Image.__version__))
+
+    if debug:
+        import warnings
+        warnings.simplefilter(action='ignore', category=FutureWarning)
 
     if not args.meta:
         if not args.dir:

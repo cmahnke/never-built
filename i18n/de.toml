@@ -9,3 +9,7 @@ other = "Infrastruktur"
 
 [residential-area]
 other = "Wohngebiet"
+
+
+[post-preview]
+other = "Beitragsvorschau"
