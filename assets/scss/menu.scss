@@ -2,19 +2,40 @@ header .menu {
   position: fixed;
   height: 80vh;
   left: 0;
+  top: 10vh;
   background-color: black;
 
+
   nav {
+    height: 100%;
+
+    #menu-toggle,
+    label {
+      display: none;
+    }
+
     input,
     label {
       display: none;
     }
-    ul li {
-      a {
-        width: 4rem;
-        height: 4rem;
-        padding: 1.4rem;
+
+    ul {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 100%;
+      padding-inline-start: 0;
+
+      li {
+        a {
+          width: 4rem;
+          height: 4rem;
+          padding: 1.4rem;
+        }
       }
+
     }
+
+
   }
 }

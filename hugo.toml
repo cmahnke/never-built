@@ -34,13 +34,18 @@ enableRobotsTXT = true
         weight = 2
 
       [[languages.de.menu.main]]
-        name = "Links"
-        URL = "/links/"
+        name = "Bücher"
+        URL = "/books/"
         weight = 3
 
       [[languages.de.menu.main]]
-        name = "Über"
+        name = "Links"
+        URL = "/links/"
         weight = 4
+
+      [[languages.de.menu.main]]
+        name = "Über"
+        weight = 5
         url = "/about/"
 
 [markup]
