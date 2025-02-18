@@ -1,9 +1,9 @@
 ---
-title: "Sanierung Neustadt"
+title: "Medizinische Fakultät"
 date: 2025-03-15T17:15:07+02:00
 tags:
 - high-rise
-- residential-area
+- university
 outputs:
   - iiif-manifest
   - html
@@ -15,12 +15,12 @@ params:
     - 9.9326044
     - 51.5416565
 resources:
-- src: "page136.jxl"
+- src: "page060.jxl"
   name: preview
   params:
-    iiif: page136/info.json
-- src: "page137.jxl"
+    iiif: page060/info.json
+- src: "page061.jxl"
   name: page
   params:
-    iiif: page137/info.json
+    iiif: page061/info.json
 ---

@@ -2,6 +2,7 @@
 
 from PIL import Image, ImageDraw, ImageFilter
 import argparse, pathlib, json, sys, math, glob, os
+import time
 from pathlib import Path
 import traceback
 from packaging import version
@@ -180,6 +181,7 @@ def normalize(im, params=None):
 
 # See https://www.kaggle.com/code/djokester/image-super-resolution-upscaling-with-real-esrgan
 def enhance_ai(img, params=None, factor=4, smoothen=False, weights="RealESRGAN_x{factor}plus.pth"):
+    start = time.time()
     global model
     from huggingface_hub import hf_hub_download
     def cached_download_stub(config_file_url, cache_dir="", force_filename=""):
@@ -221,8 +223,6 @@ def enhance_ai(img, params=None, factor=4, smoothen=False, weights="RealESRGAN_x
     if model is None:
         weight_file = weights.format(**{"factor": factor})
         model = RealESRGAN(device, scale=factor)
-        #model.load_weights(f"RealESRGAN_x{factor}.pth")
-        #model_path = os.path.join(weights_dir, f"RealESRGAN_x{factor}.pth")
         model_path = os.path.join(weights_dir, weight_file)
         model.load_weights(os.path.abspath(model_path), download=False)
 
@@ -235,7 +235,9 @@ def enhance_ai(img, params=None, factor=4, smoothen=False, weights="RealESRGAN_x
     output_image = output_image.resize((int((1/factor)*width), (int((1/factor)*height))), Image.LANCZOS)
     if debug:
         cprint(f"Scaled from {width}x{height} to {output_image.size[0]}x{output_image.size[1]}", "yellow")
-
+    end = time.time()
+    if debug:
+        cprint(f"Processing took {(end-start) * 10**3}ms", "yellow")
     return output_image
 
 def remove_halftone_grid_wavelet(img, params=None, wavelet='bior1.3', level=10, threshold=30):

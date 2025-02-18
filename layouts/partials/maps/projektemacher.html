@@ -1,0 +1,29 @@
+{{/* TODO: Add the consent wrapper */}}
+{{- $context := .context -}}
+{{- $geojson := .geojson -}}
+{{- if eq $geojson nil -}}
+  {{/* Check if we only got one param, this will be the geojson referece */}}
+  {{- $geojson := . -}}
+{{- end -}}
+{{- $cluster := .cluster -}}
+{{- if eq $cluster nil -}}
+  {{- $cluster = false -}}
+{{- end -}}
+{{/* See https://openlayers.org/en/latest/apidoc/module-ol_style_Icon.html for options */}}
+{{- $marker := .marker -}}
+{{- if eq $marker nil -}}
+  {{- $marker = false -}}
+{{- end -}}
+{{- $id := md5 $geojson -}}
+{{- $var := printf "_%s" $id -}}
+<div class="map-wrapper">
+  <div class="map" id="{{ $id }}"></div>
+  <div id="{{ $id }}-popup" class="ol-popup">
+    <a href="#" id="{{ $id }}-popup-closer" class="ol-popup-closer"></a>
+    <div id="{{ $id }}-popup-content"></div>
+  </div>
+</div>
+<script type="text/javascript">
+  var {{ $var | safeJS }} = window.initMap('{{ $id | safeJS }}', '{{ $geojson | safeJS }}', 'osm', {{ $cluster | safeJS }} {{ if $marker }}, {{ $marker | safeJS}}  {{ end }});
+  {{ $var | safeJS }}.updateSize();
+</script>

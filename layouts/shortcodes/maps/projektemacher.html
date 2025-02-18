@@ -1,0 +1,14 @@
+{{ $geojson := .Get "src" }}
+{{- $cluster := false -}}
+{{- if (.Get "cluster") -}}
+  {{- $cluster = .Get "cluster" -}}
+{{- end -}}
+{{- $marker := false -}}
+{{- if (.Get "marker") -}}
+  {{- $marker = .Get "marker" -}}
+{{- end -}}
+{{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "cluster" $cluster "marker" $marker) -}}
+
+{{- define "partials/shortcodes/maps/projektemacher-metadata.html" -}}
+  {{- (dict "css" slice "js" (slice "js/maps/projektemacher.js") "scss" (slice "scss/maps/projektemacher.scss")) | jsonify -}}
+{{- end -}}
