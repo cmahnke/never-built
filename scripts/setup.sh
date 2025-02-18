@@ -5,8 +5,11 @@ set -e
 echo "Set SKIP_IIIF to something to disable generation of IIIF derivates"
 ./scripts/iiif.sh
 
-# Getting Models
+# Get models
 ./scripts/models.sh
+
+# Get map
+./scripts/get-map-tiles.sh 
 
 python ./scripts/extract-images.py -d
 

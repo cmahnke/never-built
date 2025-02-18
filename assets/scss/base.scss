@@ -45,6 +45,12 @@ $clipmask: '/images/svgs/glasses_background-clippath.svg#clipPath';
 */
 
 
+:where(:focus-visible) {
+    outline: .1875rem dashed #000;
+    outline-offset: .125rem;
+    z-index: 99;
+}
+
 html {
   scroll-behavior: smooth;
 }

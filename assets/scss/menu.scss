@@ -4,7 +4,8 @@ header .menu {
   left: 0;
   top: 10vh;
   background-color: black;
-
+  z-index: 10;
+  max-width: 15vw;
 
   nav {
     height: 100%;
@@ -31,6 +32,18 @@ header .menu {
           width: 4rem;
           height: 4rem;
           padding: 1.4rem;
+        }
+
+        &.navigation-item:before {
+          height: 15%;
+          width:50%;
+          display: inline-block;
+        }
+
+        &.navto- {
+          &:before {
+            content: $bars-light;
+          }
         }
       }
 

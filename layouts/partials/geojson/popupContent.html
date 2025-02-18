@@ -1,0 +1,30 @@
+{{- $previewWidth := 150 -}}
+
+{{- $baseImageName := "front" -}}
+{{- if eq .Params.resources nil -}}
+  {{- warnf "Page %s has no resources!" .File.Path -}}
+{{- end -}}
+{{- if lt (len (where .Params.resources ".name" "front")) 1 -}}
+  {{- $frontResource := (where .Params.resources ".name" "page") -}}
+  {{- $infoJson := (index $frontResource 0).params.iiif -}}
+  {{- $baseImageName = path.Dir $infoJson -}}
+{{- end -}}
+
+{{- $content := .Summary -}}
+<div class="geojsonPopup">
+    <div class="title">
+        {{ .Title }}
+    </div>
+    <div class="popup-content">
+        {{ $content | markdownify }}
+    </div>
+    {{- $image := .Resources.Get (printf "%s-anaglyph.jpg" $baseImageName) -}}
+    {{- $image = $image.Process (printf "resize %dx" $previewWidth) -}}
+    {{- if (ne $image nil) -}}
+      <img alt="{{ .Title }} {{ i18n "preview" }}" src="{{- $image.RelPermalink -}}" class="preview-img">
+    {{- end -}}
+    <div class="link">
+      {{- $currentPage := .OutputFormats.Get "html" -}}
+      <a href="{{ $currentPage.RelPermalink }}">{{ i18n "readmore" }}</a>
+    </div>
+</div>
