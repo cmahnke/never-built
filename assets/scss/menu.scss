@@ -1,3 +1,6 @@
+$button-width: 4em;
+$button-height: 4em;
+
 header .menu {
   position: fixed;
   height: 80vh;
@@ -5,14 +8,32 @@ header .menu {
   top: 10vh;
   background-color: black;
   z-index: 10;
-  max-width: 15vw;
+  max-width: 30vw;
+  font-family: $heading-font;
+  font-weight: 600;
 
   nav {
     height: 100%;
 
-    #menu-toggle,
-    label {
+    #menu-toggle {
       display: none;
+
+      @media (max-width: 45em) {
+          &:checked + label + ul {
+              visibility: visible;
+              opacity: 1;
+              max-height: 100rem;
+          }
+      }
+    }
+
+    label.menu-button {
+      .menu-icon {
+        content: url($bars-light);
+        height: $button-height;
+        width: $button-width;
+        display: inline-block;
+      }
     }
 
     input,
@@ -27,28 +48,76 @@ header .menu {
       height: 100%;
       padding-inline-start: 0;
 
+      .navigation-item {
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+        align-items: center;
+      }
+
       li {
         a {
+          /*
           width: 4rem;
           height: 4rem;
           padding: 1.4rem;
+          */
+          padding-right: 2em;
         }
 
-        &.navigation-item:before {
-          height: 15%;
-          width:50%;
+        &.navigation-item:after {
+          height: $button-height;
+          width: $button-width;
           display: inline-block;
+          vertical-align: middle;
         }
 
         &.navto- {
-          &:before {
-            content: $bars-light;
+          &:after {
+            content: url($house-light);
           }
         }
+
+        &.navto-books {
+          &:after {
+            content: url($book-light);
+          }
+        }
+
+
+        &.navto-map {
+          &:after {
+            content: url($map-light);
+          }
+        }
+
+        /*
+        &.navto-links {
+          &:after {
+            content: url($map-light);
+          }
+        }
+        */
+
+        &.navto-about {
+          &:after {
+            content: url($info-light);
+          }
+        }
+
       }
 
     }
 
 
+  }
+
+  a,
+  a:active,
+  a:focus,
+  a:hover,
+  a:visited {
+    color: var(--menu-text-color);
+    text-decoration: none;
   }
 }

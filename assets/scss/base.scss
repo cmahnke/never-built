@@ -50,6 +50,12 @@ $clipmask: '/images/svgs/glasses_background-clippath.svg#clipPath';
     z-index: 99;
 }
 
+:root {
+  --text-font: $text-font;
+  --heading-font: $heading-font;
+  --menu-text-color: white;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -57,7 +63,6 @@ html {
 html,body {
   margin: 0;
   height: 100%;
-
 }
 
 h1, h2, h3 {
@@ -89,6 +94,6 @@ body {
 }
 
 .main {
-  max-width: 80%;
+  max-width: calc(100% - 15vw);
   align-self: flex-end;
 }
