@@ -1,5 +1,6 @@
-$button-width: 4em;
-$button-height: 4em;
+$button-width: 2em;
+$button-height: 2em;
+
 
 header .menu {
   position: fixed;
@@ -56,37 +57,45 @@ header .menu {
       }
 
       li {
-        a {
+        .navigation-link {
+          font-size: 1.6em;
+        }
+
+        .link-icon {
           /*
           width: 4rem;
           height: 4rem;
           padding: 1.4rem;
           */
-          padding-right: 2em;
-        }
-
-        &.navigation-item:after {
+          padding-left: 2em;
           height: $button-height;
-          width: $button-width;
           display: inline-block;
-          vertical-align: middle;
+
+
+          &:after {
+            height: $button-height;
+            width: $button-width;
+            display: inline-block;
+            vertical-align: middle;
+            max-height: 15%;
+          }
         }
 
         &.navto- {
-          &:after {
+          .link-icon:after {
             content: url($house-light);
           }
         }
 
         &.navto-books {
-          &:after {
+          .link-icon:after {
             content: url($book-light);
           }
         }
 
 
         &.navto-map {
-          &:after {
+          .link-icon:after {
             content: url($map-light);
           }
         }
@@ -100,7 +109,7 @@ header .menu {
         */
 
         &.navto-about {
-          &:after {
+          .link-icon:after {
             content: url($info-light);
           }
         }

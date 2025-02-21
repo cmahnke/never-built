@@ -1,0 +1,44 @@
+{{ define "title" }}
+  {{- $title := "" -}}
+  {{- if ne .Params.metaPage true -}}
+    {{- if eq .CurrentSection.Title "" -}}
+      {{- $title = .Title -}}
+    {{- else if eq .CurrentSection.Title .Title -}}
+      {{- $title = .Title -}}
+    {{- else -}}
+      {{- $title = printf "%s: %s" .CurrentSection.Title .Title -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $title = .Title -}}
+  {{- end -}}
+
+  {{ $title }} · {{ .Site.Title }}
+{{ end }}
+
+{{ define "content" }}
+  <div class="list">
+    <div class="post">
+      {{- $pages := .Site.Pages -}}
+      {{- $pages = where $pages "Params.metaPage" "!=" true -}}
+      {{- $pages = where $pages "Kind" "section" -}}
+      {{- $pages = where $pages "Params.type" "book" -}}
+      {{- $paginator := .Paginate $pages -}}
+      {{- range $paginator.Pages -}}
+        {{- partial "list-item.html" . -}}
+      {{- end -}}
+    </div>
+  </div>
+  {{ if or $paginator.HasPrev $paginator.HasNext -}}
+    <div class="pagination">
+      <div class="pagination-links">
+        {{- if $paginator.HasPrev -}}
+          <a class="pagination-prev" href="{{ $paginator.Prev.URL }}">&#x25C0; {{ i18n "next_page" }}</a>
+        {{- end -}}
+        {{- if $paginator.HasNext -}}
+          <a class="pagination-next" href="{{ $paginator.Next.URL }}">{{ i18n "previous_page" }} &#x25B6;</a>
+        {{- end -}}
+      </div>
+    </div>
+  {{- end -}}
+
+{{- end -}}

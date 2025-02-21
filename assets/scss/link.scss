@@ -6,6 +6,7 @@
 
 .footer .footer-menu .menu .menu-footer-items a,
 .animated_underline {
+  text-decoration: none;
   background-image: linear-gradient(var(--text-underline-color), var(--text-underline-color));
   background-position: 0 90%;
   background-repeat: no-repeat;

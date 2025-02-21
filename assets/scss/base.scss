@@ -9,6 +9,14 @@ $heading-font: 'League Spartan Variable', sans-serif;
 $special-font: 'Newsreader Variable', sans-serif;
 $text-font: 'Roboto Mono Variable', sans-serif;
 $text-color: rgba(255,255,255,.8);
+$color-light: #fff;
+
+$header-height: 4em;
+$footer-height: 4em;
+
+$menu-width: 10vw;
+$content-width: calc(100vw - $menu-width);
+
 @import "fonts/league-spartan";
 @import "fonts/newsreader";
 @import "fonts/roboto-mono";
@@ -94,6 +102,7 @@ body {
 }
 
 .main {
-  max-width: calc(100% - 15vw);
+  width: $content-width;
   align-self: flex-end;
+  min-height: calc(100vh - $header-height - $footer-height);
 }

@@ -4,6 +4,7 @@ date: 2025-03-01T17:15:07+02:00
 tags:
 - book
 draft: true
+worldcat: https://search.worldcat.org/de/title/74413723
 outputs:
   - iiif-manifest
   - html

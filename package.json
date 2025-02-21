@@ -1,7 +1,8 @@
 {
   "dependencies": {
-    "motion": "^12.4.4",
-    "terminal.css": "^0.7.5"
+    "motion": "^12.4.7",
+    "terminal.css": "^0.7.5",
+    "ol-mapbox-style": "^12.4.1"
   },
   "name": "never-build",
   "version": "0.1.0"

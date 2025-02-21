@@ -14,6 +14,12 @@
     {{- end -}}
     {{- if not .Params.metaPage -}}
       <div class="meta">
+        {{- if and (ne .CurrentSection.Path "/post") (ne .CurrentSection.Path .Path) -}}
+          <div class="parent-section">
+            {{ i18n "sectionParent" }}
+            <a href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}">{{ .CurrentSection.Title }}</a>
+          </div>
+        {{- end -}}
         <div class="date">
           <a href="{{ .RelPermalink }}">
             {{- .Date | time.Format ":date_full" -}}
