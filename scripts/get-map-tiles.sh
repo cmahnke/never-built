@@ -25,6 +25,7 @@ if ! test -d "STYLE_DIR"; then
   tar xzf $STYLE_DIR/`basename $STYLE_URL` -C $STYLE_DIR/
   rm $STYLE_DIR/*.tar.gz
   mv $STYLE_DIR/*/* $STYLE_DIR/
+  rm $STYLE_DIR/*.md
 else
   echo "Directory $STYLE_DIR exists."
 fi

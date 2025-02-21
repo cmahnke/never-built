@@ -12,9 +12,16 @@ header .menu {
   max-width: 30vw;
   font-family: $heading-font;
   font-weight: 600;
+  
+
+  /*
+    box-shadow: 1px 1px 2px black;
+    transform: translateX(-50%);
+  */
 
   nav {
     height: 100%;
+    font-size: 1.6em;
 
     #menu-toggle {
       display: none;
@@ -29,16 +36,27 @@ header .menu {
     }
 
     label.menu-button {
+      font-size: unset;
+      /*
+      .menu-icon:before {
+        content: "Menu";
+        color: var(--menu-text-color);
+        font-style: normal;
+      }
+      */
+
+      /* Add this: https://codepen.io/singhimalaya/pen/mNOJPM */
+
       .menu-icon {
         content: url($bars-light);
         height: $button-height;
         width: $button-width;
         display: inline-block;
+        padding: 1em;
       }
     }
 
-    input,
-    label {
+    input {
       display: none;
     }
 
@@ -48,6 +66,7 @@ header .menu {
       justify-content: space-around;
       height: 100%;
       padding-inline-start: 0;
+      margin-block-start: 0;
 
       .navigation-item {
         display: flex;
@@ -58,7 +77,11 @@ header .menu {
 
       li {
         .navigation-link {
-          font-size: 1.6em;
+          min-width: 8em;
+          display: flex;
+          justify-content: space-between;
+          padding-left: 1em;
+          align-items: center;
         }
 
         .link-icon {
@@ -67,17 +90,16 @@ header .menu {
           height: 4rem;
           padding: 1.4rem;
           */
-          padding-left: 2em;
+          padding-right: 1em;
           height: $button-height;
           display: inline-block;
 
 
+
           &:after {
-            height: $button-height;
             width: $button-width;
             display: inline-block;
             vertical-align: middle;
-            max-height: 15%;
           }
         }
 
@@ -100,13 +122,11 @@ header .menu {
           }
         }
 
-        /*
         &.navto-links {
-          &:after {
-            content: url($map-light);
+          .link-icon:after {
+            content: url($link-light);
           }
         }
-        */
 
         &.navto-about {
           .link-icon:after {
