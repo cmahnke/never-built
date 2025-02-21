@@ -1,5 +1,6 @@
 @use 'sass:color';
 @use "functions/color" as *;
+@use "link" as *;
 
 /*
 @import "terminal";
@@ -41,6 +42,7 @@ $fullscreen-color: var(--base07);
 
 /* Site includes */
 @import "footer";
+
 /*
 $clipmask: '/images/svgs/glasses_background-clippath.svg#clipPath';
 @import "header";
@@ -105,4 +107,8 @@ body {
   width: $content-width;
   align-self: flex-end;
   min-height: calc(100vh - $header-height - $footer-height);
+}
+
+.animated_underline {
+  @include underline-link;
 }

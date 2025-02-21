@@ -1,0 +1,10 @@
+/* See https://css-irl.info/css-halftone-patterns/ */
+@mixin halftone ($radius: 0.25rem, $cirle-color: black, $background-color: transparent, $background-size: 1.3rem) {
+  background-image: radial-gradient(
+      circle at center,
+      $cirle-color $radius,
+      $background-color 0
+    ), radial-gradient(circle at center, $cirle-color $radius, $background-color 0);
+  background-size: $background-size $background-size;
+  background-position: 0 0, calc($background-size / 2) calc($background-size / 2);
+}

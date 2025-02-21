@@ -1,21 +1,23 @@
-
-:root {
-  --text-underline-thickness: 0.3ex;
-  --text-underline-color: #000;
-}
-
-.footer .footer-menu .menu .menu-footer-items a,
-.animated_underline {
+@mixin underline-link ($thickness: 0.3ex, $color: #000) {
   text-decoration: none;
-  background-image: linear-gradient(var(--text-underline-color), var(--text-underline-color));
+  background-image: linear-gradient($color, $color);
   background-position: 0 90%;
   background-repeat: no-repeat;
   background-size: 0 .3ex;
-  background-size: 0 var(--text-underline-thickness);
+  background-size: 0 $thickness;
+  padding-bottom: calc(1.5 * $thickness);
+  transition: background-size .3s ease;
 
   &:hover {
     background-size: 100% .3ex;
-    background-size: 100% var(--text-underline-thickness);
+    background-size: 100% $thickness;
   }
+}
+
+/*
+.footer .footer-menu .menu .menu-footer-items a,
+.animated_underline {
+  @include underline-link;
 
 }
+*/
