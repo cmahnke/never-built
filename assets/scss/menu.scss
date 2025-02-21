@@ -3,18 +3,29 @@ $button-height: 2em;
 
 @use "halftone" as *;
 @use "link" as *;
+@use 'sass:math';
+
+/* See https://css-tricks.com/snippets/sass/strip-unit-function/
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+*/
 
 header .menu {
   position: fixed;
   height: 80vh;
   left: 0;
   top: 10vh;
-  background-color: black;
   /* background: radial-gradient(circle at center, black 0.25rem, transparent 0); */
   z-index: 10;
   max-width: 30vw;
   font-family: $heading-font;
   font-weight: 600;
+
 
   /*
   @include halftone ($radius: 0.15rem, $cirle-color: white, $background-color: black);
@@ -32,8 +43,9 @@ header .menu {
 
   /*
     box-shadow: 1px 1px 2px black;
-    transform: translateX(-50%);
+    transform: translateX(-60%);
   */
+
 
   nav {
     height: 100%;
@@ -42,34 +54,73 @@ header .menu {
     #menu-toggle {
       display: none;
 
-      @media (max-width: 45em) {
-          &:checked + label + ul {
-              visibility: visible;
-              opacity: 1;
-              max-height: 100rem;
+      &:checked + label {
+
+        + ul {
+          transform: unset;
+        }
+
+        .menu-icon {
+          transform: rotateZ(-45deg);
+          transform-origin: top right;
+          width: math.hypot($button-width, $button-width);
+
+          &:before {
+            opacity: 0;
+            transform: scale(0);
+            top: 0;
+            transform: rotateZ(45deg);
           }
+
+          &:after {
+            width: math.hypot($button-width, $button-width);
+            transform: rotateZ(90deg) translateX(0 - math.hypot($button-width, $button-width) / 2 - ($button-height / 5) / 2);
+          }
+        }
       }
     }
 
     label.menu-button {
       font-size: unset;
-      /*
-      .menu-icon:before {
-        content: "Menu";
-        color: var(--menu-text-color);
-        font-style: normal;
-      }
-      */
+      padding: 1em;
+      position: fixed;
+      top: 10vh;
+      z-index: 10;
 
       /* Add this: https://codepen.io/singhimalaya/pen/mNOJPM */
 
       .menu-icon {
-        content: url($bars-light);
-        height: $button-height;
-        width: $button-width;
+        transition: all 300ms;
         display: inline-block;
-        padding: 1em;
+        height: $button-height / 5;
+        width: $button-width;
+
+        background-color: #fff;
+        position: relative;
+
+        &:before,
+        &:after {
+          transition: all 300ms;
+          content: '';
+          height: $button-height / 5;
+          width: $button-width;
+          background-color: #fff;
+          display: inline-block;
+          border-radius: 1.5px;
+          position: absolute;
+        }
+
+        &:before {
+          top: $button-height / 5 * 2;
+        }
+
+        &:after {
+          top: $button-height / 5 * 4;
+
+        }
+
       }
+
     }
 
     input {
@@ -77,12 +128,18 @@ header .menu {
     }
 
     ul {
+      transition: transform 300ms;
+      transform: translateX(-5em);
+      padding-top: calc(1em * 2 + $button-height);
+      padding-bottom: 1em;
+
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
-      height: 100%;
+      justify-content: space-between;
+      height: calc(100% - (1em * 2 + $button-height));
       padding-inline-start: 0;
       margin-block-start: 0;
+      background-color: #000;
 
       .navigation-item {
         display: flex;
@@ -96,18 +153,13 @@ header .menu {
           min-width: 8em;
           display: flex;
           justify-content: space-between;
-          padding-left: 1em;
+          margin-left: 1em;
           align-items: center;
           @include underline-link($color: white);
         }
 
         .link-icon {
-          /*
-          width: 4rem;
-          height: 4rem;
-          padding: 1.4rem;
-          */
-          padding-right: 1em;
+          margin-right: 1em;
           height: $button-height;
           display: inline-block;
 

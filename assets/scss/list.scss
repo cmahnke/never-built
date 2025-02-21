@@ -1,3 +1,39 @@
 .list {
 
+  h2.headline {
+    color: black;
+    a {
+      @include underline-link();
+    }
+  }
+
+  .book {
+    padding: 1em 0;
+
+    .list-item-head {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .headline {
+        order: 1;
+        font-size: 4em;
+        font-weight: 600;
+      }
+
+      .cover-preview {
+        order: 2;
+      }
+
+      .meta {
+        display: none;
+      }
+    }
+
+  }
+
+  &:has(.post .book) {
+    margin-right: 3em;
+  }
+
 }

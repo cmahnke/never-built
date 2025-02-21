@@ -1,5 +1,5 @@
 ---
-title: "Sanierung Neustadt"
+title: "Wende Nord"
 date: 2025-03-15T17:15:07+02:00
 tags:
 - high-rise
@@ -14,9 +14,14 @@ params:
     coordinates:
     - 9.9326044
     - 51.5416565
+draft: true
 resources:
-- src: "page139.jxl"
+- src: "page046.jxl"
   name: preview
   params:
-    iiif: page139/info.json
+    iiif: page046/info.json
+- src: "page047.jxl"
+  name: preview
+  params:
+    iiif: page047/info.json
 ---

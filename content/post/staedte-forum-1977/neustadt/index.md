@@ -1,9 +1,9 @@
 ---
-title: "Sanierung Neustadt"
+title: "Wende Nord"
 date: 2025-03-15T17:15:07+02:00
 tags:
 - high-rise
-- infrastructure
+- residential-area
 outputs:
   - iiif-manifest
   - html
@@ -15,8 +15,9 @@ params:
     - 9.9326044
     - 51.5416565
 resources:
-- src: "page139.jxl"
+- src: "page023.jxl"
   name: preview
   params:
-    iiif: page139/info.json
+    iiif: page023/info.json
+
 ---
