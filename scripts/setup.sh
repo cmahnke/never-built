@@ -9,7 +9,7 @@ echo "Set SKIP_IIIF to something to disable generation of IIIF derivates"
 ./scripts/models.sh
 
 # Get map
-./scripts/get-map-tiles.sh 
+./scripts/get-map-tiles.sh
 
 python ./scripts/extract-images.py -d
 
@@ -25,4 +25,5 @@ done
 yarn run svgo
 
 ./scripts/map.sh
+./scripts/svgo.sh
 ./themes/projektemacher-base/scripts/json-lint.sh

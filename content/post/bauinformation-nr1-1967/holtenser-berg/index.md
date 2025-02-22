@@ -1,5 +1,5 @@
 ---
-title: "SDemonstrativbauvorhaben Holtenser Berg, Göttingen"
+title: "Demonstrativbauvorhaben Holtenser Berg, Göttingen"
 date: 2025-03-15T17:15:07+02:00
 tags:
 - high-rise

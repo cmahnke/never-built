@@ -13,3 +13,12 @@
     background-size: 100% $thickness;
   }
 }
+
+@mixin scale-link ($factor: 1.1) {
+  text-decoration: none;
+  transition: transform .3s ease;
+
+  &:hover {
+    transform: scale($factor);
+  }
+}

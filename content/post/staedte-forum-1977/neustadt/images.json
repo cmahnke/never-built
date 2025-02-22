@@ -1,0 +1,43 @@
+[
+  {
+    "image": "page023.jxl",
+    "areas": [
+      {
+        "name": "plan",
+        "postprocess": ["white_balance", "preview"],
+        "position": {
+          "x": 1522,
+          "y": 170
+        },
+        "size": {
+          "x": 2381,
+          "y": 1507
+        }
+      },
+      {
+        "name": "model-top",
+        "postprocess": ["preview"],
+        "position": {
+          "x": 1546,
+          "y": 2184
+        },
+        "size": {
+          "x": 2365,
+          "y": 2112
+        }
+      },
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 1561,
+          "y": 4686
+        },
+        "size": {
+          "x": 3320,
+          "y": 2112
+        }
+      }
+    ]
+  }
+]

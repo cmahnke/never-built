@@ -1,0 +1,27 @@
+<header class="header header-main" id="head">
+  <div class="menu">
+    {{ partial "menu.html" . }}
+  </div>
+  {{- $defaultHeaderImage := "/images/header.svg" -}}
+  {{- $headerImage := "" -}}
+  {{- if ne $.Site.Params.headerimage "" -}}
+    {{- $headerImage = $.Site.Params.headerimage -}}
+    {{ if and (eq (printf "%T" $.Site.Params.headerimage) "bool") (not $.Site.Params.headerimage) }}
+      {{- $headerImage = "" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $headerImage = $defaultHeaderImage -}}
+  {{- end -}}
+  <div class="header-background">
+    <a href="/">
+      {{- if ne $headerImage "" -}}
+        <img class="header-logo" alt="{{ .Site.Title }}" src="{{ $headerImage }}">
+      {{- end -}}
+      <h1 class="header-title">{{ $.Site.Title }}</h1>
+      {{- $subtitle := .Params.subtitle | default "" -}}
+      {{- if ne $subtitle "" -}}
+        <h2 class="header-subtitle">{{ $subtitle }}</h2>
+      {{- end -}}
+    </a>
+  </div>
+</header>

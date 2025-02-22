@@ -1,0 +1,48 @@
+[
+  {
+    "image": "page060.jxl",
+    "areas": [
+      {
+        "name": "plan",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 198,
+          "y": 198
+        },
+        "size": {
+          "x": 2937,
+          "y": 3487
+        }
+      }
+    ]
+  },
+  {
+    "image": "page061.jxl",
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 220,
+          "y": 176
+        },
+        "size": {
+          "x": 4422,
+          "y": 2354
+        }
+      },
+      {
+        "name": "model-front",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 220,
+          "y": 4697
+        },
+        "size": {
+          "x": 4466,
+          "y": 1989
+        }
+      }
+    ]
+  }
+]

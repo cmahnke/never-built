@@ -1,5 +1,6 @@
 $button-width: 2em;
 $button-height: 2em;
+$scale-factor: 1.05;
 
 @use "halftone" as *;
 @use "link" as *;
@@ -74,7 +75,7 @@ header .menu {
 
           &:after {
             width: math.hypot($button-width, $button-width);
-            transform: rotateZ(90deg) translateX(0 - math.hypot($button-width, $button-width) / 2 - ($button-height / 5) / 2);
+            transform: rotateZ(90deg) translateX(0 - math.hypot($button-width, $button-width) / 2 - math.div($button-height, 5) / 2);
           }
         }
       }
@@ -86,13 +87,16 @@ header .menu {
       position: fixed;
       top: 10vh;
       z-index: 10;
+      width: $button-width;
+      height: $button-height;
+      @include scale-link($factor: $scale-factor);
 
       /* Add this: https://codepen.io/singhimalaya/pen/mNOJPM */
 
       .menu-icon {
         transition: all 300ms;
         display: inline-block;
-        height: $button-height / 5;
+        height: math.div($button-height, 5);
         width: $button-width;
 
         background-color: #fff;
@@ -102,7 +106,7 @@ header .menu {
         &:after {
           transition: all 300ms;
           content: '';
-          height: $button-height / 5;
+          height: math.div($button-height, 5);
           width: $button-width;
           background-color: #fff;
           display: inline-block;
@@ -155,14 +159,19 @@ header .menu {
           justify-content: space-between;
           margin-left: 1em;
           align-items: center;
-          @include underline-link($color: white);
+          cursor: pointer;
+
+          &:hover .link-icon {
+            transform: scale($scale-factor);
+          }
         }
 
         .link-icon {
           margin-right: 1em;
           height: $button-height;
           display: inline-block;
-
+          @include scale-link($factor: $scale-factor);
+          cursor: pointer;
 
 
           &:after {
@@ -181,6 +190,7 @@ header .menu {
         &.navto-books {
           .link-icon:after {
             content: url($book-light);
+            /*height: calc($button-height * 0.95);*/
           }
         }
 

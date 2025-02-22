@@ -1,5 +1,17 @@
 .featured {
-  .post {
+  min-width: 100%;
+  min-height: 50%;
+  display: flex;
+  position: relative;
+
+  .featured-entry {
+    max-width: 90%;
+    position: relative;
+
+    .featured-entry-image {
+      max-width: 90%;
+      /*position: absolute; */
+    }
 
   }
 }

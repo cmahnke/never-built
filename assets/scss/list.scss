@@ -13,12 +13,17 @@
     .list-item-head {
       display: flex;
       flex-direction: row;
+      align-items: center;
       justify-content: space-between;
 
       .headline {
         order: 1;
-        font-size: 4em;
+        font-size: 3em;
         font-weight: 600;
+
+        a {
+          color: black;
+        }
       }
 
       .cover-preview {

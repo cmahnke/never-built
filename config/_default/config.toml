@@ -9,6 +9,7 @@
   description = "Das nicht gebaute Göttingen"
   subTitle = "Das nicht gebaute Göttingen"
   debug = true
+  headerimage = false
 
 [params.author]
     email = 'mail@christianmahnke.de'

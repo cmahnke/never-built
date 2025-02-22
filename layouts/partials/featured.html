@@ -4,27 +4,31 @@
   {{- $pages = where $pages "Params.featured" "=" true -}}
   {{- $pages = where $pages "Kind" "!=" "section" -}}
   {{- range $page := $pages -}}
-    {{- $contextDir := path.Dir .File.Path -}}
-    {{- $preview := slice -}}
-    {{- with .Params.cover -}}
-      {{- if reflect.IsSlice . -}}
-        {{- $preview = . -}}
-      {{- else -}}
-        {{- $preview = slice . -}}
-      {{- end -}}
-      {{- range $preview -}}
-        {{- with $page.Resources.Get . -}}
-          {{ with .Resize $previewSize }}
-            <div class="featured-entry">
-              <img src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
-            </div>
-          {{- end -}}
+    <div class="featured-entry">
+      {{- $contextDir := path.Dir .File.Path -}}
+      {{- $preview := slice -}}
+      {{- with .Params.cover -}}
+        {{- if reflect.IsSlice . -}}
+          {{- $preview = . -}}
         {{- else -}}
-          {{- errorf "[partials/featured.html] Can't find %s for %s" $preview $page.File.Path -}}
+          {{- $preview = slice . -}}
         {{- end -}}
+        {{- $preview := slice (index $preview 0) -}}
+        {{- range $preview -}}
+          {{- with $page.Resources.Get . -}}
+            {{ with .Resize $previewSize }}
+              <img class="featured-entry-image" src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
+            {{- end -}}
+          {{- else -}}
+            {{- errorf "[partials/featured.html] Can't find %s for %s" $preview $page.File.Path -}}
+          {{- end -}}
+        {{- end -}}
+      {{- else -}}
+        {{- errorf "[partials/featured.html] Can't find $page.Params.cover for %s" $page.File.Path -}}
       {{- end -}}
-    {{- else -}}
-      {{- errorf "[partials/featured.html] Can't find $page.Params.cover for %s" $page.File.Path -}}
-    {{- end -}}
+      {{- with .Summary -}}
+        <div class="featured-summary">{{- . -}}</div>
+      {{- end -}}
+    </div>
   {{- end -}}
 </div>

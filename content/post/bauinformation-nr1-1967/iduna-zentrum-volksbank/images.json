@@ -1,0 +1,31 @@
+[
+  {
+    "image": "page037.jxl",
+    "areas": [
+      {
+        "name": "drawing",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 145,
+          "y": 323
+        },
+        "size": {
+          "x": 4744,
+          "y": 1593
+        }
+      },
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 164,
+          "y": 4621
+        },
+        "size": {
+          "x": 4209,
+          "y": 2393
+        }
+      }
+    ]
+  }
+]

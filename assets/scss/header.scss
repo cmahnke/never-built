@@ -1,0 +1,32 @@
+@use "halftone" as *;
+@use "link" as *;
+@use 'sass:color';
+
+.header {
+  width: $content-width;
+  align-self: flex-end;
+  margin-top: 10vh;
+
+  .header-background {
+    background-color: color.adjust(black, $lightness: 90%);
+    max-width: fit-content;
+
+    a {
+      text-decoration: none;
+      cursor: default;
+      width: max-content;
+      @include halftone($radius: 0.19rem, $cirle-color: black, $background-color: transparent, $background-size: 0.6rem);
+      display: inline-block;
+    }
+
+    .header-title {
+      font-size: 5.5em;
+      font-weight: 800;
+      color: black;
+      margin-top: unset;
+      background-color: #fff;
+      margin-bottom: 0;
+      mix-blend-mode: screen;
+    }
+  }
+}

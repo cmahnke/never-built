@@ -1,0 +1,31 @@
+[
+  {
+    "image": "page139.jxl",
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 1232,
+          "y": 0
+        },
+        "size": {
+          "x": 3718,
+          "y": 2508
+        }
+      },
+      {
+        "name": "plan",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 1245,
+          "y": 4687
+        },
+        "size": {
+          "x": 3108,
+          "y": 1846
+        }
+      }
+    ]
+  }
+]

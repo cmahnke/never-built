@@ -1,19 +1,7 @@
 {{ define "title" }}
-  {{- $title := "" -}}
-  {{- if ne .Params.metaPage true -}}
-    {{- if eq .CurrentSection.Title "" -}}
-      {{- $title = .Title -}}
-    {{- else if eq .CurrentSection.Title .Title -}}
-      {{- $title = .Title -}}
-    {{- else -}}
-      {{- $title = printf "%s: %s" .CurrentSection.Title .Title -}}
-    {{- end -}}
-  {{- else -}}
-    {{- $title = .Title -}}
-  {{- end -}}
-
-  {{ $title }} · {{ .Site.Title }}
+  {{ .Title }} · {{ .Site.Title }}
 {{ end }}
+
 {{ define "content" }}
     <main role="main" class="article-single">
       {{ partial "page.html" . }}

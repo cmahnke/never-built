@@ -1,0 +1,31 @@
+[
+  {
+    "image": "page106.jxl",
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["white_balance", "preview"],
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 4697,
+          "y": 3234
+        }
+      },
+      {
+        "name": "plan",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 5170
+        },
+        "size": {
+          "x": 4730,
+          "y": 1672
+        }
+      }
+    ]
+  }
+]
