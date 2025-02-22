@@ -13,9 +13,13 @@ import pywt
 
 image_meta = "images.json"
 default_dir = "content/post"
+gitignore_file = ".gitignore"
 weights_dir = "./weights"
 model = None
 debug = False
+default_image_ext = ".jpg"
+
+gitignore_file = os.path.join(default_dir, ".gitignore")
 
 def find_directories(start, file):
     pattern = f"{start}/**/{file}"
@@ -35,22 +39,57 @@ def read_dir(dir):
         cprint(f"Failed to read {str(meta)}, might be malformed", 'red')
         sys.exit(10)
 
-def gitignore(dir, file):
-    gitignore_file = ".gitignore"
-    gitignore_path = os.path.join(dir, gitignore_file)
+def gitignore(dir, file, gitignore_file = ".gitignore"):
+    if str(pathlib.Path(gitignore_file).parent) == '.':
+        gitignore_path = os.path.join(dir, gitignore_file)
+        ignore_line = f"{pathlib.Path(file).name}\n"
+    else:
+        gitignore_path = gitignore_file
+        rel_dir = os.path.relpath(dir, pathlib.Path(gitignore_file).parent)
+        ignore_line = f"{os.path.join(rel_dir, pathlib.Path(file).name)}\n"
+
     if not os.path.isfile(gitignore_path):
         pathlib.Path(gitignore_path).touch()
-    ignore_line = f"{pathlib.Path(file).name}\n"
     with open(gitignore_path, 'r') as gif:
         for line in gif:
             if line == ignore_line:
                 return
     with open(gitignore_path, 'a') as gif:
         gif.write(ignore_line)
+    #if debug:
+    cprint(f"Wrote '{ignore_line}' to {gitignore_path}", "yellow")
 
+def postprocess(image, processors, debug_str=""):
+    for p in processors:
+        try:
+            cprint(f"Trying to run {p} on area of {debug_str}", "yellow")
+            if isinstance(p, str):
+                image = globals()[p](image)
+            elif isinstance(p, dict):
+                image = globals()[p["function"]](image, params=p['params'])
+
+            if image.mode == "L":
+                image = image.convert('RGB')
+        except Exception as e:
+            st = traceback.format_exc()
+            cprint(f"Failed to call preprocessor {p}: {str(e)}\n{st}", "red")
+            if debug:
+                sys.exit(1)
+            else:
+                model = None
+                break
+
+    return image
 
 def extract(meta, dir):
     global model
+
+    def wrt(image, name, dir):
+        with open(name, 'w') as f:
+            image.save(f)
+            cprint(f"Saved {name}", "green")
+            gitignore(dir, name, gitignore_file)
+
     for image_meta in meta:
         image_file = os.path.join(dir, image_meta["image"])
         if str(image_file).endswith('.jxl'):
@@ -63,7 +102,7 @@ def extract(meta, dir):
         if "areas" in image_meta:
             i = 1
             for area in image_meta["areas"]:
-                name = os.path.join(dir, f"{area["name"]}.jpg")
+                name = os.path.join(dir, f"{area["name"]}{default_image_ext}")
                 left = area['position']['x']
                 top = area['position']['y']
                 right = area['size']['x'] + area['position']['x']
@@ -74,30 +113,21 @@ def extract(meta, dir):
                     continue
 
                 if "postprocess" in area:
-                    for p in area["postprocess"]:
-                        try:
-                            cprint(f"Trying to run {p} on area of {image_file}, area {i}", "yellow")
-                            if isinstance(p, str):
-                                a = globals()[p](a)
-                            elif isinstance(p, dict):
-                                a = globals()[p["function"]](a, params=p['params'])
+                    a = postprocess(a, area["postprocess"], debug_str=f"{image_file}, area {i}")
 
-                            if a.mode == "L":
-                                a = a.convert('RGB')
-                        except Exception as e:
-                            st = traceback.format_exc()
-                            cprint(f"Failed to call preprocessor {p}: {str(e)}\n{st}", "red")
-                            if debug:
-                                sys.exit(1)
-                            else:
-                                model = None
-                                break
-
-                with open(name, 'w') as f:
-                    a.save(f)
-                    cprint(f"Saved {name}", "green")
-                    gitignore(dir, name)
+                #with open(name, 'w') as f:
+                #    a.save(f)
+                #    cprint(f"Saved {name}", "green")
+                #    gitignore(dir, name, gitignore_file)
+                wrt(a, name, dir)
                 i += 1
+        elif "postprocess" in image_meta:
+            im = postprocess(im, image_meta["postprocess"], debug_str=f"{image_file}")
+            if "name" in image_meta:
+                name = image_meta["name"]
+            else:
+                name = pathlib.Path(image_file).stem + default_image_ext
+            wrt(a, name, dir)
 
 def smoothen(im, params=None):
     if im.mode == "RGBA":

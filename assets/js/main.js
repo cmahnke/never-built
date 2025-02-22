@@ -7,7 +7,8 @@ import Glide from '@glidejs/glide'
 document.addEventListener("DOMContentLoaded", function(event) {
   setupAnimatedLinks()
   if (document.querySelector('body.home')) {
-    new Glide('.featured').mount()
+    new Glide('.featured',{
+  gap: 20}).mount()
   }
 
 });

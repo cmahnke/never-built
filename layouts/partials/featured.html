@@ -3,13 +3,15 @@
 <div class="featured">
   <div data-glide-el="track" class="glide__track">
     <ul class="glide__slides">
-      {{- $pages := .Site.RegularPages -}}
+      {{- $pages := .Site.RegularPages.ByDate -}}
       {{- $pages = where $pages "Params.featured" "=" true -}}
       {{- $pages = where $pages "Kind" "!=" "section" -}}
       {{- range $page := $pages -}}
         <li class="featured-entry glide__slide">
           {{- $contextDir := path.Dir .File.Path -}}
           {{- $preview := slice -}}
+          {{- $link := .RelPermalink -}}
+          {{- $title := .Title -}}
           {{- with .Params.cover -}}
             {{- if reflect.IsSlice . -}}
               {{- $preview = . -}}
@@ -20,7 +22,9 @@
             {{- range $preview -}}
               {{- with $page.Resources.Get . -}}
                 {{ with .Resize $previewSize }}
-                  <img class="featured-entry-image" src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
+                  <a href="{{ $link }}" title="{{ $title }}">
+                    <img class="featured-entry-image" src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
+                  </a>
                 {{- end -}}
               {{- else -}}
                 {{- errorf "[partials/featured.html] Can't find %s for %s" $preview $page.File.Path -}}

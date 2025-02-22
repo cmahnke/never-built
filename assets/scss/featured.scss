@@ -15,10 +15,9 @@ $scale-factor: 1.05 !default;
     position: relative;
 
     .featured-entry-image {
-      max-width: 90%;
+      max-width: 99%;
       /*position: absolute; */
     }
-
   }
 
   .glide__arrow {
@@ -69,6 +68,10 @@ $scale-factor: 1.05 !default;
     display: inline-flex;
     list-style: none;
     transform: translateX(-50%);
+    width: 100%;
+    padding-top: .6em;
+    border-top: 0.3ex solid black;
+    justify-content: center;
   }
 
   .glide__bullet {
