@@ -1,34 +1,49 @@
 {{- $previewSize := "1536x" -}}
+{{- $slideNum := 0 -}}
 <div class="featured">
-  {{- $pages := .Site.RegularPages -}}
-  {{- $pages = where $pages "Params.featured" "=" true -}}
-  {{- $pages = where $pages "Kind" "!=" "section" -}}
-  {{- range $page := $pages -}}
-    <div class="featured-entry">
-      {{- $contextDir := path.Dir .File.Path -}}
-      {{- $preview := slice -}}
-      {{- with .Params.cover -}}
-        {{- if reflect.IsSlice . -}}
-          {{- $preview = . -}}
-        {{- else -}}
-          {{- $preview = slice . -}}
-        {{- end -}}
-        {{- $preview := slice (index $preview 0) -}}
-        {{- range $preview -}}
-          {{- with $page.Resources.Get . -}}
-            {{ with .Resize $previewSize }}
-              <img class="featured-entry-image" src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
+  <div data-glide-el="track" class="glide__track">
+    <ul class="glide__slides">
+      {{- $pages := .Site.RegularPages -}}
+      {{- $pages = where $pages "Params.featured" "=" true -}}
+      {{- $pages = where $pages "Kind" "!=" "section" -}}
+      {{- range $page := $pages -}}
+        <li class="featured-entry glide__slide">
+          {{- $contextDir := path.Dir .File.Path -}}
+          {{- $preview := slice -}}
+          {{- with .Params.cover -}}
+            {{- if reflect.IsSlice . -}}
+              {{- $preview = . -}}
+            {{- else -}}
+              {{- $preview = slice . -}}
+            {{- end -}}
+            {{- $preview := slice (index $preview 0) -}}
+            {{- range $preview -}}
+              {{- with $page.Resources.Get . -}}
+                {{ with .Resize $previewSize }}
+                  <img class="featured-entry-image" src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
+                {{- end -}}
+              {{- else -}}
+                {{- errorf "[partials/featured.html] Can't find %s for %s" $preview $page.File.Path -}}
+              {{- end -}}
             {{- end -}}
           {{- else -}}
-            {{- errorf "[partials/featured.html] Can't find %s for %s" $preview $page.File.Path -}}
+            {{- errorf "[partials/featured.html] Can't find $page.Params.cover for %s" $page.File.Path -}}
           {{- end -}}
-        {{- end -}}
-      {{- else -}}
-        {{- errorf "[partials/featured.html] Can't find $page.Params.cover for %s" $page.File.Path -}}
+          {{- with .Summary -}}
+            <div class="featured-summary">{{- . -}}</div>
+          {{- end -}}
+          {{- $slideNum = add $slideNum 1 -}}
+        </li>
       {{- end -}}
-      {{- with .Summary -}}
-        <div class="featured-summary">{{- . -}}</div>
+    </ul>
+    <div class="glide__arrows" data-glide-el="controls">
+      <button class="glide__arrow glide__arrow--left" data-glide-dir="<">{{ i18n "prev" }}</button>
+      <button class="glide__arrow glide__arrow--right" data-glide-dir=">">{{ i18n "next" }}</button>
+    </div>
+    <div class="glide__bullets" data-glide-el="controls[nav]">
+      {{- range seq $slideNum -}}
+        <button class="glide__bullet" data-glide-dir="={{ . }}"></button>
       {{- end -}}
     </div>
-  {{- end -}}
+  </div>
 </div>

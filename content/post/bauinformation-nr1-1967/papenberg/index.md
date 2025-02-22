@@ -14,6 +14,7 @@ params:
 #    coordinates:
 #    - 9.9326044
 #    - 51.5416565
+  featured: true
 resources:
 - src: "page065.jxl"
   name: preview

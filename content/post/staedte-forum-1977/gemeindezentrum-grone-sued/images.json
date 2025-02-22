@@ -15,8 +15,8 @@
         }
       },
       {
-        "name": "plan",
-        "postprocess": ["preview", "enhance_ai"],
+        "name": "blueprint",
+        "postprocess": ["white_balance", "preview"],
         "position": {
           "x": 1245,
           "y": 4687

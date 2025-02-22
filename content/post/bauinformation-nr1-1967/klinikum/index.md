@@ -9,11 +9,12 @@ outputs:
   - html
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
-  cover: model-planned.jpg
+  cover: model.jpg
   geojson:
     coordinates:
     - 9.9326044
     - 51.5416565
+  featured: true
 resources:
 - src: "page060.jxl"
   name: preview

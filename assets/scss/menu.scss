@@ -1,6 +1,6 @@
-$button-width: 2em;
-$button-height: 2em;
-$scale-factor: 1.05;
+$button-width: 2em !default;
+$button-height: 2em !default;
+$scale-factor: 1.05 !default;
 
 @use "halftone" as *;
 @use "link" as *;
@@ -75,7 +75,7 @@ header .menu {
 
           &:after {
             width: math.hypot($button-width, $button-width);
-            transform: rotateZ(90deg) translateX(0 - math.hypot($button-width, $button-width) / 2 - math.div($button-height, 5) / 2);
+            transform: rotateZ(90deg) translateX(0 - math.hypot($button-width, $button-width) / 2 - math.div(math.div($button-height, 5), 2));
           }
         }
       }
@@ -115,11 +115,11 @@ header .menu {
         }
 
         &:before {
-          top: $button-height / 5 * 2;
+          top: math.div($button-height, 5) * 2;
         }
 
         &:after {
-          top: $button-height / 5 * 4;
+          top: math.div($button-height, 5) * 4;
 
         }
 

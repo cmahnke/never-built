@@ -9,10 +9,9 @@
           {{- end -}}
       </div>
     </div>
-    {{- with .Params -}}
-      {{- partial "post-meta.html" . -}}
-    {{- end -}}
+
     {{- if not .Params.metaPage -}}
+      {{- partial "post-meta.html" . -}}
       <div class="meta">
         {{- if and (ne .CurrentSection.Path "/post") (ne .CurrentSection.Path .Path) -}}
           <div class="parent-section">
@@ -20,6 +19,7 @@
             <a href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}">{{ .CurrentSection.Title }}</a>
           </div>
         {{- end -}}
+        {{/*
         <div class="date">
           <a href="{{ .RelPermalink }}">
             {{- .Date | time.Format ":date_full" -}}
@@ -27,5 +27,6 @@
         </div>
         {{ partial "meta/tags.html" . }}
       </div>
+    */}}
     {{ end }}
 </div>

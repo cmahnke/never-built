@@ -2,9 +2,9 @@
   {{- with .Params.worldcat -}}
     <a href="{{ . }}" title="{{ i18n "worldcat" }}">{{ i18n "worldcat" }}</a>
   {{- end -}}
-  {{- $pages := where .Site.Pages "Section" .CurrentSection -}}
+  {{- $pages := .CurrentSection.RegularPages -}}
   {{- $pages = where $pages "Params.geojson" "!=" false -}}
   {{- if gt (len $pages) 0 -}}
-    {{ warnf "Add map here %s" .Path.File }}
+    {{ warnf "Add map here %s" .File.Path }}
   {{- end -}}
 <div>

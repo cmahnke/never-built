@@ -1,3 +1,9 @@
-{{ define "content" }}
-    {{ partial "404.html" . }}
+{{ define "title" }}
+  {{ .Site.Title }} ·  404
 {{ end }}
+
+{{ define "content" }}
+  <div class="container error404">
+    {{- partial "404.html" . -}}
+  </div>
+{{- end -}}

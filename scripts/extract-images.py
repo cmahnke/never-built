@@ -61,6 +61,7 @@ def extract(meta, dir):
             continue
         im = Image.open(image_file)
         if "areas" in image_meta:
+            i = 1
             for area in image_meta["areas"]:
                 name = os.path.join(dir, f"{area["name"]}.jpg")
                 left = area['position']['x']
@@ -75,7 +76,7 @@ def extract(meta, dir):
                 if "postprocess" in area:
                     for p in area["postprocess"]:
                         try:
-                            cprint(f"trying to run {p} on area of {image_file}", "yellow")
+                            cprint(f"Trying to run {p} on area of {image_file}, area {i}", "yellow")
                             if isinstance(p, str):
                                 a = globals()[p](a)
                             elif isinstance(p, dict):
@@ -85,7 +86,7 @@ def extract(meta, dir):
                                 a = a.convert('RGB')
                         except Exception as e:
                             st = traceback.format_exc()
-                            cprint(f"failed to call preprocessor {p}: {str(e)}\n{st}", "red")
+                            cprint(f"Failed to call preprocessor {p}: {str(e)}\n{st}", "red")
                             if debug:
                                 sys.exit(1)
                             else:
@@ -96,6 +97,7 @@ def extract(meta, dir):
                     a.save(f)
                     cprint(f"Saved {name}", "green")
                     gitignore(dir, name)
+                i += 1
 
 def smoothen(im, params=None):
     if im.mode == "RGBA":

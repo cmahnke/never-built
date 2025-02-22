@@ -1,9 +1,14 @@
-<div class="post-metadata">
-
+<div class="meta">
   {{- with .Params.geojson -}}
     <div class="map-container">
 
     </div>
   {{- end -}}
+  <div class="date">
+    {{- .Date | time.Format ":date_full" -}}
+  </div>
+
+  <div class="tags-heading">{{ i18n "Tags" }}</div>
+  {{ partial "meta/tags.html" . }}
 
 </div>

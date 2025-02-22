@@ -3,7 +3,7 @@
     "image": "page023.jxl",
     "areas": [
       {
-        "name": "plan",
+        "name": "blueprint",
         "postprocess": ["white_balance", "preview"],
         "position": {
           "x": 1522,

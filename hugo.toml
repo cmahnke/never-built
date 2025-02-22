@@ -142,3 +142,32 @@ enableRobotsTXT = true
 
 [sitemap]
   changeFreq = 'weekly'
+
+[module]
+  [[module.mounts]]
+    source = "assets/scss"
+    target = "assets/scss"
+
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+
+  [[module.mounts]]
+    source = "assets/js"
+    target = "assets/js"
+
+  [[module.mounts]]
+    source = "assets/css"
+    target = "assets/css"
+
+#    [[module.mounts]]
+#        source = "node_modules/photoswipe/dist"
+#        target = "assets/css/photoswipe"
+
+  [[module.mounts]]
+    source = "node_modules/@glidejs/glide/dist/css/glide.core.css"
+    target = "assets/scss/glide.scss"
+
+  [[module.mounts]]
+    source = "static/images"
+    target = "static/images"
