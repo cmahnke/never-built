@@ -21,3 +21,6 @@ other = "Beiträge in diesem"
 
 [section-book]
 other = "Buch"
+
+[sectionParent]
+other = "Dieser Beitrag ist aus"

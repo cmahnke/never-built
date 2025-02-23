@@ -1,10 +1,11 @@
 $button-width: 2em !default;
 $button-height: 2em !default;
 $scale-factor: 1.05 !default;
+$icon-count: 5 !default;
 
 @use "halftone" as *;
 @use "link" as *;
-@use 'sass:math';
+@use "sass:math";
 
 /* See https://css-tricks.com/snippets/sass/strip-unit-function/
 @function strip-unit($number) {
@@ -14,43 +15,27 @@ $scale-factor: 1.05 !default;
 
   @return $number;
 }
+
+@media (min-width: 768px)
+
 */
 
 header .menu {
   position: fixed;
-  height: 80vh;
+  height: fit-content;
   left: 0;
-  top: 10vh;
-  /* background: radial-gradient(circle at center, black 0.25rem, transparent 0); */
-  z-index: 10;
-  max-width: 30vw;
+  top: 0;
   font-family: $heading-font;
   font-weight: 600;
 
-
-  /*
-  @include halftone ($radius: 0.15rem, $cirle-color: white, $background-color: black);
-  */
-
-  /*
-  background-image: radial-gradient(
-      circle at center,
-      black 0.4rem,
-      transparent 0
-    ), radial-gradient(circle at center, black 0.4rem, transparent 0);
-  background-size: 1.3rem 1.3rem;
-  background-position: 0 0, 0.65rem 0.65rem;
-  */
-
-  /*
-    box-shadow: 1px 1px 2px black;
-    transform: translateX(-60%);
-  */
-
+  &:has(nav #menu-toggle:checked ) {
+    z-index: 10;
+  }
 
   nav {
     height: 100%;
     font-size: 1.6em;
+    position: fixed;
 
     #menu-toggle {
       display: none;
@@ -85,11 +70,16 @@ header .menu {
       font-size: unset;
       padding: 1em;
       position: fixed;
-      top: 10vh;
+      top: 0;
       z-index: 10;
       width: $button-width;
       height: $button-height;
-      @include scale-link($factor: $scale-factor);
+      background: black;
+
+      @media (min-width: 768px) {
+        background: unset;
+        @include scale-link($factor: $scale-factor);
+      }
 
       /* Add this: https://codepen.io/singhimalaya/pen/mNOJPM */
 
@@ -98,7 +88,7 @@ header .menu {
         display: inline-block;
         height: math.div($button-height, 5);
         width: $button-width;
-
+        top: calc(0% - math.div($button-height, 5));
         background-color: #fff;
         position: relative;
 
@@ -122,9 +112,7 @@ header .menu {
           top: math.div($button-height, 5) * 4;
 
         }
-
       }
-
     }
 
     input {
@@ -133,10 +121,8 @@ header .menu {
 
     ul {
       transition: transform 300ms;
-      transform: translateX(-5em);
+      transform: translateX(-100vw);
       padding-top: calc(1em * 2 + $button-height);
-      padding-bottom: 1em;
-
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -144,17 +130,25 @@ header .menu {
       padding-inline-start: 0;
       margin-block-start: 0;
       background-color: #000;
+      width: 100vw;
+
+      @media (min-width: 768px) {
+        width: unset;
+        transform: translateX(-5em);
+      }
 
       .navigation-item {
         display: flex;
         flex-direction: row;
         overflow: hidden;
         align-items: center;
+        margin-bottom: 1em;
+        overflow: visible;
       }
 
       li {
         .navigation-link {
-          min-width: 8em;
+          min-width: calc(100% - 2em);
           display: flex;
           justify-content: space-between;
           margin-left: 1em;
@@ -163,6 +157,10 @@ header .menu {
 
           &:hover .link-icon {
             transform: scale($scale-factor);
+          }
+
+          @media (min-width: 768px) {
+            min-width: 8em;
           }
         }
 
@@ -190,10 +188,8 @@ header .menu {
         &.navto-books {
           .link-icon:after {
             content: url($book-light);
-            /*height: calc($button-height * 0.95);*/
           }
         }
-
 
         &.navto-map {
           .link-icon:after {
@@ -212,12 +208,8 @@ header .menu {
             content: url($info-light);
           }
         }
-
       }
-
     }
-
-
   }
 
   a,

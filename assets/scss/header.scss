@@ -5,11 +5,18 @@
 .header {
   width: $content-width;
   align-self: flex-end;
-  margin-top: 10vh;
+  height: calc($button-height + 2em);
+
+  @media (min-width: 768px) {
+    /*margin-top: 10vh;*/
+  }
 
   .header-background {
     background-color: color.adjust(black, $lightness: 90%);
     max-width: fit-content;
+    display: flex;
+    min-height: calc($button-height + 2em);
+
 
     a {
       text-decoration: none;
@@ -20,13 +27,19 @@
     }
 
     .header-title {
-      font-size: 5.5em;
+      font-size: 5vh;
       font-weight: 800;
       color: black;
       margin-top: unset;
       background-color: #fff;
       margin-bottom: 0;
-      mix-blend-mode: screen;
+      overflow-wrap: break-word;
+      max-width: 100vw;
+
+      @media (min-width: 768px) {
+        font-size: 5.5em;
+        mix-blend-mode: screen;
+      }
     }
   }
 }

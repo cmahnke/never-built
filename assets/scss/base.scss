@@ -53,6 +53,7 @@ $book-light: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 @import "featured";
 @import "list";
 @import "link";
+@import "section";
 @import "404";
 
 /*
@@ -118,9 +119,24 @@ body {
 .main {
   width: $content-width;
   align-self: flex-end;
+  margin-top: calc($button-height + 2em);
   /*
   min-height: calc(100vh - $header-height - $footer-height);
   */
+
+  .article-single .post .content {
+    .post-title {
+
+    }
+
+    .post-body {
+
+      h1 {
+        font-size: 1.6em;
+      }
+    }
+
+  }
 }
 
 .animated_underline {

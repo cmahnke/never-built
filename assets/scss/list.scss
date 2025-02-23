@@ -7,11 +7,31 @@
     }
   }
 
+  .post,
+  .book {
+    .list-item-head {
+      display: flex;
+    }
+  }
+
+  .post {
+    .list-item {
+      display: flex;
+
+      .list-item-head {
+        flex-direction: column;
+      }
+
+      .meta {
+        width: fit-content;
+      }
+    }
+  }
+
   .book {
     padding: 1em 0;
 
     .list-item-head {
-      display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
@@ -39,6 +59,15 @@
 
   &:has(.post .book) {
     margin-right: 3em;
+  }
+
+  a,
+  a:active,
+  a:focus,
+  a:hover,
+  a:visited {
+    color: var(--text-color);
+    text-decoration: none;
   }
 
 }
