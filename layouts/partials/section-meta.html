@@ -3,8 +3,18 @@
     <a href="{{ . }}" title="{{ i18n "worldcat" }}">{{ i18n "worldcat" }}</a>
   {{- end -}}
   {{- $pages := .CurrentSection.RegularPages -}}
-  {{- $pages = where $pages "Params.geojson" "!=" false -}}
+  {{- $pages = where $pages "Params.geojson" "ne" nil -}}
   {{- if gt (len $pages) 0 -}}
-    {{ warnf "Add map here %s" .File.Path }}
+    <div class="map">
+      {{- $geojson := partial "geojson/featureCollection.geojson" $pages -}}
+      {{/*
+      <script type="text/javascript">
+        var geojson = {{ $features | safeJS }}
+      </script>
+      */}}
+      {{- $marker := false -}}
+      {{- $cluster := false -}}
+      {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "cluster" $cluster "marker" $marker) -}}
+    </div>
   {{- end -}}
 <div>

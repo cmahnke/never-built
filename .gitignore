@@ -70,5 +70,6 @@ models
 weights
 models-*
 assets/map-styles
+static/map-styles
 assets/js/bbox.json
 assets/jsconfig.json

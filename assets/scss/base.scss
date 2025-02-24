@@ -12,14 +12,20 @@ $text-font: 'Roboto Mono Variable', sans-serif;
 $text-color: rgba(255,255,255,.8);
 $color-light: #fff;
 
-$header-height: 4em;
-$footer-height: 4em;
-$button-width: 2em;
-$button-height: 2em;
+$header-height: 4rem;
+/*
+$footer-height: 4rem;
+*/
+$button-width: 3rem;
+$button-height: 3rem;
+$button-padding: 1.6rem;
 $scale-factor: 1.05;
+$accent-color: color.adjust(black, $lightness: 90%);
 
 $menu-width: 10vw;
-$content-width: calc(100vw - $menu-width - 5em);
+/*
+$content-width: calc(100vw - ($button-padding * 2 + $button-width) - 4rem);
+*/
 
 @import "fonts/league-spartan";
 @import "fonts/newsreader";
@@ -55,6 +61,7 @@ $book-light: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 @import "link";
 @import "section";
 @import "404";
+@import "pagination";
 
 /*
 $clipmask: '/images/svgs/glasses_background-clippath.svg#clipPath';
@@ -74,9 +81,19 @@ $clipmask: '/images/svgs/glasses_background-clippath.svg#clipPath';
 }
 
 :root {
-  --text-font: $text-font;
-  --heading-font: $heading-font;
+  --text-font: #{$text-font};
+  --heading-font: #{$heading-font};
   --menu-text-color: white;
+
+  @media (min-width: 768px) {
+    --main-margin: 2rem;
+    --content-width: calc(100vw - (#{$button-padding} * 2 + #{$button-width}) - var(--main-margin));
+  }
+
+  @media (min-width: 1200px) {
+    --content-width: calc(100vw - (#{$button-padding} * 2 + #{$button-width}) - var(--main-margin));
+    --main-margin: 4rem;
+  }
 }
 
 html {
@@ -85,7 +102,6 @@ html {
 
 html,body {
   margin: 0;
-  height: 100%;
 }
 
 h1, h2, h3 {
@@ -117,25 +133,52 @@ body {
 }
 
 .main {
-  width: $content-width;
-  align-self: flex-end;
-  margin-top: calc($button-height + 2em);
-  /*
-  min-height: calc(100vh - $header-height - $footer-height);
-  */
+  width: 95%;
+  margin: 0 auto;
+  margin-top: calc(2rem - $button-height + $button-padding * 2);
+  font-size: 1.6rem;
 
-  .article-single .post .content {
-    .post-title {
+  @media (min-width: 768px) {
+    font-size: 1rem;
+    width: var(--content-width);
+    align-self: flex-end;
+    margin: unset
+  }
 
+  .article-single {
+    overflow: hidden;
+
+    @media (min-width: 768px) {
+      overflow: unset;
     }
 
-    .post-body {
+    .post .content {
+      .post-title {
 
-      h1 {
-        font-size: 1.6em;
       }
-    }
 
+      .post-body {
+
+        h1 {
+          font-size: 1.6em;
+          word-break: break-all;
+        }
+
+        a {
+          @include invert-link($color: $accent-color);
+          color: black;
+          text-decoration-style: dotted;
+          text-decoration-line: underline;
+          text-decoration-thickness: 1px;
+          text-decoration-skip-ink: auto;
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+
+    }
   }
 }
 

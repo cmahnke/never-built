@@ -1,7 +1,10 @@
 <div class="meta">
-  {{- with .Params.geojson -}}
-    <div class="map-container">
-
+  {{- if .Params.geojson -}}
+    <div class="map">
+      {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
+      {{- $marker := false -}}
+      {{- $cluster := false -}}
+      {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "cluster" $cluster "marker" $marker) -}}
     </div>
   {{- end -}}
   <div class="date">

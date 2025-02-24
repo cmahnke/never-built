@@ -5,13 +5,15 @@
   padding-top: .8em;
   margin-top: 1.4em;
   width: 100%;
-  overflow: hidden;
   border-top: 5px solid black;
   font-size: x-large;
   font-weight: 600;
-  min-height: 3.5em;
-  width: $content-width;
   align-self: flex-end;
+
+  @media (min-width: 768px) {
+    width: var(--content-width);
+    overflow: hidden;
+  }
 
   .menu-container.menu-footer {
     display: flex;
@@ -37,42 +39,52 @@
       animation: moving-gradient alternate 5s infinite;
       width: 100%;
 
+
       .menu-footer-items {
         padding-inline-start: unset;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        width: 90%;
         margin-block-start: unset;
         margin-block-end: unset;
-        height: 2rem;
         align-items: center;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        margin: auto;
 
+        @media (min-width: 768px) {
+          display: flex;
+          justify-content: space-between;
+          flex-direction: row;
+          column-count: unset;
+          height: 2rem;
+          width: 96%;
+        }
 
-        @media (max-width: 20em) {
-          font-size: 1rem;
+        .menu-item {
+          margin-bottom: .4rem;
+
+          @media (min-width: 768px) {
+            margin-bottom: unset;
+          }
         }
 
         a {
           color: black;
           @include underline-link();
         }
-
       }
-
     }
   }
 
   .footer-container {
     $text-color: black;
     padding-top: .8em;
-    background-image: url('/images/svgs/footer.svg');
-    background-size: cover;
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
     align-items: center;
     font-size: small;
     font-weight: 200;
+    margin-bottom: .2rem;
 
     a {
       text-decoration: none;
@@ -99,9 +111,6 @@
       margin-block-start: unset;
       margin-block-end: unset;
 
-      @media (max-width: 30em) {
-        font-size: .8em;
-      }
     }
 
     .privacy {

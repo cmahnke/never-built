@@ -1,6 +1,19 @@
-{{/* TODO: Add the consent wrapper */}}
 {{- $context := .context -}}
 {{- $geojson := .geojson -}}
+{{- $source := .source -}}
+{{- if eq $source nil -}}
+  {{- $source = false -}}
+{{- end -}}
+{{- if and (not $source) site.Params.map site.Params.map.source -}}
+  {{- $source = site.Params.map.source -}}
+{{- end -}}
+{{- $style := .style -}}
+{{- if eq $style nil -}}
+  {{- $style = false -}}
+{{- end -}}
+{{- if and (not $style) site.Params.map site.Params.map.style -}}
+  {{- $style = site.Params.map.style -}}
+{{- end -}}
 {{- if eq $geojson nil -}}
   {{/* Check if we only got one param, this will be the geojson referece */}}
   {{- $geojson := . -}}
@@ -14,6 +27,14 @@
 {{- if eq $marker nil -}}
   {{- $marker = false -}}
 {{- end -}}
+{{- if and (not $marker) site.Params.map site.Params.map.marker -}}
+  {{- $marker = site.Params.map.marker -}}
+{{- end -}}
+
+{{ warnf "==> %#v" site.Params.map }}
+{{ warnf "==> %s %s %s" $source $style $marker  }}
+
+
 {{- $id := md5 $geojson -}}
 {{- $var := printf "_%s" $id -}}
 <div class="map-wrapper">
@@ -24,6 +45,6 @@
   </div>
 </div>
 <script type="text/javascript">
-  var {{ $var | safeJS }} = window.initMap('{{ $id | safeJS }}', '{{ $geojson | safeJS }}', 'osm', {{ $cluster | safeJS }} {{ if $marker }}, {{ $marker | safeJS}}  {{ end }});
+  var {{ $var | safeJS }} = window.projektemacherMap('{{ $id | safeJS }}', '{{ $geojson | safeJS }}', '{{  $source | safeJS}}', '{{ $style | safeJS }}', {{ $cluster | safeJS }} {{ if $marker }}, {{ $marker | safeJS}}  {{ end }});
   {{ $var | safeJS }}.updateSize();
 </script>

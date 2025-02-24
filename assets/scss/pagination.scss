@@ -1,0 +1,37 @@
+.pagination {
+  min-width: 50vw;
+  width: 70%;
+  margin-top: 2rem;
+  margin: 2rem auto 0;
+
+  .pagination-links {
+    display: grid;
+    /*height: 2.4rem;*/
+
+    .pagination-next,
+    .pagination-prev {
+      display: inline-block;
+      width: 7rem;
+      text-align: center;
+      vertical-align: middle;
+      border: 0.3ex solid black;
+      padding: .4rem 1rem;
+      color: black;
+      text-decoration: none;
+      transition: all 150ms;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    .pagination-next {
+      justify-self: flex-end;
+    }
+
+    .pagination-prev {
+      justify-self: flex-start;
+    }
+  }
+
+}

@@ -12,8 +12,8 @@ params:
   cover: blueprint.jpg
   geojson:
     coordinates:
-    - 9.9326044
-    - 51.5416565
+    - 9.9323111
+    - 51.529938
 resources:
 - src: "page082.jxl"
   name: preview

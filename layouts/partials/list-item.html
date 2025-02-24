@@ -1,6 +1,7 @@
 {{- $defaultWidth := 240 -}}
 {{- $defaultHeight := 320 -}}
 {{- $bookSectionPreview := false -}}
+{{- $fit := printf "%dx%d" $defaultWidth $defaultHeight -}}
 {{- if and (eq .Kind "section") (isset .Params "type") (eq (.Param "type") "book") -}}
   {{- $bookSectionPreview = true -}}
 {{- end -}}
@@ -11,7 +12,6 @@
     <h2 class="headline" itemprop="headline"><a href="{{ .RelPermalink }}">{{ $title }}{{ if .Draft }} (Draft){{ end }}</a></h2>
     {{- if $bookSectionPreview -}}
       <div class="cover-preview">
-        {{- $fit := printf "%dx%d" $defaultWidth $defaultHeight -}}
         {{- $previewImg := partial "preview/preview-internal.html" (dict "context" . "fit" $fit "postProcess" true) -}}
 
         {{- if $previewImg -}}

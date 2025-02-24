@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 STYLE_URL=https://github.com/openmaptiles/maptiler-toner-gl-style/archive/refs/tags/v1.0.tar.gz
-STYLE_DIR=./assets/map-styles
+STYLE_DIR=./static/map-styles
 TILES_DIR=./static/map
 
 if ! test -d "$TILES_DIR"; then

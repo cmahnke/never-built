@@ -1,5 +1,6 @@
-$button-width: 2em !default;
-$button-height: 2em !default;
+$button-width: 2rem !default;
+$button-height: 2rem !default;
+$button-padding: 1.6rem !default;
 $scale-factor: 1.05 !default;
 $icon-count: 5 !default;
 
@@ -22,7 +23,7 @@ $icon-count: 5 !default;
 
 header .menu {
   position: fixed;
-  height: fit-content;
+  /*height: fit-content;*/
   left: 0;
   top: 0;
   font-family: $heading-font;
@@ -34,8 +35,14 @@ header .menu {
 
   nav {
     height: 100%;
-    font-size: 1.6em;
+    width: 0;
+    font-size: 1.6rem;
     position: fixed;
+
+    @media (min-width: 768px) {
+      width: calc($button-padding * 2 + $button-width);
+      /*width: unset;*/
+    }
 
     #menu-toggle {
       display: none;
@@ -60,7 +67,7 @@ header .menu {
 
           &:after {
             width: math.hypot($button-width, $button-width);
-            transform: rotateZ(90deg) translateX(0 - math.hypot($button-width, $button-width) / 2 - math.div(math.div($button-height, 5), 2));
+            transform: rotateZ(90deg) translateX(0 - math.div(math.hypot($button-width, $button-width), 2) - math.div(math.div($button-height, 5), 2));
           }
         }
       }
@@ -68,7 +75,7 @@ header .menu {
 
     label.menu-button {
       font-size: unset;
-      padding: 1em;
+      padding: $button-padding;
       position: fixed;
       top: 0;
       z-index: 10;
@@ -80,8 +87,6 @@ header .menu {
         background: unset;
         @include scale-link($factor: $scale-factor);
       }
-
-      /* Add this: https://codepen.io/singhimalaya/pen/mNOJPM */
 
       .menu-icon {
         transition: all 300ms;
@@ -122,19 +127,26 @@ header .menu {
     ul {
       transition: transform 300ms;
       transform: translateX(-100vw);
-      padding-top: calc(1em * 2 + $button-height);
-      display: flex;
+      padding-top: calc($button-padding * 2 + $button-height);
+      height: 100%;
+      /* display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      height: calc(100% - (1em * 2 + $button-height));
+      justify-content: space-between; */
+      height: calc(100% - (1rem * 2 + $button-height));
       padding-inline-start: 0;
       margin-block-start: 0;
-      background-color: #000;
+      background-color: black;
       width: 100vw;
+      font-size: $button-height;
 
       @media (min-width: 768px) {
-        width: unset;
-        transform: translateX(-5em);
+        width: fit-content;
+        transform: translateX(-8.2rem);
+        font-size: $button-padding;
+        max-height: max-content;
+        padding-bottom: $button-padding;
+        margin-block-end: 0;
+        height: unset;
       }
 
       .navigation-item {
@@ -142,16 +154,16 @@ header .menu {
         flex-direction: row;
         overflow: hidden;
         align-items: center;
-        margin-bottom: 1em;
+        margin-bottom: $button-padding;
         overflow: visible;
       }
 
       li {
         .navigation-link {
-          min-width: calc(100% - 2em);
+          min-width: calc(100% - 2rem);
           display: flex;
           justify-content: space-between;
-          margin-left: 1em;
+          margin-left: $button-padding;
           align-items: center;
           cursor: pointer;
 
@@ -165,7 +177,7 @@ header .menu {
         }
 
         .link-icon {
-          margin-right: 1em;
+          margin-right: $button-padding;
           height: $button-height;
           display: inline-block;
           @include scale-link($factor: $scale-factor);

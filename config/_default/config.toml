@@ -12,19 +12,24 @@
   headerimage = false
 
 [params.author]
-    email = 'mail@christianmahnke.de'
-    name = 'Christian Mahnke'
+  email = 'mail@christianmahnke.de'
+  name = 'Christian Mahnke'
+
+[params.map]
+  source = "/map/tiles/{z}/{x}/{y}.pbf"
+  style = "/map-styles/style.json"
+  marker = "{src: '/images/svgs/marker.svg', scale: 0.1, anchorXUnits: 'fraction', anchorYUnits: 'fraction', anchor: [0.5, 1]}"
 
 [params.preview]
-    outputPrefix = "ogPreview"
-    outputSuffix = ".png"
-    format =  "svg"
-    image = "front.png"
-    source = "post"
-    [params.preview.size]
-        height = 630
-        width = 1200
-    [params.preview.svg]
-        template = "./Source Files/Other/preview-template.svg"
-        scale = "width"
-        removeMissing = true
+  outputPrefix = "ogPreview"
+  outputSuffix = ".png"
+  format =  "svg"
+  image = "front.png"
+  source = "post"
+  [params.preview.size]
+    height = 630
+    width = 1200
+  [params.preview.svg]
+    template = "./Source Files/Other/preview-template.svg"
+    scale = "width"
+    removeMissing = true

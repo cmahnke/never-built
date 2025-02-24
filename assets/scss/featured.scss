@@ -9,6 +9,7 @@ $scale-factor: 1.05 !default;
   min-height: 50%;
   display: flex;
   position: relative;
+  margin-bottom: 2.8rem;
 
   .featured-entry {
     max-width: 100%;
@@ -16,7 +17,6 @@ $scale-factor: 1.05 !default;
 
     .featured-entry-image {
       max-width: 99%;
-      /*position: absolute; */
     }
   }
 
@@ -29,30 +29,34 @@ $scale-factor: 1.05 !default;
     text-transform: uppercase;
     padding: 9px 12px;
     background-color: white;
-    opacity: 1;
+
     cursor: pointer;
-    transition: opacity all 300ms ease-in-out;
-    transform: translateY(-50%);
+    transition: all 150ms ease-in-out;
+    /*transform: translateY(-50%);*/
     line-height: 1;
     padding: 1em;
     border: 0.3ex solid black;
+
 
     &:focus {
       outline: none;
     }
 
     &:hover {
+      /*
       border: 0.4ex solid black;
+      */
+      transform: scale(1.05);
     }
   }
 
   .glide__arrow--left {
-    left: 2em;
+    left: 1rem;
     content: '';
   }
 
   .glide__arrow--right {
-    right: 2em;
+    right: 1rem;
     content: '';
   }
 
@@ -63,7 +67,7 @@ $scale-factor: 1.05 !default;
   .glide__bullets {
     position: absolute;
     z-index: 2;
-    bottom: 2em;
+    bottom: -2em;
     left: 50%;
     display: inline-flex;
     list-style: none;

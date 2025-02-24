@@ -12,8 +12,8 @@ params:
   cover: model-planned.jpg
   geojson:
     coordinates:
-    - 9.9326044
-    - 51.5416565
+    - 9.9276414
+    - 51.533846
 resources:
 - src: "page023.jxl"
   name: preview

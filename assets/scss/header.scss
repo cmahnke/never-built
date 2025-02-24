@@ -2,28 +2,57 @@
 @use "link" as *;
 @use 'sass:color';
 
+$accent-color: color.adjust(black, $lightness: 90%) !default;
+
 .header {
-  width: $content-width;
+  width: 100vw;
   align-self: flex-end;
-  height: calc($button-height + 2em);
+  height: calc($button-height + 2 * $button-padding);
+  font-size: 1em;
+  z-index: 10;
 
   @media (min-width: 768px) {
-    /*margin-top: 10vh;*/
+    height: unset;
+    width: var(--content-width);
   }
 
   .header-background {
-    background-color: color.adjust(black, $lightness: 90%);
     max-width: fit-content;
     display: flex;
-    min-height: calc($button-height + 2em);
+    position: fixed;
+    left: calc($button-width + 2 * $button-padding);
+    right: 0;
+    background-color: white;
+    /*
+    mix-blend-mode: exclusion;
+    */
+    z-index: 11;
+    height: calc($button-height + 2 * $button-padding);
+    padding-left: .8rem;
+    align-items: center;
 
+    @media (min-width: 768px) {
+      position: unset;
+      left: unset;
+      right: unset;
+      z-index: unset;
+      /*
+      background-color: $accent-color;
+      */
+      height: unset;
+      padding-top: unset;
+      padding-left: unset;
+    }
 
     a {
       text-decoration: none;
       cursor: default;
       width: max-content;
-      @include halftone($radius: 0.19rem, $cirle-color: black, $background-color: transparent, $background-size: 0.6rem);
       display: inline-block;
+
+      @media (min-width: 768px) {
+        @include halftone($radius: 0.1rem, $cirle-color: black, $background-color: transparent, $background-size: 0.35rem);
+      }
     }
 
     .header-title {
@@ -35,10 +64,23 @@
       margin-bottom: 0;
       overflow-wrap: break-word;
       max-width: 100vw;
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background: currentColor;
+        mix-blend-mode: difference;
+      }
 
       @media (min-width: 768px) {
         font-size: 5.5em;
         mix-blend-mode: screen;
+
       }
     }
   }

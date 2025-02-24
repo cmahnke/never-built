@@ -1,3 +1,7 @@
+{{- $defaultWidth := 240 -}}
+{{- $defaultHeight := 320 -}}
+{{- $fit := printf "%dx%d" $defaultWidth $defaultHeight -}}
+
 {{- $previewWidth := 150 -}}
 
 {{- $baseImageName := "front" -}}
@@ -18,9 +22,10 @@
     <div class="popup-content">
         {{ $content | markdownify }}
     </div>
+    {{- $image := partial "preview/preview-internal.html" (dict "context" . "fit" $fit "postProcess" false) -}}
     {{- $image := .Resources.Get (printf "%s-anaglyph.jpg" $baseImageName) -}}
-    {{- $image = $image.Process (printf "resize %dx" $previewWidth) -}}
     {{- if (ne $image nil) -}}
+      {{- $image = $image.Process (printf "resize %dx" $previewWidth) -}}
       <img alt="{{ .Title }} {{ i18n "preview" }}" src="{{- $image.RelPermalink -}}" class="preview-img">
     {{- end -}}
     <div class="link">

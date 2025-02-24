@@ -9,7 +9,7 @@
       {{- .Content -}}
     </div>
     <div class="list">
-      <div class="post">
+      <div class="books">
         {{- $pages := .Site.Pages -}}
         {{- $pages = where $pages "Params.metaPage" "!=" true -}}
         {{- $pages = where $pages "Kind" "section" -}}
