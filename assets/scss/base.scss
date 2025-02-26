@@ -12,9 +12,10 @@ $text-font: 'Roboto Mono Variable', sans-serif;
 $text-color: rgba(255,255,255,.8);
 $color-light: #fff;
 $color-dark: #000;
-$post-background: #eee;
+$post-background: #e0e0e0;
+$meta-background: #eee;
 $icon-fill: $color-dark;
-
+$animation-duration: 750ms;
 $header-height: 4rem;
 /*
 $footer-height: 4rem;
@@ -26,9 +27,6 @@ $scale-factor: 1.05;
 $accent-color: color.adjust(black, $lightness: 90%);
 
 $menu-width: 10vw;
-/*
-$content-width: calc(100vw - ($button-padding * 2 + $button-width) - 4rem);
-*/
 
 @import "fonts/league-spartan";
 @import "fonts/newsreader";
@@ -36,7 +34,6 @@ $content-width: calc(100vw - ($button-padding * 2 + $button-width) - 4rem);
 @import "fonts/noto-serif-display";
 
 @import "normalize";
-/* @import "icons"; */
 @import "mirador";
 @import "ol-iiif";
 @import "share";
@@ -47,13 +44,6 @@ $secondary-icon-color: #69c;
 $frame-bg-color: var(--base01);
 $color-body-text: var(white);
 $fullscreen-color: var(--base07);
-
-
-/* Book - FA name: book */
-/*
-$book-dark: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='#{encodecolor($color-dark)}' d='M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z'/%3E%3C/svg%3E";
-$book-light: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='#{encodecolor($color-light)}' d='M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16zm16 48l192 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-192 0c-8.8 0-16-7.2-16-16s7.2-16 16-16z'/%3E%3C/svg%3E";
-*/
 
 /* Site includes */
 @import "never-build-icons";
@@ -69,16 +59,6 @@ $book-light: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewB
 @import "pagination";
 @import "never-build-map";
 @import "page";
-
-/*
-$clipmask: '/images/svgs/glasses_background-clippath.svg#clipPath';
-@import "header";
-@import "nav";
-@import "page";
-
-
-@import "tagcloud";
-*/
 
 
 :where(:focus-visible) {
@@ -138,6 +118,7 @@ body {
       max-width: unset;
     }
   }
+
 }
 
 .main {
@@ -150,7 +131,8 @@ body {
     font-size: 1rem;
     width: var(--content-width);
     align-self: flex-end;
-    margin: unset
+    margin: unset;
+    margin-bottom: auto;
   }
 
   .article-single {

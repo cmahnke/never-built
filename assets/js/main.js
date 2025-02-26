@@ -1,4 +1,4 @@
-import {setupAnimatedLinks} from './animated-link';
+import {setupAnimatedLinks, setupAnimatedMenu} from './animated-link';
 import Glide from '@glidejs/glide'
 import { projektemacherMap } from './maps/projektemacher-map';
 
@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   });
   setupAnimatedLinks(links);
+
+
+  const menuLinks = Array.from(document.querySelectorAll('.header .menu .navigation-link'))
+  setupAnimatedMenu(menuLinks);
+
   if (document.querySelector('body.home')) {
     new Glide('.featured',{
       gap: 20,

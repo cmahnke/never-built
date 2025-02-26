@@ -12,7 +12,8 @@
   {{- else -}}
     {{- $headerImage = $defaultHeaderImage -}}
   {{- end -}}
-  <div class="header-background">
+  <div class="header-background"></div>
+  <div class="header-container">
     <a href="/">
       {{- if ne $headerImage "" -}}
         <img class="header-logo" alt="{{ .Site.Title }}" src="{{ $headerImage }}">

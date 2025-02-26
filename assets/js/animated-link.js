@@ -51,11 +51,12 @@ function cloneElem(elem) {
   return clone;
 }
 
-function delayHandler(e, timeout) {
+function bodyLinkHandler(e, timeout) {
   e.preventDefault();
   if (timeout === undefined) {
     timeout = defaultTransitionMs;
   }
+  const anchor = e.target.closest('a');
   var additionalClasses;
   if (e.target.dataset.animationClasses) {
     additionalClasses = e.target.dataset.animationClasses;
@@ -64,7 +65,21 @@ function delayHandler(e, timeout) {
   addOverlay(clone, overlayClassName, additionalClasses);
   setTimeout(function(){ clone.classList.add(animationClassName) }, 2);
   const callback = () => {
-    window.location = e.target.getAttribute('href')
+    window.location = anchor.getAttribute('href')
+  }
+  setTimeout(callback, timeout);
+}
+
+function menuLinkHandler(e, timeout) {
+  e.preventDefault();
+  if (timeout === undefined) {
+    timeout = defaultTransitionMs;
+  }
+  const anchor = e.target.closest('a');
+  document.querySelector('.header .menu').classList.add('animate');
+
+  const callback = () => {
+    window.location = anchor.getAttribute('href')
   }
   setTimeout(callback, timeout);
 }
@@ -76,8 +91,19 @@ export function setupAnimatedLinks(links) {
       addPrefetch(link.getAttribute('href'));
     }
     link.addEventListener("click", (event) => {
-      delayHandler(event);
+      bodyLinkHandler(event);
     });
   });
+}
 
+export function setupAnimatedMenu(links) {
+  console.log(links);
+  links.forEach((link) => {
+    if (link.hasAttribute('href')) {
+      addPrefetch(link.getAttribute('href'));
+    }
+    link.addEventListener("click", (event) => {
+      menuLinkHandler(event);
+    });
+  });
 }

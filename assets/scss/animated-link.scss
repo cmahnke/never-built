@@ -1,5 +1,5 @@
 $fade-to: #000;
-$animation-duration: 800ms;
+$animation-duration: 750ms !default;
 
 @mixin background-opacity($color, $opacity: 0) {
     background: rgba($color, $opacity);
@@ -15,10 +15,12 @@ $animation-duration: 800ms;
   right: 0;
   bottom: 0;
   z-index: 1000;
+  /* See https://chriscoyier.net/2023/05/12/add-opacity-to-an-existing-color/ */
   background: color-mix(in srgb, var(--fade-to) 0%, transparent 100%);
   transition-delay: calc(($animation-duration / 3) * 2);
   transition-duration: calc($animation-duration / 3);
   transition-property: background;
+  transition-timing-function: ease-in;
 
   &.light-gray,
   &.post {
@@ -45,7 +47,9 @@ $animation-duration: 800ms;
       width: 150% !important;
       height: 150% !important;
       letter-spacing: -10rem !important;
-      transition: all $animation-duration ease-in !important;
+      transition: all $animation-duration ease-in,
+        width $animation-duration ease-out,
+        height $animation-duration ease-out, !important;
       color: var(--fade-to) !important;
     }
   }

@@ -3,6 +3,7 @@ $button-height: 2rem !default;
 $button-padding: 1.6rem !default;
 $scale-factor: 1.05 !default;
 $icon-count: 5 !default;
+$animation-duration: 750ms !default;
 
 @use "halftone" as *;
 @use "link" as *;
@@ -28,14 +29,31 @@ header .menu {
   top: 0;
   font-family: $heading-font;
   font-weight: 600;
+  transition: all $animation-duration;
+
+  &:before {
+    position: absolute;
+    /*z-index: 10;*/
+    content: '';
+    height: 100vh;
+    width: 1vw;
+    left: -1vw;
+    background: black;
+    display: block;
+    transition: all $animation-duration;
+  }
 
   &:has(nav #menu-toggle:checked ) {
-    z-index: 10;
+    z-index: 8;
   }
 
   &.animate {
     width: 120vw;
     transform: translateX(100%);
+
+    &:before {
+      transform: scaleX(1000);
+    }
 
     ul {
       background: black;
@@ -88,7 +106,7 @@ header .menu {
       padding: $button-padding;
       position: fixed;
       top: 0;
-      z-index: 10;
+      z-index: 9;
       width: $button-width;
       height: $button-height;
       background: black;

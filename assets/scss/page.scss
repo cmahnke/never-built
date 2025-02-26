@@ -10,13 +10,25 @@ $duration: 500ms;
   }
 }
 
-body.section-post {
-  --page-background: #{$post-background};
-  background: var(--page-background);
+body {
+  &.section-post,
+  &.section-books,
+  &.section-.meta {
+    * :not(.header-title) {
+      animation-name: fade-in;
+      animation-duration: $duration;
+      animation-fill-mode: forwards;
+    }
+  }
 
-  * {
-    animation-name: fade-in;
-    animation-duration: $duration;
-    animation-fill-mode: forwards;
+  &.section-post {
+    --page-background: #{$post-background};
+    background: var(--page-background);
+  }
+
+  &.section-.meta,
+  &.section-book, {
+    --page-background: #{$meta-background};
+    background: var(--page-background);
   }
 }
