@@ -6,6 +6,7 @@ $animation-duration: 800ms;
 }
 
 .animated-link-overlay {
+  --fade-to: #{$fade-to};
   position: fixed;
   height: 100%;
   width: 100%;
@@ -14,13 +15,15 @@ $animation-duration: 800ms;
   right: 0;
   bottom: 0;
   z-index: 1000;
-  @include background-opacity($fade-to, 0);
+  background: color-mix(in srgb, var(--fade-to) 0%, transparent 100%);
+  /*background: rgba($fade-to, 0);*/
   transition-delay: calc(($animation-duration / 3) * 2);
   transition-duration: calc($animation-duration / 3);
   transition-property: background;
 
   &:has(.container .animate) {
-    @include background-opacity($fade-to, 1);
+    /*background: rgba($fade-to, 1) !important;*/
+    background: color-mix(in srgb, var(--fade-to) 100%, transparent 0%) !important;
   }
 
   .container {
@@ -40,7 +43,7 @@ $animation-duration: 800ms;
       height: 150% !important;
       letter-spacing: -10rem !important;
       transition: all $animation-duration ease-in !important;
-
+      color: var(--fade-to) !important;
     }
   }
 }

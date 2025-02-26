@@ -8,7 +8,7 @@ function addPrefetch(url) {
   head.insertAdjacentHTML('beforeend', prefetch);
 }
 
-function addOverlay(elem, cls) {
+function addOverlay(elem, cls, additionalClasses) {
   const body = document.querySelector('body');
   const overlay = document.createElement("div");
   overlay.addEventListener("pointerdown", (event) => {
@@ -16,6 +16,11 @@ function addOverlay(elem, cls) {
   })
   const container = document.createElement("div");
   overlay.classList.add(cls);
+  if (additionalClasses !==undefined && additionalClasses !== "") {
+    additionalClasses.split(/(\s+)/).forEach(cls => {
+      overlay.classList.add(cls)
+    });
+  }
   container.classList.add(`container`);
   container.appendChild(elem)
   overlay.appendChild(container)
@@ -34,6 +39,7 @@ function cloneElem(elem) {
       clone.style.setProperty(key, compStyles.getPropertyValue(key)) //, compStyles.getPropertyPriority(key)
     }
   });
+
   clone.style.setProperty("position", "absolute", "important")
   clone.style.setProperty("z-index", 1001, "important")
   clone.style.setProperty("display", "block", "important")
@@ -51,13 +57,17 @@ function delayHandler(e, timeout) {
   if (timeout === undefined) {
     timeout = defaultTransitionMs;
   }
+  var additionalClasses;
+  if (e.target.animationClasses) {
+    additionalClasses = e.target.dataset.animationClasses;
+  }
   const clone = cloneElem(e.target);
-  addOverlay(clone, overlayClassName);
+  addOverlay(clone, overlayClassName, additionalClasses);
   setTimeout(function(){ clone.classList.add(animationClassName) }, 2);
   const callback = () => {
     window.location = e.target.getAttribute('href')
   }
-  setTimeout(callback, timeout);
+  //setTimeout(callback, timeout);
 }
 
 export function setupAnimatedLinks(links) {
