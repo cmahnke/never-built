@@ -32,3 +32,16 @@ body {
     background: var(--page-background);
   }
 }
+
+.content {
+  .post-title {
+    text-align: right;
+    margin-right: 1rem;
+    width: 100%;
+
+    @media (min-width: 768px) {
+      font-size: xxx-large;
+    }
+  }
+
+}

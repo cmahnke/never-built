@@ -57,7 +57,7 @@
         flex-basis: 100%;
         display: flex;
         flex-direction: column;
-        
+
 
         &:after {
           content: '';
@@ -96,9 +96,10 @@
         font-size: 3em;
         font-weight: 600;
         text-align: center;
+        margin-block-start: unset;
 
         @media (min-width: 768px) {
-          text-align: uset;
+          text-align: unset;
         }
 
         a {
@@ -108,6 +109,34 @@
 
       .cover-preview {
         order: 2;
+        min-width: 90%;
+
+        @media (min-width: 768px) {
+          min-width: unset;
+        }
+
+        .preview {
+          width: 100%;
+
+          @media (min-width: 768px) {
+            width: unset;
+          }
+        }
+
+        &:after {
+          content: '';
+          width: 100%;
+          display: inline-flex;
+          justify-self: center;
+          margin: auto;
+          height: .3ex;
+          background-color: #000;
+          margin: 2rem auto;
+
+          @media (min-width: 768px) {
+            display: none;
+          }
+        }
       }
 
       .meta {

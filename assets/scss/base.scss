@@ -61,11 +61,13 @@ $fullscreen-color: var(--base07);
 @import "page";
 
 
+/*
 :where(:focus-visible) {
     outline: .1875rem dashed #000;
     outline-offset: .125rem;
     z-index: 99;
 }
+*/
 
 :root {
   --text-font: #{$text-font};
@@ -75,12 +77,13 @@ $fullscreen-color: var(--base07);
 
   @media (min-width: 768px) {
     --main-margin: 2rem;
-    --content-width: calc(100vw - (#{$button-padding} * 2 + #{$button-width}) - var(--main-margin));
+    --content-width: calc(100vw - (#{$button-padding} * 2 + #{$button-width}) - var(--main-margin) * 2);
   }
 
   @media (min-width: 1200px) {
-    --content-width: calc(100vw - (#{$button-padding} * 2 + #{$button-width}) - var(--main-margin));
-    --main-margin: 4rem;
+    --main-margin: 2rem;
+    --content-width: calc(100vw - (#{$button-padding} * 2 + #{$button-width}) - var(--main-margin) * 2);
+
   }
 }
 
@@ -129,10 +132,12 @@ body {
 
   @media (min-width: 768px) {
     font-size: 1rem;
-    width: var(--content-width);
+    width: calc(var(--content-width) - var(--main-margin));
     align-self: flex-end;
     margin: unset;
     margin-bottom: auto;
+    margin-right: var(--main-margin);
+
   }
 
   .article-single {

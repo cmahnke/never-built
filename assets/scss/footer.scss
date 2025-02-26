@@ -9,9 +9,10 @@
   font-size: x-large;
   font-weight: 600;
   align-self: flex-end;
+  margin-right: var(--main-margin);
 
   @media (min-width: 768px) {
-    width: var(--content-width);
+    width: calc(var(--content-width) - var(--main-margin));
     overflow: hidden;
   }
 
