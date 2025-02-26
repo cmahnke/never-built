@@ -1,0 +1,19 @@
+ol-viewport {
+  --ol-subtle-background-color: white;
+}
+
+.ol-control {
+  background-color: white;
+  button {
+    --ol-subtle-foreground-color: black;
+    border-radius: unset;
+    border: 0.3ex solid black;
+    margin: unset;
+    /*color: black;*/
+  }
+}
+
+.rotate-left .icon-left:after,
+.rotate-right .icon-right:after {
+  background-position: center top;
+}

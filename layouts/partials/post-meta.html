@@ -2,9 +2,8 @@
   {{- if .Params.geojson -}}
     <div class="map">
       {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
-      {{- $marker := false -}}
-      {{- $cluster := false -}}
-      {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "cluster" $cluster "marker" $marker) -}}
+      {{- $center := slice (index .Params.geojson 0) (index .Params.geojson 1) -}}
+      {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "debug" true) -}}
     </div>
   {{- end -}}
   <div class="date">

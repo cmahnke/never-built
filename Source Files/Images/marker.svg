@@ -23,9 +23,9 @@
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#d1d1d1"
    showguides="true"
-   inkscape:zoom="0.75852742"
-   inkscape:cx="234.66521"
-   inkscape:cy="203.02496"
+   inkscape:zoom="1.637259"
+   inkscape:cx="194.83783"
+   inkscape:cy="499.61551"
    inkscape:window-width="1232"
    inkscape:window-height="771"
    inkscape:window-x="0"
@@ -47,14 +47,30 @@
      position="-7.9285847,18.765309"
      orientation="0,-1"
      id="guide5"
-     inkscape:locked="false" /></sodipodi:namedview>
+     inkscape:locked="false" /><sodipodi:guide
+     position="64.764592,79.188991"
+     orientation="1,0"
+     id="guide1"
+     inkscape:locked="false" /><sodipodi:guide
+     position="43.524771,-0.079098146"
+     orientation="-0.96592583,0.25881905"
+     id="guide6"
+     inkscape:locked="false"
+     inkscape:label=""
+     inkscape:color="rgb(0,134,229)" /><sodipodi:guide
+     position="87.189661,79.188991"
+     orientation="-0.96592583,0.25881905"
+     id="guide7"
+     inkscape:label=""
+     inkscape:locked="false"
+     inkscape:color="rgb(0,134,229)" /></sodipodi:namedview>
 <g
    id="g2"
    transform="translate(0,-25.905)">
 	<path
-   d="m 0,92.905 h 55.823266 c -0.02817,37.37529 -2.928325,53.75459 -5.163854,60.42368 -2.23553,6.66909 -7.384867,18.76531 -7.384867,18.76531 16.281,-0.916 25.028497,-10.02229 32.449022,-18.76531 7.420525,-8.74303 11.558356,-27.83081 11.466094,-60.42368 L 87,25.905 H 0 Z"
+   d="m 0,92.905 64.764592,-10e-7 C 57.704738,119.10852 45.86499,163.43927 43.524771,172.17309 c 27.474413,-18.84441 0,0 27.474413,-18.84441 L 87.189661,92.905 87,25.905 H 0 Z"
    id="path1"
-   sodipodi:nodetypes="cczczsccc" />
+   sodipodi:nodetypes="cccccccc" />
 
 </g>
 </svg>

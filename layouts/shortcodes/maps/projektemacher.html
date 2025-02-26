@@ -3,19 +3,48 @@
 {{- if (.Get "source") -}}
   {{- $source := .Get "source" -}}
 {{- end -}}
-{{- $style := false -}}
+
+{{- $style := "undefined" -}}
 {{- if (.Get "style") -}}
   {{- $style = (.Get "style") -}}
 {{- end -}}
+
 {{- $cluster := false -}}
 {{- if (.Get "cluster") -}}
   {{- $cluster = .Get "cluster" -}}
 {{- end -}}
+
 {{- $marker := false -}}
 {{- if (.Get "marker") -}}
   {{- $marker = .Get "marker" -}}
 {{- end -}}
-{{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "source" $source "style" $style "cluster" $cluster "marker" $marker) -}}
+
+{{- $bbox := "{}" -}}
+{{- if (.Get "bbox") -}}
+  {{- $bbox = .Get "bbox" -}}
+{{- end -}}
+
+{{- $center := false -}}
+{{- if (.Get "center") -}}
+  {{- $center = .Get "center" -}}
+{{- end -}}
+
+{{- $initialZoom := false -}}
+{{- if (.Get "initialZoom") -}}
+  {{- $initialZoom = .Get "initialZoom" -}}
+{{- end -}}
+
+{{- $maxZoom := false -}}
+{{- if (.Get "maxZoom") -}}
+  {{- $maxZoom = .Get "maxZoom" -}}
+{{- end -}}
+
+{{- $debug := false -}}
+{{- if (.Get "debug") -}}
+  {{- $debug = .Get "debug" -}}
+{{- end -}}
+
+{{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "source" $source "style" $style "cluster" $cluster "bbox" $bbox "center" $center "initialZoom" $initialZoom "maxZoom" $maxZoom "debug" $debug "marker" $marker ) -}}
 
 {{- define "partials/shortcodes/maps/projektemacher-metadata.html" -}}
   {{- (dict "css" slice "js" (slice "js/maps/projektemacher-map.js") "scss" (slice "scss/maps/projektemacher.scss")) | jsonify -}}

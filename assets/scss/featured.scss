@@ -27,16 +27,19 @@ $scale-factor: 1.05 !default;
     z-index: 2;
     color: black;
     text-transform: uppercase;
-    padding: 9px 12px;
     background-color: white;
-
     cursor: pointer;
     transition: all 150ms ease-in-out;
     /*transform: translateY(-50%);*/
     line-height: 1;
-    padding: 1em;
+    padding: .2rem .6rem;
     border: 0.3ex solid black;
 
+    &:after {
+      font-weight: 700;
+      font-size: 2rem;
+      vertical-align: super;
+    }
 
     &:focus {
       outline: none;
@@ -50,14 +53,20 @@ $scale-factor: 1.05 !default;
     }
   }
 
+  /* See https://www.webmaster-seo.com/de/unicode/character?sign=U+276E for arrow */
   .glide__arrow--left {
     left: 1rem;
-    content: '';
+
+    &:after {
+      content: "❮";
+    }
   }
 
   .glide__arrow--right {
     right: 1rem;
-    content: '';
+    &:after {
+      content: "❯";
+    }
   }
 
   .glide__arrow--disabled {
@@ -80,15 +89,12 @@ $scale-factor: 1.05 !default;
 
   .glide__bullet {
     background-color: rgba(255, 255, 255, 0.5);
-    width: 9px;
-    height: 9px;
+    width: .8rem;;
+    height: .8rem;;
     padding: 0;
-    border-radius: 50%;
-    /*border: 2px solid transparent;*/
     transition: all 300ms ease-in-out;
     cursor: pointer;
     line-height: 0;
-    /* box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.1);*/
     margin: 0 0.25em;
 
     &.glide__bullet--active {
@@ -103,19 +109,13 @@ $scale-factor: 1.05 !default;
       border: 2px solid black;
       transform: scale(1.2);
     }
-
   }
 
   .glide--swipeable {
     cursor: grab;
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
   }
   .glide--dragging {
     cursor: grabbing;
-    cursor: -moz-grabbing;
-    cursor: -webkit-grabbing;
   }
-
 
 }

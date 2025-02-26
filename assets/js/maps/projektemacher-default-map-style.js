@@ -17,7 +17,7 @@ var layers = [
   ["poi", 59, 181, 10],
 ];
 
-export const style = {
+export const default_style = {
   version: 8,
   "ol:webfonts": "assets/{font-family}/{fontweight}{-fontstyle}.css",
   metadata: {

@@ -1,3 +1,6 @@
+export const defaultTransitionMs = 800;
+export const overlayClassName = "animated-link-overlay";
+export const animationClassName = "animate";
 
 function addPrefetch(url) {
   const head = document.querySelector('head');
@@ -5,36 +8,67 @@ function addPrefetch(url) {
   head.insertAdjacentHTML('beforeend', prefetch);
 }
 
-//TODO: Pass function or class
-function delayClick(elem, timeout) {
-  elem.addEventListener('click', (e) => {
-    elem.classList.add('delayed-click');
-    setTimeout(() => {
-      //
-    }, timeout);
-  });
+function addOverlay(elem, cls) {
+  const body = document.querySelector('body');
+  const overlay = document.createElement("div");
+  overlay.addEventListener("pointerdown", (event) => {
+    e.preventDefault();
+  })
+  const container = document.createElement("div");
+  overlay.classList.add(cls);
+  container.classList.add(`container`);
+  container.appendChild(elem)
+  overlay.appendChild(container)
+  body.insertAdjacentElement('beforeend', overlay);
 }
 
-const defaultTransitionMs = 500;
-
-export function setupAnimatedLinks() {
-
-  document.querySelectorAll('a.click-animation').forEach((link) => {
-    var transition;
-    if (link.dataset.transition !== undefined ) {
-      transition = link.dataset.transition;
-    } else {
-      transition = defaultTransitionMs;
+function cloneElem(elem) {
+  const ignoreProperties = ["overflow", "word-break", "letter-spacing", "text-shadow", "transition", "transform"];
+  if (elem.firstElementChild) {
+    throw new Error("Cloning with CSS only works for nodes without child elements!");
+  }
+  const clone = elem.cloneNode(true);
+  const compStyles = window.getComputedStyle(elem);
+  Array.from(compStyles).forEach(key => {
+    if (!key.startsWith('animation') && !key.startsWith("-") && !ignoreProperties.includes(key)) {
+      clone.style.setProperty(key, compStyles.getPropertyValue(key)) //, compStyles.getPropertyPriority(key)
     }
+  });
+  clone.style.setProperty("position", "absolute", "important")
+  clone.style.setProperty("z-index", 1001, "important")
+  clone.style.setProperty("display", "block", "important")
+  const pos = elem.getBoundingClientRect();
+  clone.style.setProperty("top", `${pos.top}px`);
+  clone.style.setProperty("left", `${pos.left}px`);
+  clone.style.setProperty("width", `${pos.width}px`);
+  clone.style.setProperty("height", `${pos.height}px`);
+  return clone;
+}
 
-    if (myDiv.dataset.class !== undefined ) {
-      var transition;
+function delayHandler(e, timeout) {
+  e.preventDefault();
+  //e.target.classList.add('delayed-click');
+  if (timeout === undefined) {
+    timeout = defaultTransitionMs;
+  }
+  const clone = cloneElem(e.target);
+  addOverlay(clone, overlayClassName);
+  setTimeout(function(){ clone.classList.add(animationClassName) }, 2);
+  const callback = () => {
+    window.location = e.target.getAttribute('href')
+  }
+  setTimeout(callback, timeout);
+}
 
-    }
-
+export function setupAnimatedLinks(links) {
+  console.log(links);
+  links.forEach((link) => {
     if (link.hasAttribute('href')) {
       addPrefetch(link.getAttribute('href'));
     }
+    link.addEventListener("click", (event) => {
+      delayHandler(event);
+    });
   });
 
 }

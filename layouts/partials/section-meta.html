@@ -7,14 +7,8 @@
   {{- if gt (len $pages) 0 -}}
     <div class="map">
       {{- $geojson := partial "geojson/featureCollection.geojson" $pages -}}
-      {{/*
-      <script type="text/javascript">
-        var geojson = {{ $features | safeJS }}
-      </script>
-      */}}
-      {{- $marker := false -}}
-      {{- $cluster := false -}}
-      {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "cluster" $cluster "marker" $marker) -}}
+      {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "debug" true ) -}}
+      {{/* "center" "[9.93, 51.55]" */}}
     </div>
   {{- end -}}
 <div>

@@ -1,5 +1,8 @@
 {{- $context := .context -}}
 {{- $geojson := .geojson -}}
+{{- if eq $geojson nil -}}
+  {{- $geojson = "undefined" -}}
+{{- end -}}
 {{- $source := .source -}}
 {{- if eq $source nil -}}
   {{- $source = false -}}
@@ -9,7 +12,7 @@
 {{- end -}}
 {{- $style := .style -}}
 {{- if eq $style nil -}}
-  {{- $style = false -}}
+  {{- $style = "undefined" -}}
 {{- end -}}
 {{- if and (not $style) site.Params.map site.Params.map.style -}}
   {{- $style = site.Params.map.style -}}
@@ -18,22 +21,49 @@
   {{/* Check if we only got one param, this will be the geojson referece */}}
   {{- $geojson := . -}}
 {{- end -}}
+
 {{- $cluster := .cluster -}}
 {{- if eq $cluster nil -}}
   {{- $cluster = false -}}
 {{- end -}}
+
+{{- $center := .center -}}
+{{- if or (eq $center nil) (eq $center false) -}}
+  {{- $center = "undefined" -}}
+{{- end -}}
+
+{{- $initialZoom := .initialZoom -}}
+{{- if or (eq $initialZoom nil) (eq $initialZoom false) -}}
+  {{- $initialZoom = 1 -}}
+{{- end -}}
+
+{{- $maxZoom := .maxZoom -}}
+{{- if or (eq $maxZoom nil) (eq $maxZoom false) -}}
+  {{- $maxZoom = 15 -}}
+{{- end -}}
+
+{{/*  center, initialZoom, maxZoom */}}
 {{/* See https://openlayers.org/en/latest/apidoc/module-ol_style_Icon.html for options */}}
 {{- $marker := .marker -}}
 {{- if eq $marker nil -}}
-  {{- $marker = false -}}
+  {{- $marker = "undefined" -}}
 {{- end -}}
-{{- if and (not $marker) site.Params.map site.Params.map.marker -}}
+{{- if and (ne $marker "undefined") site.Params.map site.Params.map.marker -}}
   {{- $marker = site.Params.map.marker -}}
 {{- end -}}
 
-{{ warnf "==> %#v" site.Params.map }}
-{{ warnf "==> %s %s %s" $source $style $marker  }}
+{{- $bbox := .bbox -}}
+{{- if or (eq $bbox nil) (eq $bbox false) -}}
+  {{- $bbox = "{}" -}}
+{{- end -}}
+{{- if and (eq $bbox "{}") site.Params.map site.Params.map.bbox -}}
+  {{- $bbox = site.Params.map.bbox -}}
+{{- end -}}
 
+{{- $debug := .debug -}}
+{{- if eq $debug nil -}}
+  {{- $debug = false -}}
+{{- end -}}
 
 {{- $id := md5 $geojson -}}
 {{- $var := printf "_%s" $id -}}
@@ -45,6 +75,21 @@
   </div>
 </div>
 <script type="text/javascript">
-  var {{ $var | safeJS }} = window.projektemacherMap('{{ $id | safeJS }}', '{{ $geojson | safeJS }}', '{{  $source | safeJS}}', '{{ $style | safeJS }}', {{ $cluster | safeJS }} {{ if $marker }}, {{ $marker | safeJS}}  {{ end }});
-  {{ $var | safeJS }}.updateSize();
+  {{/*
+  var {{ $var | safeJS }} = window.projektemacherMap('{{ $id | safeJS }}', '{{ $geojson | safeJS }}', '{{  $source | safeJS}}', '{{ $style | safeJS }}', {{ $cluster | safeJS }}, '{{ $bbox | safeJS }}', {{ $center | safeJS }}, {{ $initialZoom | safeJS }}, {{ $maxZoom | safeJS }} {{ if $marker }}, {{ $marker | safeJS}}  {{ end }});
+  */}}
+    var {{ $var | safeJS }} = window.projektemacherMap(
+      {{ partial "js/type.html" $id | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $geojson | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $source | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $style | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $cluster | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $bbox | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $center | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $initialZoom | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $maxZoom | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $debug | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $marker | htmlUnescape | safeJS}});
+      /*{{ if $marker }}, {{ $marker | safeJS}}  {{ end }});*/
+  {{ $var | safeJS }}.then(map => {map.updateSize()});
 </script>
