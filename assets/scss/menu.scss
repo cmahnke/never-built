@@ -33,6 +33,16 @@ header .menu {
     z-index: 10;
   }
 
+  &.animate {
+    width: 120vw;
+    transform: translateX(100%);
+
+    ul {
+      background: black;
+      width: 120vw;
+    }
+  }
+
   nav {
     height: 100%;
     width: 0;

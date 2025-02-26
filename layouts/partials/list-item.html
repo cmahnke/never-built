@@ -9,7 +9,7 @@
 <article class="list-item {{ if $bookSectionPreview }}book{{ end }}" itemscope itemtype="http://schema.org/Blog">
   <div class="list-item-head">
     {{- $title := .Title -}}
-    <h2 class="headline" itemprop="headline"><a href="{{ .RelPermalink }}">{{ $title }}{{ if .Draft }} (Draft){{ end }}</a></h2>
+    <h2 class="headline" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}{{ if .Draft }} (Draft){{ end }}</a></h2>
     {{- if $bookSectionPreview -}}
       <div class="cover-preview">
         {{- $previewImg := partial "preview/preview-internal.html" (dict "context" . "fit" $fit "postProcess" true) -}}

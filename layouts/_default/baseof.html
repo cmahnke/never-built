@@ -27,8 +27,24 @@
   </head>
 
   {{- $class := "" }}
+  {{- with .Page.File -}}
+    {{- if or (hasPrefix .Path "about") (hasPrefix .Path "/about") -}}
+      {{- $class = "about" -}}
+    {{- else -}}
+      {{- $class = printf "section-%s dir-%s" .Section (replace .Dir "/" "" ) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if .Params.layout -}}
+    {{- $class = printf "%s %s" $class .Params.layout -}}
+  {{- end -}}
+
+  {{- if .Params.class -}}
+    {{- $class = printf "%s %s" $class .Params.class -}}
+  {{- end -}}
+
   {{- if eq .Kind "section" -}}
-    {{- $class = "section" }}
+    {{- $class = printf "%s %s" $class "section" -}}
   {{- end -}}
 
   {{- with .Page.File -}}

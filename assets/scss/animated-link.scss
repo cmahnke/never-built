@@ -16,13 +16,16 @@ $animation-duration: 800ms;
   bottom: 0;
   z-index: 1000;
   background: color-mix(in srgb, var(--fade-to) 0%, transparent 100%);
-  /*background: rgba($fade-to, 0);*/
   transition-delay: calc(($animation-duration / 3) * 2);
   transition-duration: calc($animation-duration / 3);
   transition-property: background;
 
+  &.light-gray,
+  &.post {
+    --fade-to: #{$post-background};
+  }
+
   &:has(.container .animate) {
-    /*background: rgba($fade-to, 1) !important;*/
     background: color-mix(in srgb, var(--fade-to) 100%, transparent 0%) !important;
   }
 

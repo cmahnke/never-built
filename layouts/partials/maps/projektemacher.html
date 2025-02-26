@@ -75,9 +75,6 @@
   </div>
 </div>
 <script type="text/javascript">
-  {{/*
-  var {{ $var | safeJS }} = window.projektemacherMap('{{ $id | safeJS }}', '{{ $geojson | safeJS }}', '{{  $source | safeJS}}', '{{ $style | safeJS }}', {{ $cluster | safeJS }}, '{{ $bbox | safeJS }}', {{ $center | safeJS }}, {{ $initialZoom | safeJS }}, {{ $maxZoom | safeJS }} {{ if $marker }}, {{ $marker | safeJS}}  {{ end }});
-  */}}
     var {{ $var | safeJS }} = window.projektemacherMap(
       {{ partial "js/type.html" $id | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $geojson | htmlUnescape | safeJS }},

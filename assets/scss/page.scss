@@ -1,0 +1,22 @@
+$duration: 500ms;
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+body.section-post {
+  --page-background: #{$post-background};
+  background: var(--page-background);
+
+  * {
+    animation-name: fade-in;
+    animation-duration: $duration;
+    animation-fill-mode: forwards;
+  }
+}

@@ -2,7 +2,7 @@ export const defaultTransitionMs = 800;
 export const overlayClassName = "animated-link-overlay";
 export const animationClassName = "animate";
 
-function addPrefetch(url) {
+export function addPrefetch(url) {
   const head = document.querySelector('head');
   const prefetch = `<link rel="prefetch" href="${url}" as="document">`;
   head.insertAdjacentHTML('beforeend', prefetch);
@@ -53,12 +53,11 @@ function cloneElem(elem) {
 
 function delayHandler(e, timeout) {
   e.preventDefault();
-  //e.target.classList.add('delayed-click');
   if (timeout === undefined) {
     timeout = defaultTransitionMs;
   }
   var additionalClasses;
-  if (e.target.animationClasses) {
+  if (e.target.dataset.animationClasses) {
     additionalClasses = e.target.dataset.animationClasses;
   }
   const clone = cloneElem(e.target);
@@ -67,7 +66,7 @@ function delayHandler(e, timeout) {
   const callback = () => {
     window.location = e.target.getAttribute('href')
   }
-  //setTimeout(callback, timeout);
+  setTimeout(callback, timeout);
 }
 
 export function setupAnimatedLinks(links) {
