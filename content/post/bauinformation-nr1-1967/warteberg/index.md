@@ -9,7 +9,7 @@ outputs:
   - html
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
-  cover: model-planned.jpg
+#  preview: preview
   geojson:
     coordinates:
     - 9.9326044

@@ -1,0 +1,23 @@
+.list .post-title,
+.content .post-title {
+  width: 100%;
+  margin-block-start: unset;
+  margin-block-end: unset;
+  margin-top: 0rem;
+  font-style: italic;
+  font-size: xx-large;
+
+  @media (min-width: 768px) {
+    font-size: 5em;
+    font-style: italic;
+    font-weight: 400;
+    text-align: right;
+    margin-right: 1rem;
+    margin-top: -1.4rem;
+    font-style: unset;
+    line-height: .9;
+    animation:
+      $show-page-duration linear forwards fade-in,
+      $show-page-duration linear $show-page-duration forwards italics !important;
+  }
+}

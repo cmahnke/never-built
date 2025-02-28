@@ -8,6 +8,10 @@
     display: grid;
     /*height: 2.4rem;*/
 
+    @media (min-width: 768px) {
+      margin: 3rem auto 2rem ;
+    }
+
     .pagination-next,
     .pagination-prev {
       display: inline-block;

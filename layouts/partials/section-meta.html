@@ -1,14 +1,13 @@
-<div class="section-meta">
-  {{- with .Params.worldcat -}}
-    <a href="{{ . }}" title="{{ i18n "worldcat" }}">{{ i18n "worldcat" }}</a>
-  {{- end -}}
-  {{- $pages := .CurrentSection.RegularPages -}}
-  {{- $pages = where $pages "Params.geojson" "ne" nil -}}
-  {{- if gt (len $pages) 0 -}}
-    <div class="map">
-      {{- $geojson := partial "geojson/featureCollection.geojson" $pages -}}
-      {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "debug" true ) -}}
-      {{/* "center" "[9.93, 51.55]" */}}
-    </div>
-  {{- end -}}
+{{- $pages := .CurrentSection.RegularPages -}}
+{{- $pages = where $pages "Params.geojson" "ne" nil -}}
+{{- if gt (len $pages) 0 -}}
+  {{- $geojson := partial "geojson/featureCollection.geojson" $pages -}}
+  {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "debug" true "minZoom" 12 "maxZoom" 14 "initialZoom" 13 ) -}}
+  {{/* "center" "[9.93, 51.55]" */}}
+{{- end -}}
+
+{{- with .Params.worldcat -}}
+<div class="source-meta">
+  <a class="book-reference" href="{{ . }}" title="{{ i18n "worldcat" }}">{{ i18n "worldcat" }}</a>
 <div>
+{{- end -}}

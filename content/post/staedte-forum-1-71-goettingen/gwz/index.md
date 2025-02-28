@@ -12,6 +12,7 @@ params:
   cover:
     - "model.jpg"
     - "blueprint.jpg"
+  preview: preview
   geojson:
     coordinates:
     - 9.9326044
@@ -21,7 +22,7 @@ resources:
 - src: "page064.jxl"
   name: preview
   params:
-    iiif: page065/info.json
+    iiif: page064/info.json
 - src: "page065.jxl"
   params:
     iiif: page065/info.json

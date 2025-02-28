@@ -1,3 +1,5 @@
+{{- partial "fonts/css.html" . -}}
+
 {{- $context := .context -}}
 {{- $geojson := .geojson -}}
 {{- if eq $geojson nil -}}
@@ -27,6 +29,7 @@
   {{- $cluster = false -}}
 {{- end -}}
 
+{{/*  center, initialZoom, maxZoom */}}
 {{- $center := .center -}}
 {{- if or (eq $center nil) (eq $center false) -}}
   {{- $center = "undefined" -}}
@@ -37,12 +40,17 @@
   {{- $initialZoom = 1 -}}
 {{- end -}}
 
+{{- $minZoom := .minZoom -}}
+{{- if or (eq $minZoom nil) (eq $minZoom false) -}}
+  {{- $minZoom = $initialZoom -}}
+{{- end -}}
+
 {{- $maxZoom := .maxZoom -}}
 {{- if or (eq $maxZoom nil) (eq $maxZoom false) -}}
   {{- $maxZoom = 15 -}}
 {{- end -}}
 
-{{/*  center, initialZoom, maxZoom */}}
+
 {{/* See https://openlayers.org/en/latest/apidoc/module-ol_style_Icon.html for options */}}
 {{- $marker := .marker -}}
 {{- if eq $marker nil -}}
@@ -84,6 +92,7 @@
       {{ partial "js/type.html" $bbox | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $center | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $initialZoom | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $minZoom | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $maxZoom | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $debug | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $marker | htmlUnescape | safeJS}});

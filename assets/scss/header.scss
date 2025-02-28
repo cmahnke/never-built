@@ -2,6 +2,8 @@
 @use "link" as *;
 @use 'sass:color';
 
+$animation-duration: 750ms !default;
+
 $accent-color: color.adjust(black, $lightness: 90%) !default;
 
 .header {
@@ -15,6 +17,10 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
   @media (min-width: 768px) {
     height: unset;
     width: var(--content-width);
+  }
+
+  .menu.animate ~ .header-container .header-title {
+    opacity: 0;
   }
 
   .header-background {
@@ -42,7 +48,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
     padding-left: .8rem;
     align-items: center;
     mix-blend-mode: difference;
-
+    opacity: 1;
 
     @media (min-width: 768px) {
       position: relative;
@@ -67,7 +73,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
     }
 
     .header-title {
-      font-size: 5vh;
+      font-size: 4.2vh;
       font-weight: 800;
       color: white;
       margin-top: unset;
@@ -78,9 +84,10 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
       mix-blend-mode: difference;
       text-align: end;
       margin-right: 1rem;
+      transition: opacity calc($animation-duration / 5) ease-in;
 
       @media (min-width: 768px) {
-        font-size: 5.5em;
+        font-size: 7vw;
         color: transparent;
         background-clip: text;
         @include halftone($radius: 0.1rem, $cirle-color: black, $background-color: transparent, $background-size: 0.35rem);
@@ -88,7 +95,34 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
         background-color: $accent-color;
         text-align: unset;
         margin-right: unset;
+        transition: all $animation-duration ease-in;
+        position: fixed;
+        width: 100%;
+
+        &:hover {
+          transition: all calc($animation-duration /2) ease-out;
+          background-size: .375rem .375rem;
+          background-position: 0 0, calc(.375rem / 2) calc(.375rem / 2);
+        }
+
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: var(--page-background);
+          mix-blend-mode: difference;
+          z-index: -1;
+          margin-bottom: -1.2rem;
+        }
       }
+
+      @media (min-width: 1400px) {
+        font-size: 6.4rem;
+      }
+
     }
   }
 }

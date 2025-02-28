@@ -1,6 +1,11 @@
+
 .list {
   width: 90%;
   margin: auto;
+
+  &:has(.books) {
+    width: 100%;
+  }
   /*
   .post-title {
     font-size: 4rem;
@@ -28,7 +33,20 @@
     }
   }
 
+  .tag-list-title {
+    font-size: xx-large;
+
+    @media (min-width: 768px) {
+      margin: -1.4rem 5% 1rem !important;
+    }
+  }
+
+  .section-head + .post {
+    margin-top: 1.6em;
+  }
+
   .post {
+
     .list-item {
       display: flex;
       flex-direction: column;
@@ -39,6 +57,7 @@
         @media (min-width: 768px) {
           display: grid;
           width: 100%;
+          grid-template-columns: 1fr;
         }
 
         .meta {
@@ -78,33 +97,27 @@
     }
   }
 
+  .book,
+  .post {
+
+
+    &:last-child .list-item-head {
+      .list-item,
+      .cover-preview:after {
+        display: none;
+      }
+    }
+  }
+
+
   .book {
-    padding: 1em 0;
+    @media (min-width: 768px) {
+      padding: 1em 0;
+    }
 
     .list-item-head {
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-
-      @media (min-width: 768px) {
-        flex-direction: row;
-      }
-
       .headline {
         order: 1;
-        font-size: 3em;
-        font-weight: 600;
-        text-align: center;
-        margin-block-start: unset;
-
-        @media (min-width: 768px) {
-          text-align: unset;
-        }
-
-        a {
-          color: black;
-        }
       }
 
       .cover-preview {
@@ -150,6 +163,43 @@
     margin-right: 3em;
   }
 
+  .books {
+    .list-item-head .headline {
+      @media (min-width: 768px) {
+        font-size: 3em;
+      }
+    }
+  }
+}
+
+.list,
+.article-list.book {
+  .list-item-head {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+
+    .headline {
+      font-size: 2em;
+      font-weight: 600;
+      text-align: center;
+      margin-block-start: unset;
+
+      @media (min-width: 768px) {
+        text-align: unset;
+      }
+
+      a {
+        color: black;
+      }
+    }
+  }
+
   a,
   a:active,
   a:focus,
@@ -158,5 +208,4 @@
     color: var(--text-color);
     text-decoration: none;
   }
-
 }

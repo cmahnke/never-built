@@ -8,27 +8,23 @@
       <div class="post section">
         {{- partial "post-header.html" . -}}
         <div class="post-body">
-          {{- partial "content.html" . -}}
-          {{- if and (isset .Params "type") (eq .Params.type "book") -}}
-            {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
-              {{- partial "iiif/iiif-content.html" . -}}
-            {{- end -}}
-          {{- end -}}
-          {{- partial "section-meta.html" . -}}
+          <div class="post-content">
+            {{ .Content }}
+          </div>
+
         </div>
       </div>
     {{- end -}}
-    {{- $pages := .CurrentSection.RegularPages -}}
-    {{- if gt (len $pages) 0 -}}
-      <div class="article-list-heading">{{ i18n "section-heading" }} {{ i18n (printf "section-%s" (.Param "type")) }}</div>
-      <div class="article-list">
-        {{- if eq .Kind "section" -}}
-          {{- $pages = where $pages "Path" "!=" .Path -}}
+    {{- partial "book-toc.html" . -}}
+
+    {{- if and (isset .Params "type") (eq .Params.type "book") -}}
+      <div class="meta">
+        {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
+          {{- partial "iiif/iiif-content.html" . -}}
         {{- end -}}
-        {{- range $pages -}}
-          {{- partial "list-item.html" . -}}
-        {{- end -}}
+        {{- partial "section-meta.html" . -}}
       </div>
     {{- end -}}
+
   </main>
 {{- end -}}

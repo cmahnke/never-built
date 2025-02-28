@@ -1,0 +1,13 @@
+.ol-viewport {
+  border-radius: unset;
+}
+
+.section-single {
+  .post.section {
+    .post-content {
+      .iiif .iiif-image {
+        width: 50%;
+      }
+    }
+  }
+}

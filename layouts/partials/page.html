@@ -3,13 +3,24 @@
     <div class="content">
       <h1 class="post-title">{{ .Title }}</h1>
       {{- if not .Params.metaPage -}}
-        {{- partial "post-meta.html" . -}}
-      {{ end }}
+        {{- partial "date.html" . -}}
+      {{- end -}}
+
       <div class="post-body">
+        <div class="post-content">
           {{ .Content }}
-          {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
-            {{- partial "iiif/iiif-content.html" . -}}
-          {{- end -}}
+        </div>
+
+        {{- if .Params.geojson -}}
+          {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
+          {{- $coordinates := (index .Params.geojson "coordinates") -}}
+          {{- $center := slice (index $coordinates 0) (index $coordinates 1) -}}
+          {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "debug" true "minZoom" 12 "initialZoom" 13 "maxZoom" 14) -}}
+        {{- end -}}
+
+        {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
+          {{- partial "iiif/iiif-content.html" . -}}
+        {{- end -}}
       </div>
     </div>
 
@@ -18,9 +29,13 @@
         {{- if and (ne .CurrentSection.Path "/post") (ne .CurrentSection.Path .Path) -}}
           <div class="parent-section">
             {{ i18n "sectionParent" }}
-            <a href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}">{{ .CurrentSection.Title }}</a>
+            <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}">{{ .CurrentSection.Title }}</a> <i class="book-reference"></i>
           </div>
         {{- end -}}
+        <div class="tag-container">
+          <div class="tags-heading">{{ i18n "Tags" }}</div>
+          {{ partial "meta/tags.html" . }}
+        </div>
       </div>
     {{ end }}
 </div>

@@ -1,113 +1,102 @@
-
 .map {
-  width: 20vw;
-  aspect-ratio: 1 / 1;
+    height: 100%;
+    position: relative;
 }
 
-.map-wrapper {
-  min-height: 60vh;
-  height: 20em;
-  font-family: var(--text-font);
+.ol-viewport {
+  border-radius: 1em;
 
-  .map {
-      height: 100%;
+  @media (max-width: 30em) {
+    border-radius: unset;
+  }
+}
+
+.ol-popup {
+  position: absolute;
+  min-width: 250px;
+  background-color: white;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  bottom: 12px;
+  left: -50px;
+  font-size: 1em;
+
+  @media (max-width: 30em) {
+    border-radius: unset;
   }
 
-  .ol-viewport {
-    border-radius: 1em;
+  .geojsonPopup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #272d2f;
 
-    @media (max-width: 30em) {
-      border-radius: unset;
-    }
-  }
-
-  .ol-popup {
-    position: absolute;
-    min-width: 250px;
-    background-color: white;
-    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    bottom: 12px;
-    left: -50px;
-    font-size: 1em;
-
-    @media (max-width: 30em) {
-      border-radius: unset;
-    }
-
-    .geojsonPopup {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: #272d2f;
-
-      .preview-img {
-        margin: .2em 0;
-      }
-    }
-
-    h1 {
-      font-family: var(--heading-font);
-      text-align: center;
-      font-size: 1.2em !important;
+    .preview-img {
       margin: .2em 0;
     }
-
-    .title {
-      font-size: large;
-      display: none;
-    }
-
-    .popup-content {
-      font-weight: 500;
-      text-align: center;
-      font-size: 0.8em;
-    }
-
-    .link {
-      text-align: center;
-    }
-
-    .preview {
-      display: block;
-    }
   }
 
-  .ol-popup::after,
-  .ol-popup::before {
-    top: 100%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
+  h1 {
+    font-family: var(--heading-font);
+    text-align: center;
+    font-size: 1.2em !important;
+    margin: .2em 0;
   }
 
-  .ol-popup::after {
-    border-top-color: white;
-    border-width: 10px;
-    left: 48px;
-    margin-left: -10px;
+  .title {
+    font-size: large;
+    display: none;
   }
 
-  .ol-popup::before {
-    border-top-color: #ccc;
-    border-width: 11px;
-    left: 48px;
-    margin-left: -11px;
+  .popup-content {
+    font-weight: 500;
+    text-align: center;
+    font-size: 0.8em;
   }
 
-  .ol-popup-closer {
-    text-decoration: none;
-    position: absolute;
-    top: 2px;
-    right: 8px;
+  .link {
+    text-align: center;
   }
 
-  .ol-popup-closer::after {
-    content: "✖";
+  .preview {
+    display: block;
   }
+}
+
+.ol-popup::after,
+.ol-popup::before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.ol-popup::after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+
+.ol-popup::before {
+  border-top-color: #ccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+
+.ol-popup-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 8px;
+}
+
+.ol-popup-closer::after {
+  content: "✖";
 }

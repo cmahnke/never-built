@@ -1,5 +1,21 @@
 <div class="list">
-    <div class="post">
+  {{- with .Data.Term -}}
+    {{- $tag := i18n . -}}
+    {{- if eq $tag "" -}}
+      {{- $tag = . -}}
+    {{- end -}}
+    <div class="section-head">
+      <h1 class="post-section section-head-title tag-list-title post-title">{{ i18n "Tag" }}: {{ $tag }}</h1>
+    </div>
+    {{- if ne $.Page.File nil -}}
+      {{- if ne $.Content "" -}}
+        <div class="tag-list-content">
+          {{ $.Content }}
+        </div>
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  <div class="post">
     {{- $pages := .Pages -}}
     {{- if .IsHome -}}
       {{- $pages = .Site.RegularPages -}}
@@ -10,7 +26,7 @@
     {{- range $paginator.Pages -}}
       {{- partial "list-item.html" . -}}
     {{- end -}}
-    </div>
+  </div>
 </div>
 {{ if or $paginator.HasPrev $paginator.HasNext -}}
 <div class="pagination">

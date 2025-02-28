@@ -9,14 +9,14 @@ displayinlist: false
 
 Diese Seite wurde mit [Hugo](https://gohugo.io/) generiert.
 
-Als Schriftarten kommen [Tektur](https://github.com/hyvyys/Tektur) und  zum Einsatz.
+Als Schriftarten kommen [League Spartan](https://github.com/theleagueof/league-spartan) und [Roboto Mono](https://github.com/googlefonts/roboto-3-classic) zum Einsatz.
 
 Die folgenden JavaScript und CSS Frameworks werden benutzt:
-* [jQuery](https://jquery.com/)
 * [normalize.css](https://necolas.github.io/normalize.css/)
-* [Stickybits](https://dollarshaveclub.github.io/stickybits/)
-* [JS-Cookie](https://github.com/js-cookie/js-cookie)
 * [`three.js`](https://threejs.org/)
+* [Glide.js](https://glidejs.com/)
+
+Das Kartenmaterial stammt von [OpenStreetMap](https://www.openstreetmap.org/#map=13/51.53544/9.92340), der Anzeigestil ist ["Toner"](https://github.com/openmaptiles/maptiler-toner-gl-style).
 
 Die Nachbearbeitung der Digitalisate wurde mit [ScanTailor Advanced](https://github.com/4lex4/scantailor-advanced) durchgeführt.
 

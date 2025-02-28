@@ -1,8 +1,61 @@
+/*
+@use "link" as * with (
+  $accent-color: $accent-color
+);
+*/
+
 .section-single {
   .post.section{
-    .post-content {
-      .iiif .iiif-image {
-        width: 50%;
+
+    a,
+    a:active,
+    a:focus,
+    a:hover,
+    a:visited {
+      color: var(--text-color);
+      text-decoration: none;
+    }
+
+    .share {
+
+    }
+
+    .book-reference {
+      font-weight: 100;
+      text-align: right;
+
+      &:before {
+        content: url($book-dark);
+        margin-right: 1rem;
+        height: 1rem;
+        width: 1rem;
+        display: inline-block;
+
+        @include scale-link($factor: $scale-factor);
+
+        @media (min-width: 768px) {
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .article-list-heading {
+      font-weight: 600;
+      font-size: xx-large;
+      margin-bottom: 2rem;
+      font-family: $heading-font;
+    }
+
+    .article-list {
+      @media (min-width: 768px) {
+        margin-left: 1rem;
+      }
+    }
+
+    .section-meta,
+    .article-list {
+      .headline a {
+        @include underline-link();
       }
     }
   }

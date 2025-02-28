@@ -1,0 +1,8 @@
+.home-post-heading {
+  h1 {
+    @media (min-width: 768px) {
+      font-size: 8vw;
+      font-stretch: 150%;
+    }
+  }
+}

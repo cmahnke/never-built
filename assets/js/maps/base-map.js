@@ -12,6 +12,10 @@ import {Circle as CircleStyle, RegularShape, Style, Fill, Stroke, Text, Icon} fr
 export const toolTips = { 'de': {'zoomIn': 'Vergrößern', 'zoomOut': 'Verkleinern', 'fullscreen': 'Vollbildansicht', 'rotate': 'Rotation zurücksetzen', 'rotateLeft': '90° nach links drehen', 'rotateRight': '90° nach rechst drehen'},
                  'en': {'zoomIn': 'Zoom in', 'zoomOut': 'Zoom out', 'fullscreen': 'Toggle full-screen', 'rotate': 'Reset rotation', 'rotateLeft': 'Rotate 90° left', 'rotateRight': 'Rotate 90° right'}};
 
+export const defaultVectorSource = "https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf";
+
+export const default_padding = [30, 30, 30, 30];
+
 export function getLang() {
   var lang = 'en';
   if (document.documentElement.lang !== undefined) {
@@ -19,6 +23,18 @@ export function getLang() {
       lang = document.documentElement.lang;
   }
   return lang;
+}
+
+export function absUrl(url) {
+  if (url.startsWith("http") || url.startsWith("//")) {
+    return url;
+  } else {
+    var base =  window.location.protocol + '//' + window.location.hostname;
+    if (window.location.port !== "") {
+      base += ":" + window.location.port;
+    }
+    return base + url;
+  }
 }
 
 export function loadGeoJSON(url) {
@@ -42,6 +58,29 @@ export function loadGeoJSON(url) {
     .catch(function() {
       console.log('Could not read data from URL.');
     });
+}
+
+
+export function addOverlay(map) {
+  var container = document.getElementById(element + '-popup');
+  var content = document.getElementById(element + '-popup-content');
+  var closer = document.getElementById(element + '-popup-closer');
+
+  overlay = new Overlay({
+      element: container,
+      autoPan: true,
+      autoPanAnimation: {
+          duration: 250
+      }
+  });
+
+  map.addOverlay(overlay);
+
+  closer.onclick = function() {
+      overlay.setPosition(undefined);
+      closer.blur();
+      return false;
+  };
 }
 
 /**

@@ -1,0 +1,75 @@
+{{- $defaultWidth := 480 -}}
+{{- $defaultHeight := 640 -}}
+{{- $fit := printf "%dx%d" $defaultWidth $defaultHeight -}}
+{{- $classes := slice "even" "odd" -}}
+{{- $pages := .CurrentSection.RegularPages -}}
+{{- if gt (len $pages) 0 -}}
+  <div class="article-list book">
+    {{- if eq .Kind "section" -}}
+      {{- $pages = where $pages "Path" "!=" .Path -}}
+    {{- end -}}
+    {{ $count := 0 }}
+    {{- range $pages -}}
+      {{- $class := index $classes (mod $count 2) -}}
+      {{- $previewNames := false -}}
+      {{- $pageContext := . -}}
+
+      <article class="list-item article {{ $class }}" itemscope itemtype="http://schema.org/Blog">
+        <div class="list-item-head">
+          {{- $title := .Title -}}
+          <h2 class="headline" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}</a></h2>
+            {{- with .Params.cover -}}
+              {{- if reflect.IsSlice . -}}
+                {{- $previewNames = . -}}
+              {{- else -}}
+                {{- $previewNames = slice . -}}
+              {{- end -}}
+            {{- end -}}
+
+            {{- if $previewNames -}}
+              {{ $data := "" }}
+              {{- with $pageContext.Resources.GetMatch "images.json" -}}
+                {{ with . | transform.Unmarshal }}
+                  {{ $data = . }}
+                {{ end }}
+              {{- end -}}
+              {{- $data = jsonify $data -}}
+
+              <div class="preview {{ $class }}"{{ if ne $data "" }} data-image-regions="{{  $data }}"{{ end }}>
+                {{- range $i, $img := $previewNames -}}
+                  {{- with $pageContext.Resources.GetMatch $img -}}
+                    <a class="cover-link" href="{{ $pageContext.Permalink }}">
+                      <img class="{{printf "preview img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}" />
+                    </a>
+                  {{- else -}}
+                    {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $pageContext.Path $img -}}
+                  {{- end -}}
+                {{- end -}}
+                {{- $previewImg := false -}}
+                {{- with try (partial "preview/preview-internal.html" (dict "context" $pageContext "fit" $fit "postProcess" true)) -}}
+                  {{- $previewImg = .Value -}}
+                {{- end -}}
+                {{- if $previewImg -}}
+                  {{- $class := "preview" -}}
+                  {{- with $previewImg -}}
+                  <a class="cover-link" href="{{ $pageContext.Permalink }}">
+                      <img class="preview scan {{ $class }}" src="{{ $previewImg.RelPermalink }}" />
+                  </a>
+                  {{ end }}
+                {{- end -}}
+              </div>
+            {{- end -}}
+        </div>
+        {{- if .Summary -}}
+          <section class="summary">
+            {{ .Summary }}
+            {{ if .Truncated }}
+              <a href="{{ .RelPermalink }}" class="readmore">{{ i18n "readmore" }}</a>
+            {{ end }}
+          </section>
+        {{- end -}}
+      </article>
+      {{- $count = add $count 1 -}}
+    {{- end -}}
+  </div>
+{{- end -}}

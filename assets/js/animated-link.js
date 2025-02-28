@@ -85,7 +85,6 @@ function menuLinkHandler(e, timeout) {
 }
 
 export function setupAnimatedLinks(links) {
-  console.log(links);
   links.forEach((link) => {
     if (link.hasAttribute('href')) {
       addPrefetch(link.getAttribute('href'));
@@ -97,7 +96,6 @@ export function setupAnimatedLinks(links) {
 }
 
 export function setupAnimatedMenu(links) {
-  console.log(links);
   links.forEach((link) => {
     if (link.hasAttribute('href')) {
       addPrefetch(link.getAttribute('href'));

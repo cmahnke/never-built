@@ -10,17 +10,17 @@ outputs:
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
   cover: blueprint.jpg
+  preview: preview
   geojson:
     coordinates:
     - 9.9323111
     - 51.529938
 resources:
 - src: "page082.jxl"
-  name: preview
   params:
     iiif: page082/info.json
 - src: "page083.jxl"
-  name: page
+  name: preview
   params:
     iiif: page083/info.json
 ---

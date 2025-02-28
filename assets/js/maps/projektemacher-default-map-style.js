@@ -19,7 +19,7 @@ var layers = [
 
 export const default_style = {
   version: 8,
-  "ol:webfonts": "assets/{font-family}/{fontweight}{-fontstyle}.css",
+  "ol:webfonts": "css/{font-family}.css",
   metadata: {
     inspect: true,
   },
