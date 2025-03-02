@@ -16,6 +16,9 @@ import {center as turf_center} from '@turf/turf';
 import {Control, FullScreen, Zoom, MousePosition} from 'ol/control';
 import {Circle as CircleStyle, RegularShape, Style, Fill, Stroke, Text, Icon} from 'ol/style.js';
 
+const defaultSprites = "/map-styles/sprite";
+const defaultFonts = "css/{font-family}.css";
+
 function geoJSONVectorSource(geojson) {
   var parser = new GeoJSON({dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
 
@@ -46,14 +49,59 @@ function checkMapboxStyle(style) {
   return false;
 }
 
-function updateStyle(style, url, initialZoom, maxZoom, bbox, center) {
-  style["ol:webfonts"] =  "css/{font-family}.css";
-  style.sources.vector_layer_.tiles = [url];
-  style.sources.vector_layer_.maxzoom = maxZoom;
-  style.sources.vector_layer_.minzoom = 0;
-  style.sources.vector_layer_.bounds = bbox.flat();
-  style.center = center;
-  style.zoom = initialZoom;
+function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, background, sprites, fonts) {
+  const sourceKey = Object.keys(style.sources)[0]
+  const source = style.sources[sourceKey]
+
+  source.tiles = [url];
+  if ("url" in source) {
+    delete source.url
+  }
+
+  if (minzoom !== undefined) {
+    source["minzoom"] = minzoom;
+  }
+  if (maxzoom !== undefined) {
+    source["maxzoom"] = maxzoom;
+  }
+  if (bounds !== undefined) {
+    bounds = bounds.flat().map(e => { return Number(e) });
+    source["bounds"] = bounds
+  }
+  if (center !== undefined) {
+    style.center = center;
+  }
+
+  style.layers.forEach(layer => {
+    if ("type" in layer && layer.type === "background") {
+      layer.paint["background-color"] = background;
+    }
+  });
+
+  if (fonts !== undefined) {
+    style["ol:webfonts"] = fonts;
+  } else {
+    style["ol:webfonts"] = defaultFonts;
+  }
+  if (initialzoom !== undefined) {
+    style.zoom = initialzoom;
+  }
+
+  if ("glyphs" in style) {
+    delete style.glyphs;
+  }
+
+  if ("sprite" in style) {
+    if (sprites === undefined) {
+      //delete style.sprite;
+      style.sprite = null;
+    } else {
+      style.sprite = sprites;
+    }
+  }
+
+  style.sources[sourceKey] = source
+
   return style
 }
 
@@ -133,9 +181,9 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
 
   if (style !== undefined) {
     styleObj = await loadOrParse(style)
-    //styleObj = updateStyle(styleObj, source, initialZoom, maxZoom, bboxObj, centerObj);
+    styleObj = updateStyle(styleObj, source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, undefined, absUrl(defaultSprites));
   } else {
-    styleObj = setupDefaultStyle(source, minZoom, maxZoom, bboxObj, centerObj, 'rgba(255, 255, 255, 0)');
+    styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, 'rgba(255, 255, 255, 0)');
   }
 
   view = new View(viewConfig);

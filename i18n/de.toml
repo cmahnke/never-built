@@ -24,3 +24,9 @@ other = "Buch"
 
 [sectionParent]
 other = "Dieser Beitrag ist aus"
+
+[originalPage]
+other = "Originalseite"
+
+[originalPages]
+other = "Originalseiten"

@@ -64,3 +64,8 @@ function checkEffects() {
     });
   });
 }
+
+/* Animation ideas
+
+
+*/

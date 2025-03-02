@@ -3,6 +3,7 @@
 {{- $context := path.Dir .File.Path -}}
 {{- $pageURL := .Permalink -}}
 {{- $class := "iiif" -}}
+{{- $classes := slice "even" "odd" -}}
 {{- if (isset .Page.Params "subtype") -}}
   {{- $class = (printf "%s %s" $class .Page.Params.subtype) -}}
 {{- end -}}
@@ -10,11 +11,14 @@
   {{- $class = (printf "%s %s" $class .Page.Params.iiifclass) -}}
 {{- end -}}
 {{- if (hasPrefix .Page.Params.iiifcontext "http://iiif.io/api/image/") -}}
-  <div class="{{ $class }}">
-    {{- range .Params.resources -}}
-      {{ partial "iiif/iiif-image.html" (dict "context" . "contextPath" $context "pageURL" .Permalink "heading" (i18n .name) "pageContext" $page "site" $.Site) }}
-    {{- end -}}
-  </div>
+  {{ $count := 0 }}
+  {{- range $i, $res := .Params.resources -}}
+    {{- $singleClass := index $classes (mod $count 2) -}}
+    <div class="{{ $class }} {{$singleClass}}">
+      {{ partial "iiif/iiif-image.html" (dict "context" $res "contextPath" $context "pageURL" $res.Permalink "heading" (i18n $res.name) "pageContext" $page "site" $.Site) }}
+    </div>
+    {{- $count = add $count 1 -}}
+  {{- end -}}
 {{- else if and (hasPrefix .Page.Params.iiifcontext "http://iiif.io/api/presentation/") (or .Page.Params.iiifmanifest .Page.Params.iiif.manifest) -}}
   <div class="{{ $class }}">
       {{- partial "iiif/iiif-presentation.html" . -}}

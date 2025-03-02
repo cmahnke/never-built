@@ -17,7 +17,6 @@
       },
       {
         "name": "model-planned",
-        "size": [4801, 6984],
         "postprocess": ["preview", "enhance_ai"],
         "position": {
           "x": 0,

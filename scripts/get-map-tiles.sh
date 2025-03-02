@@ -3,6 +3,8 @@ STYLE_URL=https://github.com/openmaptiles/maptiler-toner-gl-style/archive/refs/t
 STYLE_DIR=./static/map-styles
 TILES_DIR=./static/map
 
+declare -a SPRITES=("https://openmaptiles.github.io/maptiler-toner-gl-style/sprite.json" "https://openmaptiles.github.io/maptiler-toner-gl-style/sprite@2x.json" "https://openmaptiles.github.io/maptiler-toner-gl-style/sprite.png" "https://openmaptiles.github.io/maptiler-toner-gl-style/sprite@2x.png")
+
 if ! test -d "$TILES_DIR"; then
   mkdir -p $TILES_DIR
 
@@ -26,6 +28,10 @@ if ! test -d "STYLE_DIR"; then
   rm $STYLE_DIR/*.tar.gz
   mv $STYLE_DIR/*/* $STYLE_DIR/
   rm $STYLE_DIR/*.md
+  for SPRITE in "${SPRITES[@]}"
+  do
+    wget -P $STYLE_DIR/ "$SPRITE"
+  done
 else
   echo "Directory $STYLE_DIR exists."
 fi

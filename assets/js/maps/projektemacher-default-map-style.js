@@ -19,6 +19,8 @@ var layers = [
   ["poi", 59, 181, 10],
 ];
 
+const defaultFonts = "css/{font-family}.css";
+
 export const debugStyle = new Style({
     fill: new Fill({
       color: 'red'
@@ -41,7 +43,7 @@ export const debugStyle = new Style({
 
 const defaultStyle = {
   version: 8,
-  "ol:webfonts": "css/{font-family}.css",
+  "ol:webfonts": defaultFonts,
   metadata: {
     inspect: true,
   },
@@ -105,7 +107,7 @@ const defaultStyle = {
   ],
 };
 
-export function setupDefaultStyle(source, minzoom, maxzoom, bounds, center, background, fonts) {
+export function setupDefaultStyle(source, initialzoom, minzoom, maxzoom, bounds, center, background, fonts) {
   let style = defaultStyle
 
   style.sources.vector_layer_.tiles = [source];
@@ -124,6 +126,9 @@ export function setupDefaultStyle(source, minzoom, maxzoom, bounds, center, back
   }
   if (background != undefined) {
     style.layers[0].paint["background-color"] = background;
+  }
+  if (initialzoom !== undefined) {
+    style.zoom = initialZoom;
   }
 
   if (fonts !== undefined) {

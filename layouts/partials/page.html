@@ -18,8 +18,17 @@
           {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "debug" true "minZoom" 12 "initialZoom" 13 "maxZoom" 14 "disabled" true) -}}
         {{- end -}}
 
-        {{- if or .Params.iiifcontext .Params.iiif.context -}}
-          {{- partial "iiif/iiif-content.html" . -}}
+        {{- if .Params.resources -}}
+          <h3 class="sub-section-heading">
+            {{- if gt (len .Params.resources) 1 -}}
+              {{- i18n "originalPages" -}}
+            {{- else -}}
+              {{- i18n "originalPage" -}}
+            {{- end -}}
+          </h3>
+          {{- if or .Params.iiifcontext .Params.iiif.context -}}
+            {{- partial "iiif/iiif-content.html" . -}}
+          {{- end -}}
         {{- end -}}
       </div>
     </div>

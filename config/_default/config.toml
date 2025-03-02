@@ -18,7 +18,7 @@
 [params.map]
   source = "/map/tiles/{z}/{x}/{y}.pbf"
   style = "/map-styles/style.json"
-  marker = '{"src": "/images/marker.svg", "scale": 0.1, "anchorXUnits": "fraction", "anchorYUnits": "fraction", "anchor": [0.5, 1]}'
+  marker = '{"src": "/images/marker.svg", "scale": 0.075, "anchorXUnits": "fraction", "anchorYUnits": "fraction", "anchor": [0.5, 1]}'
   bbox = "/map/bbox.json"
 
 [params.preview]

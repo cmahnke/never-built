@@ -16,7 +16,7 @@
 {{- if eq $style nil -}}
   {{- $style = "undefined" -}}
 {{- end -}}
-{{- if and (not $style) site.Params.map site.Params.map.style -}}
+{{- if and (eq $style "undefined") site.Params.map site.Params.map.style -}}
   {{- $style = site.Params.map.style -}}
 {{- end -}}
 {{- if eq $geojson nil -}}
