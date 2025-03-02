@@ -63,7 +63,7 @@
 
 {{/* See https://openlayers.org/en/latest/apidoc/module-ol_style_Icon.html for options */}}
 {{- $marker := .marker -}}
-{{- if eq $marker nil -}}
+{{- if or (eq $marker nil) (eq $marker false) -}}
   {{- $marker = "undefined" -}}
 {{- end -}}
 {{- if and (eq $marker "undefined") site.Params.map site.Params.map.marker -}}

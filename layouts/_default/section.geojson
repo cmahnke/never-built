@@ -1,0 +1,3 @@
+{{- $pages := site.AllPages -}}
+{{- $pages = where $pages "Params.geojson" "ne" nil -}}
+{{- partial "geojson/featureCollection.geojson" $pages -}}

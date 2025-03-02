@@ -15,8 +15,8 @@ params:
   preview: preview
   geojson:
     coordinates:
-    - 9.9326044
-    - 51.5416565
+    - 9.935313
+    - 51.541721
   featured: true
 resources:
 - src: "page064.jxl"

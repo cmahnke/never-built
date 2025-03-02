@@ -89,6 +89,21 @@ export function loadGeoJSON(url) {
     });
 }
 
+function mergeFeatures (featureArray) {
+  var title = "";
+  var popupContent = "";
+
+  featureArray.forEach(feature => {
+    title += feature.get("title") + ", ";
+    popupContent += feature.get("popupContent");
+  });
+
+  featureArray[0].set("title", title);
+  featureArray[0].set("popupContent", popupContent);
+
+  return featureArray[0];
+}
+
 export function addOverlay(map, markerOptions) {
   const target = map.getTargetElement();
   const container = target.parentElement.querySelector('.ol-popup');;
@@ -119,9 +134,9 @@ export function addOverlay(map, markerOptions) {
       function(feature, layer) {
         return feature;
       }, markerOptions);
-
-    if (feature) {
+    if (feature && "geometry" in feature.getProperties()) {
       featurePopUp(feature, overlay, content);
+
     }
 
   });

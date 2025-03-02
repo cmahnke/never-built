@@ -65,11 +65,17 @@ jobs:
       - name: Build Hugo site
         run: hugo --printI18nWarnings --printUnusedTemplates
 
+      - name: Build Hugo future site
+        run: hugo -F -b https://never-build.goettingen.xyz/future/ -d ./future
+
       - name: Puppeteer
         run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh
 
       - name: Archive links
         run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14
+
+      - name: Copy future
+        run: mv ./future ./docs/
 
       - name: Deploy site
         uses: peaceiris/actions-gh-pages@v4.0.0

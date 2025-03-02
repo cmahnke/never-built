@@ -49,7 +49,7 @@ function checkMapboxStyle(style) {
   return false;
 }
 
-function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, background, sprites, fonts) {
+function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, background, sprites, fontPath, font) {
   const sourceKey = Object.keys(style.sources)[0]
   const source = style.sources[sourceKey]
 
@@ -80,8 +80,8 @@ function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, 
     });
   }
 
-  if (fonts !== undefined) {
-    style["ol:webfonts"] = fonts;
+  if (fontPath !== undefined) {
+    style["ol:webfonts"] = fontPath;
   } else {
     style["ol:webfonts"] = defaultFonts;
   }
@@ -101,11 +101,40 @@ function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, 
       style.sprite = sprites;
     }
   }
+  Object.keys(style.metadata).forEach(key => {
+    if (key.startsWith("mapbox") || key.startsWith("openmaptiles")) {
+      delete style.metadata[key]
+    }
+  });
+
+  if (font !== undefined) {
+    style.layers.forEach(layer => {
+      if (layer.type == "symbol") {
+        if ("text-font" in layer.layout) {
+          if (Array.isArray(layer.layout["text-font"])) {
+            layer.layout["text-font"][0] = font;
+          } else if (typeof layer.layout["text-font"] === 'object') {
+            if ("stops" in layer.layout["text-font"]) {
+              layer.layout["text-font"].stops.forEach(stop => {
+                stop.forEach(s => {
+                  if (Array.isArray(s)) {
+                    s[0] = font;
+                  }
+                });
+              });
+            }
+          }
+        }
+      }
+    });
+  }
+
+
   style.sources[sourceKey] = source
   return style
 }
 
-export async function projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker) {
+export async function projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font) {
 
   var geojsonObj, styleObj, bboxObj, bboxObj, centerObj, markerObj;
   const lang = getLang();
@@ -181,7 +210,7 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
 
   if (style !== undefined) {
     styleObj = await loadOrParse(style)
-    styleObj = updateStyle(styleObj, source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background, absUrl(defaultSprites));
+    styleObj = updateStyle(styleObj, source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background, absUrl(defaultSprites), defaultFonts, font);
   } else {
     styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }

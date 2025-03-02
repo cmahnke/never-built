@@ -3,14 +3,18 @@ import {setupBook} from './book-toc';
 import Glide from '@glidejs/glide'
 import { projektemacherMap } from './maps/projektemacher-map';
 
-window.projektemacherMap = async function(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker) {
+const defaultMapFont = "Roboto Mono Variable";
+
+window.projektemacherMap = async function(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font) {
   var bgElem;
   if (typeof elem === "string") {
     bgElem = document.getElementById(elem)
   }
-
+  if (font === undefined) {
+    font = defaultMapFont
+  }
   background = window.getComputedStyle(bgElem).getPropertyValue('--page-background');
-  return projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker);
+  return projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font);
 }
 
 const animatedLinkColor = ["black", "#000", "#000000", "rgb(0, 0, 0)"]
