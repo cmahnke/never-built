@@ -78,6 +78,11 @@
   {{- $bbox = site.Params.map.bbox -}}
 {{- end -}}
 
+{{- $background := .background -}}
+{{- if or (eq $background nil) (eq $background false) -}}
+  {{- $background = "undefined" -}}
+{{- end -}}
+
 {{- $debug := .debug -}}
 {{- if eq $debug nil -}}
   {{- $debug = false -}}
@@ -106,6 +111,7 @@
       {{ partial "js/type.html" $cluster | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $disabled | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $popup | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $background | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $debug | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $marker | htmlUnescape | safeJS}});
       /*{{ if $marker }}, {{ $marker | safeJS}}  {{ end }});*/

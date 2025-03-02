@@ -72,11 +72,13 @@ function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, 
     style.center = center;
   }
 
-  style.layers.forEach(layer => {
-    if ("type" in layer && layer.type === "background") {
-      layer.paint["background-color"] = background;
-    }
-  });
+  if (background !== undefined) {
+    style.layers.forEach(layer => {
+      if ("type" in layer && layer.type === "background") {
+        layer.paint["background-color"] = background;
+      }
+    });
+  }
 
   if (fonts !== undefined) {
     style["ol:webfonts"] = fonts;
@@ -99,13 +101,11 @@ function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, 
       style.sprite = sprites;
     }
   }
-
   style.sources[sourceKey] = source
-
   return style
 }
 
-export async function projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, debug, marker) {
+export async function projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker) {
 
   var geojsonObj, styleObj, bboxObj, bboxObj, centerObj, markerObj;
   const lang = getLang();
@@ -181,9 +181,9 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
 
   if (style !== undefined) {
     styleObj = await loadOrParse(style)
-    styleObj = updateStyle(styleObj, source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, undefined, absUrl(defaultSprites));
+    styleObj = updateStyle(styleObj, source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background, absUrl(defaultSprites));
   } else {
-    styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, 'rgba(255, 255, 255, 0)');
+    styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }
 
   view = new View(viewConfig);
@@ -201,6 +201,7 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
   if (debug) {
     console.log(`Adding map on ${elem}, with '${JSON.stringify(geojsonObj)}', from '${source}', style ${style}: options cluster '${cluster}', marker '${JSON.stringify(markerObj)}', bbox '${bbox}', center '${center}', initialZoom '${initialZoom}', min zoom '${minZoom}', max zoom '${maxZoom}', popup '${popup}', disabled '${disabled}'  - debug '${debug}'`);
     controls.controls.push(new MousePosition());
+    console.log("Active style", styleObj)
     const debugLayer = new TileLayer({
       source: new TileDebug({'zDirection': 1, 'template': '{z}/{x}/{y}'}),
     });
