@@ -1,9 +1,11 @@
 [
   {
-    "image": "page082.jxl"
+    "image": "page082.jxl",
+    "size": [4695, 6996]
   },
   {
     "image": "page083.jxl",
+    "size": [4733, 6990],
     "areas": [
       {
         "name": "blueprint",

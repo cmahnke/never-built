@@ -1,6 +1,7 @@
 [
   {
     "image": "page064.jxl",
+    "size": [4732, 6987],
     "areas": [
       {
         "name": "model",
@@ -18,6 +19,7 @@
   },
   {
     "image": "page065.jxl",
+    "size": [4749, 6990],
     "areas": [
       {
         "name": "blueprint",

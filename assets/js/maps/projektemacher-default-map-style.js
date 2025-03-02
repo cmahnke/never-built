@@ -1,3 +1,5 @@
+import {Circle as CircleStyle, Style, Fill, Stroke} from 'ol/style.js';
+
 var layers = [
   // source name, r, g, b
   ["water", 6, 204, 204],
@@ -17,7 +19,27 @@ var layers = [
   ["poi", 59, 181, 10],
 ];
 
-export const default_style = {
+export const debugStyle = new Style({
+    fill: new Fill({
+      color: 'red'
+    }),
+    stroke: new Stroke({
+      color: 'white',
+      width: 1.25
+    }),
+    image: new CircleStyle({
+      radius: 5,
+      fill: new Fill({
+        color: 'red'
+      }),
+      stroke: new Stroke({
+        color: 'white',
+        width: 1.25
+      })
+    })
+  });
+
+const defaultStyle = {
   version: 8,
   "ol:webfonts": "css/{font-family}.css",
   metadata: {
@@ -26,13 +48,11 @@ export const default_style = {
   sources: {
     vector_layer_: {
       type: "vector",
-
       tiles: [
         "http://localhost:8080/central-europe/tiles/{z}/{x}/{y}.pbf",
       ],
-
       minzoom: 0,
-      maxzoom: 13,
+      maxzoom: 14,
       attribution:
         '&copy; OpenStreetMap contributors and Natural Earth',
     },
@@ -84,3 +104,30 @@ export const default_style = {
     })),
   ],
 };
+
+export function setupDefaultStyle(source, minzoom, maxzoom, bounds, center, background, fonts) {
+  let style = defaultStyle
+
+  style.sources.vector_layer_.tiles = [source];
+  if (minzoom !== undefined) {
+    style.sources.vector_layer_.minzoom = minzoom;
+  }
+  if (maxzoom !== undefined) {
+    style.sources.vector_layer_.maxzoom = maxzoom;
+  }
+  if (bounds !== undefined) {
+    bounds = bounds.flat().map(e => { return Number(e) });
+    style.sources.vector_layer_.bounds = bounds
+  }
+  if (center !== undefined) {
+    style.center = center;
+  }
+  if (background != undefined) {
+    style.layers[0].paint["background-color"] = background;
+  }
+
+  if (fonts !== undefined) {
+    style["ol:webfonts"] = fonts;
+  }
+  return style;
+}

@@ -4,7 +4,7 @@
 {{- $classes := slice "even" "odd" -}}
 {{- $pages := .CurrentSection.RegularPages -}}
 {{- if gt (len $pages) 0 -}}
-  <div class="article-list book">
+  <div class="article-list book scroll-layout">
     {{- if eq .Kind "section" -}}
       {{- $pages = where $pages "Path" "!=" .Path -}}
     {{- end -}}
@@ -14,59 +14,81 @@
       {{- $previewNames := false -}}
       {{- $pageContext := . -}}
 
-      <article class="list-item article {{ $class }}" itemscope itemtype="http://schema.org/Blog">
-        <div class="list-item-head">
+      <article class="list-item article {{ $class }} scroll-item" itemscope itemtype="http://schema.org/Blog">
+        <div class="list-item-head scroll-header">
           {{- $title := .Title -}}
-          <h2 class="headline" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}</a></h2>
-            {{- with .Params.cover -}}
-              {{- if reflect.IsSlice . -}}
-                {{- $previewNames = . -}}
+          <h2 class="headline scroll-title" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}</a></h2>
+          {{- partial "date.html" . -}}
+        </div>
+        {{- with .Params.cover -}}
+          {{- if reflect.IsSlice . -}}
+            {{- $previewNames = . -}}
+          {{- else -}}
+            {{- $previewNames = slice . -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{- if $previewNames -}}
+          {{ $data := "" }}
+          {{- with $pageContext.Resources.GetMatch "images.json" -}}
+            {{ with . | transform.Unmarshal }}
+              {{ $data = . }}
+            {{ end }}
+          {{- end -}}
+          {{- $data = jsonify $data -}}
+
+          <div class="preview-container {{ $class }}"{{ if ne $data "" }} data-image-regions="{{  $data }}"{{ end }}>
+            {{- range $i, $img := $previewNames -}}
+              {{- with $pageContext.Resources.GetMatch $img -}}
+                <a class="cover-link" href="{{ $pageContext.Permalink }}">
+                  <img class="{{printf "preview img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}" data-image-name="{{ $img}}" />
+                </a>
               {{- else -}}
-                {{- $previewNames = slice . -}}
+                {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $pageContext.Path $img -}}
               {{- end -}}
             {{- end -}}
-
-            {{- if $previewNames -}}
-              {{ $data := "" }}
-              {{- with $pageContext.Resources.GetMatch "images.json" -}}
-                {{ with . | transform.Unmarshal }}
-                  {{ $data = . }}
-                {{ end }}
-              {{- end -}}
-              {{- $data = jsonify $data -}}
-
-              <div class="preview {{ $class }}"{{ if ne $data "" }} data-image-regions="{{  $data }}"{{ end }}>
-                {{- range $i, $img := $previewNames -}}
-                  {{- with $pageContext.Resources.GetMatch $img -}}
-                    <a class="cover-link" href="{{ $pageContext.Permalink }}">
-                      <img class="{{printf "preview img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}" />
-                    </a>
-                  {{- else -}}
-                    {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $pageContext.Path $img -}}
-                  {{- end -}}
-                {{- end -}}
-                {{- $previewImg := false -}}
-                {{- with try (partial "preview/preview-internal.html" (dict "context" $pageContext "fit" $fit "postProcess" true)) -}}
-                  {{- $previewImg = .Value -}}
-                {{- end -}}
-                {{- if $previewImg -}}
-                  {{- $class := "preview" -}}
-                  {{- with $previewImg -}}
+            {{- $previewImg := false -}}
+            {{- with try (partial "preview/preview-internal.html" (dict "context" $pageContext "fit" $fit "postProcess" true)) -}}
+              {{- $previewImg = .Value -}}
+            {{- end -}}
+            {{- if $previewImg -}}
+              {{- with $previewImg -}}
+                <div class="scan-container {{ $class }}">
                   <a class="cover-link" href="{{ $pageContext.Permalink }}">
-                      <img class="preview scan {{ $class }}" src="{{ $previewImg.RelPermalink }}" />
+                      <img class="preview scan" src="{{ $previewImg.RelPermalink }}" />
                   </a>
-                  {{ end }}
-                {{- end -}}
+                </div>
+              {{ end }}
+            {{- end -}}
+          </div>
+        {{- end -}}
+
+        {{- if .Params.geojson -}}
+          {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
+          {{- $coordinates := (index .Params.geojson "coordinates") -}}
+          {{- $center := slice (index $coordinates 0) (index $coordinates 1) -}}
+          {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "debug" true "minZoom" 12 "initialZoom" 13 "maxZoom" 14 "disabled" true) -}}
+        {{- end -}}
+
+        {{- if or .Summary .Content -}}
+          <div class="scroll-content">
+            {{- if or .Content -}}
+              <div class="summary .layer-2">
+                {{ .Summary }}
+                {{ if .Truncated }}
+                  <a href="{{ .RelPermalink }}" class="readmore">{{ i18n "readmore" }}</a>
+                {{ end }}
+              </div>
+              <div class="post-more .layer-3">
+                {{- $contentSections := split .RawContent "<!--more-->" -}}
+                {{- index $contentSections 1 -}}
+              </div>
+            {{- else -}}
+              <div class="post-content .layer-2">
+                {{ .Content }}
               </div>
             {{- end -}}
-        </div>
-        {{- if .Summary -}}
-          <section class="summary">
-            {{ .Summary }}
-            {{ if .Truncated }}
-              <a href="{{ .RelPermalink }}" class="readmore">{{ i18n "readmore" }}</a>
-            {{ end }}
-          </section>
+          </div>
         {{- end -}}
       </article>
       {{- $count = add $count 1 -}}

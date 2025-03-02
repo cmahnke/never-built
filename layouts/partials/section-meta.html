@@ -3,7 +3,6 @@
 {{- if gt (len $pages) 0 -}}
   {{- $geojson := partial "geojson/featureCollection.geojson" $pages -}}
   {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "debug" true "minZoom" 12 "maxZoom" 14 "initialZoom" 13 ) -}}
-  {{/* "center" "[9.93, 51.55]" */}}
 {{- end -}}
 
 {{- with .Params.worldcat -}}

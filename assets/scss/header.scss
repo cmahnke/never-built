@@ -110,7 +110,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
           position: absolute;
           top: 0;
           bottom: 0;
-          left: 0;
+          left: -10%;
           right: 0;
           background-color: var(--page-background);
           mix-blend-mode: difference;
@@ -119,6 +119,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
         }
       }
 
+      /* TODO use clamp()*/
       @media (min-width: 1400px) {
         font-size: 6.4rem;
       }

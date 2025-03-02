@@ -99,6 +99,13 @@ def extract(meta, dir):
             cprint(f"File {image_file} not found, skipping!", "red")
             continue
         im = Image.open(image_file)
+        if not "size" in image_meta:
+            cprint(f"Mising size: \"size\": [{im.width}, {im.height}],", "yellow")
+        else:
+            if image_meta["size"][0] != im.width:
+                cprint(f"Width is wrong: got {image_meta["size"][0]}, expected {im.width}", "red")
+            if image_meta["size"][1] != im.height:
+                cprint(f"Height is wrong: got {image_meta["size"][1]}, expected {im.height}", "red")
         if "areas" in image_meta:
             i = 1
             for area in image_meta["areas"]:

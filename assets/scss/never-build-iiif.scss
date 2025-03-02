@@ -2,6 +2,23 @@
   border-radius: unset;
 }
 
+.iiif .iiif-image {
+  .share {
+    a,
+    a:active,
+    a:focus,
+    a:hover,
+    a:visited {
+      color: var(--text-color);
+      text-decoration: none;
+    }
+
+    .iiif-link .iiif-iiif {
+      filter: grayscale(1);
+    }
+  }
+}
+
 .section-single {
   .post.section {
     .post-content {

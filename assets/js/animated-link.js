@@ -16,7 +16,7 @@ function addOverlay(elem, cls, additionalClasses) {
   })
   const container = document.createElement("div");
   overlay.classList.add(cls);
-  if (additionalClasses !==undefined && additionalClasses !== "") {
+  if (additionalClasses !== undefined && additionalClasses !== "") {
     additionalClasses.split(/(\s+)/).forEach(cls => {
       overlay.classList.add(cls)
     });

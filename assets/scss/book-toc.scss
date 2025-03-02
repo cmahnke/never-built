@@ -1,22 +1,17 @@
 .section-post:has(.main .article-list.book) {
 
+  /*
   .post.section {
     scroll-snap-align: start;
   }
+  */
 
   .article-list.book {
-
-    /*overflow-y: scroll;*/
     display: flex;
     flex-direction: column;
     scrollbar-width: none;
-    /*
-    height: 100%;
-    max-height: 100vh;
-    */
 
     .list-item.article {
-      scroll-snap-align: start;
 
       @media (min-width: 768px) {
         min-height: 75vh;
@@ -28,6 +23,117 @@
         a {
           @include underline-link();
         }
+      }
+    }
+  }
+}
+
+.scroll-layout {
+  .scroll-item {
+    height: fit-content;
+    min-height: 75vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5rem;
+
+    &:last {
+      margin-bottom: unset;
+    }
+
+    @media (min-width: 768px) {
+      .map-wrapper {
+        min-height: unset;
+        width: 40vw;
+        aspect-ratio: 1 / 1;
+
+      }
+    }
+
+    .post-content {
+      display: none;
+    }
+
+    .scroll-header {
+      display: flex;
+
+      .scroll-title {
+        width: 50%;
+      }
+
+      .date {
+        width: 40%;
+      }
+    }
+
+    .preview-container {
+      height: max-content;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+
+      .scan-container {
+        position: relative;
+        display: flex;
+        order: 0;
+
+        &.odd {
+          justify-self: end;
+        }
+
+        &.even {
+          justify-self: start;
+        }
+
+        .cover-link {
+          position: absolute;
+          top: 0;
+          left: 0;
+
+          &:first {
+            position: relative;
+          }
+
+          &:has(.overlay) {
+            z-index: +1;
+          }
+        }
+      }
+
+      @for $i from 1 through 5 {
+        a:has(.img-#{$i}) {
+          order: #{$i};
+          margin-top: 3rem;
+        }
+      }
+    }
+
+    @for $i from 1 through 9 {
+      .layer-#{$i} {
+        position: relative;
+        z-index: #{$i};
+      }
+    }
+
+    &.odd {
+      .scroll-title {
+        justify-self: start;
+        order: 1;
+      }
+
+      .date {
+        order: 2;
+      }
+    }
+
+    &.even {
+      .scroll-title {
+        justify-self: end;
+        text-align: right;
+        order: 2
+      }
+      .date {
+        order: 1;
       }
     }
   }

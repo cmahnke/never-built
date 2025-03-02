@@ -15,10 +15,10 @@
           {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
           {{- $coordinates := (index .Params.geojson "coordinates") -}}
           {{- $center := slice (index $coordinates 0) (index $coordinates 1) -}}
-          {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "debug" true "minZoom" 12 "initialZoom" 13 "maxZoom" 14) -}}
+          {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "debug" true "minZoom" 12 "initialZoom" 13 "maxZoom" 14 "disabled" true) -}}
         {{- end -}}
 
-        {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
+        {{- if or .Params.iiifcontext .Params.iiif.context -}}
           {{- partial "iiif/iiif-content.html" . -}}
         {{- end -}}
       </div>

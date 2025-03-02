@@ -44,13 +44,14 @@ $animation-duration: 750ms !default;
       font-size: 125em !important;
       text-shadow: 15em 15em, -15em -15em, 15em -15em, -15em 15em !important;
       transform: translate(-25%, -50%);
-      width: 150% !important;
-      height: 150% !important;
+      width: 250% !important;
+      height: 250% !important;
       letter-spacing: -10rem !important;
       transition: all $animation-duration ease-in,
         width $animation-duration ease-out,
         height $animation-duration ease-out, !important;
       color: var(--fade-to) !important;
+      background-image: linear-gradient(var(--fade-to), var(--fade-to));
     }
   }
 }

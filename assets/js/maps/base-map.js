@@ -3,6 +3,7 @@ import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
 import View from 'ol/View';
 import GeoJSON from 'ol/format/GeoJSON';
 import Overlay from 'ol/Overlay';
+import {fromLonLat} from 'ol/proj';
 import {OSM, XYZ, Cluster, Vector as VectorSource} from 'ol/source';
 import {createEmpty, extend, getHeight, getWidth} from 'ol/extent.js';
 import {Control, FullScreen, Zoom} from 'ol/control';
@@ -14,7 +15,7 @@ export const toolTips = { 'de': {'zoomIn': 'Vergrößern', 'zoomOut': 'Verkleine
 
 export const defaultVectorSource = "https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf";
 
-export const default_padding = [30, 30, 30, 30];
+export const defaultPadding = [30, 30, 30, 30];
 
 export function getLang() {
   var lang = 'en';
@@ -23,6 +24,14 @@ export function getLang() {
       lang = document.documentElement.lang;
   }
   return lang;
+}
+
+export function bboxExtent (bbox) {
+  if (typeof bbox === "string") {
+    bbox = bbox.split(",");
+  }
+  bbox = bbox.flat().map(e => { return e.toString() });
+  return fromLonLat([bbox[0],bbox[1]]).concat(fromLonLat([bbox[2], bbox[3]]));
 }
 
 export function absUrl(url) {
@@ -35,6 +44,26 @@ export function absUrl(url) {
     }
     return base + url;
   }
+}
+
+export function loadOrParse(str) {
+  var obj;
+  if (typeof str === 'object') {
+    return str;
+  }
+  try {
+    obj = JSON.parse(json);
+  } catch (e) {
+    obj = fetch(str)
+    .then(response => response.json())
+    .catch(function(body) {
+      console.log(`Could not read JSON from ${str}` + body);
+    })
+    .catch(function() {
+      console.log(`Could not read data from URL ${str}`);
+    });
+  }
+  return obj;
 }
 
 export function loadGeoJSON(url) {
@@ -60,27 +89,67 @@ export function loadGeoJSON(url) {
     });
 }
 
+export function addOverlay(map, markerOptions) {
+  const target = map.getTargetElement();
+  const container = target.parentElement.querySelector('.ol-popup');;
+  const content = container.querySelector('.ol-popup-content');
+  const closer = container.querySelector('.ol-popup-closer');
 
-export function addOverlay(map) {
-  var container = document.getElementById(element + '-popup');
-  var content = document.getElementById(element + '-popup-content');
-  var closer = document.getElementById(element + '-popup-closer');
+  function featurePopUp(feature, overlay) {
+    var geometry = feature.getGeometry();
+    var coord = geometry.getCoordinates();
+    var popup = '<h1>' + feature.get('name') + '</h1>';
+    popup += feature.get('popupContent');
+    content.innerHTML = popup;
+    overlay.setPosition(coord);
+  }
 
-  overlay = new Overlay({
-      element: container,
-      autoPan: true,
-      autoPanAnimation: {
-          duration: 250
-      }
+  const overlay = new Overlay({
+    element: container,
+    autoPan: true,
+    autoPanAnimation: {
+      duration: 250
+    }
   });
 
   map.addOverlay(overlay);
+
+  map.on('click', function (event) {
+    var feature = map.forEachFeatureAtPixel(event.pixel,
+      function(feature, layer) {
+        return feature;
+      }, markerOptions);
+
+    if (feature) {
+      featurePopUp(feature, overlay, content);
+    }
+
+  });
 
   closer.onclick = function() {
       overlay.setPosition(undefined);
       closer.blur();
       return false;
   };
+  return overlay;
+}
+
+export function featurePopUp(feature, overlay, content) {
+  var geometry = feature.getGeometry();
+  var coord = geometry.getCoordinates();
+  var popup = '<h1>' + feature.get('name') + '</h1>';
+  popup += feature.get('popupContent');
+  content.innerHTML = popup;
+  overlay.setPosition(coord);
+}
+
+export function setupMarker (marker, layer) {
+  /* Marker style */
+  if (marker !== undefined && marker) { 
+    var iconStyle = new Style({image: new Icon(marker)});
+    layer.setStyle(iconStyle);
+    return layer
+  }
 }
 
 /**
@@ -93,27 +162,9 @@ export function addOverlay(map) {
 
 function setupMap(element, geojson, source, cluster, marker) {
 
-  function featurePopUp(feature) {
-    var geometry = feature.getGeometry();
-    var coord = geometry.getCoordinates();
-    var popup = '<h1>' + feature.get('name') + '</h1>';
-    popup += feature.get('popupContent');
-    content.innerHTML = popup;
-    overlay.setPosition(coord);
-  }
 
-  /* Marker style */
-  var iconStyle;
-  var markerOptions = {};
-  if (marker !== undefined && marker) {
-    try {
-        marker = JSON.parse(marker);
-    } catch (e) {
-      console.warn(`Can't parse marker ${marker}`);
-    }
-    iconStyle = new Style({image: new Icon(marker)});
-    markerOptions = {hitTolerance: 10};
-  }
+
+
 
   function clusterMemberStyle(clusterMember) {
     if (marker !== undefined && marker) {
@@ -192,8 +243,6 @@ function setupMap(element, geojson, source, cluster, marker) {
 
 
   var padding = [30, 30, 30, 30];
-
-
 
   /* Cluster coloring*/
   const outerCircleFill = new Fill({color: 'rgba(255, 255, 255, 0.7)'});

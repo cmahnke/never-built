@@ -28,7 +28,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
 }
 
 /* See https://css-tricks.com/taming-blend-modes-difference-and-exclusion/ */
-@mixin invert-link ($color: transparent, $blend-mode: color-burn, $initial: 0, $height: 0.5) {
+@mixin invert-link ($color: color-mix(in srgb, var(--page-background), black 10%), $blend-mode: color-burn, $initial: 0, $height: 0.5) {
   text-decoration: none;
   position: relative;
 
@@ -49,11 +49,12 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
     bottom: 0;
     right: 0;
     left: 0;
-    background: $color;
+    background: color-mix(in srgb, var(--page-background), black 10%);
+    /**background: $color;*/
     content: '';
     transform-origin: 0 100%;
     transform: scaleY($initial);
-    transition: transform .25s;
+    transition: transform .45s;
     mix-blend-mode: $blend-mode;
   }
 

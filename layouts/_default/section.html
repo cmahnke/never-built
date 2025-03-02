@@ -18,9 +18,13 @@
     {{- partial "book-toc.html" . -}}
 
     {{- if and (isset .Params "type") (eq .Params.type "book") -}}
+
       <div class="meta">
         {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
-          {{- partial "iiif/iiif-content.html" . -}}
+          <h2 class="meta-cover-title">{{ i18n "front" }}</h2>
+          {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
+            {{- partial "iiif/iiif-content.html" . -}}
+          {{- end -}}
         {{- end -}}
         {{- partial "section-meta.html" . -}}
       </div>

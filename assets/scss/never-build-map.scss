@@ -7,6 +7,11 @@
   }
 }
 
+
+.map-wrapper {
+
+}
+
 ol-viewport {
   --ol-subtle-background-color: white;
 }
@@ -41,17 +46,63 @@ ol-viewport {
   min-height: 60vh;
   position: relative;
 
+
+  .ol-popup {
+    display: none;
+  }
+
   .map {
     flex: 1;
-    /*min-height: 0;*/
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     height: 100%;
-    width: 100%
+    width: 100%;
+
+    .ol-viewport {
+      border-radius: unset;
+    }
+
+    .ol-overlay-container .ol-popup {
+      display: unset;
+      filter: unset;
+      border-radius: unset;
+      border: .3ex solid #000;
+      padding: 1.6rem .6rem 1rem .6rem;
+
+      &:after, &:before {
+        border-top-color: black;
+      }
+
+      a.ol-popup-closer {
+        position: absolute !important;
+        top: .2rem;
+        right: .6rem;
+        text-decoration-style: unset !important;
+        text-decoration-line: unset;
+        text-decoration-thickness: unset;
+        text-decoration-skip-ink: unset;
+        text-decoration: none !important;
+
+        &:after {
+          content: "✖" !important;
+          position: relative !important;
+          display: block;
+          background-color: var(--ol-background-color) !important;
+          font-weight: bold;
+          text-decoration: none;
+          font-size: inherit;
+          font-size: 2rem;
+          mix-blend-mode: unset !important;
+          transform: unset !important;
+          transition: unset !important;
+        }
+      }
+    }
   }
+
 }
 
 .section-post {
@@ -65,6 +116,11 @@ ol-viewport {
 
         }
       }
+    }
+
+    .section-single .book {
+      /* See book-toc.scss */
+
     }
   }
 }

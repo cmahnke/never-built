@@ -1,4 +1,0 @@
-{{ warnf "[partials/fonts/css.html] Copy css files of fonts" }}
-{{- range (resources.Match "css/fonts/*.css") -}}
-    {{ .Publish }}
-{{- end -}}

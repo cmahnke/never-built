@@ -29,6 +29,16 @@
   {{- $cluster = false -}}
 {{- end -}}
 
+{{- $disabled := .disabled -}}
+{{- if eq $disabled nil -}}
+  {{- $disabled = false -}}
+{{- end -}}
+
+{{- $popup := .popup -}}
+{{- if eq $popup nil -}}
+  {{- $popup = true -}}
+{{- end -}}
+
 {{/*  center, initialZoom, maxZoom */}}
 {{- $center := .center -}}
 {{- if or (eq $center nil) (eq $center false) -}}
@@ -56,7 +66,7 @@
 {{- if eq $marker nil -}}
   {{- $marker = "undefined" -}}
 {{- end -}}
-{{- if and (ne $marker "undefined") site.Params.map site.Params.map.marker -}}
+{{- if and (eq $marker "undefined") site.Params.map site.Params.map.marker -}}
   {{- $marker = site.Params.map.marker -}}
 {{- end -}}
 
@@ -79,7 +89,7 @@
   <div class="map" id="{{ $id }}"></div>
   <div id="{{ $id }}-popup" class="ol-popup">
     <a href="#" id="{{ $id }}-popup-closer" class="ol-popup-closer"></a>
-    <div id="{{ $id }}-popup-content"></div>
+    <div id="{{ $id }}-popup-content" class="ol-popup-content"></div>
   </div>
 </div>
 <script type="text/javascript">
@@ -88,12 +98,14 @@
       {{ partial "js/type.html" $geojson | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $source | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $style | htmlUnescape | safeJS }},
-      {{ partial "js/type.html" $cluster | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $bbox | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $center | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $initialZoom | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $minZoom | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $maxZoom | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $cluster | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $disabled | htmlUnescape | safeJS }},
+      {{ partial "js/type.html" $popup | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $debug | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $marker | htmlUnescape | safeJS}});
       /*{{ if $marker }}, {{ $marker | safeJS}}  {{ end }});*/

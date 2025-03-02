@@ -116,10 +116,11 @@ body {
       display: flex;
       flex-direction: column;
       height: 100%;
+      /*
       overflow-y: auto;
       scroll-snap-type: y proximity;
       overflow: auto;
-
+      */
     }
   }
 
@@ -199,17 +200,7 @@ body {
   @include underline-link;
 }
 
-/* Map related */
-/* TODO: Fix this */
-.ol-popup {
-  display: none;
-}
-
 .download-link {
   float: right;
   margin-right: 1em;
-}
-
-.share .iiif-link .iiif-iiif {
-  filter: grayscale(1);
 }

@@ -1,6 +1,7 @@
 [
   {
     "image": "page136.jxl",
+    "size": [4814, 6989],
     "areas": [
       {
         "name": "model-current",
@@ -16,6 +17,7 @@
       },
       {
         "name": "model-planned",
+        "size": [4801, 6984],
         "postprocess": ["preview", "enhance_ai"],
         "position": {
           "x": 0,
@@ -29,7 +31,7 @@
     ]
   },
   {
-    "image": "page137.jxl"
-
+    "image": "page137.jxl",
+    "size": [4801, 6984]
   }
 ]

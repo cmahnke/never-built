@@ -1,6 +1,7 @@
 [
   {
     "image": "page084.jxl",
+    "size": [4918, 7003],
     "areas": [
       {
         "name": "model-1",
@@ -42,6 +43,7 @@
   },
   {
     "image": "page085.jxl",
+    "size": [4944, 6997],
     "areas": [
       {
         "name": "model-4",
