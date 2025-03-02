@@ -103,6 +103,11 @@ ol-viewport {
     }
   }
 
+  & ~ .download-link {
+    margin-top: 1rem;
+    margin-right: unset;
+  }
+
 }
 
 .section-post {
