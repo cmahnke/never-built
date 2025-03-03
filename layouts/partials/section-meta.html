@@ -2,7 +2,7 @@
 {{- $pages = where $pages "Params.geojson" "ne" nil -}}
 {{- if gt (len $pages) 0 -}}
   {{- $geojson := partial "geojson/featureCollection.geojson" $pages -}}
-  {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "debug" true "minZoom" 12 "maxZoom" 14 "initialZoom" 13 ) -}}
+  {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson  "minZoom" 12 "maxZoom" 16 "initialZoom" 13 ) -}}
 {{- end -}}
 
 {{- with .Params.worldcat -}}

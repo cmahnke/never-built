@@ -144,11 +144,6 @@ body {
   margin-top: calc(2rem - $button-height + $button-padding * 2);
   font-size: 1.6rem;
 
-  h1 {
-    margin-block-start: .6em;
-    margin-block-end: .6em;
-  }
-
   @media (min-width: 768px) {
     font-size: 1rem;
     width: calc(var(--content-width) - var(--main-margin));
@@ -159,42 +154,12 @@ body {
     margin-top: 9.5rem;
   }
 
-  .article-single {
-    overflow: hidden;
-
-    @media (min-width: 768px) {
-      overflow: unset;
-    }
-
-    .post .content {
-      .post-title {
-
-      }
-
-      .parent-section,
-      .post-body {
-
-        h1 {
-          font-size: 1.6em;
-          word-break: break-all;
-        }
-
-        a {
-          @include invert-link($color: $accent-color);
-          color: black;
-          text-decoration-style: dotted;
-          text-decoration-line: underline;
-          text-decoration-thickness: 1px;
-          text-decoration-skip-ink: auto;
-
-          &:hover {
-            text-decoration: none;
-          }
-        }
-      }
-
-    }
+  h1 {
+    margin-block-start: .6em;
+    margin-block-end: .6em;
   }
+
+
 }
 
 .animated_underline {

@@ -1,15 +1,12 @@
-.meta {
-  .dir-map {
-    .map-wrapper .map {
+.dir-map.meta .main .article-single {
+  .content .post-body .post-content {
+    .map-wrapper {
       width: 100%;
       min-height: 50vh;
+      aspect-ratio: unset;
+      flex-basis: 100%;
     }
   }
-}
-
-
-.map-wrapper {
-
 }
 
 ol-viewport {
@@ -32,11 +29,6 @@ ol-viewport {
   background-position: center top;
 }
 
-/*
-.dir-map .map-wrapper {
-  height: calc(100% - 10rem - 3.6rem  - 5rem - 5rem - 2.2rem);
-}
-*/
 
 .map-wrapper {
   display: flex;
@@ -113,14 +105,7 @@ ol-viewport {
 .section-post {
   .main {
     .article-single .post {
-      @media (min-width: 768px) {
-        .map-wrapper {
-          min-height: unset;
-          height: 20em;
-          aspect-ratio: 1 / 1;
-
-        }
-      }
+        /* See page.scss */
     }
 
     .section-single .book {
