@@ -1,0 +1,37 @@
+<div class="list">
+  {{- $tag := i18n .Data.Term -}}
+  {{- if eq $tag "" -}}
+    {{- $tag = .Data.Term -}}
+  {{- end -}}
+  <div class="section-head">
+    <h1 class="post-section section-head-title tag-list-title post-title">{{ i18n "Tag" }}: {{ $tag }}</h1>
+  </div>
+  {{- if ne $.Page.File nil -}}
+    {{- if ne $.Content "" -}}
+      <div class="tag-list-content">
+        {{ $.Content }}
+      </div>
+    {{- end -}}
+  {{- end -}}
+  <div class="post">
+    {{- $pages := .Pages -}}
+    {{- $pages = where $pages "Params.metaPage" "!=" true -}}
+    {{- $pages = where $pages "Kind" "!=" "section" -}}
+    {{- $paginator := .Paginate (where $pages "Params.displayinlist" "!=" false) -}}
+    {{- range $paginator.Pages -}}
+      {{- partial "list-item.html" . -}}
+    {{- end -}}
+  </div>
+</div>
+{{ if or $paginator.HasPrev $paginator.HasNext -}}
+<div class="pagination">
+  <div class="pagination-links">
+    {{- if $paginator.HasPrev -}}
+      <a class="pagination-prev no-animation" href="{{ $paginator.Prev.URL }}">&#x276E; {{ i18n "next_page" }}</a>
+    {{- end -}}
+    {{- if $paginator.HasNext -}}
+      <a class="pagination-next no-animation" href="{{ $paginator.Next.URL }}">{{ i18n "previous_page" }} &#x276F;</a>
+    {{- end -}}
+  </div>
+</div>
+{{- end -}}

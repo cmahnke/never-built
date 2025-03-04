@@ -3,7 +3,7 @@ title: "Volksbank Göttingen eGmbH"
 date: 2025-03-01T17:15:07+02:00
 tags:
 - high-rise
-- university
+- commercial
 outputs:
   - iiif-manifest
   - html
@@ -24,3 +24,5 @@ resources:
   params:
     iiif: page083/info.json
 ---
+Ein nie realisierter Wallaufgang...
+<!--more-->

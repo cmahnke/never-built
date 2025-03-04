@@ -61,6 +61,11 @@
       <div class="main">
         {{ block "content" . }}{{ end }}
       </div>
+      {{ if .Store.Get "hasChart" }}
+      <script>
+        initializeChart();
+      </script>
+    {{ end }}
     {{ partial "footer.html" . }}
   </body>
  </html>

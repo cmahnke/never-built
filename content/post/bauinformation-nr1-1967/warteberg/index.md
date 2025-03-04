@@ -12,11 +12,13 @@ params:
 #  preview: preview
   geojson:
     coordinates:
-    - 9.9326044
-    - 51.5416565
+    - 9.968157
+    - 51.547273
 resources:
 - src: "page073.jxl"
   name: preview
   params:
     iiif: page073/info.json
 ---
+Ein Seniorenresidenz im Wald bei Herberhausen...
+<!--more-->

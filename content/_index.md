@@ -6,3 +6,5 @@ outputs:
   - html
   - rss
 ---
+
+Ein Göttingen, dass nicht gebaut wurde...

@@ -6,3 +6,17 @@
     }
   }
 }
+
+.home {
+  .home-content {
+    display: flex;
+    font-size: xx-large;
+    margin: 0 0 2rem 0;
+    justify-content: flex-end;
+
+    p {
+      margin-block-start: unset;
+      margin-block-end: unset;
+    }
+  }
+}

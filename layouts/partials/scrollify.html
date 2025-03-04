@@ -15,6 +15,8 @@
       {{- $pageContext := . -}}
 
       <article class="list-item article {{ $class }} scroll-item" itemscope itemtype="http://schema.org/Blog">
+        {{- $target := printf "heading-anchor-%s" .File.ContentBaseName -}}
+        <a name="{{ $target }}" id ="{{ $target }}" />
         <div class="list-item-head scroll-header">
           {{- $title := .Title -}}
           <h2 class="headline scroll-title" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}</a></h2>
@@ -71,8 +73,10 @@
         {{- end -}}
 
         {{- if or .Summary .Content -}}
+          {{- partial "content.html" . -}}
+{{/*
           <div class="scroll-content">
-            {{- if or .Content -}}
+            {{- if not .Truncated -}}
               <div class="summary .layer-2">
                 {{ .Summary }}
                 {{ if .Truncated }}
@@ -89,6 +93,7 @@
               </div>
             {{- end -}}
           </div>
+*/}}
         {{- end -}}
       </article>
       {{- $count = add $count 1 -}}

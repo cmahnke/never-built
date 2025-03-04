@@ -13,10 +13,11 @@ Als Schriftarten kommen [League Spartan](https://github.com/theleagueof/league-s
 
 Die folgenden JavaScript und CSS Frameworks werden benutzt:
 * [normalize.css](https://necolas.github.io/normalize.css/)
-* [`three.js`](https://threejs.org/)
-* [Glide.js](https://glidejs.com/)
+* [Glide.js](https://glidejs.com/) - Für die Übersicht über die Highlights (Karussell)
+* [Apache ECharts](https://echarts.apache.org/) - Für animierte Grafiken
+* [Motion.dev](https://motion.dev/) - Für positionsabhängige Animationen
 
-Das Kartenmaterial stammt von [OpenStreetMap](https://www.openstreetmap.org/#map=13/51.53544/9.92340), der Anzeigestil ist ["Toner"](https://github.com/openmaptiles/maptiler-toner-gl-style).
+Das Kartenmaterial stammt von [OpenStreetMap](https://www.openstreetmap.org/#map=13/51.53544/9.92340), der Anzeigestil ist ["Toner"](https://github.com/openmaptiles/maptiler-toner-gl-style). Die Darstellung erfolgt mittels [OpenLayers](https://openlayers.org/).
 
 Die Nachbearbeitung der Digitalisate wurde mit [ScanTailor Advanced](https://github.com/4lex4/scantailor-advanced) durchgeführt.
 

@@ -27,3 +27,11 @@ resources:
   params:
     iiif: page065/info.json
 ---
+
+Die drei blauen Türme waren der Anlass für dieses Blog und das Logo...
+<!--more-->
+In diesem Modell sind neben dem heute bestehenden blauen Turm noch zwei weitere enthalten. Diese ware als potentielle Erweiterungen projektiert und sogar höher als der tatsächlich gebaute.
+
+# Varianten
+
+Ein Turm Richtung des Kreuzbergrings, 3 Stockwerke höher und ein weiterer Richtung Gosslerstraße, der sogar 6 Stockwerk höher gewesen wäre, als der bestehende.

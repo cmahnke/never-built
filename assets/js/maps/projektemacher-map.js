@@ -210,7 +210,7 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
 
   if (style !== undefined) {
     styleObj = await loadOrParse(style)
-    styleObj = updateStyle(styleObj, source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background, absUrl(defaultSprites), defaultFonts, font);
+    styleObj = updateStyle(styleObj, source, initialZoom, undefined, undefined, bboxObj, centerObj, background, absUrl(defaultSprites), defaultFonts, font);
   } else {
     styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }
@@ -284,6 +284,12 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
     const markerOptions = {hitTolerance: 10};
     if (!disabled && popup) {
       const overlay = addOverlay(map, markerOptions);
+    }
+
+    if (geojsonObj.features.length) {
+      map.getView().fit(geojsonLayer.getSource().getExtent(),
+          {size: map.getSize(), padding: defaultPadding}
+      );
     }
   }
 

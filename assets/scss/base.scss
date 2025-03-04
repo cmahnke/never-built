@@ -52,7 +52,8 @@ $fullscreen-color: var(--base07);
 @import "menu";
 @import "featured";
 @import "list";
-@import "book-toc";
+@import "toc";
+@import "scrollify";
 @import "link";
 @import "section";
 @import "404";
@@ -61,14 +62,14 @@ $fullscreen-color: var(--base07);
 @import "page";
 @import "headings";
 @import "never-build-iiif";
+@import "chart";
 
-/*
+
 :where(:focus-visible) {
     outline: .1875rem dashed #000;
     outline-offset: .125rem;
     z-index: 99;
 }
-*/
 
 :root {
   --text-font: #{$text-font};
@@ -124,11 +125,13 @@ body {
     }
   }
 
+  /*
   &.meta {
     .post-body {
       margin-bottom: 3.4em;
     }
   }
+  */
 
   &.section {
     .main .article-single {
@@ -158,7 +161,6 @@ body {
     margin-block-start: .6em;
     margin-block-end: .6em;
   }
-
 
 }
 

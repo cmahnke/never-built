@@ -11,9 +11,9 @@
       {{- if ne $tag "" -}}
         {{- $i18nTag := i18n $tag -}}
         {{- if eq $i18nTag "" -}}
-          <a href="{{ "tags/" | relLangURL }}{{ $tag | urlize }}" title="{{ $tag }}">{{ partial (printf "tagcloud/%s.html" $render) $tag }}#</a>
+          <a data-animation-classes="term" href="{{ "tags/" | relLangURL }}{{ $tag | urlize }}" title="{{ $tag }}">{{ partial (printf "tagcloud/%s.html" $render) $tag }}#</a>
         {{- else -}}
-          <a href="{{ "tags/" | relLangURL }}{{ $tag | urlize }}" title="{{ $i18nTag }}">{{ $i18nTag }}#</a>
+          <a data-animation-classes="term" href="{{ "tags/" | relLangURL }}{{ $tag | urlize }}" title="{{ $i18nTag }}">{{ $i18nTag }}#</a>
         {{- end -}}
       {{- end -}}
     {{- end -}}

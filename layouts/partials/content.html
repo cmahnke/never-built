@@ -1,0 +1,61 @@
+{{-  $classes := slice "even" "odd" -}}
+
+<div class="content-container">
+  <div class="summary">
+    {{- .Summary -}}
+  </div>
+  {{-  if .Truncated -}}
+    {{/*
+      <div class="content">
+        {{- substr .Content (len .Summary) -}}
+      </div>
+    */}}
+    {{- $blocks := slice "" -}}
+    {{- $block := slice -}}
+    {{- range (split .RawContent "\n") -}}
+      {{- $line := . -}}
+      {{- if strings.Contains $line "<!--more-->" -}}
+        {{- $matches := findRESubmatch `(?m)^(.*?)<!--more-->(.*)$` $line -}}
+        {{- $prefix := index (index $matches 0) 1 -}}
+        {{- $suffix := index (index $matches 0) 2 -}}
+        {{- if ne $prefix "" -}}
+          {{- $block = $block | append $prefix -}}
+        {{- end -}}
+        {{- $blocks = $blocks | append (slice $block) -}}
+        {{- $block = slice -}}
+        {{- if ne $suffix "" -}}
+          {{- $block = $block | append $suffix -}}
+        {{- end -}}
+      {{- else -}}
+        {{- if hasPrefix $line "#" -}}
+          {{- if eq (len $blocks) 1 -}}
+            {{- $blocks = $blocks | append (slice $block) -}}
+          {{- else -}}
+            {{- $blocks = $blocks | append $block -}}
+          {{- end -}}
+          {{- $block = slice -}}
+        {{- end -}}
+        {{- $block = $block | append $line -}}
+      {{- end -}}
+    {{- end -}}
+    {{/*{{- if gt (len $block) 0 -}}*/}}
+      {{- $blocks = $blocks | append $block -}}
+    {{/*{{- end -}}*/}}
+
+    {{- range $i, $block := $blocks -}}
+      {{- if eq $i 0 -}}
+        {{- continue -}}
+      {{- end -}}
+      {{- $counter := sub $i 1 -}}
+      {{- $class := index $classes (mod $counter 2) -}}
+      {{- $section := delimit . "\n" -}}
+      {{- $sectionHTML := $section | $.RenderString (dict "display" "block" "markup" "markdown") -}}
+      {{- if eq (strings.TrimSpace $sectionHTML) (strings.TrimSpace $.Summary) -}}
+        {{- $class = printf "%s summary" $class -}}
+      {{- end -}}
+      <div class="content-section {{ $class }} {{ printf "content-section-%d" $counter }} effect content-box-fade">
+        {{- $sectionHTML | safeHTML -}}
+      </div>
+    {{- end -}}
+  {{-  end -}}
+</div>

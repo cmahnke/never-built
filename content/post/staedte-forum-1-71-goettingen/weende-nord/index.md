@@ -12,11 +12,24 @@ params:
   cover: model.jpg
   geojson:
     coordinates:
-    - 9.9326044
-    - 51.5416565
+    - 9.933895
+    - 51.569256
 resources:
 - src: "page138.jxl"
   name: preview
   params:
     iiif: page138/info.json
 ---
+
+Die Neuordnung von Weende Nord ist deutlich weniger umfangreich umgesetzt worden...
+<!--more-->
+Weder die geplante Gesamtschule noch das "Studentenheim" sind gebaut worden, auch die Hochhäuser an der heutigen Ernst-Fahlbusch-Straße oder am Max-Born-Ring existieren.
+
+# Heutige Position
+
+Die heutige Position lässt sich Dank des bis heute bestehenden Sportplatzes gut bestimmen.
+
+Die Straße "Brauweg" in Weende, die im Model zu sehen ist wurde im Zuge der Eingemeindung am 12.02.1965 in "Am Weendespring" umbenannt[^1].
+
+
+[^1]: [Gerd Tamke / Rainer Driever: Göttinger Straßennamen](https://www.stadtarchiv.goettingen.de/strassennamen/tamke-driever%20goettinger%20strassennamen_01.pdf#page=40)

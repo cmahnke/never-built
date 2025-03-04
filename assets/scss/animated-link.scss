@@ -23,6 +23,7 @@ $animation-duration: 750ms !default;
   transition-timing-function: ease-in;
 
   &.light-gray,
+  &.term,
   &.post {
     --fade-to: #{$post-background};
   }

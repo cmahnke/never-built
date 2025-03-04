@@ -1,0 +1,25 @@
+{{- $pages := .CurrentSection.RegularPages -}}
+{{- if gt (len $pages) 0 -}}
+  <div class="toc-list">
+    <h2 class="toc-list-heading">
+      {{- if and (isset .Params "type") (eq .Params.type "book") -}}
+        {{ i18n "section-heading" }} {{ i18n "book" }}
+      {{- else -}}
+        {{ i18n "section-heading" }} {{ i18n "list" }}
+      {{- end -}}
+    </h2>
+    {{- if eq .Kind "section" -}}
+      {{- $pages = where $pages "Path" "!=" .Path -}}
+    {{- end -}}
+    <ul class="toc">
+    {{- range $pages -}}
+      {{- $pageContext := . -}}
+      <li class="toc-item">
+        {{- $target := printf "heading-anchor-%s" .File.ContentBaseName -}}
+        <a class="toc-item-link" onclick="anchorTop('{{ $target }}')">
+          {{- .Title -}}
+        </a>
+      </li>
+    {{- end -}}
+  </div>
+{{- end -}}

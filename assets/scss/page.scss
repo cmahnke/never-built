@@ -92,7 +92,10 @@ body {
       .sub-section-heading {
         flex-basis: 100%;
       }
+    }
 
+    .meta,
+    .post .content .post-body {
       .iiif {
         .viewer {
           width: 80%;
@@ -215,5 +218,18 @@ i.book-reference {
     &:hover {
       text-decoration: none;
     }
+  }
+}
+
+.content .footnotes {
+  padding-top: 2rem;
+  width: 80%;
+  margin: auto;
+
+  hr {
+    height: 0;
+    color: black;
+    border: .3ex solid black;
+    position: relative;
   }
 }

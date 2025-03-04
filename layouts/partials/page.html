@@ -1,3 +1,8 @@
+{{- $classes := slice "even" "odd" -}}
+{{- $defaultWidth := 960 -}}
+{{- $defaultHeight := 1280 -}}
+{{- $fit := printf "%dx%d" $defaultWidth $defaultHeight -}}
+
 {{ $class := .Params.type }}
 <div class="post {{ $class }}">
     <div class="content">
@@ -9,7 +14,40 @@
       <div class="post-body">
         <div class="post-content">
           {{ .Content }}
+          {{ $count := 0 }}
+
+          {{/*
+          {{- range := fragments-}}
+            {{- $class := index $classes (mod $count 2) -}}
+
+            {{- $count = add $count 1 -}}
+
+          {{- end -}}
+          */}}
         </div>
+
+        {{- if not .Params.metaPage -}}
+          <div class="featured">
+            {{- $previewNames := false -}}
+            {{- with .Params.cover -}}
+              {{- if reflect.IsSlice . -}}
+                {{- $previewNames = . -}}
+              {{- else -}}
+                {{- $previewNames = slice . -}}
+              {{- end -}}
+            {{- end -}}
+
+            {{- if $previewNames -}}
+              {{- range $i, $img := $previewNames -}}
+                {{- with $.Resources.GetMatch $img -}}
+                    <img class="{{printf "post-featured img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}" data-image-name="{{ $img}}" />
+                {{- else -}}
+                  {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $.Path $img -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+          </div>
+        {{- end -}}
 
         {{- if .Params.geojson -}}
           {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}

@@ -5,7 +5,15 @@
 */
 
 .section-single {
-  .post.section{
+  .meta .map-wrapper {
+    min-height: 50vh !important;
+  }
+
+  .iiif {
+    margin: auto;
+  }
+
+  .post.section {
 
     a,
     a:active,

@@ -50,6 +50,17 @@
       }
     }
 
+    .content-container {
+      .footnotes,
+      .footnotes-ref {
+        display: none;
+      }
+
+      .summary:has( + .content-section.summary) {
+        display: none;
+      }
+    }
+
     .post-content {
       display: none;
     }
@@ -137,4 +148,38 @@
       }
     }
   }
+}
+
+/* Simple CSS Effects */
+
+@keyframes text-box-fade-in {
+  from {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 0;
+  }
+
+  to {
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 2rem;
+  }
+}
+
+.effect {
+  p {
+    position: relative;
+  }
+
+  &.content-box-fade {
+    p {
+      &:before {
+        content: contents;
+        position: absolute;
+        animation-name: text-box-fade-in;
+        animation-duration: 3000;
+        animation-fill-mode: forwards;
+      }
+    }
+
+  }
+
 }

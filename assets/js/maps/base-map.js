@@ -15,7 +15,7 @@ export const toolTips = { 'de': {'zoomIn': 'Vergrößern', 'zoomOut': 'Verkleine
 
 export const defaultVectorSource = "https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf";
 
-export const defaultPadding = [30, 30, 30, 30];
+export const defaultPadding = [50, 50, 50, 50];
 
 export function getLang() {
   var lang = 'en';
