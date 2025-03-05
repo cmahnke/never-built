@@ -1,0 +1,18 @@
+{{- $layoutClasses := . -}}
+{{- $animationClasses := slice -}}
+{{- if isset site.Data "effects" -}}
+  {{- if strings.Contains $layoutClasses " " -}}
+    {{- $layoutClass = split $layoutClasses " " -}}
+  {{- else -}}
+    {{- $layoutClasses = slice $layoutClasses -}}
+  {{- end -}}
+  {{- range $layoutClasses -}}
+    {{- $ac := where site.Data.effects "layoutClass" . -}}
+    {{- if and (ne $ac nil) (isset (index $ac 0) "animationClass") -}}
+      {{- $animationClasses = $animationClasses | append (index $ac 0).animationClass -}}
+    {{- else -}}
+      {{- warnf "[partials/scrollify/class-resolver.html] Can't find animation style mapping for '%s'" $layoutClasses -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return delimit $animationClasses " " "" -}}

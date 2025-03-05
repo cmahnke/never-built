@@ -13,13 +13,15 @@
       {{- $class := index $classes (mod $count 2) -}}
       {{- $previewNames := false -}}
       {{- $pageContext := . -}}
-
-      <article class="list-item article {{ $class }} scroll-item" itemscope itemtype="http://schema.org/Blog">
+      {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-item" -}}
+      <article class="list-item article {{ $class }} scroll-item {{ $animationClass }}" itemscope itemtype="http://schema.org/Blog">
         {{- $target := printf "heading-anchor-%s" .File.ContentBaseName -}}
         <a name="{{ $target }}" id ="{{ $target }}" />
-        <div class="list-item-head scroll-header">
+        {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-header" -}}
+        <div class="list-item-head scroll-header {{ $animationClass }}">
           {{- $title := .Title -}}
-          <h2 class="headline scroll-title" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}</a></h2>
+          {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-title" -}}
+          <h2 class="headline scroll-title {{ $animationClass }}" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}</a></h2>
           {{- partial "date.html" . -}}
         </div>
         {{- with .Params.cover -}}
@@ -38,8 +40,8 @@
             {{ end }}
           {{- end -}}
           {{- $data = jsonify $data -}}
-
-          <div class="preview-container {{ $class }}"{{ if ne $data "" }} data-image-regions="{{  $data }}"{{ end }}>
+          {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-preview-container" -}}
+          <div class="preview-container scroll-preview-container {{ $class }} {{ $animationClass }}"{{ if ne $data "" }} data-image-regions="{{  $data }}"{{ end }}>
             {{- range $i, $img := $previewNames -}}
               {{- with $pageContext.Resources.GetMatch $img -}}
                 <a class="cover-link" href="{{ $pageContext.Permalink }}">
@@ -55,8 +57,9 @@
             {{- end -}}
             {{- if $previewImg -}}
               {{- with $previewImg -}}
-                <div class="scan-container {{ $class }}">
-                  <a class="cover-link" href="{{ $pageContext.Permalink }}">
+                {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-overlay-image-container" -}}
+                <div class="scan-container {{ $class }} scroll-overlay-image-container">
+                  <a class="cover-link" href="{{ $pageContext.Permalink }} {{ $animationClass }}">
                       <img class="preview scan" src="{{ $previewImg.RelPermalink }}" />
                   </a>
                 </div>
@@ -65,15 +68,21 @@
           </div>
         {{- end -}}
 
+
         {{- if .Params.geojson -}}
-          {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
-          {{- $coordinates := (index .Params.geojson "coordinates") -}}
-          {{- $center := slice (index $coordinates 0) (index $coordinates 1) -}}
-          {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "minZoom" 12 "initialZoom" 15 "maxZoom" 15 "disabled" true) -}}
+          {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-preview-container" -}}
+            <div class="scroll-map {{ $animationClass }}">
+            {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
+            {{- $coordinates := (index .Params.geojson "coordinates") -}}
+            {{- $center := slice (index $coordinates 0) (index $coordinates 1) -}}
+            {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "minZoom" 12 "initialZoom" 15 "maxZoom" 15 "disabled" true) -}}
+          </div>
         {{- end -}}
 
         {{- if or .Summary .Content -}}
+        <div class="scroll-content">
           {{- partial "content.html" . -}}
+        </div>
 {{/*
           <div class="scroll-content">
             {{- if not .Truncated -}}

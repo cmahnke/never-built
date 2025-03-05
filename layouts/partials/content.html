@@ -1,15 +1,8 @@
 {{-  $classes := slice "even" "odd" -}}
 
-<div class="content-container">
-  <div class="summary">
-    {{- .Summary -}}
-  </div>
+{{- $animationClass := partial "scrollify/class-resolver.html" "content-container" -}}
+<div class="content-container {{ $animationClass }}">
   {{-  if .Truncated -}}
-    {{/*
-      <div class="content">
-        {{- substr .Content (len .Summary) -}}
-      </div>
-    */}}
     {{- $blocks := slice "" -}}
     {{- $block := slice -}}
     {{- range (split .RawContent "\n") -}}
@@ -53,9 +46,15 @@
       {{- if eq (strings.TrimSpace $sectionHTML) (strings.TrimSpace $.Summary) -}}
         {{- $class = printf "%s summary" $class -}}
       {{- end -}}
-      <div class="content-section {{ $class }} {{ printf "content-section-%d" $counter }} effect content-box-fade">
+      {{- $animationClass := partial "scrollify/class-resolver.html" "content-section" -}}
+      <div class="content-section {{ $class }} {{ printf "content-section-%d" $counter }} {{ $animationClass }}">
         {{- $sectionHTML | safeHTML -}}
       </div>
     {{- end -}}
+  {{- else -}}
+    {{- $animationClass := partial "scrollify/class-resolver.html" "summary" -}}
+    <div class="summary {{ $animationClass }}">
+      {{- .Summary -}}
+    </div>
   {{-  end -}}
 </div>

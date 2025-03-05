@@ -160,8 +160,10 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
       centerObj = [0, 0]
     }
   }
-  if (marker !== undefined) {
-    var markerObj = await loadOrParse(marker);
+  if (marker !== undefined && !(typeof marker === 'function')) {
+    markerObj = await loadOrParse(marker);
+  } else if (marker !== undefined && typeof marker === 'function') {
+    markerObj = marker;
   }
 
   if (maxZoom === undefined) {
@@ -241,7 +243,11 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
     source: geojsonSource
   })
   if (markerObj !== undefined) {
-    setupMarker(marker, geojsonLayer);
+    if (!(typeof marker === 'function')) {
+      setupMarker(markerObj, geojsonLayer);
+    } else {
+      geojsonLayer.setStyle(markerObj);
+    }
   }
   layers.push(geojsonLayer);
 

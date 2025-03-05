@@ -13,17 +13,7 @@
 
       <div class="post-body">
         <div class="post-content">
-          {{ .Content }}
-          {{ $count := 0 }}
-
-          {{/*
-          {{- range := fragments-}}
-            {{- $class := index $classes (mod $count 2) -}}
-
-            {{- $count = add $count 1 -}}
-
-          {{- end -}}
-          */}}
+          {{- partial "content.html" . -}}
         </div>
 
         {{- if not .Params.metaPage -}}

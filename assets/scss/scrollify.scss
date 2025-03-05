@@ -50,17 +50,6 @@
       }
     }
 
-    .content-container {
-      .footnotes,
-      .footnotes-ref {
-        display: none;
-      }
-
-      .summary:has( + .content-section.summary) {
-        display: none;
-      }
-    }
-
     .post-content {
       display: none;
     }

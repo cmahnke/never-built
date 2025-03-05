@@ -8,10 +8,13 @@
 {{- if eq .Params.resources nil -}}
   {{- warnf "Page %s has no resources!" .File.Path -}}
 {{- end -}}
-{{- if lt (len (where .Params.resources ".name" "front")) 1 -}}
-  {{- $frontResource := (where .Params.resources ".name" "page") -}}
-  {{- $infoJson := (index $frontResource 0).params.iiif -}}
-  {{- $baseImageName = path.Dir $infoJson -}}
+
+{{- if isset .Params "resources" -}}
+  {{- if lt (len (where .Params.resources ".name" "front")) 1 -}}
+    {{- $frontResource := (where .Params.resources ".name" "page") -}}
+    {{- $infoJson := (index $frontResource 0).params.iiif -}}
+    {{- $baseImageName = path.Dir $infoJson -}}
+  {{- end -}}
 {{- end -}}
 
 {{- $content := .Summary -}}

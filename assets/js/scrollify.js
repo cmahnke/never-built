@@ -1,4 +1,7 @@
-export const effects = {};
+import {animate, scroll} from 'motion';
+
+export const effectMap = {"fade": undefined, "translate": undefined};
+const effectCSSPrefix = "effect-";
 
 export function setupBook() {
   if (!document.querySelectorAll('.scroll-layout')) {
@@ -44,25 +47,51 @@ export function setupBook() {
 }
 
 function addEffects() {
-  checkEffects();
-  Object.entries(effects).forEach(effect => {
-    const [selector, func] = entry;
-    Array.from(elem.querySelectorAll(selector)).forEach((node) => {
-      func(node);
-    });
-  });
-  //See https://codesandbox.io/p/sandbox/framer-motion-useinview-scroll-snap-0dwbm?file=%2Fsrc%2FApp.js
-}
+  function splitClass(str) {
+    const result = [];
+      let currentPart = "";
+      let i = 0;
 
-function checkEffects() {
-  const effectElements = Array.from(document.querySelectorAll("[class^='effect-']"));
+      while (i < str.length) {
+        if (str[i] === '-' && str[i + 1] !== '-') {
+          result.push(currentPart);
+          currentPart = "";
+          i++;
+        } else if (str[i] === '-' && str[i + 1] === '-') {
+          result.push(currentPart);
+          currentPart = "-";
+          i += 2;
+        } else {
+          currentPart += str[i];
+          i++;
+        }
+      }
+
+      result.push(currentPart);
+      return result;
+  }
+
+  let elementEffects = {};
+  const effectElements = Array.from(document.querySelectorAll(`[class*="${effectCSSPrefix}"]`));
   effectElements.forEach((elem) => {
-    elem.classList.forEach((cls) => {
-      if(!cls.split('-')[1] in effects) {
-        console.log(`Effect ${cls.split('-')[1]} not defined!`);
+    let effects = [];
+    Array.from(elem.classList).forEach(cls => {
+      if (cls.startsWith(effectCSSPrefix)) {
+        const str = cls.replace(effectCSSPrefix, "")
+        //Consider a method to escape -
+        const effect = splitClass(str)
+        if (effect[0] in effectMap && effectMap[effect[0]] !== undefined) {
+          effects.push(() => {effectMap[effect](...effect.slice(1))})
+        } else {
+          console.log(`No method defined for ${effect[0]}`)
+        }
       }
     });
+    if (effects.length) {
+      elementEffects[elem] = effects
+    }
   });
+  console.log(elementEffects);
 }
 
 /* Animation ideas

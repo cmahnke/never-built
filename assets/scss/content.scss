@@ -1,0 +1,14 @@
+.content-container {
+  .footnotes,
+  .footnotes-ref {
+    display: none;
+  }
+
+  .summary:has( + .content-section.summary) {
+    display: none;
+  }
+}
+
+.article-single .content-container  {
+  font-size: 2.4rem;
+}

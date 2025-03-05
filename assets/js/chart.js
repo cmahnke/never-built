@@ -144,6 +144,13 @@ function setupChart(element, data, options) {
   const [width, height] = getSize(container);
   let chart = echarts.init(container, null, { renderer: "svg", width: width, height: height});
   chart.setOption(chartOptions);
+  if (!("projektemacher" in window)) {
+    window.projektemacher = {};
+  }
+  if (!("charts" in window.projektemacher)) {
+    window.projektemacher.charts = {};
+  }
+  window.projektemacher.charts[container] = chart
 }
 
 function getSize(container) {

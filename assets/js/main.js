@@ -3,6 +3,7 @@ import {setupBook} from './scrollify';
 import Glide from '@glidejs/glide'
 import { projektemacherMap } from './maps/projektemacher-map';
 import {initializeChart} from './chart';
+import {Style, Fill, Stroke, Icon} from 'ol/style.js';
 
 const defaultMapFont = "Roboto Mono Variable";
 const animatedLinkColor = ["black", "#000", "#000000", "rgb(0, 0, 0)"]
@@ -17,8 +18,39 @@ window.projektemacherMap = async function(elem, geojson, source, style, bbox, ce
   if (font === undefined) {
     font = defaultMapFont
   }
+  if (!(typeof marker === 'object')) {
+    marker = JSON.parse(marker)
+  }
+  function createStyleFunction(marker) {
+    return (feature, level) => {
+      const lineWidth = Math.floor(60 / level)
+      return new Style({
+        image: new Icon(marker),
+        stroke: [ new Stroke({
+          color: 'rgba(0,0,0,1)',
+          width: lineWidth + 4
+        }),
+        new Stroke({
+          color: 'rgba(255,255,255,1)',
+          width: lineWidth
+        })]
+      });
+    };
+  }
+  //marker = markerFunc;
+
   background = window.getComputedStyle(bgElem).getPropertyValue('--page-background');
-  return projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font);
+  const map = projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, createStyleFunction(marker), font);
+
+  if (!("projektemacher" in window)) {
+    window.projektemacher = {};
+  }
+  if (!("maps" in window.projektemacher)) {
+    window.projektemacher.maps = {};
+  }
+  window.projektemacher.maps[bgElem] = await map
+
+  return map
 }
 
 window.anchorTop = (anchor) => {

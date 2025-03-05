@@ -16,7 +16,7 @@
       </div>
     {{- end -}}
     {{- partial "toc.html" . -}}
-    {{- partial "scrollify.html" . -}}
+    {{- partial "scrollify/scrollify.html" . -}}
 
     {{- if and (isset .Params "type") (eq .Params.type "book") -}}
       <div class="meta">

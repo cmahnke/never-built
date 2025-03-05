@@ -1,0 +1,29 @@
+[
+  { "layoutClass": "scroll-item",
+    "animationClass": "effect-fade-in"
+  },
+  { "layoutClass": "content-section",
+    "animationClass": ""
+  },
+  { "layoutClass": "summary",
+    "animationClass": ""
+  },
+  { "layoutClass": "scroll-header",
+    "animationClass": "effect-translate-in"
+  },
+  { "layoutClass": "scroll-title",
+    "animationClass": "effect-translate-in"
+  },
+  { "layoutClass": "scroll-preview-container",
+    "animationClass": ""
+  },
+  { "layoutClass": "",
+    "animationClass": ""
+  },
+  { "layoutClass": "",
+    "animationClass": ""
+  },
+  { "layoutClass": "",
+    "animationClass": ""
+  }
+]

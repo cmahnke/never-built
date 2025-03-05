@@ -63,6 +63,7 @@ $fullscreen-color: var(--base07);
 @import "headings";
 @import "never-build-iiif";
 @import "chart";
+@import "content";
 
 
 :where(:focus-visible) {
