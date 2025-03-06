@@ -7,6 +7,7 @@
 .section-single {
   .meta .map-wrapper {
     min-height: 50vh !important;
+
   }
 
   .iiif {
@@ -58,6 +59,10 @@
       @media (min-width: 768px) {
         margin-left: 1rem;
       }
+    }
+
+    .footnotes {
+      display: none;
     }
 
     .section-meta,

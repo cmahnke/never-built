@@ -1,32 +1,14 @@
 {{- $defaultWidth := 240 -}}
 {{- $defaultHeight := 320 -}}
-{{- $bookSectionPreview := false -}}
 {{- $fit := printf "%dx%d" $defaultWidth $defaultHeight -}}
-{{- if and (eq .Kind "section") (isset .Params "type") (eq (.Param "type") "book") -}}
-  {{- $bookSectionPreview = true -}}
-{{- end -}}
 
-<article class="list-item {{ if $bookSectionPreview }}book{{ end }}" itemscope itemtype="http://schema.org/Blog">
+<article class="list-item " itemscope itemtype="http://schema.org/Blog">
   <div class="list-item-head">
     {{- $title := .Title -}}
     <h2 class="headline" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}{{ if .Draft }} (Draft){{ end }}</a></h2>
-    {{- if $bookSectionPreview -}}
-      <div class="cover-preview">
-        {{- $previewImg := partial "preview/preview-internal.html" (dict "context" . "fit" $fit "postProcess" true) -}}
-
-        {{- if $previewImg -}}
-          {{- $class := "preview" -}}
-          <a class="cover-link" href="{{ .Permalink }}">
-            {{- with $previewImg -}}
-              <img class="{{ $class }}" src="{{ $previewImg.RelPermalink }}" />
-            {{ end }}
-          </a>
-        {{- end -}}
-      </div>
-    {{- end -}}
 
     <div class="meta">
-      {{ if and (not .Date.IsZero) (not $bookSectionPreview) }}
+      {{ if and (not .Date.IsZero) }}
         <a href="{{ .RelPermalink }}" class="date">
           <span class="key">{{ i18n "publishedOn" }}</span>
           <span class="val"><time itemprop="datePublished" datetime="{{ .Date.Format "2006-01-02" }}">

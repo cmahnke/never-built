@@ -26,3 +26,7 @@ resources:
 ---
 Ein nie realisierter Wallaufgang...
 <!--more-->
+
+In diesem Beitrag soll es gar nicht um die Volksbank gehen, sondern um ein kleines Detail aus dem Übersichtsplan.
+
+[]

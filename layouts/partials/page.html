@@ -11,34 +11,36 @@
         {{- partial "date.html" . -}}
       {{- end -}}
 
-      <div class="post-body">
-        <div class="post-content">
-          {{- partial "content.html" . -}}
+      {{- if .Truncated -}}
+        <div class="post-summary">
+          {{- .Summary -}}
         </div>
+      {{- end -}}
 
-        {{- if not .Params.metaPage -}}
-          <div class="featured">
-            {{- $previewNames := false -}}
-            {{- with .Params.cover -}}
-              {{- if reflect.IsSlice . -}}
-                {{- $previewNames = . -}}
+      {{- if not .Params.metaPage -}}
+        <div class="featured">
+          {{- $previewNames := false -}}
+          {{- with .Params.cover -}}
+            {{- if reflect.IsSlice . -}}
+              {{- $previewNames = . -}}
+            {{- else -}}
+              {{- $previewNames = slice . -}}
+            {{- end -}}
+          {{- end -}}
+
+          {{- if $previewNames -}}
+            {{- range $i, $img := $previewNames -}}
+              {{- with $.Resources.GetMatch $img -}}
+                  <img class="{{printf "post-featured img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}" data-image-name="{{ $img}}" />
               {{- else -}}
-                {{- $previewNames = slice . -}}
+                {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $.Path $img -}}
               {{- end -}}
             {{- end -}}
+          {{- end -}}
+        </div>
+      {{- end -}}
 
-            {{- if $previewNames -}}
-              {{- range $i, $img := $previewNames -}}
-                {{- with $.Resources.GetMatch $img -}}
-                    <img class="{{printf "post-featured img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}" data-image-name="{{ $img}}" />
-                {{- else -}}
-                  {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $.Path $img -}}
-                {{- end -}}
-              {{- end -}}
-            {{- end -}}
-          </div>
-        {{- end -}}
-
+      <div class="post-body">
         {{- if .Params.geojson -}}
           {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
           {{- $coordinates := (index .Params.geojson "coordinates") -}}
@@ -46,6 +48,12 @@
           {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "minZoom" 12 "initialZoom" 15 "maxZoom" 15 "disabled" true) -}}
         {{- end -}}
 
+        <div class="post-content">
+          {{- partial "content.html" . -}}
+        </div>
+
+      </div>
+      <div class="original-pages">
         {{- if .Params.resources -}}
           <h3 class="sub-section-heading">
             {{- if gt (len .Params.resources) 1 -}}
@@ -58,7 +66,7 @@
             {{- partial "iiif/iiif-content.html" . -}}
           {{- end -}}
         {{- end -}}
-      </div>
+      <div>
     </div>
 
     {{- if not .Params.metaPage -}}

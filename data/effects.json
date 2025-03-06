@@ -1,29 +1,35 @@
-[
-  { "layoutClass": "scroll-item",
-    "animationClass": "effect-fade-in"
-  },
-  { "layoutClass": "content-section",
-    "animationClass": ""
-  },
-  { "layoutClass": "summary",
-    "animationClass": ""
-  },
-  { "layoutClass": "scroll-header",
-    "animationClass": "effect-translate-in"
-  },
-  { "layoutClass": "scroll-title",
-    "animationClass": "effect-translate-in"
-  },
-  { "layoutClass": "scroll-preview-container",
-    "animationClass": ""
-  },
-  { "layoutClass": "",
-    "animationClass": ""
-  },
-  { "layoutClass": "",
-    "animationClass": ""
-  },
-  { "layoutClass": "",
-    "animationClass": ""
+{ "mappings":
+  [
+    { "layoutClass": "scroll-item",
+      "animationClass": "_effect-fade-in"
+    },
+    { "layoutClass": "content-section",
+      "animationClass": ""
+    },
+    { "layoutClass": "summary",
+      "animationClass": ""
+    },
+    { "layoutClass": "scroll-header",
+      "animationClass": "_effect-translate-in _efTrigger-inview-50px"
+    },
+    { "layoutClass": "scroll-title",
+      "animationClass": "_effect-translate-in"
+    },
+    { "layoutClass": "scroll-preview-container",
+      "animationClass": ""
+    },
+    { "layoutClass": "",
+      "animationClass": ""
+    },
+    { "layoutClass": "",
+      "animationClass": ""
+    },
+    { "layoutClass": "",
+      "animationClass": ""
+    }
+  ],
+  "functions": {
+    "translate": {},
+    "fade": {}
   }
-]
+}

@@ -1,3 +1,7 @@
+html:has(.scroll-layout) {
+  scroll-snap-type: y proximity;
+}
+
 .section-post:has(.main .article-list.book) {
 
   /*
@@ -30,6 +34,7 @@
 
 .scroll-layout {
   .scroll-item {
+    scroll-snap-align: start;
     height: fit-content;
     min-height: 75vh;
     width: 100%;

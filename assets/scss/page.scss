@@ -84,15 +84,42 @@ body {
 
   .article-single,
   .section-single {
-    .post .content .post-body {
-      flex-wrap: wrap;
-      display: flex;
-      flex-direction: column;
+    .post .content  {
 
-      .sub-section-heading {
-        flex-basis: 100%;
+      .featured img {
+
+        min-width: 75%;
+        margin: 3rem auto ;
+      }
+
+      .post-summary {
+        font-size: calc($text-font-size * 1.2);
+      }
+
+      .post-body {
+        flex-wrap: wrap;
+        flex-direction: column;
+
+        .sub-section-heading {
+          flex-basis: 100%;
+        }
       }
     }
+
+    .map-wrapper {
+      float: right;
+      margin-top: unset;
+      max-width: 40% !important;
+    }
+
+
+
+    img {
+
+      max-width: 40%;
+    }
+
+
 
     .meta,
     .post .content .post-body {

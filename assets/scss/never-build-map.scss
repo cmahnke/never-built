@@ -9,6 +9,15 @@
   }
 }
 
+.section-post .article-single,
+.section-single {
+  .map-wrapper {
+    border: 0.3ex solid black;
+    margin: 2rem;
+    box-sizing: content-box;
+  }
+}
+
 ol-viewport {
   --ol-subtle-background-color: white;
 }

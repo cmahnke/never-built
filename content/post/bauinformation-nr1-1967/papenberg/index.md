@@ -26,5 +26,14 @@ resources:
 Dieses futuristische Hochhaus für Studierende wurde nie gebaut...
 <!--more-->
 
+# Model
 
 An der obere Kante des Modells kann man die Straße "An der Lutter" erkennen, diagonal durch die Mitte die "Zimmermannstraße".
+
+# Entwurf
+
+Der Entwurf stammt von [Prof. Dr. Gerd Fesel](https://www.architektur.tu-darmstadt.de/fachbereich/ueber_uns/professor_innen/ehemalige_professor_innen/fesel_gerd.de.jsp), ven dem auch der Entwurf für das Uniklinikum stammt.
+
+# Heutige Situation
+
+Auf dem Gebiet existiert heute ein Wohngebiet uznd die Straße "Vor der Laakenbreite"

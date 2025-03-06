@@ -23,3 +23,13 @@ resources:
   params:
     iiif: page085/info.json
 ---
+
+Die Siedlung auf dem Holtenser Berg durchlief mehrere Planungsstände...
+<!--more-->
+Einige sind in diesem Beitrag zu sehen,
+
+
+
+Als Demonstrativbauvorhaben "Holtenser Berg" des Bundesministers für Bauwesen projektiert, erstreckt sich die Siedlung auf 40 Hektar, 1967/68 bezogen die ersten Bewohner ihre Wohnungen.
+
+Die Struktur wurde so angelegt, dass sich Wohnhäuser und Blöcke um ein Zentrum mit Läden und Arztpraxen gruppieren.

@@ -1,0 +1,21 @@
+[
+  {
+    "image": "page120.jxl",
+    "size": [4806, 6994],
+    "areas": [
+      {
+        "name": "blueprint",
+        "size": [4806, 6994],
+        "postprocess": ["preview"],
+        "position": {
+          "x": 213,
+          "y": 3758
+        },
+        "size": {
+          "x": 4506,
+          "y": 3035
+        }
+      }
+    ]
+  }
+]

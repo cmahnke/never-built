@@ -19,3 +19,16 @@ resources:
   params:
     iiif: page139/info.json
 ---
+
+Das Gemeindezentrum in Grone besteht noch heute
+<!--more-->
+
+Die projektierten Wohnhäuser wurden allerdings nie in dieser Form realisiert, heute befindet sich aber in der Nähe
+
+https://jona.wir-e.de/aktuelles
+
+2024 fusionierten die Kirchengemeinden in Grone
+
+https://kg-grone.wir-e.de/orte
+
+https://www.nachbarschaftszentrum-grone.de/index.html

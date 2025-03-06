@@ -25,3 +25,29 @@ resources:
   params:
     iiif: page061/info.json
 ---
+
+Ein früher Entwurf des Klinikums...
+
+<!--more-->
+
+Der Bau des ersten Bauabschnittes (jetzigen) [Klinikums](https://de.wikipedia.org/wiki/Universit%C3%A4tsmedizin_G%C3%B6ttingen) begann 1969, also zwei Jahre nach dem erscheinen dieser Publikation. Der Einzug begann 1976 und war 1980 weitestgehend abgeschlossen.
+
+# Model
+
+{{< figure
+  src="./model.jpg"
+  alt="Model des Klinikums"
+  caption="Model des Klinikums"
+>}}
+
+Das Modell zeigt einen zentralen Turm mit einem breiten Sockel an der heute das Hauptgebäude steht. Und eine reihe von damit verbundenen Nebengebäuden im Norden. Das Parkdeck im Vordergrund ist das einzige, dass man an diesem Entwurf heute wiedererkennen kann.
+
+{{< figure
+  src="./model-front.jpg"
+  alt="Eingangsbereich"
+  caption="Eingangsbereich"
+>}}
+
+# Heutige Situation
+
+Derzeit steht wieder eine [Erweiterung](https://www.umg.eu/neubau/) des Klinikums an, diese soll zwischen dem Wohnheim Robert-Koch-Straße und dem Bettenhaus 1 entstehen.

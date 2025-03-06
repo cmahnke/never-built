@@ -1,13 +1,13 @@
 {{- $layoutClasses := . -}}
 {{- $animationClasses := slice -}}
-{{- if isset site.Data "effects" -}}
+{{- if and (isset site.Data "effects") (isset site.Data.effects "mappings") -}}
   {{- if strings.Contains $layoutClasses " " -}}
     {{- $layoutClass = split $layoutClasses " " -}}
   {{- else -}}
     {{- $layoutClasses = slice $layoutClasses -}}
   {{- end -}}
   {{- range $layoutClasses -}}
-    {{- $ac := where site.Data.effects "layoutClass" . -}}
+    {{- $ac := where site.Data.effects.mappings "layoutClass" . -}}
     {{- if and (ne $ac nil) (isset (index $ac 0) "animationClass") -}}
       {{- $animationClasses = $animationClasses | append (index $ac 0).animationClass -}}
     {{- else -}}

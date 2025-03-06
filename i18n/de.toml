@@ -19,6 +19,10 @@ other = "Beitragsvorschau"
 [worldcat]
 other = "Bibliografischer Nachweis"
 
+[book-list-count]
+single = "Beitrag in diesem Buch"
+other = "Beiträge in diesem Buch"
+
 [section-heading]
 other = "Beiträge in diesem"
 

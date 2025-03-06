@@ -173,3 +173,7 @@ enableRobotsTXT = true
   [[module.mounts]]
     source = "static/images"
     target = "static/images"
+
+  [[module.mounts]]
+    source = "data"
+    target = "assets/json"

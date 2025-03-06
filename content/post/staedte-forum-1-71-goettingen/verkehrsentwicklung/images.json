@@ -1,0 +1,36 @@
+[
+  {
+    "image": "page034.jxl",
+     "size": [4720, 6996]
+  },
+  {
+    "image": "page035.jxl",
+    "size": [4774, 6992],
+    "areas": [
+      {
+        "name": "blueprint",
+        "postprocess": ["preview"],
+        "position": {
+          "x": 1559,
+          "y": 111
+        },
+        "size": {
+          "x": 2977,
+          "y": 2821
+        }
+      },
+      {
+        "name": "blueprint-detail",
+        "postprocess": ["preview"],
+        "position": {
+          "x": 1629,
+          "y": 3644
+        },
+        "size": {
+          "x": 2924,
+          "y": 3014
+        }
+      }
+    ]
+  }
+]
