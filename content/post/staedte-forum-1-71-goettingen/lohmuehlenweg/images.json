@@ -5,7 +5,6 @@
     "areas": [
       {
         "name": "blueprint",
-        "size": [4806, 6994],
         "postprocess": ["preview"],
         "position": {
           "x": 213,
