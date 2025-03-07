@@ -1,6 +1,6 @@
 ---
 title: "Studentenwohnheim Papenberg"
-date: 2025-03-01T17:15:07+02:00
+date: 2025-05-14T17:15:07+02:00
 tags:
 - high-rise
 - university

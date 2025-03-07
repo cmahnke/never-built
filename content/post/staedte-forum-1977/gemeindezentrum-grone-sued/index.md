@@ -1,6 +1,6 @@
 ---
 title: "Gemeindezentrum Grone-Süd"
-date: 2025-03-15T17:15:07+02:00
+date: 2025-07-02T17:15:07+02:00
 tags:
 - infrastructure
 outputs:
@@ -20,15 +20,15 @@ resources:
     iiif: page139/info.json
 ---
 
-Das Gemeindezentrum in Grone besteht noch heute
+Das Gemeindezentrum in Grone besteht noch heute...
 <!--more-->
 
-Die projektierten Wohnhäuser wurden allerdings nie in dieser Form realisiert, heute befindet sich aber in der Nähe
+Die projektierten Wohnhäuser wurden allerdings nie in dieser Form realisiert.
 
-https://jona.wir-e.de/aktuelles
+# Kirchengemeinde
 
-2024 fusionierten die Kirchengemeinden in Grone
+Das Haus gehörte ursprünglich der [Jona Kirchengemeinde](https://jona.wir-e.de/aktuelles), imJahr 2024 fusionierten die [Kirchengemeinden in Grone](https://kg-grone.wir-e.de/orte).
 
-https://kg-grone.wir-e.de/orte
+# Nachbarschaftszentrum
 
-https://www.nachbarschaftszentrum-grone.de/index.html
+Heute befindet sich in der Nähe das [Nachbarschaftszentrum Grone](https://www.nachbarschaftszentrum-grone.de/index.html).

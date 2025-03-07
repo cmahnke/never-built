@@ -1,6 +1,6 @@
 ---
 title: "Altenwohnstift am Warteberg (Planung) in Göttingen-Herberhausen"
-date: 2025-03-15T17:15:07+02:00
+date: 2025-06-04T17:15:07+02:00
 tags:
 - high-rise
 - infrastructure
@@ -24,5 +24,7 @@ Ein Seniorenresidenz im Wald bei Herberhausen...
 <!--more-->
 
 # Entwurf
+
+Der genaue Ort lässt sich nicht präzise bestimmen.
 
 Der Entwurf stammt von [Jochen Brandi](https://de.wikipedia.org/wiki/Jochen_Brandi) aus Göttingen, von dem auch das realisierte EAM Hochaus an der Kasseler Landstraße, oder die Deutsche Bank ind der Innenstadt stammt

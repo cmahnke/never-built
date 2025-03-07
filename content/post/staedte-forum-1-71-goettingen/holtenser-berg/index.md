@@ -1,6 +1,6 @@
 ---
 title: "Wohnsiedlung Holtenser Berg"
-date: 2025-03-08T17:15:07+02:00
+date: 2025-03-12T17:15:07+02:00
 tags:
 - high-rise
 - residential-area

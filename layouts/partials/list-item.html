@@ -1,15 +1,21 @@
-{{- $defaultWidth := 240 -}}
-{{- $defaultHeight := 320 -}}
+{{- $defaultWidth := 320 -}}
+{{- $defaultHeight := 480 -}}
 {{- $fit := printf "%dx%d" $defaultWidth $defaultHeight -}}
 
-<article class="list-item " itemscope itemtype="http://schema.org/Blog">
+{{- $class := "" -}}
+{{- if .Store.Get "class" -}}
+  {{- $class = .Store.Get "class" -}}
+{{- end -}}
+
+{{- $animationTarget := "post" -}}
+<article class="list-item {{ $class }}" itemscope itemtype="http://schema.org/Blog">
   <div class="list-item-head">
     {{- $title := .Title -}}
-    <h2 class="headline" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}{{ if .Draft }} (Draft){{ end }}</a></h2>
+    <h2 class="headline" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}" title="{{ $title }}">{{ $title }}{{ if .Draft }} (Draft){{ end }}</a></h2>
 
     <div class="meta">
       {{ if and (not .Date.IsZero) }}
-        <a href="{{ .RelPermalink }}" class="date">
+        <a href="{{ .RelPermalink }}" class="date click-animation" data-animation-classes="{{ $animationTarget }}">
           <span class="key">{{ i18n "publishedOn" }}</span>
           <span class="val"><time itemprop="datePublished" datetime="{{ .Date.Format "2006-01-02" }}">
             {{- .Date | time.Format ":date_full" -}}
@@ -18,10 +24,40 @@
       {{ end }}
     </div>
   </div>
-  {{- if .Summary -}}
-    <section class="summary">
-      {{ .Summary }}
-      {{ if .Truncated }} <a href="{{ .RelPermalink }}" class="readmore">{{ i18n "readmore" }}</a>{{ end }}
-    </section>
-  {{- end -}}
+
+  <div class="list-preview">
+    {{- $page := . -}}
+
+    {{- with .Params.cover -}}
+      {{- $preview := slice -}}
+      {{- if reflect.IsSlice . -}}
+        {{- $preview = . -}}
+      {{- else -}}
+        {{- $preview = slice . -}}
+      {{- end -}}
+      {{- $preview := slice (index $preview 0) -}}
+      {{- range $preview -}}
+        {{- with $page.Resources.Get . -}}
+          {{ with .Fit $fit }}
+            <a href="{{ .RelPermalink }}" title="{{ $title }}" data-animation-classes="{{ $animationTarget }}">
+              <img class="featured-entry-image" src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
+            </a>
+          {{- end -}}
+        {{- else -}}
+          {{- errorf "[partials/featured.html] Can't find %s for %s" $preview $page.File.Path -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  </div>
+
+  <div class="summary">
+    {{- if .Summary -}}
+      <a href="{{ .RelPermalink }}" class="click-animation" data-animation-classes="{{ $animationTarget }}" title="{{ $title }}">
+        {{ .Summary }}
+      </a>
+    {{- end -}}
+  </div>
+  <div class="readmore-container">
+    <a href="{{ .RelPermalink }}" class="readmore no-animation" title="{{ i18n "readmore" }}">{{ i18n "readmore" }}</a>
+  </div>
 </article>

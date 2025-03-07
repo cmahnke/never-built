@@ -1,3 +1,4 @@
+@use "link" as *;
 
 .list {
   width: 90%;
@@ -33,6 +34,7 @@
     }
   }
 
+  /*
   .tag-list-title {
     font-size: xx-large;
 
@@ -40,35 +42,93 @@
       margin: -1.4rem 5% 1rem !important;
     }
   }
+  */
 
   .section-head + .post {
     margin-top: 1.6em;
   }
 
   .post {
-
     .list-item {
       display: flex;
       flex-direction: column;
 
+      @media (min-width: 768px) {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        grid-template-rows: repeat(3, auto);
+        gap: 1rem;
+        justify-content: space-between;
+
+        &.odd {
+          .list-item-head {
+            grid-column-start: 2;
+            align-items: flex-end;
+
+            .headline {
+              text-align: end;
+            }
+
+          }
+
+          .list-preview {
+            grid-column-start: 1;
+          }
+
+          .summary {
+            grid-column-start: 2;
+            transform-origin: right;
+            margin-left: 2rem;
+            margin-right: unset;
+            text-align: right;
+          }
+        }
+      }
+
       .list-item-head {
         flex-direction: column;
+        display: flex;
+
 
         @media (min-width: 768px) {
-          display: grid;
           width: 100%;
-          grid-template-columns: 1fr;
+          grid-column-start: 1;
+          justify-content: unset;
+          align-items: flex-start;
+        }
+
+        .headline {
+          width: 100%;
+          font-size: xx-large;
+
+          @media (min-width: 768px) {
+            margin-bottom: 1rem;
+            font-size: 2.2em;
+          }
         }
 
         .meta {
-          display: none;;
+          display: none;
 
           @media (min-width: 768px) {
             display: block;
             width: fit-content;
-            justify-self: flex-end;
+            margin-top: unset;
             font-size: small;
+            margin: 0 1rem;
           }
+        }
+      }
+
+      .list-preview {
+        filter: grayscale(1);
+        flex-basis: 100%;
+
+        @media (min-width: 768px) {
+          grid-row: span 2 / span 2;
+          grid-column-start: 2;
+          grid-row-start: 1;
+
         }
       }
 
@@ -76,31 +136,36 @@
         flex-basis: 100%;
         display: flex;
         flex-direction: column;
+        transform: scaleX(1.015);
+        transform-origin: left;
 
-
-        &:after {
-          content: '';
-          width: 80%;
-          display: inline-flex;
-          justify-self: center;
-          margin: auto;
-          height: .3ex;
-          background-color: #000;
-          margin: 1.6rem auto;
-
-          @media (min-width: 768px) {
-            width: 60%;
-          }
+        @media (min-width: 768px) {
+          grid-column-start: 1;
+          grid-row-start: 2;
+          font-size: larger;
+          margin-right: 2rem;
         }
       }
 
+      .readmore-container {
+        display: flex;
+        flex-direction: column;
+
+        @media (min-width: 768px) {
+          grid-column: span 2 / span 2;
+          grid-row-start: 3;
+          margin-bottom: 3rem;
+        }
+      }
+
+      &:last-child .readmore-container:after {
+        display: none;
+      }
     }
   }
 
   .book,
   .post {
-
-
     &:last-child .list-item-head {
       .list-item,
       .cover-preview:after {
@@ -112,20 +177,18 @@
 
   .book {
     @media (min-width: 768px) {
-      padding: 1em 0;
+      padding: 3em 0;
     }
 
     .list-item-head {
-      /*flex-wrap: wrap;*/
-      display: grid;
 
       @media (min-width: 768px) {
+        display: grid;
         grid-template-columns: 1fr auto;
-        grid-template-rows: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
         gap: 0px;
         justify-content: space-between;
       }
-
 
       .headline {
         order: 1;
@@ -133,18 +196,20 @@
         @media (min-width: 768px) {
           margin-block-end: unset;
           align-self: end;
+          grid-column-start: 1;
+          order: unset;
         }
-
       }
 
       .cover-preview {
         order: 2;
         min-width: 80%;
-        grid-row: span 2 / span 2;
+        grid-row: span 3 / span 3;
 
         .preview {
           margin: auto;
           width: 100%;
+          order: unset;
 
           @media (min-width: 768px) {
             width: unset;
@@ -166,34 +231,20 @@
           align-self: center;
           text-align: unset;
           margin-left: 3rem;
-          margin-top: unset;
+          margin-top: -5%;
+          order: unset;
         }
+      }
 
-        &:after {
-          content: '';
-          width: 100%;
-          display: inline-flex;
-          justify-self: center;
-          margin: auto;
-          height: .3ex;
-          background-color: #000;
-          margin: 2rem auto;
+      .readmore-container {
+        width: 100%;
+      }
 
-          @media (min-width: 768px) {
-            display: none;
-            grid-row-start: 2;
-          }
-        }
+      .preview {
+        width: 100%;
 
-
-
-
-        .preview {
-          width: 100%;
-
-          @media (min-width: 768px) {
-            width: unset;
-          }
+        @media (min-width: 768px) {
+          width: unset;
         }
       }
 
@@ -251,5 +302,75 @@
   a:visited {
     color: var(--text-color);
     text-decoration: none;
+  }
+}
+
+.list .books .list-item,
+.list .post .list-item {
+  .readmore-container {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: column;
+      grid-row-start: 3;
+      align-self: flex-start;
+    }
+
+    &:after {
+      content: '';
+      width: 100%;
+      display: inline-flex;
+      justify-self: center;
+      margin: auto;
+      height: .3ex;
+      background-color: #000;
+      margin: 2rem auto;
+
+      @media (min-width: 768px) {
+        display: none;
+        grid-row-start: 2;
+      }
+    }
+
+    .readmore {
+      display: block;
+      width: fit-content;
+      text-align: center;
+      vertical-align: middle;
+      border: .3ex solid #000;
+      padding: 1rem 1rem;
+      color: #000;
+      text-decoration: none;
+      transition: all 150ms;
+      margin: auto;
+      @include invert-button;
+
+      @media (min-width: 768px) {
+        width: 10rem;
+        padding: .4rem 1rem;
+      }
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+
+.section-tags .main .list {
+  width: unset;
+
+  .list-item {
+    .list-preview {
+      mix-blend-mode: multiply;
+    }
+
+    .readmore {
+      mix-blend-mode: multiply;
+    }
   }
 }

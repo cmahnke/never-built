@@ -14,6 +14,7 @@ $color-light: #fff;
 $color-dark: #000;
 $post-background: #e0e0e0;
 $meta-background: #eee;
+$term-background: #b0b0b0;
 $icon-fill: $color-dark;
 $animation-duration: 750ms;
 $show-page-duration: $animation-duration;
@@ -23,7 +24,8 @@ $button-height: 3rem;
 $button-padding: 1.6rem;
 $scale-factor: 1.05;
 $accent-color: color.adjust(black, $lightness: 90%);
-$text-font-size: 1.6rem;
+$text-font-size: 1rem;
+$map-font-site: 1rem;
 
 $menu-width: 10vw;
 
@@ -78,16 +80,19 @@ $fullscreen-color: var(--base07);
   --heading-font: #{$heading-font};
   --menu-text-color: white;
   --page-background: white;
+  --text-font-size: #{$text-font-size};
 
   @media (min-width: 768px) {
     --main-margin: 2rem;
     --content-width: calc(100vw - (#{$button-padding} * 2 + #{$button-width}) - var(--main-margin) * 2);
+    --text-font-size: calc(#{$text-font-size} * 1.6);
   }
 
   @media (min-width: 1200px) {
     --main-margin: 2rem;
     --content-width: calc(100vw - (#{$button-padding} * 2 + #{$button-width}) - var(--main-margin) * 2);
-
+    --text-font-size:
+    --text-font-size: calc(#{$text-font-size} * 1.8);
   }
 }
 
@@ -97,6 +102,7 @@ html {
 
 html,body {
   margin: 0;
+  /*font-size: calc($text-font-size - .6rem);*/
 }
 
 h1, h2, h3 {

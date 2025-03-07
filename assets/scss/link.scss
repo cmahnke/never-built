@@ -2,7 +2,7 @@
 
 $accent-color: color.adjust(black, $lightness: 90%) !default;
 
-@mixin underline-link ($thickness: 0.3ex, $color: #000) {
+@mixin underline-link ($thickness: 0.3ex, $color: #000, $duration: .45s) {
   text-decoration: none;
   background-image: linear-gradient($color, $color);
   background-position: 0 90%;
@@ -10,7 +10,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
   background-size: 0 .3ex;
   background-size: 0 $thickness;
   padding-bottom: calc(1.5 * $thickness);
-  transition: background-size .3s ease;
+  transition: background-size $duration ease;
 
   &:hover {
     background-size: 100% .3ex;
@@ -28,7 +28,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
 }
 
 /* See https://css-tricks.com/taming-blend-modes-difference-and-exclusion/ */
-@mixin invert-link ($color: color-mix(in srgb, var(--page-background), black 10%), $blend-mode: color-burn, $initial: 0, $height: 0.5) {
+@mixin invert-link ($color: color-mix(in srgb, var(--page-background), black 10%), $blend-mode: color-burn, $initial: 0, $height: 0.5, $duration: .45s) {
   text-decoration: none;
   position: relative;
 
@@ -54,9 +54,35 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
     content: '';
     transform-origin: 0 100%;
     transform: scaleY($initial);
-    transition: transform .45s;
+    transition: transform $duration;
     mix-blend-mode: $blend-mode;
   }
+}
 
+@mixin invert-button ($duration: .45s) {
+  position: relative;
+  color: #fff;
+  mix-blend-mode: difference;
 
+  &:after {
+    content: '';
+    background-image: linear-gradient(black, black);
+    background-position: 0 90%;
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    mix-blend-mode: difference;
+    background-color: white;
+    transition: all $duration;
+  }
+
+  &:hover {
+    &:after {
+      background-size: 100% 100%;
+    }
+  }
 }

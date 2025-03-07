@@ -6,7 +6,7 @@
               {{- range sort . -}}
 								{{- if ne (path.Base .URL) "/" -}}
                   <li class='menu-item {{ if eq ("/") (.URL) }}menu-item-type-custom menu-item-object-custom{{ else }}menu-item-type-post_type menu-item-object-page{{ end }}'>
-                    <a href="{{ .URL | absLangURL }}">{{ .Name }}</a>
+                    <a href="{{ .URL | absLangURL }}" data-animation-classes="meta">{{ .Name }}</a>
                   </li>
 								{{- end -}}
               {{- end -}}

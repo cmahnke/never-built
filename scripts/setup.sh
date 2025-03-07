@@ -19,6 +19,9 @@ for SCRIPT in $PWD/themes/projektemacher-base/scripts/init/*.sh ; do
     bash "$SCRIPT"
 done
 
+# Generate Previews
+./themes/projektemacher-base/scripts/preview.sh
+
 # Favicons
 #SOURCE="themes/projektemacher-base/static/images/cm.svg" OPTIONS="-transparent white static/images/favicon-128.png" ./themes/projektemacher-base/scripts/favicon.sh
 

@@ -23,18 +23,23 @@ window.projektemacherMap = async function(elem, geojson, source, style, bbox, ce
   }
   function createStyleFunction(marker) {
     return (feature, level) => {
-      const lineWidth = Math.floor(60 / level)
-      return new Style({
-        image: new Icon(marker),
-        stroke: [ new Stroke({
-          color: 'rgba(0,0,0,1)',
-          width: lineWidth + 4
+      const lineWidth = Math.floor(50 / level)
+      return [new Style({
+          image: new Icon(marker)
         }),
-        new Stroke({
-          color: 'rgba(255,255,255,1)',
-          width: lineWidth
+        new Style({
+          stroke: new Stroke({
+            color: 'rgba(0,0,0,1)',
+            width: lineWidth + 4
+          }),
+        }),
+        new Style({
+          stroke: new Stroke({
+            color: 'rgba(255,255,255,1)',
+            width: lineWidth
+          })
         })]
-      });
+
     };
   }
   //marker = markerFunc;

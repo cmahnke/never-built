@@ -1,3 +1,4 @@
+{{-  $classes := slice "even" "odd" -}}
 <div class="list">
   {{- with .Data.Term -}}
     {{- $tag := i18n . -}}
@@ -23,8 +24,12 @@
     {{- $pages = where $pages "Params.metaPage" "!=" true -}}
     {{- $pages = where $pages "Kind" "!=" "section" -}}
     {{- $paginator := .Paginate (where $pages "Params.displayinlist" "!=" false) -}}
-    {{- range $paginator.Pages -}}
-      {{- partial "list-item.html" . -}}
+    {{- site.Store.Set "currentPaginator" $paginator -}}
+    {{- range $i, $item := $paginator.Pages -}}
+
+      {{- $class := index $classes (mod $i 2) -}}
+      {{- $item.Store.Set "class" $class -}}
+      {{- partial "list-item.html" $item -}}
     {{- end -}}
   </div>
 </div>

@@ -1,6 +1,6 @@
 ---
 title: "Moderner Städtebau Bebauungsplan am Habichtsweg"
-date: 2025-03-15T17:15:07+02:00
+date: 2025-04-23T17:15:07+02:00
 tags:
 - high-rise
 - residential-area
@@ -26,5 +26,5 @@ resources:
 <!--more-->
 
 
-Am oberen Ende des Models kann man den noch frei stehenden ehemalige [Gaststätte Rohns](https://de.wikipedia.org/wiki/Christian_Friedrich_Andreas_Rohns) auf dem [Hainberg](https://de.wikipedia.org/wiki/Hainberg_(G%C3%B6ttinger_Wald)) sehen 
+Am oberen Ende des Models kann man den noch frei stehenden ehemalige [Gaststätte Rohns](https://de.wikipedia.org/wiki/Christian_Friedrich_Andreas_Rohns) auf dem [Hainberg](https://de.wikipedia.org/wiki/Hainberg_(G%C3%B6ttinger_Wald)) sehen
 Die Straße im Model ist vermutlich die Konrad-Adenauer-Straße bzw. die Grotefendstraße auf der rechten Seite.

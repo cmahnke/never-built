@@ -20,23 +20,31 @@
         {{- $paginator := .Paginate $pages -}}
         {{- range $paginator.Pages -}}
           <article class="list-item book" itemscope itemtype="http://schema.org/Blog">
+            {{- $articleCount := len .Pages -}}
             <div class="list-item-head">
               {{- $title := .Title -}}
-              <h2 class="headline" itemprop="headline"><a data-animation-classes="post" href="{{ .RelPermalink }}">{{ $title }}{{ if .Draft }} (Draft){{ end }}</a></h2>
+              {{- $link := .RelPermalink -}}
+              {{- if not $articleCount -}}
+                {{- $link := "#" -}}
+              {{- end -}}
+              <h2 class="headline" itemprop="headline"><a data-animation-classes="post" href="{{ $link }}">{{ $title }}{{ if .Draft }} (Draft){{ end }}</a></h2>
 
               <div class="cover-preview">
                 {{- $previewImg := partial "preview/preview-internal.html" (dict "context" . "fit" $fit "postProcess" true) -}}
 
                 {{- if $previewImg -}}
                   {{- $class := "preview" -}}
-                  <a class="cover-link" href="{{ .Permalink }}">
+                  <a class="cover-link" href="{{ $link }}">
                     {{- with $previewImg -}}
                       <img class="{{ $class }}" src="{{ $previewImg.RelPermalink }}" />
                     {{ end }}
                   </a>
                 {{- end -}}
               </div>
-              <div class="count">{{ len .Pages }} {{ i18n "book-list-count" (len .Pages) }}</div>
+              <div class="count">{{ $articleCount }} {{ i18n "book-list-count" $articleCount }}</div>
+              <div class="readmore-container">
+                <a href="{{ .RelPermalink }}" class="readmore no-animation" title="{{ i18n "readmore" }}">{{ i18n "readmore" }}</a>
+              </div>
             </div>
           </article>
           {{/*

@@ -16,8 +16,8 @@
         }
       },
       {
-        "name": "model-top",
-        "postprocess": ["preview"],
+        "name": "model-current",
+        "postprocess": ["preview", "enhance_ai"],
         "position": {
           "x": 1546,
           "y": 2184

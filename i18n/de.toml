@@ -37,3 +37,12 @@ other = "Originalseite"
 
 [originalPages]
 other = "Originalseiten"
+
+[oldPosts]
+other = "Ältere Beiträge"
+
+[source]
+other = "Quelle"
+
+[post-source]
+other = "Herkunft des Beitrags"

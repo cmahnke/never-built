@@ -1,14 +1,57 @@
-.dir-map.meta .main .article-single {
-  .content .post-body .post-content {
-    .map-wrapper {
-      width: 100%;
-      min-height: 50vh;
-      aspect-ratio: unset;
-      flex-basis: 100%;
+$map-font-site: 1rem !default;
+
+body:not(.dir-map),
+body:not(.meta) {
+  .main {
+
+    .article-single,
+    .section-single {
+
+      .post-body > .map-wrapper {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        max-width: 40%;
+
+        @media (min-width: 768px) {
+          min-height: unset;
+          width: 30vw;
+
+          flex-basis: 50%;
+        }
+      }
+
+      .content-container {
+        .map-wrapper {
+          font-size: 1rem;
+          clear: both;
+          width: 90%;
+          margin: auto;
+          float: unset;
+          aspect-ratio: 1 / 1;
+
+          @media (min-width: 768px) {
+            min-height: 50vh;
+            aspect-ratio: unset;
+          }
+        }
+      }
+
+      .map-wrapper {
+        float: right;
+        margin-top: unset;
+
+        margin: .6rem;
+
+        @media (min-width: 768px) {
+          margin: 2rem;
+        }
+      }
+
     }
   }
 }
 
+/*
 .section-post .article-single,
 .section-single {
   .map-wrapper {
@@ -17,6 +60,7 @@
     box-sizing: content-box;
   }
 }
+*/
 
 ol-viewport {
   --ol-subtle-background-color: white;
@@ -38,15 +82,19 @@ ol-viewport {
   background-position: center top;
 }
 
-
 .map-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
   font-family: var(--text-font);
-  min-height: 60vh;
+  min-height: 40vw;
   position: relative;
+  border: 0.3ex solid black;
+  font-size: $map-font-site;
 
+  @media (min-width: 768px) {
+    min-height: 60vh;
+  }
 
   .ol-popup {
     display: none;
@@ -72,24 +120,33 @@ ol-viewport {
       border-radius: unset;
       border: .3ex solid #000;
       padding: 2rem .6rem 1rem .6rem;
+      min-width: 30vw;
+      font-size: 1.4rem;
 
       &:after, &:before {
         border-top-color: black;
       }
 
       h1 {
-        margin-block-start: .8rem;
-        margin-block-end: .8rem;
+        margin-block-start: .6rem;
+        margin-block-end: .6rem;
+      }
+
+
+      .popup-content {
+        font-size: 1rem;
       }
 
       .link {
         margin-top: .8rem;
+        font-size: 1rem;
       }
 
       a.ol-popup-closer {
         position: absolute !important;
         top: .2rem;
         right: .6rem;
+        font-size: 2.2rem;
         text-decoration-style: unset !important;
         text-decoration-line: unset;
         text-decoration-thickness: unset;
@@ -122,9 +179,6 @@ ol-viewport {
 
 .section-post {
   .main {
-    .article-single .post {
-        /* See page.scss */
-    }
 
     .section-single .book {
       /* See book-toc.scss */

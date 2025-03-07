@@ -17,7 +17,7 @@ function addOverlay(elem, cls, additionalClasses) {
   const container = document.createElement("div");
   overlay.classList.add(cls);
   if (additionalClasses !== undefined && additionalClasses !== "") {
-    additionalClasses.split(/(\s+)/).forEach(cls => {
+    additionalClasses.split(" ").forEach(cls => {
       overlay.classList.add(cls)
     });
   }
@@ -57,12 +57,15 @@ function bodyLinkHandler(e, timeout) {
     timeout = defaultTransitionMs;
   }
   const anchor = e.target.closest('a');
-  var additionalClasses;
+  var additionalClasses = "";
   if (e.target.dataset.animationClasses) {
     additionalClasses = e.target.dataset.animationClasses;
   }
+  if (anchor.dataset.animationClasses) {
+    additionalClasses += " " + anchor.dataset.animationClasses;
+  }
   const clone = cloneElem(e.target);
-  addOverlay(clone, overlayClassName, additionalClasses);
+  addOverlay(clone, overlayClassName, additionalClasses.trim());
   setTimeout(function(){ clone.classList.add(animationClassName) }, 2);
   const callback = () => {
     window.location = anchor.getAttribute('href')

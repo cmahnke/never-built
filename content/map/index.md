@@ -6,6 +6,7 @@ displayinlist: false
 
 
 Auf dieser Seite werden die Einträge mit (rekonstruierten) Geo-Informationen auf eine Karte angezeigt.
+{.meta-page-intro}
 
 {{< maps/projektemacher geojson="/post/map.geojson" cluster=false minZoom=12 initialZoom=14 maxZoom=16 >}}
 

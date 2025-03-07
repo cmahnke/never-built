@@ -1,6 +1,6 @@
 ---
 title: "Städte Forum 1977"
-date: 2025-03-01T17:15:07+02:00
+date: 2025-06-18T17:15:07+02:00
 tags:
 - book
 worldcat: https://search.worldcat.org/de/title/74413723

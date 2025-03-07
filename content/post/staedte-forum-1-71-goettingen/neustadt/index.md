@@ -1,6 +1,6 @@
 ---
 title: "Sanierung Neustadt"
-date: 2025-03-15T17:15:07+02:00
+date: 2025-04-09T17:15:07+02:00
 tags:
 - high-rise
 - residential-area

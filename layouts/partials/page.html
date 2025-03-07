@@ -11,7 +11,7 @@
         {{- partial "date.html" . -}}
       {{- end -}}
 
-      {{- if .Truncated -}}
+      {{- if and .Truncated (not .Params.metaPage) -}}
         <div class="post-summary">
           {{- .Summary -}}
         </div>
@@ -48,8 +48,13 @@
           {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "minZoom" 12 "initialZoom" 15 "maxZoom" 15 "disabled" true) -}}
         {{- end -}}
 
+
         <div class="post-content">
-          {{- partial "content.html" . -}}
+          {{- if not .Params.metaPage -}}
+            {{- partial "content.html" . -}}
+          {{- else -}}
+            {{- .Content -}}
+          {{- end -}}
         </div>
 
       </div>
@@ -66,15 +71,16 @@
             {{- partial "iiif/iiif-content.html" . -}}
           {{- end -}}
         {{- end -}}
-      <div>
+      </div>
     </div>
 
     {{- if not .Params.metaPage -}}
       <div class="meta">
         {{- if and (ne .CurrentSection.Path "/post") (ne .CurrentSection.Path .Path) -}}
+          <h3 class="parent-section-heading">{{ i18n "post-source" }}</h3>
           <div class="parent-section">
             {{ i18n "sectionParent" }}
-            <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}">{{ .CurrentSection.Title }}</a> <i class="book-reference"></i>
+            <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}">{{ .CurrentSection.Title }}</a> <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}"><i class="book-reference"></i></a>
           </div>
         {{- end -}}
         <div class="tag-container">

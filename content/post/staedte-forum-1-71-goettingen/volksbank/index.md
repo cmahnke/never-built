@@ -1,6 +1,6 @@
 ---
 title: "Volksbank Göttingen eGmbH"
-date: 2025-03-01T17:15:07+02:00
+date: 2025-04-02T17:15:07+02:00
 tags:
 - high-rise
 - commercial
@@ -27,6 +27,8 @@ resources:
 Ein nie realisierter Wallaufgang...
 <!--more-->
 
-In diesem Beitrag soll es gar nicht um die Volksbank gehen, sondern um ein kleines Detail aus dem Übersichtsplan.
+In diesem Beitrag soll es gar nicht um die Volksbank gehen, sondern um ein kleines Detail aus dem Übersichtsplan oben.
 
-[]
+# Der barrierefreie Wall
+
+Dieser Plan zeigt einen Entwurf für einen barrierefreien Wallaufgang bei der Bonifatiusschule II, warum dieser nie realisiert wurde ist unklar. Allerdings lassen sich auch heute noch die Ansätze erkennen, der erste Teil der Rampe existiert noch heute.

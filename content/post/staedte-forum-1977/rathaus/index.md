@@ -1,6 +1,6 @@
 ---
 title: "Wende Nord"
-date: 2025-03-15T17:15:07+02:00
+date: 2025-06-25T17:15:07+02:00
 tags:
 - high-rise
 - infrastructure
