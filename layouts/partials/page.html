@@ -29,13 +29,15 @@
           {{- end -}}
 
           {{- if $previewNames -}}
-            {{- range $i, $img := $previewNames -}}
+            {{- $i := 0 -}}
+            {{- $img := index $previewNames $i -}}
+            {{/*{{- range $i, $img := $previewNames -}}*/}}
               {{- with $.Resources.GetMatch $img -}}
                   <img class="{{printf "post-featured img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}" data-image-name="{{ $img}}" />
               {{- else -}}
                 {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $.Path $img -}}
               {{- end -}}
-            {{- end -}}
+            {{/* {{- end -}} */}}
           {{- end -}}
         </div>
       {{- end -}}
