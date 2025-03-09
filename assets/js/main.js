@@ -2,13 +2,11 @@ import {setupAnimatedLinks, setupAnimatedMenu} from './animated-link';
 import {setupBook} from './scrollify';
 import Glide from '@glidejs/glide'
 import { projektemacherMap } from './maps/projektemacher-map';
-import {initializeChart} from './chart';
 import {Style, Fill, Stroke, Icon} from 'ol/style.js';
 
 const defaultMapFont = "Roboto Mono Variable";
 const animatedLinkColor = ["black", "#000", "#000000", "rgb(0, 0, 0)"]
 
-window.initializeChart = initializeChart;
 
 window.projektemacherMap = async function(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font) {
   var bgElem;

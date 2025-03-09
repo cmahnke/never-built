@@ -1,0 +1,15 @@
+{{- $context := .context -}}
+{{- $model := .model -}}
+{{- $src := $context.Page.File -}}
+
+{{- $id := printf "_hdr-model-%s" (md5 (printf "%s-%s" $src now.UnixNano)) -}}
+
+<div class="renderer-canvas">
+  <canvas id="{{ $id }}"></canvas>
+</div>
+
+<script type="text/javascript">
+  const modelUrl = '{{ $model | safeJS }}';
+  const canvas = document.querySelector('#{{ $id | safeJS }}');
+  initModel(canvas, modelUrl);
+</script>

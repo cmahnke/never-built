@@ -164,3 +164,5 @@ function getSize(container) {
   }
   return [width, height]
 }
+
+window.initializeChart = initializeChart;

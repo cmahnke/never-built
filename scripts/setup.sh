@@ -19,14 +19,16 @@ for SCRIPT in $PWD/themes/projektemacher-base/scripts/init/*.sh ; do
     bash "$SCRIPT"
 done
 
+./scripts/svgo.sh
+
+# Favicons
+SOURCE="static/images/favicon.svg" OPTIONS="-transparent white static/images/favicon-128.png" ./themes/projektemacher-base/scripts/favicon.sh
+
 # Generate Previews
 ./themes/projektemacher-base/scripts/preview.sh
 
 # Favicons
 #SOURCE="themes/projektemacher-base/static/images/cm.svg" OPTIONS="-transparent white static/images/favicon-128.png" ./themes/projektemacher-base/scripts/favicon.sh
 
-yarn run svgo
-
 ./scripts/map.sh
-./scripts/svgo.sh
 ./themes/projektemacher-base/scripts/json-lint.sh

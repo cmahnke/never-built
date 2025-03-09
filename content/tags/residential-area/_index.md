@@ -1,6 +1,9 @@
 ---
 title: 'Wohngebiete'
 description: ''
+params:
+  js:
+    - js/chart.js
 ---
 Nicht nur eine wachsende Universität braucht Wohnraum...
 
