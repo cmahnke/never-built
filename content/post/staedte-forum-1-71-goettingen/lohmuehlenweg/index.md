@@ -8,6 +8,7 @@ outputs:
   - iiif-manifest
   - html
 params:
+  cover: drawing.jpg
   iiifContext: http://iiif.io/api/image/2/context.json
   geojson:
     coordinates:

@@ -7,6 +7,7 @@ outputs:
   - iiif-manifest
   - html
 params:
+  cover: blueprint.jpg
   iiifContext: http://iiif.io/api/image/2/context.json
   geojson:
     coordinates:

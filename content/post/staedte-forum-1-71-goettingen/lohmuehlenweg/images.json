@@ -4,6 +4,18 @@
     "size": [4806, 6994],
     "areas": [
       {
+        "name": "drawing",
+        "postprocess": ["preview"],
+        "position": {
+          "x": 253,
+          "y": 39
+        },
+        "size": {
+          "x": 4472,
+          "y": 1518
+        }
+      },
+      {
         "name": "blueprint",
         "postprocess": ["preview"],
         "position": {

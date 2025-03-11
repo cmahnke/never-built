@@ -34,12 +34,6 @@ Der Bau des ersten Bauabschnittes (jetzigen) [Klinikums](https://de.wikipedia.or
 
 # Model
 
-{{< figure
-  src="./model.jpg"
-  alt="Model des Klinikums"
-  caption="Model des Klinikums"
->}}
-
 Das Modell zeigt einen zentralen Turm mit einem breiten Sockel an der heute das Hauptgebäude steht. Und eine reihe von damit verbundenen Nebengebäuden im Norden. Das Parkdeck im Vordergrund ist das einzige, dass man an diesem Entwurf heute wiedererkennen kann.
 
 {{< figure

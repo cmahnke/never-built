@@ -89,7 +89,6 @@
         flex-direction: column;
         display: flex;
 
-
         @media (min-width: 768px) {
           width: 100%;
           grid-column-start: 1;
@@ -128,8 +127,14 @@
           grid-row: span 2 / span 2;
           grid-column-start: 2;
           grid-row-start: 1;
-
         }
+
+        .featured-entry-image {
+          @media (min-width: 768px) {
+            max-height: 15rem;
+          }
+        }
+
       }
 
       .summary {
