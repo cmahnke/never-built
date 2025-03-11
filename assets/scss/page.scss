@@ -227,6 +227,11 @@ body {
 
 .tag-container {
   text-align: end;
+  margin-top: 1.6rem;
+
+  @media (min-width: 768px) {
+    margin-top: unset
+  }
 
   .tags-heading {
     font-weight: 200;

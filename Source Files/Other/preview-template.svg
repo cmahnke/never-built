@@ -17,13 +17,6 @@
     <defs id="defs2">
         <rect id="textbox" x="0" y="525" width="1200" height="100" />
         <linearGradient
-           xlink:href="#linearGradient1"
-           id="linearGradient2"
-           y2="0"
-           x1="0"
-           y1="0"
-           x2="1200" />
-        <linearGradient
            id="linearGradient1"
            inkscape:collect="always">
           <stop
@@ -41,7 +34,7 @@
         </linearGradient>
         <style id="style1570">
             @font-face {
-              font-family: 'Roboto Mono Variable';
+              font-family: 'Roboto Mono Regular';
               font-style: normal;
               font-weight: 200 800;
               src: local('Roboto Mono Variable'),
@@ -54,7 +47,5 @@
     <image id="bg" xlink:href="../../Source Files/Other/Background.svg" preserveAspectRatio="xMidYMid slice" width="1200" height="630" x="0" style="opacity:1.0"/>
 
     <image id="preview-image" xlink:href="../../content/post/der-baer-und-das-schneiderlein/front.jpg" fill-opacity="0" y="275" x="50" style="image-rendering:optimizeQuality" preserveAspectRatio="xMidYMid meet" height="400" width="1100"/>
-    <!--
-    <image id="site-logo" xlink:href="../../Source Files/Logo/Logo.svg" preserveAspectRatio="xMidYMid meet" width="1000" height="250" x="100" y="10"/> -->
-    <text id="text-container" xml:space="preserve" style="shape-inside:url(#textbox);font-style:normal;font-weight:bold;font-size:60px;line-height:1.25;font-family:'Roboto Mono Variable';fill:#ffffff;fill-opacity:1;text-align:center;white-space:pre;stroke:none;text-align:center;stroke-width:1;stroke:#000000;stroke-opacity:1;">VintageReality</text>
+    <text id="text-container" xml:space="preserve" style="shape-inside:url(#textbox);font-style:normal;font-weight:bold;font-size:60px;line-height:1.25;font-family:'Roboto Mono Regular';fill:#ffffff;fill-opacity:1;text-align:center;white-space:pre;stroke:none;text-align:center;stroke-width:1;stroke:#000000;stroke-opacity:1;">VintageReality</text>
 </svg>

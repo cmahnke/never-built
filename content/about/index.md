@@ -25,6 +25,10 @@ Für die Darstellung der Digitalisate von Einzelbildern wird [OpenLayers](https:
 
 Die Seite wird von [GitHub](https://github.com/) gehosted.
 
+## Bildoptimierung
+
+* [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN)
+
 # Kontakt
 
 "Never Build Göttingen" ist ein [Projekt](https://projektemacher.org) von **[Christian Mahnke](https://christianmahnke.de/)**.

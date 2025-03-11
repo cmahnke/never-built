@@ -28,7 +28,7 @@ function addOverlay(elem, cls, additionalClasses) {
 }
 
 function cloneElem(elem) {
-  const ignoreProperties = ["overflow", "word-break", "letter-spacing", "text-shadow", "transition", "transform"];
+  const ignoreProperties = ["overflow", "word-break", "letter-spacing", "text-shadow", "transition", "transform", "background"];
   if (elem.firstElementChild) {
     throw new Error("Cloning with CSS only works for nodes without child elements!");
   }
