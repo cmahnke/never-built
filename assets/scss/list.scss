@@ -134,7 +134,6 @@
             max-height: 15rem;
           }
         }
-
       }
 
       .summary {
@@ -149,6 +148,10 @@
           grid-row-start: 2;
           font-size: larger;
           margin-right: 2rem;
+
+          p {
+            margin-block-start: unset;
+          }
         }
       }
 

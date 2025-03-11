@@ -31,6 +31,15 @@ Nicht mehr ganz so ambitioniert wie die Planungen aus den 60er Jahren, besonders
 
 Ansonsten findet sich hier ein genauerer Plan der Osttangente.
 
+# Gesamtansicht
+Hier ist, sicher auch as Vorbereitung für den Ringschluss ein Ausbau der Humboldtallee und des Nikolausbergerwegs geplant. Ggf. waren dabei die Dimensionen der Robert-Koch-Straße geplant. Zusätzlich ist der Ausbau der Stumpfen Eiche (nach der Robert-Koch-Straße) und des Helleweg bis zur Springstraße eingezeichnet. Heutzutage ist das plötzliche Ende der Robert-Koch-Straße ein Relikt dieser nicht umgesetzten Planung.
+
+{{< figure
+  src="./blueprint.jpg"
+  alt="Geplantes Straßennetz"
+  caption="Geplantes Straßennetz"
+>}}
+
 # Osttangente
 Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häuserbestand.
 
@@ -38,6 +47,6 @@ Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häus
 
 Die Göttinger Osttangente wurde 1968 genehmigt, diese Genehmigung wurde durch einen Gerichtsbeschluss im Jahr 1975 für nichtig erklärt und wurde mit dem Gesamtverkehrsplan 1982 nicht weiter verfolgt...
 
-# Weitere Links
+## Weitere Links
 * Das [Göttinger Tageblatt](https://www.goettinger-tageblatt.de/lokales/goettingen-lk/goettingen/osttangente-goettingen-als-die-ruhe-im-ostviertel-zur-debatte-stand-GXKRJ235YSQSGNZO4AUTD4BFBE.html) bietet eine Bildergalerie zu dem Thema.
 * Das [Ratsinformationssystem der Stadt Göttingen](https://www.goettingen.de/allris/vo020?0-1.0-beratungen-showHideLink&VOLFDNR=1999&refresh=false&TOLFDNR=17144) über die abschließende Änderung des Bebauungsplans.

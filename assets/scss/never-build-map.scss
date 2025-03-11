@@ -15,6 +15,7 @@ body:not(.meta) {
         @media (min-width: 768px) {
           min-height: unset;
           width: 30vw;
+          margin-top: unset;
 
           flex-basis: 50%;
         }
@@ -32,6 +33,7 @@ body:not(.meta) {
           @media (min-width: 768px) {
             min-height: 50vh;
             aspect-ratio: unset;
+            padding-top: 3rem;
           }
         }
       }
@@ -50,17 +52,6 @@ body:not(.meta) {
     }
   }
 }
-
-/*
-.section-post .article-single,
-.section-single {
-  .map-wrapper {
-    border: 0.3ex solid black;
-    margin: 2rem;
-    box-sizing: content-box;
-  }
-}
-*/
 
 ol-viewport {
   --ol-subtle-background-color: white;

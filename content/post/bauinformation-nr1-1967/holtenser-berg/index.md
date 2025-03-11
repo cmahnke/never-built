@@ -33,5 +33,28 @@ Als Demonstrativbauvorhaben "Holtenser Berg" des Bundesministers für Bauwesen p
 
 Die Struktur wurde so angelegt, dass sich Wohnhäuser und Blöcke um ein Zentrum mit Läden und Arztpraxen gruppieren.
 
-# Planungen
-Verschiedene Entwürfe aus der Planungsphase sind in [Bauinformation Nr.1 1967](/post/staedte-forum-1-71-goettingen/holtenser-berg) zu finden.
+# Andere Entwürfe
+
+Hier ist das Highlight sicher die über den Hang zur Grone hängende Terrasse. Die Wohnfläche ist deutlich konzentriert: Weniger aber dafür größere Hochhäuser.
+
+{{< figure
+  src="./model-1.jpg"
+  alt="Entwurf 1"
+  caption="Entwurf 1"
+>}}
+
+In diesem Entwurf ist dir Hochhausbebauung auf den Norden des Gebiets konzentriert. Zusätzlich existiert eine ansteigende, ca. 300 Meter lange Gebäude an den Rändern im Westen und Osten.
+
+{{< figure
+  src="./model-2.jpg"
+  alt="Entwurf 2"
+  caption="Entwurf 2"
+>}}
+
+Auch dieser Entwurf sieht einen deutlich höheren Grad der Konzentration der Wohnbauten vor. Dafür ist das Straßenraster schon relativ nah am tatsächlich umgesetzten.
+
+{{< figure
+  src="./model-3.jpg"
+  alt="Entwurf 3"
+  caption="Entwurf 3"
+>}}

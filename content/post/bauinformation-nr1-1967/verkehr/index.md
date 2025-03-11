@@ -32,13 +32,6 @@ Wie viele andere Städte sollte auch Göttingen eine [autogerechte Stadt](https:
 Der Plan sollte bis ca. 1990 umgesetzt sein.
 
 # Neue Straßen
-
-{{< figure
-  src="./blueprint.jpg"
-  alt="Geplante Straßen"
-  caption="Geplante Straßen"
->}}
-
 * Östlich der Innenstadt ist die Osttangente, also der Lückenschluss des Ringes zu sehen
 * Der geplanteAutobahnzubringer im Nordwesten wurde realisiert
 * Die Verbindung von Geismar nach Rosdorf wurde so nicht realisiert, war aber unter dem Namen ["Südtangente"](https://www.hna.de/lokales/goettingen/premiere-suedspange-771076.html) bis 2010 in der kommunalpolitischen Diskussion.

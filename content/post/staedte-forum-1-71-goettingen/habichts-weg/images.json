@@ -17,7 +17,7 @@
       },
       {
         "name": "blueprint",
-        "postprocess": ["white_balance", "preview"],
+        "postprocess": ["white_balance", "grayscale_simple", "preview"],
         "position": {
           "x": 0,
           "y": 5170

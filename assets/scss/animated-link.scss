@@ -17,6 +17,7 @@ $animation-duration: 750ms !default;
   z-index: 1000;
   /* See https://chriscoyier.net/2023/05/12/add-opacity-to-an-existing-color/ */
   background: color-mix(in srgb, var(--fade-to) 0%, transparent 100%);
+  /* background-image: linear-gradient(--fade-to, --fade-to); */
   transition-delay: calc(($animation-duration / 3) * 2);
   transition-duration: calc($animation-duration / 3);
   transition-property: background;
@@ -25,6 +26,7 @@ $animation-duration: 750ms !default;
   &.light-gray,
   &.post {
     --fade-to: #{$post-background};
+
   }
 
   &.meta {
@@ -34,6 +36,15 @@ $animation-duration: 750ms !default;
   &.term {
     --fade-to: #{$term-background};
   }
+
+  /*
+  &.light-gray,
+  &.post,
+  &.meta,
+  &.term {
+    background-image: linear-gradient(--fade-to, --fade-to);
+  }
+  */
 
   &:has(.container .animate) {
     background: color-mix(in srgb, var(--fade-to) 100%, transparent 0%) !important;

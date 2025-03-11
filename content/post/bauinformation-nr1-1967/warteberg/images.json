@@ -1,30 +1,30 @@
 [
   {
-    "image": "page120.jxl",
-    "size": [4806, 6994],
+    "image": "page073.jxl",
+    "size": [4931, 7009],
     "areas": [
-      {
-        "name": "drawing",
-        "postprocess": ["grayscale_simple", "preview"],
-        "position": {
-          "x": 253,
-          "y": 39
-        },
-        "size": {
-          "x": 4472,
-          "y": 1518
-        }
-      },
       {
         "name": "blueprint",
         "postprocess": ["grayscale_simple", "preview"],
         "position": {
-          "x": 213,
-          "y": 3758
+          "x": 138,
+          "y": 2773
         },
         "size": {
-          "x": 4506,
-          "y": 3035
+          "x": 2794,
+          "y": 2375
+        }
+      },
+      {
+        "name": "drawing-front",
+        "postprocess": ["grayscale_simple", "preview"],
+        "position": {
+          "x": 864,
+          "y": 5225
+        },
+        "size": {
+          "x": 4064,
+          "y": 1573
         }
       }
     ]

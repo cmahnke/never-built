@@ -25,12 +25,6 @@ Die Volksbank mit einem zweigeschossigem Sockel...
 
 # Volksbank
 
-{{< figure
-  src="./model.jpg"
-  alt="Model der Volksbank"
-  caption="Model der Volksbank"
->}}
-
 In diesem frühen Entwurf hat die Volksbank am Geismartor noch einen Sockel mit zwei Stockwerken.
 
 Die Fassade aus blauem Glas stammt übrigens as den 2000er Jahren...

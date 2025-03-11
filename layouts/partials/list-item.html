@@ -39,7 +39,7 @@
       {{- range $preview -}}
         {{- with $page.Resources.Get . -}}
           {{ with .Fit $fit }}
-            <a href="{{ .RelPermalink }}" title="{{ $title }}" data-animation-classes="{{ $animationTarget }}">
+            <a href="{{ $page.RelPermalink }}" title="{{ $title }}" data-animation-classes="{{ $animationTarget }}">
               <img class="featured-entry-image" src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
             </a>
           {{- end -}}

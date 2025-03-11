@@ -30,3 +30,11 @@ Dieser Entwurf für die Gartenstraße, in der Nähe des Bismarkhäuschens und h�
 # Entwurf
 
 Der Entwurf stammt von der Göttingen Architektin [Lucy Hillebrand](https://de.wikipedia.org/wiki/Lucy_Hillebrand)
+
+Aus dem Übersichtsplan lässt sich ableiten, welche Gebäude in der Gartenstraße hätten abgerissen werden müssen.
+
+{{< figure
+  src="./blueprint.jpg"
+  alt="Übersichtsplan"
+  caption="Übersichtsplan"
+>}}

@@ -5,7 +5,7 @@
     "areas": [
       {
         "name": "model-1",
-        "postprocess": ["preview", "enhance_ai"],
+        "postprocess": ["smoothen_median", "preview", "enhance_ai"],
         "position": {
           "x": 0,
           "y": 0
@@ -17,7 +17,7 @@
       },
       {
         "name": "model-2",
-        "postprocess": ["preview", "enhance_ai"],
+        "postprocess": ["smoothen_median", "preview", "enhance_ai"],
         "position": {
           "x": 0,
           "y": 2469
@@ -29,7 +29,7 @@
       },
       {
         "name": "model-3",
-        "postprocess": ["preview", "enhance_ai"],
+        "postprocess": ["smoothen_median", "preview", "enhance_ai"],
         "position": {
           "x": 0,
           "y": 4908

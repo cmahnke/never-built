@@ -122,10 +122,6 @@ def extract(meta, dir):
                 if "postprocess" in area:
                     a = postprocess(a, area["postprocess"], debug_str=f"{image_file}, area {i}")
 
-                #with open(name, 'w') as f:
-                #    a.save(f)
-                #    cprint(f"Saved {name}", "green")
-                #    gitignore(dir, name, gitignore_file)
                 wrt(a, name, dir)
                 i += 1
         elif "postprocess" in image_meta:
@@ -143,6 +139,20 @@ def smoothen(im, params=None):
     blur = cv2.bilateralFilter(image, 11, 115, 115)
     return Image.fromarray(blur)
 
+def smoothen_median(im, params=None):
+    if im.mode == "RGBA":
+        im = im.convert('RGB')
+    image = np.asarray(im)
+    blur = cv2.medianBlur(image, 7)
+    return Image.fromarray(blur)
+
+def grayscale_simple(im, params=None):
+    if im.mode == "RGBA":
+        im = im.convert('RGB')
+    if im.mode == "RGB":
+        im = im.convert('L')
+    return im
+
 def contrast(im, params=None):
     if im.mode == "RGBA":
         im = im.convert('RGB')
@@ -157,10 +167,16 @@ def clahe_contrast(bgr_img=None, rgb_img=None):
         else:
             return cv_image
 
+    def safe_bgr(cv_image):
+        if(len(cv_image.shape) < 3):
+            return cv2.cvtColor(cv_image, cv2.COLOR_GRAY2BGR)
+        else:
+            return cv_image
+
     if bgr_img is not None:
-        lab = cv2.cvtColor(safe_bgr(bgr_img), cv2.COLOR_BGR2LAB)
+        lab = cv2.cvtColor(safe_bgr(np.asarray(bgr_img)), cv2.COLOR_BGR2LAB)
     elif rgb_img is not None:
-        lab = cv2.cvtColor(safe_rgb(rgb_img), cv2.COLOR_RGB2LAB)
+        lab = cv2.cvtColor(safe_rgb(np.asarray(rgb_img)), cv2.COLOR_RGB2LAB)
     else:
         raise ValueError("No valid input image")
 
@@ -173,7 +189,7 @@ def clahe_contrast(bgr_img=None, rgb_img=None):
 
     enhanced_img = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
 
-    return enhanced_img
+    return Image.fromarray(enhanced_img)
 
 # See https://stackoverflow.com/q/57030125
 def auto_brightness(im, params=None, minimum_brightness = 0.66):

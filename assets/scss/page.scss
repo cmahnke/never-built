@@ -133,6 +133,29 @@ body {
         .sub-section-heading {
           flex-basis: 100%;
         }
+
+        figure {
+          clear: both;
+          max-width: 75%;
+          margin: auto;
+          padding-top: 3rem;
+
+          img {
+            max-width: unset;
+            width: 100%;
+          }
+
+          figcaption {
+            font-style: italic;
+            font-size: smaller;
+            text-align: end;
+            /*background: rgba(0, 0, 0, .1);*/
+
+            p {
+              margin-block-start: 1rem;
+            }
+          }
+        }
       }
     }
 

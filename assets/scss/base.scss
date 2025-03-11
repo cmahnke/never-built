@@ -68,7 +68,7 @@ $fullscreen-color: var(--base07);
 @import "chart";
 @import "content";
 @import "model";
-
+@import "term";
 
 :where(:focus-visible) {
     outline: .1875rem dashed #000;

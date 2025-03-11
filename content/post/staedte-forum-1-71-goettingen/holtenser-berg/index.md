@@ -35,3 +35,6 @@ Als dieser Beitrag erschien, waren die ersten Bewohner (1967/68) schon eingezoge
 Trotzdem gibt es noch kleinere Unterschiede zu der tatsächlichen Ausführung, besonders im Zentrum:
 * Südöstlich und südlich enthält das Model ein zusätzliche Blöcke.
 * Der Turm im Zentrum wurde nicht realisiert
+
+# Planungen
+Verschiedene Entwürfe aus der Planungsphase sind in [Bauinformation Nr.1 1967](/post/staedte-forum-1-71-goettingen/holtenser-berg) zu finden.

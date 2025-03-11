@@ -32,3 +32,12 @@ Das Haus gehörte ursprünglich der [Jona Kirchengemeinde](https://jona.wir-e.de
 # Nachbarschaftszentrum
 
 Heute befindet sich in der Nähe das [Nachbarschaftszentrum Grone](https://www.nachbarschaftszentrum-grone.de/index.html).
+
+# Grundriss
+Der Grundriss zeigt eine Übersicht über die geplante Gesamtanlage, die Wohnhäuser in der Mitte wurden nicht gebaut.
+
+{{< figure
+  src="./blueprint.jpg"
+  alt="Grundriss"
+  caption="Grundriss"
+>}}

@@ -74,3 +74,4 @@ static/map
 assets/js/bbox.json
 assets/jsconfig.json
 static/images/apple-touch-icon.png
+*.bak.jpg

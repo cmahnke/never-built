@@ -5,14 +5,14 @@
     "areas": [
       {
         "name": "model-current",
-        "postprocess": ["preview"],
+        "postprocess": ["preview", "enhance_ai"],
         "position": {
           "x": 0,
           "y": 0
         },
         "size": {
-          "x": 4888,
-          "y": 3184
+          "x": 4697,
+          "y": 3168
         }
       },
       {

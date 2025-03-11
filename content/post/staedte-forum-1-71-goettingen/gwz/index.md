@@ -37,3 +37,12 @@ In diesem Modell sind neben dem heute bestehenden blauen Turm noch zwei weitere 
 # Varianten
 
 Ein Turm Richtung des Kreuzbergrings, 3 Stockwerke höher und ein weiterer Richtung Gosslerstraße, der sogar 6 Stockwerk höher gewesen wäre, als der bestehende.
+
+# Übersichtsplan
+Für die Erweiterungen wären einige Abrisse am Kreuzbergring notwendig gewesen, der Plan zeigt auch den imposanten Schattenwurf...
+
+{{< figure
+  src="./blueprint.jpg"
+  alt="Übersichtsplan"
+  caption="Übersichtsplan"
+>}}
