@@ -21,8 +21,11 @@ done
 
 ./scripts/svgo.sh
 
+# Generate Previews
+TARGETFORMAT=png ./themes/projektemacher-base/scripts/preview.sh
+
 # Favicons
-SOURCE="static/images/favicon.svg" OPTIONS="-transparent white static/images/favicon-128.png" ./themes/projektemacher-base/scripts/favicon.sh
+SOURCE="static/images/favicon.svg" OPTIONS="-background none" ./themes/projektemacher-base/scripts/favicon.sh
 
 # Generate Previews
 ./themes/projektemacher-base/scripts/preview.sh

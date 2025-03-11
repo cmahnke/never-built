@@ -129,13 +129,11 @@ function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, 
     });
   }
 
-
   style.sources[sourceKey] = source
   return style
 }
 
 export async function projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font) {
-
   var geojsonObj, styleObj, bboxObj, bboxObj, centerObj, markerObj;
   const lang = getLang();
   source = absUrl(source);
@@ -262,11 +260,7 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
 
   var vectorTileLayer;
   if (styleObj !== undefined) {
-    //applyStyle(vectorTileLayer, styleObj);
-
-    //map.addLayer(vectorTileLayer);
     apply(map, styleObj);
-    //console.log(styleObj)
   } else {
     let bounds = bboxExtent(mapMetadata.bounds);
     vectorTileLayer = new VectorTileLayer({
@@ -303,4 +297,4 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
   return map;
 }
 
-window.projektemacherMap = projektemacherMap;
+//window.projektemacherMap = projektemacherMap;

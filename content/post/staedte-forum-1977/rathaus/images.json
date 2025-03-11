@@ -1,0 +1,50 @@
+[
+  {
+    "image": "page046.jxl",
+    "size": [4944, 7006],
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 2559,
+          "y": 2892
+        },
+        "size": {
+          "x": 2301,
+          "y": 1572
+        }
+      }
+    ]
+  },
+  {
+    "image": "page047.jxl",
+    "size": [5025, 6998],
+    "areas": [
+      {
+        "name": "blueprint-complete",
+        "postprocess": ["white_balance", "preview"],
+        "position": {
+          "x": 1342,
+          "y": 22
+        },
+        "size": {
+          "x": 3674,
+          "y": 4246
+        }
+      },
+      {
+        "name": "blueprint-tower",
+        "postprocess": ["preview"],
+        "position": {
+          "x": 2552,
+          "y": 4455
+        },
+        "size": {
+          "x": 2409,
+          "y": 2398
+        }
+      }
+    ]
+  }
+]

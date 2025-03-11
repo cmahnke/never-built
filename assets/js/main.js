@@ -14,7 +14,7 @@ window.projektemacherMap = async function(elem, geojson, source, style, bbox, ce
     bgElem = document.getElementById(elem)
   }
   if (font === undefined) {
-    font = defaultMapFont
+    font = defaultMapFont;
   }
   if (!(typeof marker === 'object')) {
     marker = JSON.parse(marker)
@@ -37,11 +37,8 @@ window.projektemacherMap = async function(elem, geojson, source, style, bbox, ce
             width: lineWidth
           })
         })]
-
     };
   }
-  //marker = markerFunc;
-
   background = window.getComputedStyle(bgElem).getPropertyValue('--page-background');
   const map = projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, createStyleFunction(marker), font);
 

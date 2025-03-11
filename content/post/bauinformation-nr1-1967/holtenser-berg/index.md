@@ -26,10 +26,12 @@ resources:
 
 Die Siedlung auf dem Holtenser Berg durchlief mehrere Planungsstände...
 <!--more-->
-Einige sind in diesem Beitrag zu sehen,
+Einige sind in diesem Beitrag zu sehen, allen ist gemeinsam, dass sie Wohngebäude verschiedener Größe um ein Zentrum anordnen: Also ein kompletten funktionalen Stadtteil darstellen.
 
-
-
+# Hintergrund
 Als Demonstrativbauvorhaben "Holtenser Berg" des Bundesministers für Bauwesen projektiert, erstreckt sich die Siedlung auf 40 Hektar, 1967/68 bezogen die ersten Bewohner ihre Wohnungen.
 
 Die Struktur wurde so angelegt, dass sich Wohnhäuser und Blöcke um ein Zentrum mit Läden und Arztpraxen gruppieren.
+
+# Planungen
+Verschiedene Entwürfe aus der Planungsphase sind in [Bauinformation Nr.1 1967](/post/staedte-forum-1-71-goettingen/holtenser-berg) zu finden.

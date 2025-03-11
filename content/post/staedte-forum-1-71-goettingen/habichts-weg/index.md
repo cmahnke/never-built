@@ -22,9 +22,13 @@ resources:
     iiif: page106/info.json
 ---
 
+Terrassenförmige Wohnbebauung am Wartberg...
 
 <!--more-->
+# Entwurf
+Der Entwurf stammt vom Architekten und Stadtplaner [Friedrich Spengelin](https://de.wikipedia.org/wiki/Friedrich_Spengelin), von em viele bedeutenden Gebäude in Norddeutschland stammen.
 
 
+# Heutige Position
 Am oberen Ende des Models kann man den noch frei stehenden ehemalige [Gaststätte Rohns](https://de.wikipedia.org/wiki/Christian_Friedrich_Andreas_Rohns) auf dem [Hainberg](https://de.wikipedia.org/wiki/Hainberg_(G%C3%B6ttinger_Wald)) sehen
 Die Straße im Model ist vermutlich die Konrad-Adenauer-Straße bzw. die Grotefendstraße auf der rechten Seite.

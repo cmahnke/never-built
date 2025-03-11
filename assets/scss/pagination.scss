@@ -41,6 +41,10 @@
 
     .pagination-prev {
       justify-self: flex-start;
+
+      &:after {
+        background-position: 100% 0;
+      }
     }
   }
 

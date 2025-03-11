@@ -132,13 +132,12 @@ export function addOverlay(map, markerOptions) {
   map.on('click', function (event) {
     var feature = map.forEachFeatureAtPixel(event.pixel,
       function(feature, layer) {
+        console.log(feature)
         return feature;
       }, markerOptions);
     if (feature && "geometry" in feature.getProperties()) {
       featurePopUp(feature, overlay, content);
-
     }
-
   });
 
   closer.onclick = function() {

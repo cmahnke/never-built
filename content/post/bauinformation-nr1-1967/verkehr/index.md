@@ -28,6 +28,8 @@ Göttingen als autogerechte Stadt...
 
 Wie viele andere Städte sollte auch Göttingen eine [autogerechte Stadt](https://de.wikipedia.org/wiki/Autogerechte_Stadt) werden, dieser Plan aus den späten 60ern gibt einen Überblick über geplante Straßenbauprojekte.
 
+Der Plan sollte bis ca. 1990 umgesetzt sein.
+
 # Neue Straßen
 
 {{< figure
