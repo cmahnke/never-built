@@ -42,6 +42,16 @@ Das Modell zeigt einen zentralen Turm mit einem breiten Sockel an der heute das 
   caption="Eingangsbereich"
 >}}
 
+# Plan
+
+Im Plan ist Norden oben.
+
+{{< figure
+  src="./blueprint.jpg"
+  alt="Übersichtsplan"
+  caption="Übersichtsplan"
+>}}
+
 # Heutige Situation
 
 Derzeit steht wieder eine [Erweiterung](https://www.umg.eu/neubau/) des Klinikums an, diese soll zwischen dem Wohnheim Robert-Koch-Straße und dem Bettenhaus 1 entstehen.

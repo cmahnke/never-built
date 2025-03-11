@@ -5,7 +5,7 @@
     "areas": [
       {
         "name": "model",
-        "postprocess": ["enhance_ai", "preview"],
+        "postprocess": ["smoothen_median", "preview", "enhance_ai"],
         "position": {
           "x": 0,
           "y": 0
