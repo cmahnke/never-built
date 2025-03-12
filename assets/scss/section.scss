@@ -6,6 +6,7 @@
 
 .section-single {
 
+  .post.section,
   .meta {
     a,
     a:active,
@@ -16,10 +17,6 @@
       text-decoration: none;
     }
 
-    .source-meta-heading,
-    .map-meta-heading {
-      font-size: 1rem;
-    }
   }
 
   .iiif {
@@ -27,16 +24,6 @@
   }
 
   .post.section {
-
-    a,
-    a:active,
-    a:focus,
-    a:hover,
-    a:visited {
-      color: var(--text-color);
-      text-decoration: none;
-    }
-
     .share {
 
     }

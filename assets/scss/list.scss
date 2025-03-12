@@ -231,6 +231,11 @@
 
       .readmore-container {
         width: 100%;
+        order: 4;
+
+        @media (min-width: 768px) {
+          order: unset;
+        }
       }
 
       .preview {
