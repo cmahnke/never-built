@@ -6,8 +6,13 @@
 
 .section-single {
 
-  .post.section,
   .meta {
+    .meta-cover-title {
+      font-size: 1.6em;
+    }
+  }
+
+  .list-item .headline {
     a,
     a:active,
     a:focus,
@@ -15,6 +20,23 @@
     a:visited {
       color: var(--text-color);
       text-decoration: none;
+    }
+  }
+
+  .content-container,
+  .post.section,
+  .meta {
+    a {
+      @include invert-link($color: $accent-color);
+      color: black;
+      text-decoration-style: dotted;
+      text-decoration-line: underline;
+      text-decoration-thickness: 1px;
+      text-decoration-skip-ink: auto;
+
+      &:hover {
+        text-decoration: none;
+      }
     }
 
   }

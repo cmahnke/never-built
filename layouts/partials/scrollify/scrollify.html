@@ -14,9 +14,9 @@
       {{- $previewNames := false -}}
       {{- $pageContext := . -}}
       {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-item" -}}
+      {{- $target := printf "heading-anchor-%s" .File.ContentBaseName -}}
+      <a name="{{ $target }}" id ="{{ $target }}"></a>
       <article class="list-item article {{ $class }} scroll-item {{ $animationClass }}" itemscope itemtype="http://schema.org/Blog">
-        {{- $target := printf "heading-anchor-%s" .File.ContentBaseName -}}
-        <a name="{{ $target }}" id ="{{ $target }}" />
         {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-header" -}}
         <div class="list-item-head scroll-header {{ $animationClass }}">
           {{- $title := .Title -}}

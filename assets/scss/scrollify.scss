@@ -61,13 +61,29 @@ html:has(.scroll-layout) {
 
     .scroll-header {
       display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-direction: column;
+      justify-content: space-between;
+
+      @media (min-width: 768px) {
+        flex-direction: row;
+      }
 
       .scroll-title {
-        width: 50%;
+        margin-block-start: unset;
+        margin-block-end: unset;
+
+
+        @media (min-width: 768px) {
+          width: 50%;
+        }
       }
 
       .date {
-        width: 40%;
+        @media (min-width: 768px) {
+          width: 40%;
+        }
       }
     }
 
@@ -81,6 +97,10 @@ html:has(.scroll-layout) {
         position: relative;
         display: flex;
         order: 0;
+
+        .preview.scan {
+          max-width: unset;
+        }
 
         &.odd {
           justify-self: end;
@@ -101,6 +121,10 @@ html:has(.scroll-layout) {
 
           &:has(.overlay) {
             z-index: +1;
+          }
+
+          .preview {
+            max-width: unset;
           }
         }
       }
@@ -127,7 +151,10 @@ html:has(.scroll-layout) {
       }
 
       .date {
-        order: 2;
+        @media (min-width: 768px) {
+          order: 2;
+          text-align: end;
+        }
       }
     }
 
@@ -135,7 +162,10 @@ html:has(.scroll-layout) {
       .scroll-title {
         justify-self: end;
         text-align: right;
-        order: 2
+
+        @media (min-width: 768px) {
+          order: 2
+        }
       }
       .date {
         order: 1;
