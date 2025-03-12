@@ -24,9 +24,9 @@ resources:
     iiif: page085/info.json
 ---
 
-Die Siedlung auf dem Holtenser Berg durchlief mehrere Planungsstände...
+Die Siedlung auf dem Holtenser Berg durchlief mehrere Planungsphasen...
 <!--more-->
-Einige sind in diesem Beitrag zu sehen, allen ist gemeinsam, dass sie Wohngebäude verschiedener Größe um ein Zentrum anordnen: Also ein kompletten funktionalen Stadtteil darstellen.
+Einige sind in diesem Beitrag zu sehen. Allen ist gemeinsam, dass sie Wohngebäude verschiedener Größe um ein Zentrum anordnen: also einen kompletten funktionalen Stadtteil darstellen.
 
 # Hintergrund
 Als Demonstrativbauvorhaben "Holtenser Berg" des Bundesministers für Bauwesen projektiert, erstreckt sich die Siedlung auf 40 Hektar, 1967/68 bezogen die ersten Bewohner ihre Wohnungen.
@@ -35,8 +35,6 @@ Die Struktur wurde so angelegt, dass sich Wohnhäuser und Blöcke um ein Zentrum
 
 # Andere Entwürfe
 
-Hier ist das Highlight sicher die über den Hang zur Grone hängende Terrasse. Die Wohnfläche ist deutlich konzentriert: Weniger aber dafür größere Hochhäuser.
-
 {{< figure
   src="./model-1.jpg"
   alt="Entwurf 1"
@@ -44,7 +42,7 @@ Hier ist das Highlight sicher die über den Hang zur Grone hängende Terrasse. D
   class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
-In diesem Entwurf ist dir Hochhausbebauung auf den Norden des Gebiets konzentriert. Zusätzlich existiert eine ansteigende, ca. 300 Meter lange Gebäude an den Rändern im Westen und Osten.
+Hier ist das Highlight sicher die über den Hang zur Grone hängende Terrasse. Die Wohnfläche ist deutlich konzentrierter: weniger aber dafür größere Hochhäuser.
 
 {{< figure
   src="./model-2.jpg"
@@ -53,7 +51,7 @@ In diesem Entwurf ist dir Hochhausbebauung auf den Norden des Gebiets konzentrie
   class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
-Auch dieser Entwurf sieht einen deutlich höheren Grad der Konzentration der Wohnbauten vor. Dafür ist das Straßenraster schon relativ nah am tatsächlich umgesetzten.
+In diesem Entwurf ist die Hochhausbebauung auf den Norden des Gebiets konzentriert. Zusätzlich existieren zwei ansteigende, ca. 300 Meter lange Gebäude an den Rändern im Westen und Osten.
 
 {{< figure
   src="./model-3.jpg"
@@ -61,3 +59,5 @@ Auch dieser Entwurf sieht einen deutlich höheren Grad der Konzentration der Woh
   caption="Entwurf 3"
   class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
+
+Auch dieser Entwurf sieht einen deutlich höheren Grad der Konzentration der Wohnbauten vor. Dafür ist das Straßenraster schon relativ nah am tatsächlich umgesetzten.

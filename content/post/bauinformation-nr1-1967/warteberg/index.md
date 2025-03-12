@@ -20,17 +20,16 @@ resources:
   params:
     iiif: page073/info.json
 ---
-Ein Seniorenresidenz im Wald bei Herberhausen...
+Eine Seniorenresidenz im Wald bei Herberhausen...
 <!--more-->
 
 # Entwurf
 
 Der genaue Ort lässt sich nicht präzise bestimmen.
 
-Der Entwurf stammt von [Jochen Brandi](https://de.wikipedia.org/wiki/Jochen_Brandi) aus Göttingen, von dem auch das realisierte EAM Hochaus an der Kasseler Landstraße, oder die Deutsche Bank ind der Innenstadt stammt.
+Der Entwurf stammt von [Jochen Brandi](https://de.wikipedia.org/wiki/Jochen_Brandi) aus Göttingen, von dem auch das realisierte EAM-Hochaus an der Kasseler Landstraße, oder die Deutsche Bank in der Innenstadt stammt.
 
 Das Gebäude hätte über 10 Stockwerke hoch sein sollen und wäre somit auch recht auffällig gewesen.
-
 
 # Grundriss
 Der Grundriss zeigt eine Übersicht über die geplante Gesamtanlage.

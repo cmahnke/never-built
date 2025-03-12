@@ -27,11 +27,11 @@ Göttingen als autogerechte Stadt...
 
 <!--more-->
 
-Wie viele andere Städte sollte auch Göttingen eine [autogerechte Stadt](https://de.wikipedia.org/wiki/Autogerechte_Stadt) werden, dieser Plan aus den späten 60ern gibt einen Überblick über geplante Straßenbauprojekte.
+Wie viele andere Städte sollte auch Göttingen eine [autogerechte Stadt](https://de.wikipedia.org/wiki/Autogerechte_Stadt) werden. Dieser Plan aus den späten 60ern gibt einen Überblick über geplante Straßenbauprojekte.
 
 Der Plan sollte bis ca. 1990 umgesetzt sein.
 
 # Neue Straßen
-* Östlich der Innenstadt ist die Osttangente, also der Lückenschluss des Ringes zu sehen
-* Der geplanteAutobahnzubringer im Nordwesten wurde realisiert
-* Die Verbindung von Geismar nach Rosdorf wurde so nicht realisiert, war aber unter dem Namen ["Südtangente"](https://www.hna.de/lokales/goettingen/premiere-suedspange-771076.html) bis 2010 in der kommunalpolitischen Diskussion.
+* Östlich der Innenstadt ist die Ost-Tangente, also der Lückenschluss des Ringes zu sehen.
+* Der geplante Autobahnzubringer im Nordwesten wurde realisiert.
+* Die Verbindung von Geismar nach Rosdorf wurde so nicht realisiert, war aber unter dem Namen ["Südspange"](https://www.hna.de/lokales/goettingen/premiere-suedspange-771076.html) bis 2010 in der kommunalpolitischen Diskussion.

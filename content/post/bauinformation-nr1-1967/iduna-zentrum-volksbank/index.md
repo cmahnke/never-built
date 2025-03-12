@@ -20,14 +20,14 @@ resources:
   params:
     iiif: page037/info.json
 ---
-Die Volksbank mit einem zweigeschossigem Sockel...
+Die Volksbank mit einem zweigeschossigen Sockel...
 <!--more-->
 
 # Volksbank
 
 In diesem frühen Entwurf hat die Volksbank am Geismartor noch einen Sockel mit zwei Stockwerken.
 
-Die Fassade aus blauem Glas stammt übrigens as den 2000er Jahren...
+Die Fassade aus blauem Glas stammt übrigens aus den 2000er Jahren...
 
 # Iduna-Zentrum
 
@@ -40,7 +40,7 @@ Die Fassade aus blauem Glas stammt übrigens as den 2000er Jahren...
 
 In der Skizze fällt das [Iduna-Zentrum](https://de.wikipedia.org/wiki/Iduna-Zentrum_(G%C3%B6ttingen)) (Bauvorhaben am Weender Tor) kleiner aus, als es tatsächlich realisiert wurde:
 * Der zentrale Turm besteht in der Skizze aus zwei Teilen statt der heutigen drei.
-* Die Nebentürme sind größer ausgefallen
-* Gleichzeitig sollte auch ein Teil des heutigen Parkplatzes am Maschmühlenweg überbaut werden
+* Die Nebentürme sind größer ausgefallen.
+* Gleichzeitig sollte auch ein Teil des heutigen Parkplatzes am Maschmühlenweg überbaut werden.
 
-Geplant wurde das Gebäude von Friedrich Wagener und  1975 fertig gestellt und verfügte neben Läden auch über ein Schwimmbad, letzteres wurde 1987 geschlossen. Auch die Läden existieren nicht mehr
+Geplant wurde das Gebäude von Friedrich Wagener und 1975 fertiggestellt. Es verfügte neben Läden auch über ein Schwimmbad, letzteres wurde 1987 geschlossen. Auch die Läden existieren nicht mehr.
