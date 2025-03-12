@@ -13,3 +13,4 @@ git+https://github.com/sberbank-ai/Real-ESRGAN
 #pybtex
 #git+https://github.com/mbollmann/yabibf.git
 citeproc-py
+citeproc-py-styles
