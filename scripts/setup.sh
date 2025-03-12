@@ -13,6 +13,8 @@ echo "Set SKIP_IIIF to something to disable generation of IIIF derivates"
 
 python ./scripts/extract-images.py -d
 
+python scripts/bibtex2html.py -d -l
+
 echo "Calling theme scripts"
 for SCRIPT in $PWD/themes/projektemacher-base/scripts/init/*.sh ; do
     echo "Running $SCRIPT"

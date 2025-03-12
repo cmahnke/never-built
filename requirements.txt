@@ -10,3 +10,6 @@ torchvision
 git+https://github.com/sberbank-ai/Real-ESRGAN
 # pip install huggingface_hub==0.25 --no-deps --force-reinstall
 #huggingface_hub==0.25
+#pybtex
+#git+https://github.com/mbollmann/yabibf.git
+citeproc-py

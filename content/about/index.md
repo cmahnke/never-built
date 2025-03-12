@@ -29,6 +29,8 @@ Die Seite wird von [GitHub](https://github.com/) gehosted.
 
 * [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN)
 
+{{< html/include file="realesrgan.bib.html" >}}
+
 # Kontakt
 
 "Never Build Göttingen" ist ein [Projekt](https://projektemacher.org) von **[Christian Mahnke](https://christianmahnke.de/)**.
