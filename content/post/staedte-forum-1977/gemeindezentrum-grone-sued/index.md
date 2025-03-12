@@ -40,4 +40,5 @@ Der Grundriss zeigt eine Übersicht über die geplante Gesamtanlage, die Wohnhä
   src="./blueprint.jpg"
   alt="Grundriss"
   caption="Grundriss"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}

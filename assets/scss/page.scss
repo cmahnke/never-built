@@ -1,4 +1,5 @@
 $show-page-duration: 500ms !default;
+$page-elements-duration: 1600ms !default;
 
 @keyframes fade-in {
   from {
@@ -139,6 +140,8 @@ body {
           max-width: 75%;
           margin: auto;
           padding-top: 3rem;
+          margin-block-start: unset;
+          margin-block-end: unset;
 
           img {
             max-width: unset;
@@ -301,5 +304,103 @@ i.book-reference {
     color: black;
     border: .3ex solid black;
     position: relative;
+  }
+}
+
+/* Animations */
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100vw);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100vw);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in-bounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-bottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.section-post .main .scroll-trigged {
+  overflow: hidden;
+  .content {
+
+    .post-body > .map-wrapper {
+      animation-name: slide-in-right;
+      animation-duration: $page-elements-duration;
+      animation-fill-mode: forwards;
+    }
+
+    .post-content {
+
+      .map-wrapper.show {
+        animation-name: slide-in-bottom;
+        animation-duration: $page-elements-duration;
+        animation-fill-mode: forwards;
+      }
+
+      .content-container .content-section {
+
+        figure.show {
+          animation-duration: $page-elements-duration;
+          animation-timing-function: ease-out;
+          animation-fill-mode: forwards;
+
+          &:only-of-type {
+            animation-name: fade-in-bounce;
+
+          }
+
+          &:not(:only-of-type) {
+            &:nth-of-type(even) {
+              animation-name: slide-in-left;
+            }
+
+            &:nth-of-type(odd) {
+              animation-name: slide-in-right;
+            }
+
+          }
+        }
+      }
+
+    }
+
   }
 }

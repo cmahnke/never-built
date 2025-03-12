@@ -1,8 +1,14 @@
+import { cloneElement } from './html/lib';
+
 export const defaultTransitionMs = 800;
+const ignoreProperties = ["overflow", "word-break", "letter-spacing", "text-shadow", "transition", "transform", "background"];
 export const overlayClassName = "animated-link-overlay";
 export const animationClassName = "animate";
 
 export function addPrefetch(url) {
+  if (!url.startsWith('//') && !url.startsWith('http')) {
+    return;
+  }
   const head = document.querySelector('head');
   const prefetch = `<link rel="prefetch" href="${url}" as="document">`;
   head.insertAdjacentHTML('beforeend', prefetch);
@@ -27,30 +33,6 @@ function addOverlay(elem, cls, additionalClasses) {
   body.insertAdjacentElement('beforeend', overlay);
 }
 
-function cloneElem(elem) {
-  const ignoreProperties = ["overflow", "word-break", "letter-spacing", "text-shadow", "transition", "transform", "background"];
-  if (elem.firstElementChild) {
-    throw new Error("Cloning with CSS only works for nodes without child elements!");
-  }
-  const clone = elem.cloneNode(true);
-  const compStyles = window.getComputedStyle(elem);
-  Array.from(compStyles).forEach(key => {
-    if (!key.startsWith('animation') && !key.startsWith("-") && !ignoreProperties.includes(key)) {
-      clone.style.setProperty(key, compStyles.getPropertyValue(key)) //, compStyles.getPropertyPriority(key)
-    }
-  });
-
-  clone.style.setProperty("position", "absolute", "important")
-  clone.style.setProperty("z-index", 1001, "important")
-  clone.style.setProperty("display", "block", "important")
-  const pos = elem.getBoundingClientRect();
-  clone.style.setProperty("top", `${pos.top}px`);
-  clone.style.setProperty("left", `${pos.left}px`);
-  clone.style.setProperty("width", `${pos.width}px`);
-  clone.style.setProperty("height", `${pos.height}px`);
-  return clone;
-}
-
 function bodyLinkHandler(e, timeout) {
   e.preventDefault();
   if (timeout === undefined) {
@@ -64,7 +46,7 @@ function bodyLinkHandler(e, timeout) {
   if (anchor.dataset.animationClasses) {
     additionalClasses += " " + anchor.dataset.animationClasses;
   }
-  const clone = cloneElem(e.target);
+  const clone = cloneElement(e.target, ignoreProperties);
   addOverlay(clone, overlayClassName, additionalClasses.trim());
   setTimeout(function(){ clone.classList.add(animationClassName) }, 2);
   const callback = () => {

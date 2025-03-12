@@ -40,6 +40,7 @@ Trotzdem gibt es noch kleinere Unterschiede zu der tatsächlichen Ausführung, b
   src="./model-detail.jpg"
   alt="Model des Zentrums"
   caption="Model des Zentrums"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
 # Planungen

@@ -19,12 +19,12 @@
         "name": "model",
         "postprocess": ["preview", "enhance_ai"],
         "position": {
-          "x": 164,
+          "x": 168,
           "y": 4621
         },
         "size": {
-          "x": 4209,
-          "y": 2393
+          "x": 4205,
+          "y": 2387
         }
       }
     ]

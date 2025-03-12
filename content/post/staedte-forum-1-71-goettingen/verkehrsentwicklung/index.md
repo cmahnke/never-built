@@ -38,12 +38,19 @@ Hier ist, sicher auch as Vorbereitung für den Ringschluss ein Ausbau der Humbol
   src="./blueprint.jpg"
   alt="Geplantes Straßennetz"
   caption="Geplantes Straßennetz"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
 # Osttangente
 Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häuserbestand.
 
-{{< maps/projektemacher geojson="ost-tangente.geojson" cluster=false minZoom=12 initialZoom=14 maxZoom=16 >}}
+{{< maps/projektemacher
+  geojson="ost-tangente.geojson"
+  cluster=false
+  minZoom=12
+  initialZoom=14
+  maxZoom=16
+  class="_efTrigger-inview-50px _effect-addclass-show" >}}
 
 Die Göttinger Osttangente wurde 1968 genehmigt, diese Genehmigung wurde durch einen Gerichtsbeschluss im Jahr 1975 für nichtig erklärt und wurde mit dem Gesamtverkehrsplan 1982 nicht weiter verfolgt...
 

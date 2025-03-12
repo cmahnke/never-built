@@ -1,0 +1,14 @@
+{{ $filename := "" }}
+{{ if (.Get "file") }}
+  {{ $filename = (.Get "file") }}
+{{ end }}
+
+{{- errorf "[partials/shortcodes/bibtex.html] This shortcode isn't working yet!" -}}
+
+{{ with .Page.Resources.GetMatch $filename }}
+  {{ $bib := `@(.*?){(.*?),((.|\n)*?)+(}}|\n})+` }}
+  {{ $csl := `{\"id\":\"${2}\",\"type\":${1},\"content\":[{${3}}]}` }}
+  {{ .Content | replaceRE $bib $csl | safeHTML }}
+{{ else }}
+  {{- errorf "Can't find %s!" $filename -}}
+{{ end }}

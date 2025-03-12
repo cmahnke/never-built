@@ -4,6 +4,11 @@
   {{- $source := .Get "source" -}}
 {{- end -}}
 
+{{- $class := "" -}}
+{{- if (.Get "class") -}}
+  {{- $class = (.Get "class") -}}
+{{- end -}}
+
 {{- $style := "undefined" -}}
 {{- if (.Get "style") -}}
   {{- $style = (.Get "style") -}}
@@ -64,7 +69,7 @@
   {{- $debug = .Get "debug" -}}
 {{- end -}}
 
-{{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "source" $source "style" $style "cluster" $cluster "bbox" $bbox "center" $center "initialZoom" $initialZoom "minZoom" $minZoom "maxZoom" $maxZoom "disabled" $disabled "popup" $popup "debug" $debug "background" $background "marker" $marker ) -}}
+{{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "class" $class "source" $source "style" $style "cluster" $cluster "bbox" $bbox "center" $center "initialZoom" $initialZoom "minZoom" $minZoom "maxZoom" $maxZoom "disabled" $disabled "popup" $popup "debug" $debug "background" $background "marker" $marker ) -}}
 
 {{- define "partials/shortcodes/maps/projektemacher-metadata.html" -}}
   {{- (dict "css" slice "js" (slice "js/maps/projektemacher-map.js") "scss" (slice "scss/maps/projektemacher.scss")) | jsonify -}}

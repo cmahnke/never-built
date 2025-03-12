@@ -42,4 +42,5 @@ Aus dem Model des damaligen Zustandes kann man die geplanten Änderungen und dam
   src="./model-current.jpg"
   alt="Model des Zustandes Anfang der 70er Jahre"
   caption="Model des Zustandes Anfang der 70er Jahre"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}

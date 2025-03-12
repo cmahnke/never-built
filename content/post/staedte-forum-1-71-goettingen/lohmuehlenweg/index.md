@@ -37,4 +37,5 @@ Aus dem Übersichtsplan lässt sich ableiten, welche Gebäude in der Gartenstra�
   src="./blueprint.jpg"
   alt="Übersichtsplan"
   caption="Übersichtsplan"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}

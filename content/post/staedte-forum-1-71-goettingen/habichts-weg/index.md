@@ -40,4 +40,5 @@ Den stadtplanerischen Anspruch erkennt man auch durch den Schnitt durch den Hang
   src="./blueprint.jpg"
   alt="Schnitt"
   caption="Schnitt"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}

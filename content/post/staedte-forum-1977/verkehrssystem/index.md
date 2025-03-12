@@ -33,7 +33,13 @@ Eine im Süden etwas weniger destruktive Variante [Städeforum 1/71](/post/staed
 # Übersicht Ost-Tangente
 Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häuserbestand.
 
-{{< maps/projektemacher geojson="ost-tangente.geojson" cluster=false minZoom=12 initialZoom=14 maxZoom=16 >}}
+{{< maps/projektemacher
+  geojson="ost-tangente.geojson"
+  cluster=false
+  minZoom=12
+  initialZoom=14
+  maxZoom=16
+  class="_efTrigger-inview-50px _effect-addclass-show" >}}
 
 
 # Weitere Beiträge

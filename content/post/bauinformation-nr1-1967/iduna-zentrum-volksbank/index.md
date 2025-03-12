@@ -35,6 +35,7 @@ Die Fassade aus blauem Glas stammt übrigens as den 2000er Jahren...
   src="./drawing.jpg"
   alt="Zeichnung des Iduna-Zentrums"
   caption="Zeichnung des Iduna-Zentrums"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
 In der Skizze fällt das [Iduna-Zentrum](https://de.wikipedia.org/wiki/Iduna-Zentrum_(G%C3%B6ttingen)) (Bauvorhaben am Weender Tor) kleiner aus, als es tatsächlich realisiert wurde:

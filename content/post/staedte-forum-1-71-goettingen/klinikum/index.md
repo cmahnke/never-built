@@ -14,6 +14,7 @@ params:
     coordinates:
     - 9.943691
     - 51.550553
+  featured: true
 resources:
 - src: "page066.jxl"
   name: preview
@@ -24,7 +25,7 @@ resources:
     iiif: page067/info.json
 ---
 
-Ein weiterer Entwurf für das Klinikum...
+Ein "vollständiger" Entwurf für das Klinikum...
 <!--more-->
 
 Als es veröffentlicht wurde, war der erste Bauabschnitt schon im Bau, der Bezug war für 1980 geplant. Der Termin konnte  gehalten werden, der Einzug begann bereits 1976. Die Robert-Koch-Straße hieß im Model noch Universitätsstraße.

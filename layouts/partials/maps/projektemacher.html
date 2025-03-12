@@ -12,6 +12,12 @@
 {{- if and (not $source) site.Params.map site.Params.map.source -}}
   {{- $source = site.Params.map.source -}}
 {{- end -}}
+
+{{- $class := .class -}}
+{{- if eq $class nil -}}
+  {{- $class = "" -}}
+{{- end -}}
+
 {{- $style := .style -}}
 {{- if eq $style nil -}}
   {{- $style = "undefined" -}}
@@ -90,7 +96,7 @@
 
 {{- $id := md5 $geojson -}}
 {{- $var := printf "_%s" $id -}}
-<div class="map-wrapper">
+<div class="map-wrapper {{ $class }}">
   <div class="map" id="{{ $id }}"></div>
   <div id="{{ $id }}-popup" class="ol-popup">
     <a href="#" id="{{ $id }}-popup-closer" class="ol-popup-closer"></a>

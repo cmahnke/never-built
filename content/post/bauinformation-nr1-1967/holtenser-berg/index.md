@@ -41,6 +41,7 @@ Hier ist das Highlight sicher die über den Hang zur Grone hängende Terrasse. D
   src="./model-1.jpg"
   alt="Entwurf 1"
   caption="Entwurf 1"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
 In diesem Entwurf ist dir Hochhausbebauung auf den Norden des Gebiets konzentriert. Zusätzlich existiert eine ansteigende, ca. 300 Meter lange Gebäude an den Rändern im Westen und Osten.
@@ -49,6 +50,7 @@ In diesem Entwurf ist dir Hochhausbebauung auf den Norden des Gebiets konzentrie
   src="./model-2.jpg"
   alt="Entwurf 2"
   caption="Entwurf 2"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
 Auch dieser Entwurf sieht einen deutlich höheren Grad der Konzentration der Wohnbauten vor. Dafür ist das Straßenraster schon relativ nah am tatsächlich umgesetzten.
@@ -57,4 +59,5 @@ Auch dieser Entwurf sieht einen deutlich höheren Grad der Konzentration der Woh
   src="./model-3.jpg"
   alt="Entwurf 3"
   caption="Entwurf 3"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}

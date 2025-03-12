@@ -45,4 +45,5 @@ Für die Erweiterungen wären einige Abrisse am Kreuzbergring notwendig gewesen,
   src="./blueprint.jpg"
   alt="Übersichtsplan"
   caption="Übersichtsplan"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}

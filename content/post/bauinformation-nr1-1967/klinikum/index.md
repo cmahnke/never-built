@@ -40,6 +40,7 @@ Das Modell zeigt einen zentralen Turm mit einem breiten Sockel an der heute das 
   src="./model-front.jpg"
   alt="Eingangsbereich"
   caption="Eingangsbereich"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
 # Plan
@@ -47,9 +48,10 @@ Das Modell zeigt einen zentralen Turm mit einem breiten Sockel an der heute das 
 Im Plan ist Norden oben.
 
 {{< figure
-  src="./blueprint.jpg"
+  src="./overview.jpg"
   alt="Übersichtsplan"
   caption="Übersichtsplan"
+  class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
 # Heutige Situation

@@ -13,16 +13,9 @@ const functionMap = {
   "translate": translate,
   "addclass": addClass
 }
-/*
-effectConfig.functions = Object.keys(effectConfig.functions).forEach((key) => {
-  let funcConfig = effectConfig.functions[key];
-
-  effectConfig.functions[key] = funcConfig
-});
-*/
 
 export function setupBook() {
-  if (!document.querySelectorAll('.scroll-layout')) {
+  if (!document.querySelectorAll('.scroll-layout, .scroll-trigged')) {
     return;
   }
   Array.from(document.querySelectorAll('.preview-container[data-image-regions]')).forEach((elem) => {

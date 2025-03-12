@@ -4,15 +4,15 @@
     "size": [4910, 6995],
     "areas": [
       {
-        "name": "blueprint",
-        "postprocess": ["white_balance", "preview"],
+        "name": "overview",
+        "postprocess": ["smoothen_median", "preview", "grayscale_simple", "enhance_ai"],
         "position": {
-          "x": 198,
+          "x": 210,
           "y": 198
         },
         "size": {
-          "x": 2937,
-          "y": 3487
+          "x": 2905,
+          "y": 3483
         }
       }
     ]
