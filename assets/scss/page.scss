@@ -57,14 +57,6 @@ body {
 
   }
 
-  .meta-page-intro {
-    text-align: center;
-
-    @media (min-width: 768px) {
-      text-align: unset;
-    }
-  }
-
   .post {
     .meta {
       display: flex;

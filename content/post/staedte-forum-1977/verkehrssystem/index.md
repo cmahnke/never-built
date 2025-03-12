@@ -21,7 +21,7 @@ resources:
 
 ---
 
-Eine weitere Planungsvariante der Osttangete...
+Eine weitere Planungsvariante der Ost-Tangete...
 
 <!--more-->
 
