@@ -33,7 +33,7 @@ Als dieser Beitrag erschien, waren die ersten Bewohner (1967/68) schon eingezoge
 # Unterschiede
 
 Trotzdem gibt es noch kleinere Unterschiede zu der tatsächlichen Ausführung, besonders im Zentrum:
-* Südöstlich und südlich enthält das Model einige zusätzliche Blöcke.
+* Südöstlich und südlich enthält das Modell einige zusätzliche Blöcke.
 * Der Turm im Zentrum wurde nicht realisiert.
 
 {{< figure

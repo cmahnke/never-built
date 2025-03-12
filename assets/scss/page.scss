@@ -398,9 +398,11 @@ i.book-reference {
 
       .content-container {
         text-align: justify;
+        hyphens: auto;
 
         @media (min-width: 768px) {
           text-align: unset;
+          hyphens: unset;
         }
 
         .content-section {
