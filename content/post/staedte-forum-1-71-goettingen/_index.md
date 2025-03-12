@@ -1,5 +1,5 @@
 ---
-title: "Städte Forum 1-71 Göttingen"
+title: "Städteforum 1-71 Göttingen"
 date: 2025-02-26T17:15:07+02:00
 tags:
 - book

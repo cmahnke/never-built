@@ -25,7 +25,7 @@ resources:
 Eine weitere Variante einer umgestalteten Neustadt...
 <!--more-->
 
-Diese späte Variante ist nicht mehr ganz so radikal, so bleibt hier das Theologisch Stift in der Geiststraße erhalten. Eine radikalere Variante ist im [Städteforum 1/71](/post/staedte-forum-1-71-goettingen/neustadt) zu finden.
+Diese späte Variante ist nicht mehr ganz so radikal, so bleibt hier das Theologische Stift in der Geiststraße erhalten. Die extremere Variante ist im [Städteforum 1/71](/post/staedte-forum-1-71-goettingen/neustadt) zu finden.
 
 # Realisierung
 

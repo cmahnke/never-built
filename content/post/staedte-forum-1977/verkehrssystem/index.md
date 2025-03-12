@@ -21,14 +21,14 @@ resources:
 
 ---
 
-Eine weitere Planungsvariante der Ost-Tangete...
+Eine weitere Planungsvariante der Ost-Tangente...
 
 <!--more-->
 
 # Ost-Tangente
-In dieser Variante waren u.a. die Bonifatius Schule und die damalige Kranich-Apotheke im Weg. Sie führt direkt über den heutigen Parkplatz der Volksbank am Rathaus und Wall vorbei.
+In dieser Variante waren u.a. die Bonifatius-Schule und die damalige Kranich-Apotheke im Weg.Die geplante Straße sollte direkt über den heutigen Parkplatz der Volksbank am Rathaus und Wall vorbei führen.
 
-Eine im Süden etwas weniger destruktive Variante [Städeforum 1/71](/post/staedte-forum-1-71-goettingen/verkehrsentwicklung) zu sehen.
+Eine im Süden etwas weniger destruktive Variante ist im [Städteforum 1/71](/post/staedte-forum-1-71-goettingen/verkehrsentwicklung) zu sehen.
 
 # Übersicht Ost-Tangente
 Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häuserbestand.
@@ -43,6 +43,6 @@ Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häus
 
 
 # Weitere Beiträge
-Um einen Überblick über die Entwicklungen und Planungsstufen zu bekommen können die folgen Beiträge helfen:
+Um einen Überblick über die Entwicklungen und Planungsstufen zu bekommen können die folgenden Beiträge helfen:
 * [1967](/post/bauinformation-nr1-1967/verkehr/)
 * [1971](/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/)

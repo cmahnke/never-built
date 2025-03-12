@@ -27,11 +27,11 @@ Die projektierten Wohnhäuser wurden allerdings nie in dieser Form realisiert.
 
 # Kirchengemeinde
 
-Das Haus gehörte ursprünglich der [Jona Kirchengemeinde](https://jona.wir-e.de/aktuelles), imJahr 2024 fusionierten die [Kirchengemeinden in Grone](https://kg-grone.wir-e.de/orte).
+Das Haus gehörte ursprünglich der [Jona Kirchengemeinde](https://jona.wir-e.de/aktuelles), im Jahr 2024 fusionierten die [Kirchengemeinden in Grone](https://kg-grone.wir-e.de/orte).
 
 # Nachbarschaftszentrum
 
-Heute befindet sich in der Nähe das [Nachbarschaftszentrum Grone](https://www.nachbarschaftszentrum-grone.de/index.html).
+Heute befindet sich in der Nähe des Gemeindezentrum das [Nachbarschaftszentrum Grone](https://www.nachbarschaftszentrum-grone.de/index.html).
 
 # Grundriss
 Der Grundriss zeigt eine Übersicht über die geplante Gesamtanlage, die Wohnhäuser in der Mitte wurden nicht gebaut.
