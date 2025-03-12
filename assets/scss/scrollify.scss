@@ -74,15 +74,25 @@ html:has(.scroll-layout) {
         margin-block-start: unset;
         margin-block-end: unset;
 
-
         @media (min-width: 768px) {
-          width: 50%;
+          width: 70%;
+          font-size: xxx-large;
         }
       }
 
       .date {
         @media (min-width: 768px) {
-          width: 40%;
+          width: 25%;
+        }
+      }
+    }
+
+    .content-container {
+      h1, h2, h3 {
+        font-size: larger;
+
+        @media (min-width: 768px) {
+          font-size: xx-large;
         }
       }
     }
@@ -92,11 +102,15 @@ html:has(.scroll-layout) {
       position: relative;
       display: flex;
       flex-direction: column;
+      max-width: 98vw;
+      overflow-x: hidden;
 
       .scan-container {
         position: relative;
         display: flex;
         order: 0;
+        max-width: 98vw;
+        overflow-x: hidden;
 
         .preview.scan {
           max-width: unset;

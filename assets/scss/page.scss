@@ -189,7 +189,12 @@ body {
     }
 
     img {
-      max-width: 40%;
+      max-width: 100%;
+      margin: auto;
+
+      @media (min-width: 768px) {
+        max-width: 40%;
+      }
     }
 
     .meta,
@@ -371,7 +376,7 @@ i.book-reference {
 
 @keyframes slide-in-bottom {
   from {
-    transform: translateY(100%);
+    transform: translateY(10%);
     opacity: 0;
   }
 
