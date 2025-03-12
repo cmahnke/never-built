@@ -25,11 +25,11 @@ Ein Hochhaus für die Innenstadt...
 
 <!--more-->
 
-Dieser Entwurf für die Gartenstraße, in der Nähe des Bismarkhäuschens und hätte 8 Stockwerke haben sollen. Wenn man 3 Meter pro Stockwerk annimmt, wäre es mindestens 24 Meter hoch geworden und damit nach den Kirchentürmen das höchste Gebäude der Innenstadt geworden.
+Dieser Entwurf für die Gartenstraße, in der Nähe des Bismarckhäuschens hätte 8 Stockwerke haben sollen. Wenn man 3 Meter pro Stockwerk annimmt, wäre es mindestens 24 Meter hoch geworden und damit nach den Kirchtürmen das höchste Gebäude der Innenstadt geworden.
 
 # Entwurf
 
-Der Entwurf stammt von der Göttingen Architektin [Lucy Hillebrand](https://de.wikipedia.org/wiki/Lucy_Hillebrand)
+Der Entwurf stammt von der Göttinger Architektin [Lucy Hillebrand](https://de.wikipedia.org/wiki/Lucy_Hillebrand).
 
 Aus dem Übersichtsplan lässt sich ableiten, welche Gebäude in der Gartenstraße hätten abgerissen werden müssen.
 

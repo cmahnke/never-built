@@ -34,7 +34,7 @@ Am oberen Ende des Modells kann man die noch frei stehende ehemalige [Gaststätt
 Die Straße im Modell ist vermutlich die heutige Konrad-Adenauer-Straße bzw. die Grotefendstraße auf der rechten Seite.
 
 # Schnitt durch den Hang
-Den stadtplanerischen Anspruch erkennt man auch durch den Schnitt durch den Hang, der neben verschiedenen Bebauungstypen auch Straßen beinhaltet.
+Den stadtplanerischen Anspruch erkennt man auch auf den Schnitt durch den Hang, der neben verschiedenen Bebauungstypen auch Straßen beinhaltet.
 
 {{< figure
   src="./blueprint.jpg"

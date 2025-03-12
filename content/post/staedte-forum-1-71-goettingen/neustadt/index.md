@@ -31,9 +31,9 @@ Die planierte Neustadt...
 Für die Neustadt (der Teil der Innenstadt zwischen alter Zoologie und Johannis-Kirche) war eine massive Umgestaltung angedacht.
 
 # Geplante Änderungen und Abrisse
-Aus dem Modell des damaligen Zustandes kann man die geplanten Änderungen und damit Abrisse erkennen:
+Aus dem Modell des damaligen Zustandes kann man die geplanten Änderungen und damit intendierten Abrisse erkennen:
 
-* Das Theologisches Stift und fast alle Gebäude i der Geiststraße hätten Platz machen müssen.
+* Das Theologische Stift und fast alle Gebäude in der Geiststraße hätten Platz machen müssen.
 * Westlich des Parkhauses am Groner Tor wäre ein 10-stöckiges Hochhaus entstanden.
 * Ein Parkhaus hätte zusätzlich im Papendiek entstehen sollen.
 * Viele weitere Fachwerkbauten in dem Bereich hätten weichen müssen.

@@ -31,4 +31,4 @@ In diesem Beitrag soll es gar nicht um die Volksbank gehen, sondern um ein klein
 
 # Der barrierefreie Wall
 
-Dieser Plan zeigt einen Entwurf für einen barrierefreien Wallaufgang bei der Bonifatiusschule II, warum dieser nie realisiert wurde ist unklar. Allerdings lassen sich auch heute noch die Ansätze erkennen, der erste Teil der Rampe existiert noch heute.
+Dieser Plan zeigt einen Entwurf für einen barrierefreien Wallaufgang bei der Bonifatiusschule II. Warum dieser nie realisiert wurde, ist unklar. Allerdings lassen sich auch heute noch die Ansätze erkennen, z.B. der erste Teil der Rampe.

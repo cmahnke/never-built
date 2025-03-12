@@ -38,8 +38,8 @@ Trotzdem gibt es noch kleinere Unterschiede zu der tatsächlichen Ausführung, b
 
 {{< figure
   src="./model-detail.jpg"
-  alt="Model des Zentrums"
-  caption="Model des Zentrums"
+  alt="Modell des Zentrums"
+  caption="Modell des Zentrums"
   class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 

@@ -26,13 +26,12 @@ resources:
 Der Ringschluss mit dem Bulldozer...
 
 <!--more-->
+Die Verkehrsplanungen  ist nicht mehr ganz so ambitioniert wie in den 60er Jahre. So ist z.B. die Trasse von Geismar nach Rosdorf ist nicht mehr enthalten. Vermutlich, weil in der Zwischenzeit der [Kiessee](https://de.wikipedia.org/wiki/G%C3%B6ttinger_Kiessee) als Naherholungsgebiet genutzt wurde.
 
-Nicht mehr ganz so ambitioniert wie die Planungen aus den 60er Jahren, besonders die Trasse von Geismar nach Rosdorf ist nicht mehr enthalten, vermutlich, weil in der Zwischenzeit der [Kiessee](https://de.wikipedia.org/wiki/G%C3%B6ttinger_Kiessee) als Naherholungsgebiet genutzt wurde.
-
-Ansonsten findet sich hier ein genauerer Plan der Osttangente.
+Ansonsten findet sich hier ein genauerer Plan der Ost-Tangente.
 
 # Gesamtansicht
-Hier ist, sicher auch as Vorbereitung für den Ringschluss ein Ausbau der Humboldtallee und des Nikolausbergerwegs geplant. Ggf. waren dabei die Dimensionen der Robert-Koch-Straße geplant. Zusätzlich ist der Ausbau der Stumpfen Eiche (nach der Robert-Koch-Straße) und des Helleweg bis zur Springstraße eingezeichnet. Heutzutage ist das plötzliche Ende der Robert-Koch-Straße ein Relikt dieser nicht umgesetzten Planung.
+Hier ist, sicher auch als Vorbereitung für den Ringschluss, ein Ausbau der Humboldtallee und des Nikolausberger Wegs geplant. Ggf. waren dabei die Dimensionen der Robert-Koch-Straße vorgesehen. Zusätzlich ist der Ausbau des Straßenzuges Stumpfe Eiche (nach der Robert-Koch-Straße) und des Helleweg bis zur Springstraße eingezeichnet. Heutzutage ist das plötzliche Ende der Robert-Koch-Straße ein Relikt dieser nicht umgesetzten Planung.
 
 {{< figure
   src="./blueprint.jpg"
@@ -41,7 +40,7 @@ Hier ist, sicher auch as Vorbereitung für den Ringschluss ein Ausbau der Humbol
   class="_efTrigger-inview-50px _effect-addclass-show"
 >}}
 
-# Osttangente
+# Ost-Tangente
 Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häuserbestand.
 
 {{< maps/projektemacher
@@ -52,8 +51,8 @@ Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häus
   maxZoom=16
   class="_efTrigger-inview-50px _effect-addclass-show" >}}
 
-Die Göttinger Osttangente wurde 1968 genehmigt, diese Genehmigung wurde durch einen Gerichtsbeschluss im Jahr 1975 für nichtig erklärt und wurde mit dem Gesamtverkehrsplan 1982 nicht weiter verfolgt...
+Die Göttinger Ost-Tangente wurde 1968 genehmigt, diese Genehmigung wurde durch einen Gerichtsbeschluss im Jahr 1975 für nichtig erklärt und wurde mit dem Gesamtverkehrsplan 1982 nicht weiter verfolgt.
 
 ## Weitere Links
 * Das [Göttinger Tageblatt](https://www.goettinger-tageblatt.de/lokales/goettingen-lk/goettingen/osttangente-goettingen-als-die-ruhe-im-ostviertel-zur-debatte-stand-GXKRJ235YSQSGNZO4AUTD4BFBE.html) bietet eine Bildergalerie zu dem Thema.
-* Das [Ratsinformationssystem der Stadt Göttingen](https://www.goettingen.de/allris/vo020?0-1.0-beratungen-showHideLink&VOLFDNR=1999&refresh=false&TOLFDNR=17144) über die abschließende Änderung des Bebauungsplans.
+* Das [Ratsinformationssystem der Stadt Göttingen](https://www.goettingen.de/allris/vo020?0-1.0-beratungen-showHideLink&VOLFDNR=1999&refresh=false&TOLFDNR=17144) informiert über die abschließende Änderung des Bebauungsplans.
