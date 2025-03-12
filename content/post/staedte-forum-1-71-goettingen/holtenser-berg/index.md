@@ -25,16 +25,16 @@ resources:
     iiif: page129/info.json
 ---
 
-Der Holtensen Berg mit einem Turm...
+Der Holtenser Berg mit einem Turm...
 <!--more-->
 
-Als dieser Beitrag erschien, waren die ersten Bewohner (1967/68) schon eingezogen, die Bebauung also schon zu einem gewisse Teil fertiggestellt.
+Als dieser Beitrag erschien, waren die ersten Bewohner (1967/68) schon eingezogen, die Bebauung also schon zu einem gewissen Teil fertiggestellt.
 
 # Unterschiede
 
 Trotzdem gibt es noch kleinere Unterschiede zu der tatsächlichen Ausführung, besonders im Zentrum:
-* Südöstlich und südlich enthält das Model ein zusätzliche Blöcke.
-* Der Turm im Zentrum wurde nicht realisiert
+* Südöstlich und südlich enthält das Model einige zusätzliche Blöcke.
+* Der Turm im Zentrum wurde nicht realisiert.
 
 {{< figure
   src="./model-detail.jpg"

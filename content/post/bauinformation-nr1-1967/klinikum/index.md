@@ -30,11 +30,11 @@ Ein früher Entwurf des Klinikums...
 
 <!--more-->
 
-Der Bau des ersten Bauabschnittes (jetzigen) [Klinikums](https://de.wikipedia.org/wiki/Universit%C3%A4tsmedizin_G%C3%B6ttingen) begann 1969, also zwei Jahre nach dem erscheinen dieser Publikation. Der Einzug begann 1976 und war 1980 weitestgehend abgeschlossen.
+Die Ausführung des ersten Bauabschnittes (des jetzigen) [Klinikums](https://de.wikipedia.org/wiki/Universit%C3%A4tsmedizin_G%C3%B6ttingen) begann 1969, also zwei Jahre nach dem erscheinen der Publikation aus dieser Beitrag stammt (siehe unten). Der Einzug begann 1976 und war 1980 weitestgehend abgeschlossen.
 
-# Model
+# Modell
 
-Das Modell zeigt einen zentralen Turm mit einem breiten Sockel an der heute das Hauptgebäude steht. Und eine reihe von damit verbundenen Nebengebäuden im Norden. Das Parkdeck im Vordergrund ist das einzige, dass man an diesem Entwurf heute wiedererkennen kann.
+Das Modell zeigt einen zentralen Turm mit einem breiten Sockel an dessen Stelle heute das Hauptgebäude steht. Und eine Reihe von damit verbundenen Nebengebäuden im Norden. Das Parkdeck im Vordergrund ist das einzige, das man an diesem Entwurf heute wiedererkennen kann.
 
 {{< figure
   src="./model-front.jpg"
