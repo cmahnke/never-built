@@ -20,12 +20,21 @@
 
     {{- if and (isset .Params "type") (eq .Params.type "book") -}}
       <div class="meta">
-        {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
-          <h2 class="meta-cover-title">{{ i18n "front" }}</h2>
+        <div class="original-pages">
           {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
-            {{- partial "iiif/iiif-content.html" . -}}
+            <h2 class="sub-section-heading">
+              {{- if gt (len .Params.resources) 1 -}}
+                {{- i18n "originalPages" -}}
+              {{- else -}}
+                {{- i18n "originalPage" -}}
+              {{- end -}}
+            </h2>
+            <h3 class="meta-cover-title">{{ i18n "front" }}</h3>
+            {{- if or .Page.Params.iiifcontext .Page.Params.iiif.context -}}
+              {{- partial "iiif/iiif-content.html" . -}}
+            {{- end -}}
           {{- end -}}
-        {{- end -}}
+        </div>
         {{- partial "section-meta.html" . -}}
       </div>
     {{- end -}}

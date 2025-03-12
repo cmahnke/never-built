@@ -117,14 +117,28 @@ body {
   .section-single {
     .post .content  {
 
-      .featured img {
+      .post-title {
+        word-wrap: break-word;
 
+        @media (min-width: 768px) {
+          word-wrap: unset;
+        }
+
+      }
+
+      .featured img {
         min-width: 75%;
         margin: 3rem auto ;
       }
 
       .post-summary {
         font-size: calc($text-font-size * 1.8);
+        text-align: center;
+
+        @media (min-width: 768px) {
+          text-align: unset;
+        }
+
       }
 
       .post-body {
@@ -250,9 +264,11 @@ body {
     font-weight: 100;
     font-style: italic;
     font-size: 2rem;
+    word-wrap: break-word;
 
     @media (min-width: 768px) {
       text-align: end;
+      word-wrap: unset;
     }
 
     a {
@@ -375,27 +391,35 @@ i.book-reference {
         animation-fill-mode: forwards;
       }
 
-      .content-container .content-section {
+      .content-container {
+        text-align: justify;
 
-        figure.show {
-          animation-duration: $page-elements-duration;
-          animation-timing-function: ease-out;
-          animation-fill-mode: forwards;
+        @media (min-width: 768px) {
+          text-align: unset;
+        }
 
-          &:only-of-type {
-            animation-name: fade-in-bounce;
+        .content-section {
 
-          }
+          figure.show {
+            animation-duration: $page-elements-duration;
+            animation-timing-function: ease-out;
+            animation-fill-mode: forwards;
 
-          &:not(:only-of-type) {
-            &:nth-of-type(even) {
-              animation-name: slide-in-left;
+            &:only-of-type {
+              animation-name: fade-in-bounce;
+
             }
 
-            &:nth-of-type(odd) {
-              animation-name: slide-in-right;
-            }
+            &:not(:only-of-type) {
+              &:nth-of-type(even) {
+                animation-name: slide-in-left;
+              }
 
+              &:nth-of-type(odd) {
+                animation-name: slide-in-right;
+              }
+
+            }
           }
         }
       }

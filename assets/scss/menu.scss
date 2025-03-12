@@ -9,19 +9,6 @@ $animation-duration: 750ms !default;
 @use "link" as *;
 @use "sass:math";
 
-/* See https://css-tricks.com/snippets/sass/strip-unit-function/
-@function strip-unit($number) {
-  @if type-of($number) == 'number' and not unitless($number) {
-    @return $number / ($number * 0 + 1);
-  }
-
-  @return $number;
-}
-
-@media (min-width: 768px)
-
-*/
-
 header .menu {
   position: fixed;
   /*height: fit-content;*/
@@ -156,10 +143,6 @@ header .menu {
       transition: transform 300ms;
       transform: translateX(-100vw);
       padding-top: calc($button-padding * 2 + $button-height);
-      /*height: 100%;*/
-      /* display: flex;
-      flex-direction: column;
-      justify-content: space-between; */
       height: calc(100% - (1rem * 2 + $button-height));
       padding-inline-start: 0;
       margin-block-start: 0;
@@ -173,10 +156,6 @@ header .menu {
         font-size: $button-padding;
         padding-bottom: $button-padding;
         margin-block-end: 0;
-        /*
-        max-height: max-content;
-        height: unset;
-        */
       }
 
       .navigation-item {

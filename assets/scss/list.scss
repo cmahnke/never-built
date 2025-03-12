@@ -7,11 +7,6 @@
   &:has(.books) {
     width: 100%;
   }
-  /*
-  .post-title {
-    font-size: 4rem;
-  }
-  */
 
   h1, h2, h3 {
     width: 100%;
@@ -33,16 +28,6 @@
       display: flex;
     }
   }
-
-  /*
-  .tag-list-title {
-    font-size: xx-large;
-
-    @media (min-width: 768px) {
-      margin: -1.4rem 5% 1rem !important;
-    }
-  }
-  */
 
   .section-head + .post {
     margin-top: 1.6em;

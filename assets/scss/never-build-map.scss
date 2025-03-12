@@ -16,8 +16,18 @@ body:not(.meta) {
           min-height: unset;
           width: 30vw;
           margin-top: unset;
+          margin-bottom: 4rem;
 
           flex-basis: 50%;
+        }
+      }
+
+      .meta {
+        .map-wrapper {
+          width: 90%;
+          min-height: 40vh;
+          margin: auto;
+          float: unset;
         }
       }
 
@@ -166,14 +176,4 @@ ol-viewport {
     margin-right: unset;
   }
 
-}
-
-.section-post {
-  .main {
-
-    .section-single .book {
-      /* See book-toc.scss */
-
-    }
-  }
 }

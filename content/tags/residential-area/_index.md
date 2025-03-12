@@ -73,3 +73,8 @@ Nicht nur eine wachsende Universität braucht Wohnraum...
 | 2004 | 122187 |
 | 2005 | 121884 |
 ```
+
+Sprünge lassen sich durch Lücken in den Daten und Eingemeindungen erklären:
+* 1963 Herberhausen
+* 1964 Weende, Geismar und Nikolausberg
+* 1973 Grone, Holtensen, Elliehausen, Esebeck, Knutbüren, Hetjershausen und Groß Ellershausen

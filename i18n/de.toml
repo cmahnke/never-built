@@ -46,3 +46,6 @@ other = "Quelle"
 
 [post-source]
 other = "Herkunft des Beitrags"
+
+[book-places]
+other = "Orte in diesem Buch"

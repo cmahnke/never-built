@@ -22,13 +22,13 @@
 }
 
 .original-pages .sub-section-heading {
-  font-size: 4em;
+  font-size: 2.4em;
   clear: inline-end;
   text-align: right;
-  padding-top: 4rem;
   font-weight: 300;
 
   @media (min-width: 768px) {
+    padding-top: 4rem;
     animation:
       $show-page-duration linear forwards fade-in,
       $show-page-duration linear $show-page-duration forwards italics !important;
