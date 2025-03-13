@@ -183,6 +183,10 @@
         justify-content: space-between;
       }
 
+      &:last-child .readmore-container:after {
+        display: none;
+      }
+
       .headline {
         order: 1;
 
@@ -232,6 +236,7 @@
       .readmore-container {
         width: 100%;
         order: 4;
+        padding-bottom: 1.8rem;
 
         @media (min-width: 768px) {
           order: unset;

@@ -83,26 +83,10 @@
         <div class="scroll-content">
           {{- partial "content.html" . -}}
         </div>
-{{/*
-          <div class="scroll-content">
-            {{- if not .Truncated -}}
-              <div class="summary .layer-2">
-                {{ .Summary }}
-                {{ if .Truncated }}
-                  <a href="{{ .RelPermalink }}" class="readmore">{{ i18n "readmore" }}</a>
-                {{ end }}
-              </div>
-              <div class="post-more .layer-3">
-                {{- $contentSections := split .RawContent "<!--more-->" -}}
-                {{- index $contentSections 1 -}}
-              </div>
-            {{- else -}}
-              <div class="post-content .layer-2">
-                {{ .Content }}
-              </div>
-            {{- end -}}
-          </div>
-*/}}
+        <div class="readmore-container">
+          <a href="{{ .RelPermalink }}" class="readmore no-animation" title="{{ i18n "readmore" }}">{{ i18n "readmore" }}</a>
+        </div>
+
         {{- end -}}
       </article>
       {{- $count = add $count 1 -}}

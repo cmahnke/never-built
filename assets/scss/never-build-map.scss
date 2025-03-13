@@ -83,6 +83,14 @@ ol-viewport {
   background-position: center top;
 }
 
+body.dir-map {
+  .map-wrapper {
+    @media (orientation: portrait) {
+      min-height: 50vh;
+    }
+  }
+}
+
 .map-wrapper {
   display: flex;
   flex-direction: column;

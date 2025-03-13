@@ -42,6 +42,12 @@ html:has(.scroll-layout) {
     flex-direction: column;
     margin-bottom: 5rem;
 
+    @media (min-width: 768px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+    }
+
     &:last {
       margin-bottom: unset;
     }
@@ -51,7 +57,6 @@ html:has(.scroll-layout) {
         min-height: unset;
         width: 40vw;
         aspect-ratio: 1 / 1;
-
       }
     }
 
@@ -60,6 +65,7 @@ html:has(.scroll-layout) {
     }
 
     .scroll-header {
+      grid-column: span 2 / span 2;
       display: flex;
       align-items: center;
       margin-bottom: 2rem;
@@ -85,32 +91,59 @@ html:has(.scroll-layout) {
           width: 25%;
         }
       }
-    }
 
-    .content-container {
-      h1, h2, h3 {
-        font-size: larger;
+      .readmore-container {
 
         @media (min-width: 768px) {
-          font-size: xx-large;
+          grid-column: span 2 / span 2;
+          grid-row-start: 4;
+        }
+      }
+    }
+
+    .scroll-content {
+
+      @media (max-width: $image-zoom-width) {
+        display: grid;
+      }
+
+      .content-container {
+
+        @media (max-width: $image-zoom-width) {
+          display: grid;
+        }
+
+        .content-section :has(.map-wrapper) {
+          display: none;
+        }
+
+        h1, h2, h3 {
+          font-size: larger;
+
+          @media (min-width: 768px) {
+            font-size: xx-large;
+          }
         }
       }
     }
 
     .preview-container {
+      display: flex;
       height: max-content;
       position: relative;
       display: flex;
       flex-direction: column;
       max-width: 98vw;
-      overflow-x: hidden;
+
+      @media (max-width: $image-zoom-width) {
+        display: grid;
+      }
 
       .scan-container {
         position: relative;
         display: flex;
         order: 0;
         max-width: 98vw;
-        overflow-x: hidden;
 
         .preview.scan {
           max-width: unset;
