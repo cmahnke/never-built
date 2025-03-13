@@ -1,4 +1,4 @@
-$map-font-site: 1rem !default;
+$map-font-size: 1rem !default;
 
 body:not(.dir-map),
 body:not(.meta) {
@@ -91,7 +91,7 @@ ol-viewport {
   min-height: 40vw;
   position: relative;
   border: 0.3ex solid black;
-  font-size: $map-font-site;
+  font-size: $map-font-size;
 
   @media (min-width: 768px) {
     min-height: 60vh;

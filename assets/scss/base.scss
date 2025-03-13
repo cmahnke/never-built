@@ -27,7 +27,7 @@ $scale-factor: 1.05;
 $accent-color: color.adjust(black, $lightness: 90%);
 $text-font-size: 1rem;
 $map-font-site: 1rem;
-
+$image-zoom-width: 1080px;
 $menu-width: 10vw;
 
 @import "fonts/league-spartan";
@@ -84,6 +84,7 @@ $fullscreen-color: var(--base07);
   --menu-text-color: white;
   --page-background: white;
   --text-font-size: #{$text-font-size};
+  --image-zoom-width: #{$image-zoom-width};
 
   @media (min-width: 768px) {
     --main-margin: 2rem;

@@ -8,11 +8,11 @@
         "postprocess": ["grayscale_simple", "preview"],
         "position": {
           "x": 138,
-          "y": 2773
+          "y": 2770
         },
         "size": {
           "x": 2794,
-          "y": 2375
+          "y": 2372
         }
       },
       {

@@ -70,9 +70,14 @@ export function imageViewer(images, startImage) {
 
   lightbox.init();
   imageList.forEach((image, i) => {
-    image._el.addEventListener(("click"), (e) => {
+    const handler = (e) => {
       lightbox.loadAndOpen(i);
       return false;
-    });
+    }
+
+    image._el.addEventListener("click", handler);
+    image._el.style.cursor = "pointer";
+    image._el.parentElement.addEventListener("click", handler);
+    image._el.parentElement.style.cursor = "pointer";
   });
 }

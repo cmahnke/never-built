@@ -1,6 +1,26 @@
 $show-page-duration: 500ms !default;
 $page-elements-duration: 1600ms !default;
 
+@mixin enlage-button () {
+  content: "⤢";
+  border: .3ex solid #000;
+  display: block;
+  margin: 1px;
+  padding: 0;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: inherit;
+  text-align: center;
+  height: 1.375em;
+  width: 1.375em;
+  background-color: white;
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+  /*z-index: 99;*/
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -54,7 +74,6 @@ body {
     .post-content {
 
     }
-
   }
 
   .post {
@@ -126,10 +145,25 @@ body {
 
       }
 
-      .featured img {
-        min-width: 75%;
-        margin: 3rem auto;
-        position: relative;
+      .featured {
+        justify-content: center;
+
+        .featured-image {
+          position: relative;
+          min-width: 75%;
+          margin: 3rem auto;
+
+          @media (max-width: $image-zoom-width) {
+            &:after {
+              @include enlage-button;
+            }
+          }
+        }
+
+        img {
+          min-width: 100%;
+
+        }
       }
 
       .post-summary {
@@ -157,11 +191,19 @@ body {
           padding-top: 3rem;
           margin-block-start: unset;
           margin-block-end: unset;
+          position: relative;
+          font-size: 1rem;
+
+          @media (max-width: $image-zoom-width) {
+            &:after {
+              @include enlage-button;
+              top: calc(3rem + 2rem);
+            }
+          }
 
           img {
             max-width: unset;
             width: 100%;
-            position: relative;
           }
 
           figcaption {
@@ -416,7 +458,6 @@ i.book-reference {
 
             &:only-of-type {
               animation-name: fade-in-bounce;
-
             }
 
             &:not(:only-of-type) {

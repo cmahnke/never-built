@@ -100,7 +100,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
 
-  let widthMQL = window.matchMedia("(max-width: 1080px)");
+  var imageZoomWidth = window.getComputedStyle(document.body)
+  imageZoomWidth = imageZoomWidth.getPropertyValue('--image-zoom-width');
+  let widthMQL = window.matchMedia(`(max-width: ${imageZoomWidth})`);
   //if (widthMQL.matches) {
     const zoomable = document.querySelectorAll('.article-single .content-container figure img, .article-single .content .featured img')
     imageViewer(zoomable)
