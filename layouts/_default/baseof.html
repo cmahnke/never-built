@@ -13,6 +13,10 @@
         <meta name="projektemacher:notes" content="{{ .Params.notes }}">
     {{- end -}}
 
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#e0e0e0">
+
     {{- partial "html/head/style.html" (dict "context" . "css" "css/style.css") -}}
     {{- partial "html/head/script.html" (dict "js" (partial "html/head/iiif-js.html" .)) -}}
     {{- partial "html/head/page-scripts.html" . -}}

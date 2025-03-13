@@ -56,18 +56,18 @@ body {
 
   &.section-post {
     --page-background: #{$post-background};
-    background: var(--page-background);
+    background-color: var(--page-background);
   }
 
   &.section-.meta,
   &.section-book {
     --page-background: #{$meta-background};
-    background: var(--page-background);
+    background-color: var(--page-background);
   }
 
   &.section-tags {
     --page-background: #{$term-background};
-    background: var(--page-background);
+    background-color: var(--page-background);
   }
 
   .article-single .post .content .post-body {

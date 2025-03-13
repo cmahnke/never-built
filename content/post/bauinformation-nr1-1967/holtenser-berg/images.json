@@ -49,12 +49,12 @@
         "name": "model-4",
         "postprocess": ["preview", "enhance_ai"],
         "position": {
-          "x": 5,
-          "y": 0
+          "x": 7,
+          "y": 2
         },
         "size": {
-          "x": 4945,
-          "y": 2959
+          "x": 4989,
+          "y": 2949
         }
       }
     ]
