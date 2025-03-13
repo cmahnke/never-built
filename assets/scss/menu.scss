@@ -111,6 +111,7 @@ header .menu {
         top: calc(0% - math.div($button-height, 5));
         background-color: #fff;
         position: relative;
+        vertical-align: middle;
 
         &:before,
         &:after {

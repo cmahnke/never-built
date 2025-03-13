@@ -127,12 +127,14 @@
         flex-direction: column;
         transform: scaleX(1.015);
         transform-origin: left;
+        text-align: center;
 
         @media (min-width: 768px) {
           grid-column-start: 1;
           grid-row-start: 2;
           font-size: larger;
           margin-right: 2rem;
+          text-align: unset;
 
           p {
             margin-block-start: unset;

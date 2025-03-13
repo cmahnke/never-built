@@ -344,6 +344,7 @@ i.book-reference {
   }
 }
 
+.article-single,
 .parent-section {
   a {
     @include invert-link($color: $accent-color);
