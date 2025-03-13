@@ -13,6 +13,11 @@
     margin-block-start: unset;
     margin-block-end: unset;
     padding-inline-start: 1.4rem;
+    hyphens: auto;
+
+    @media (min-width: 768px) {
+      hyphens: unset;
+    }
 
     .toc-item {
       .toc-item-link {

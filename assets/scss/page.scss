@@ -10,15 +10,18 @@ $page-elements-duration: 1600ms !default;
   color: black;
   font-weight: bold;
   text-decoration: none;
-  font-size: inherit;
+  font-size: $map-font-site;
   text-align: center;
   height: 1.375em;
   width: 1.375em;
   background-color: white;
   position: absolute;
-  right: 2rem;
-  top: 2rem;
-  /*z-index: 99;*/
+  right: .5em;
+  top: .5em;
+
+  @media (min-width: 768px) {
+    font-size: $ol-touch-botton-size;
+  }
 }
 
 @keyframes fade-in {
@@ -74,6 +77,17 @@ body {
     .post-content {
 
     }
+  }
+
+  &.meta .content {
+    text-align: justify;
+    hyphens: auto;
+
+    @media (min-width: 768px) {
+      text-align: unset;
+      hyphens: unset;
+    }
+
   }
 
   .post {
@@ -263,7 +277,7 @@ body {
       .post-body {
 
         h1 {
-          font-size: 1.6em;
+          font-size: 1.6rem;
           word-break: break-all;
         }
 
