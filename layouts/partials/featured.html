@@ -21,9 +21,10 @@
             {{- $preview := slice (index $preview 0) -}}
             {{- range $preview -}}
               {{- with $page.Resources.Get . -}}
-                {{ with .Resize $previewSize }}
+                {{- $originalImage := . -}}
+                {{- with .Resize $previewSize -}}
                   <a href="{{ $link }}" title="{{ $title }}">
-                    <img class="featured-entry-image" src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}">
+                    <img class="featured-entry-image" src="{{ .RelPermalink }}" alt="{{ i18n "post-preview" }}" data-full-src="{{ $originalImage.RelPermalink }}" data-full-width="{{ $originalImage.Width }}" data-full-height="{{ $originalImage.Height }}" />
                   </a>
                 {{- end -}}
               {{- else -}}

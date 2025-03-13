@@ -18,6 +18,7 @@ weights_dir = "./weights"
 model = None
 debug = False
 default_image_ext = ".jpg"
+default_preview_size = (2048, 2048)
 
 gitignore_file = os.path.join(default_dir, ".gitignore")
 
@@ -313,7 +314,7 @@ def remove_halftone_grid_wavelet(img, params=None, wavelet='bior1.3', level=10, 
     img_filtered = np.abs(img_filtered).astype(np.uint8) # Convert and return
     return Image.fromarray(img_filtered.astype('uint8'))
 
-def preview(image, params=None, size=(2048, 2048)):
+def preview(image, params=None, size=default_preview_size):
     image.thumbnail(size)
     return image
 

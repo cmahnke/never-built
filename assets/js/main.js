@@ -1,6 +1,7 @@
 import {setupAnimatedLinks, setupAnimatedMenu} from './animated-link';
 import {setupBook} from './scrollify';
 import Glide from '@glidejs/glide'
+import {imageViewer} from './image-viewer';
 import { projektemacherMap } from './maps/projektemacher-map';
 import {Style, Fill, Stroke, Icon} from 'ol/style.js';
 
@@ -97,4 +98,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
       type: 'carousel'
     }).mount()
   }
+
+
+  let widthMQL = window.matchMedia("(max-width: 1080px)");
+  //if (widthMQL.matches) {
+    const zoomable = document.querySelectorAll('.article-single .content-container figure img, .article-single .content .featured img')
+    imageViewer(zoomable)
+  //}
+
 });

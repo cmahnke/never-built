@@ -1,0 +1,26 @@
+@import "./photoswipe/photoswipe";
+
+.pswp {
+  .pswp__custom-caption {
+    background: var(--page-background);
+    border: .3ex solid #000;
+    align-content: center;
+    text-align: center;
+    width: calc(100% - 32px);
+    max-width: 400px;
+    padding: 1rem;
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    font-size: 1.2em;
+    transform: translateX(-50%);
+  }
+
+  .pswp__preloader {
+    display: none;
+  }
+
+  .pswp__custom-caption {
+    transition: opacity 500ms;
+  }
+}

@@ -171,6 +171,10 @@ enableRobotsTXT = true
     target = "assets/scss/glide.scss"
 
   [[module.mounts]]
+      source = "node_modules/photoswipe/src/photoswipe.css"
+      target = "assets/scss/photoswipe/photoswipe.css"
+
+  [[module.mounts]]
     source = "static/images"
     target = "static/images"
 

@@ -24,3 +24,14 @@ $text-font-size: 1rem !default;
     text-align: unset;
   }
 }
+
+/*
+.content-container {
+  figure a :has(img) :after {
+    background: unset;
+    transform: unset;
+    transition: unset;
+
+  }
+}
+*/

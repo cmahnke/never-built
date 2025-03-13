@@ -33,7 +33,8 @@
             {{- $img := index $previewNames $i -}}
             {{/*{{- range $i, $img := $previewNames -}}*/}}
               {{- with $.Resources.GetMatch $img -}}
-                  <img class="{{printf "post-featured img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}" data-image-name="{{ $img}}" />
+                {{- $originalImage := . -}}
+                <img class="{{printf "post-featured img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}"  data-image-name="{{ $img }}" data-full-src="{{ $originalImage.RelPermalink }}" data-full-width="{{ $originalImage.Width }}" data-full-height="{{ $originalImage.Height }}" />
               {{- else -}}
                 {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $.Path $img -}}
               {{- end -}}

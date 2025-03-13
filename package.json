@@ -4,16 +4,17 @@
     "@glidejs/glide": "^3.7.1",
     "@turf/turf": "^7.2.0",
     "echarts": "^5.6.0",
-    "motion": "^12.4.10",
+    "motion": "^12.5.0",
     "ol-mapbox-style": "^12.5.0",
     "terminal.css": "^0.7.5",
-    "three": "^0.174.0"
+    "three": "^0.174.0",
+    "photoswipe": "^5.4.4"
   },
   "devDependencies": {
-    "@gltf-transform/cli": "^4.1.1",
-    "@gltf-transform/core": "^4.1.1",
-    "@gltf-transform/extensions": "^4.1.1",
-    "@gltf-transform/functions": "^4.1.1",
+    "@gltf-transform/cli": "^4.1.2",
+    "@gltf-transform/core": "^4.1.2",
+    "@gltf-transform/extensions": "^4.1.2",
+    "@gltf-transform/functions": "^4.1.2",
     "gltf-pipeline": "^4.1.0",
     "obj2gltf": "^3.1.6"
   },

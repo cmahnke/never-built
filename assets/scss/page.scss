@@ -128,7 +128,8 @@ body {
 
       .featured img {
         min-width: 75%;
-        margin: 3rem auto ;
+        margin: 3rem auto;
+        position: relative;
       }
 
       .post-summary {
@@ -160,6 +161,7 @@ body {
           img {
             max-width: unset;
             width: 100%;
+            position: relative;
           }
 
           figcaption {
@@ -223,7 +225,7 @@ body {
           word-break: break-all;
         }
 
-        a {
+        a :not( :has(img[data-gallery-image])) {
           @include invert-link($color: $accent-color);
           color: black;
           text-decoration-style: dotted;
