@@ -10,6 +10,9 @@ other = "Infrastruktur"
 [residential-area]
 other = "Wohngebiet"
 
+[commercial]
+other = "Geschäftsbau"
+
 [transport]
 other = "Verkehrsinfrastruktur"
 

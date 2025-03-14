@@ -4,8 +4,10 @@
 
 .iiif .iiif-image {
   font-size: $map-font-size;
-  
+
   .share {
+    margin-right: 1rem;
+
     a,
     a:active,
     a:focus,
@@ -15,12 +17,21 @@
       text-decoration: none;
     }
 
+    @media (min-width: 768px) {
+      a:last-child {
+        margin-right: 1rem;
+      }
+    }
+
     .iiif-link .iiif-iiif {
       filter: grayscale(1);
     }
   }
   .viewer {
-    margin: auto;
+
+    @media (min-width: 768px) {
+      margin: auto;
+    }
   }
 }
 

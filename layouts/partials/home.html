@@ -4,7 +4,7 @@
 {{ partial "featured.html" . }}
 <div class="home-post-heading">
   {{- $paginator := site.Store.Get "currentPaginator"  -}}
-  {{- if or (and (ne $paginator nil) (not ($paginator.HasNext))) (eq $paginator.TotalPages 1) -}}
+  {{- if or (eq $paginator nil) (eq $paginator.PageNumber $paginator.TotalPages) -}}
     <h1>{{- i18n "newPosts" -}}</h1>
   {{- else -}}
     <h1>{{- i18n "oldPosts" -}}</h1>
