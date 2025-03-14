@@ -65,7 +65,7 @@ html:has(.scroll-layout) {
     }
 
     .scroll-header {
-      grid-column: span 2 / span 2;
+
       display: flex;
       align-items: center;
       margin-bottom: 2rem;
@@ -74,6 +74,7 @@ html:has(.scroll-layout) {
 
       @media (min-width: 768px) {
         flex-direction: row;
+        grid-column: span 2 / span 2;
       }
 
       .scroll-title {
@@ -92,12 +93,16 @@ html:has(.scroll-layout) {
         }
       }
 
-      .readmore-container {
 
-        @media (min-width: 768px) {
-          grid-column: span 2 / span 2;
-          grid-row-start: 4;
-        }
+    }
+
+    .readmore-container {
+      justify-content: center;
+      display: flex;
+
+      @media (min-width: 768px) {
+        grid-column: span 2 / span 2;
+        grid-row-start: 4;
       }
     }
 

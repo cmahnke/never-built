@@ -3,5 +3,36 @@
     /* Increase margin to compensate missing date */
     margin-top: calc(3rem + 1rem * .84);
     font-size: 1.8rem;
+    hyphens: auto;
+
+    @media (min-width: 768px) {
+      hyphens: unset;
+    }
+  }
+
+  .chart-figure {
+    float: right;
+    min-width: 60%;
+
+    @media (min-width: 768px) {
+      min-width: unset;
+      padding-left: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .chart-caption {
+      font-size: small;
+      padding-top: .6rem;
+      text-align: right;
+    }
+  }
+
+  .post {
+    clear: inline-end;
+
+    @media (min-width: 768px) {
+      padding-top: 3rem;
+    }
+
   }
 }

@@ -85,7 +85,7 @@
           <h3 class="parent-section-heading">{{ i18n "post-source" }}</h3>
           <div class="parent-section">
             {{ i18n "sectionParent" }}
-            <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}">{{ .CurrentSection.Title }}</a> <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}"><i class="book-reference"></i></a>
+            <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}" data-animation-classes="meta">{{ .CurrentSection.Title }}</a> <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}" data-animation-classes="meta"><i class="book-reference"></i></a>
           </div>
         {{- end -}}
         <div class="tag-container">

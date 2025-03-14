@@ -6,7 +6,7 @@
   <div class="tags">
       {{- range $tag := .Params.tags -}}
           {{- if ne $tag "" -}}
-              <a href="{{ "tags/" | relLangURL }}{{ $tag | urlize }}" title="{{ $tag }}">#{{ partial (printf "tagcloud/%s.html" $render) $tag }}</a><br />
+              <a href="{{ "tags/" | relLangURL }}{{ $tag | urlize }}" title="{{ $tag }}" data-animation-classes="term">#{{ partial (printf "tagcloud/%s.html" $render) $tag }}</a><br />
           {{- end -}}
       {{- end -}}
   </div>

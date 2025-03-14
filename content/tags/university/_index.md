@@ -1,13 +1,9 @@
 ---
 title: 'Universität'
 description: ''
-params:
-  js:
-    - js/chart.js
 ---
-Da die Universität sehr eng mit der Stadt verwoben ist, waren viel geplante Projekte Teil der Universität.
 
-```chart
+{{< chart caption="Studierendensentwicklung 1950 - 2023" >}}
 # {"type": "line", "scale": false, "font": "Roboto Mono Variable", "series": {"Studierende": {"lineStyle": {"color": "#000"}}}}
 | Jahr | Studierende |
 |------|-------------|
@@ -85,4 +81,6 @@ Da die Universität sehr eng mit der Stadt verwoben ist, waren viel geplante Pro
 | 2021 |      28358 |
 | 2022 |      27837 |
 | 2023 |      27428 |
-```
+{{< /chart >}}
+
+Da die Universität sehr eng mit der Stadt verwoben ist, waren viele geplante Projekte Teil der Universität.

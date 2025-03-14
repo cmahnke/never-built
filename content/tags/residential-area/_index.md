@@ -1,13 +1,9 @@
 ---
 title: 'Wohngebiete'
 description: ''
-params:
-  js:
-    - js/chart.js
 ---
-Nicht nur eine wachsende Universität braucht Wohnraum...
 
-```chart
+{{< chart caption="Bevölkerungsentwicklung 1945 - 2005" >}}
 # {"type": "line", "scale": true, "font": "Roboto Mono Variable", "series": {"Einwohner": {"lineStyle": {"color": "#000"}}}}
 | Jahr | Einwohner |
 |------|---------|
@@ -72,7 +68,9 @@ Nicht nur eine wachsende Universität braucht Wohnraum...
 | 2003 | 122883 |
 | 2004 | 122187 |
 | 2005 | 121884 |
-```
+{{< /chart >}}
+
+Nicht nur eine wachsende Universität braucht Wohnraum...
 
 Sprünge lassen sich durch Lücken in den Daten und Eingemeindungen erklären:
 * 1963 Herberhausen

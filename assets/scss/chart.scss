@@ -2,7 +2,19 @@ pre.chart {
   display: none;
 }
 
-.chart-container {
+.chart-figure  {
   width: 40%;
-  aspect-ratio: 2 / 1;
+  margin-block-start: unset;
+  margin-block-end: unset;
+  margin-inline-start: unset;
+  margin-inline-end: unset;
+
+  .chart-container {
+    aspect-ratio: 1.5 / 1;
+    width: 100%;
+  }
+
+  .chart-caption {
+
+  }
 }

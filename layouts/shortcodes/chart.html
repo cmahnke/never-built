@@ -1,0 +1,29 @@
+{{- $class := "" -}}
+{{- with .Get "class" -}}
+  {{- $class = . -}}
+{{- end -}}
+
+{{- $caption := "" -}}
+{{- with .Get "caption" -}}
+  {{- $caption = . -}}
+{{- end -}}
+
+<pre class="chart">
+  {{- .Inner | htmlEscape | safeHTML }}
+</pre>
+<figure class="chart-figure {{ $class }}">
+  <div class="chart-container"></div>
+  {{- if ne $caption "" -}}
+    <figcaption class="chart-caption">{{ $caption | safeHTML }}</figcaption>
+  {{- end -}}
+</figure>
+{{ .Page.Store.Set "hasChart" true }}
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    initializeChart();
+  });
+</script>
+
+{{- define "partials/shortcodes/chart-metadata.html" -}}
+  {{- (dict "css" slice "js" (slice "js/chart.js") "scss" (slice "scss/chart.scss")) | jsonify -}}
+{{- end -}}

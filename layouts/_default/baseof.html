@@ -64,14 +64,9 @@
   {{ end }}
   <body class="{{ $class }} {{ if .IsHome }}home{{ end }}">
     {{ partial "header.html" . }}
-      <div class="main">
-        {{ block "content" . }}{{ end }}
-      </div>
-      {{ if .Store.Get "hasChart" }}
-      <script>
-        initializeChart();
-      </script>
-    {{ end }}
+    <div class="main">
+      {{ block "content" . }}{{ end }}
+    </div>
     {{ partial "footer.html" . }}
   </body>
  </html>
