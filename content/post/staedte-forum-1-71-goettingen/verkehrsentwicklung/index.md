@@ -44,11 +44,12 @@ Hier ist, sicher auch als Vorbereitung für den Ringschluss, ein Ausbau der Humb
 Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häuserbestand.
 
 {{< maps/projektemacher
-  geojson="ost-tangente.geojson"
+  geojson="/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/ost-tangente.geojson"
   cluster=false
   minZoom=12
   initialZoom=14
   maxZoom=16
+  download=true
   class="_efTrigger-inview-50px _effect-addclass-show" >}}
 
 Die Göttinger Ost-Tangente wurde 1968 genehmigt, diese Genehmigung wurde durch einen Gerichtsbeschluss im Jahr 1975 für nichtig erklärt und wurde mit dem Gesamtverkehrsplan 1982 nicht weiter verfolgt.

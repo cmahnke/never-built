@@ -52,3 +52,6 @@ other = "Herkunft des Beitrags"
 
 [book-places]
 other = "Orte in diesem Buch"
+
+[download-geojson]
+other = "GeoJSON herunterladen"

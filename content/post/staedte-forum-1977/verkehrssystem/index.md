@@ -34,11 +34,12 @@ Eine im Süden etwas weniger destruktive Variante ist im [Städteforum 1/71](/po
 Die Karte zeigt den groben Verlauf der geplanten Trasse über dem heutigen Häuserbestand.
 
 {{< maps/projektemacher
-  geojson="ost-tangente.geojson"
+  geojson="/post/staedte-forum-1977/verkehrssystem/ost-tangente.geojson"
   cluster=false
   minZoom=12
   initialZoom=14
   maxZoom=16
+  download=true
   class="_efTrigger-inview-50px _effect-addclass-show" >}}
 
 

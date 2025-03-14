@@ -18,6 +18,11 @@
   {{- $class = "" -}}
 {{- end -}}
 
+{{- $download := .download -}}
+{{- if eq $download nil -}}
+  {{- $download = false -}}
+{{- end -}}
+
 {{- $style := .style -}}
 {{- if eq $style nil -}}
   {{- $style = "undefined" -}}
@@ -103,6 +108,9 @@
     <div id="{{ $id }}-popup-content" class="ol-popup-content"></div>
   </div>
 </div>
+{{- if $download -}}
+  <div class="share map-share"><a href="{{ $geojson }}" title="{{ i18n "download-geojson" }}" download>{{ i18n "download-geojson" }}</a></div>
+{{- end -}}
 <script type="text/javascript">
     var {{ $var | safeJS }} = window.projektemacherMap(
       {{ partial "js/type.html" $id | htmlUnescape | safeJS }},
