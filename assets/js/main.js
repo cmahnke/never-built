@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var imageZoomWidth = window.getComputedStyle(document.body)
   imageZoomWidth = imageZoomWidth.getPropertyValue('--image-zoom-width');
   let widthMQL = window.matchMedia(`(max-width: ${imageZoomWidth})`);
-  if (widthMQL.matches) {
+  if (widthMQL.matches && !document.querySelectorAll('.scroll-layout')) {
     const zoomable = document.querySelectorAll('.article-single .content-container figure img, .article-single .content .featured img')
     imageViewer(zoomable)
   }

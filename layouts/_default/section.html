@@ -3,6 +3,9 @@
 {{ end }}
 
 {{ define "content" }}
+  {{- if and (isset .Params "type") (eq .Params.type "book") -}}
+    <h1 class="section-title">{{ .Title }}</h1>
+  {{- end -}}
   <main role="main" class="section-single">
     {{- if eq .Kind "section" -}}
       <div class="post section">
@@ -11,7 +14,6 @@
           <div class="post-content">
             {{ .Content }}
           </div>
-
         </div>
       </div>
     {{- end -}}

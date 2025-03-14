@@ -57,8 +57,8 @@ html:has(.scroll-layout) {
 
     @media (min-width: 768px) {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(4, 1fr);
+      grid-template-columns: repeat(2, auto);
+      grid-template-rows: repeat(4, auto);
     }
 
     &:last {
@@ -116,7 +116,6 @@ html:has(.scroll-layout) {
       .readmore {
         @include invert-button($background: var(--page-background));
       }
-      /*background-color: var(--page-background);*/
 
       @media (min-width: 768px) {
         grid-column: span 2 / span 2;
