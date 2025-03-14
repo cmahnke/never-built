@@ -129,7 +129,7 @@ export function addOverlay(map, markerOptions) {
 
   map.addOverlay(overlay);
 
-  map.on('click', function (event) {
+  map.on('singleclick', function (event) {
     var feature = map.forEachFeatureAtPixel(event.pixel,
       function(feature, layer) {
         console.log(feature)

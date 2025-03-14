@@ -54,7 +54,7 @@ function parseTable(markdownTable) {
 }
 
 export function initializeChart(options) {
-  document.querySelectorAll('pre.chart').forEach(data => {
+  document.querySelectorAll('pre.chart-data').forEach(data => {
     let md = data.innerHTML;
     const lines = md.trim().split('\n');
     let tableOptions
