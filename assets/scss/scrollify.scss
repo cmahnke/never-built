@@ -33,6 +33,19 @@ html:has(.scroll-layout) {
 }
 
 .scroll-layout {
+  /* .list-item >  */
+  .scroll-map {
+    .map-wrapper {
+
+      width: 100%;
+
+      @media (min-width: 768px) {
+        margin-top: unset;
+      }
+    }
+
+  }
+
   .scroll-item {
     scroll-snap-align: start;
     height: fit-content;
@@ -100,6 +113,11 @@ html:has(.scroll-layout) {
       justify-content: center;
       display: flex;
 
+      .readmore {
+        @include invert-button($background: var(--page-background));
+      }
+      /*background-color: var(--page-background);*/
+
       @media (min-width: 768px) {
         grid-column: span 2 / span 2;
         grid-row-start: 4;
@@ -145,10 +163,10 @@ html:has(.scroll-layout) {
       }
 
       .scan-container {
-        position: relative;
-        display: flex;
+        position: absolute;
         order: 0;
         max-width: 98vw;
+        width: min-content;
 
         .preview.scan {
           max-width: unset;
@@ -163,9 +181,11 @@ html:has(.scroll-layout) {
         }
 
         .cover-link {
+          /*
           position: absolute;
           top: 0;
           left: 0;
+          */
 
           &:first {
             position: relative;
@@ -173,6 +193,7 @@ html:has(.scroll-layout) {
 
           &:has(.overlay) {
             z-index: +1;
+            height: 100%;
           }
 
           .preview {

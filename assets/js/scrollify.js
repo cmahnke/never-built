@@ -6,6 +6,8 @@ const effectCSSPrefix = "_effect-";
 const triggerCSSPrefix = "_efTrigger-";
 const scrollCSSPrefix = "_efScroll-";
 
+const usePx = false;
+
 const functionMap = {
   "defaultTrigger": defaultTriggerFunc,
   "inview": inViewTrigger,
@@ -30,22 +32,32 @@ export function setupBook() {
               name.dataset.imageMetadata = JSON.stringify(area);
               if (scan && !updated) {
                 scan.dataset.imageMetadata = image.size;
-                const wFactor = scan.naturalWidth / image.size[0];
-                const hFactor = scan.naturalHeight / image.size[1];
                 const container = scan.closest('.scan-container');
-                container.style.width = scan.naturalWidth + 'px';
-                container.style.height = scan.naturalHeight + 'px';
-                const subImage = {position: {x: area.position.x * wFactor, y: area.position.y * hFactor},
-                                  size: {x: area.size.x * wFactor, y: area.size.y * hFactor}};
+                let subImage, unit;
+                if (usePx) {
+                  unit = 'px';
+                  let wFactor = scan.naturalWidth / image.size[0];
+                  let hFactor = scan.naturalHeight / image.size[1];
+                  subImage = {position: {x: area.position.x * wFactor, y: area.position.y * hFactor},
+                                    size: {x: area.size.x * wFactor, y: area.size.y * hFactor}};
+
+                  name.parentElement.style.position = 'absolute';
+                  container.style.width = scan.naturalWidth + unit;
+                  container.style.height = scan.naturalHeight + unit;
+                } else {
+                  unit = '%';
+                  subImage = {position: {x: (area.position.x / image.size[0]) * 100, y: (area.position.y / image.size[1]) * 100},
+                                    size: {x: (area.size.x / image.size[0]) * 100, y: (area.size.y / image.size[1]) * 100}};
+
+                }
+                name.style.position = 'absolute';
+                name.style.top = subImage.position.y + unit;
+                name.style.left = subImage.position.x + unit;
+                name.style.height = subImage.size.y + unit;
+                name.style.width = subImage.size.x + unit;
                 scan.dataset.imagePart = JSON.stringify(subImage);
                 scan.parentElement.after(name.parentElement);
                 name.classList.add("overlay");
-                name.parentElement.style.position = 'absolute';
-                name.style.position = 'absolute';
-                name.style.top = subImage.position.y + 'px';
-                name.style.left = subImage.position.x + 'px';
-                name.style.height = subImage.size.y + 'px';
-                name.style.width = subImage.size.x + 'px';
                 updated = true;
               }
             };

@@ -59,7 +59,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
   }
 }
 
-@mixin invert-button ($duration: .45s) {
+@mixin invert-button ($duration: .45s, $background: white) {
   position: relative;
   color: #fff;
   mix-blend-mode: difference;
@@ -76,7 +76,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
     right: 0;
     left: 0;
     mix-blend-mode: difference;
-    background-color: white;
+    background-color: $background;
     transition: all $duration;
   }
 
