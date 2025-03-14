@@ -55,16 +55,18 @@ window.projektemacherMap = async function(elem, geojson, source, style, bbox, ce
 }
 
 window.anchorTop = (anchor) => {
-  const heading = document.querySelector(`.header-title`)
-  const topHeight = Number(window.getComputedStyle(heading, '::before').getPropertyValue('height').replace('px', ''))
+  const heading = document.querySelector(`.header-background`)
+  const topHeight = Number(window.getComputedStyle(heading).getPropertyValue('height').replace('px', ''))
   const target = document.querySelector(`a[name="${anchor}"]`)
-  const targetTop = target.getBoundingClientRect().top//;
+  const targetTop = target.getBoundingClientRect().top;
   const to = targetTop + window.pageYOffset - topHeight;
+
+console.log(target, targetTop, topHeight, window.getComputedStyle(heading, '::before').getPropertyValue('height'))
 
   if (target !== null) {
     window.scrollTo({
-      top: targetTop + window.pageYOffset - topHeight,
-      behavior: 'smooth',
+      top: targetTop + window.pageYOffset, // - topHeight
+      behavior: 'smooth'
     });
   }
 }

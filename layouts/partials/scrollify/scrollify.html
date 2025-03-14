@@ -71,7 +71,7 @@
 
         {{- if .Params.geojson -}}
           {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-preview-container" -}}
-            <div class="scroll-map {{ $animationClass }}">
+            <div class="scroll-map {{ $class }} {{ $animationClass }}">
             {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
             {{- $coordinates := (index .Params.geojson "coordinates") -}}
             {{- $center := slice (index $coordinates 0) (index $coordinates 1) -}}

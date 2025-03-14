@@ -50,6 +50,12 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
     mix-blend-mode: difference;
     opacity: 1;
 
+    @media (orientation: landscape) {
+      justify-self: flex-end;
+      padding-right: .8rem;
+      padding-left: unset;
+    }
+
     @media (min-width: 768px) {
       position: relative;
       left: unset;
@@ -59,6 +65,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
       padding-top: unset;
       padding-left: unset;
       mix-blend-mode: unset;
+      justify-self: unset;
     }
 
     a {
@@ -73,7 +80,6 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
     }
 
     .header-title {
-      font-size: 4.2vh;
       font-weight: 800;
       color: white;
       margin-top: unset;
@@ -85,6 +91,13 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
       text-align: end;
       margin-right: 1rem;
       transition: opacity calc($animation-duration / 5) ease-in;
+      font-size: 4.2vh;
+
+      @media (orientation: landscape) {
+        font-size: 6.6vw;
+        width: 100%;
+        padding-right: 1.6rem;
+      }
 
       @media (min-width: 768px) {
         font-size: 7vw;
