@@ -11,7 +11,8 @@ body:not(.meta) {
       .post-body > .map-wrapper {
         width: 100%;
         aspect-ratio: 1 / 1;
-        max-width: 40%;
+        max-width: 50%;
+        cursor: not-allowed;
 
         @media (min-width: 768px) {
           min-height: unset;

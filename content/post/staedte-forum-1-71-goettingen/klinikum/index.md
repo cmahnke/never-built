@@ -28,7 +28,7 @@ resources:
 Ein "vollständiger" Entwurf für das Klinikum...
 <!--more-->
 
-Als er veröffentlicht wurde, war mit dem ersten Bauabschnitt schon schon begonnen worden, der Bezug war für 1980 geplant. Der Termin konnte gehalten werden, der Einzug begann bereits 1976. Die Robert-Koch-Straße hieß im Model noch Universitätsstraße.
+Als dieser Entwurf veröffentlicht wurde, war mit dem ersten Bauabschnitt schon schon begonnen worden, der Bezug war für 1980 geplant. Der Termin konnte gehalten werden, der Einzug begann bereits 1976. Die Robert-Koch-Straße hieß im Model noch Universitätsstraße.
 
 # Unterschiede
 

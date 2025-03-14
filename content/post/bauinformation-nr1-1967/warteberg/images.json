@@ -20,11 +20,11 @@
         "postprocess": ["grayscale_simple", "preview"],
         "position": {
           "x": 864,
-          "y": 5225
+          "y": 5230
         },
         "size": {
           "x": 4064,
-          "y": 1573
+          "y": 1568
         }
       }
     ]

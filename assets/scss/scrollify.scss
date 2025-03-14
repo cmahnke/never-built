@@ -3,13 +3,6 @@ html:has(.scroll-layout) {
 }
 
 .section-post:has(.main .article-list.book) {
-
-  /*
-  .post.section {
-    scroll-snap-align: start;
-  }
-  */
-
   .article-list.book {
     display: flex;
     flex-direction: column;
@@ -33,21 +26,9 @@ html:has(.scroll-layout) {
 }
 
 .scroll-layout {
-  /* .list-item >  */
-  .scroll-map {
-    .map-wrapper {
-
-      width: 100%;
-
-      @media (min-width: 768px) {
-        margin-top: unset;
-      }
-    }
-
-  }
-
   .scroll-item {
     scroll-snap-align: start;
+    scroll-margin-top: 6.4rem;
     height: fit-content;
     min-height: 75vh;
     width: 100%;
@@ -56,9 +37,15 @@ html:has(.scroll-layout) {
     margin-bottom: 5rem;
 
     @media (min-width: 768px) {
+      scroll-margin-top: calc(7vw + 1.6rem);
       display: grid;
       grid-template-columns: repeat(2, auto);
-      grid-template-rows: repeat(4, auto);
+      grid-template-rows: repeat(5, auto);
+      row-gap: 3rem;
+    }
+
+    @media (min-width: 1400px) {
+      scroll-margin-top: 8.2rem;
     }
 
     &:last {
@@ -66,11 +53,47 @@ html:has(.scroll-layout) {
     }
 
     @media (min-width: 768px) {
+      &.even {
+        .scroll-preview-container {
+          grid-area: 2 / 1;
+        }
+
+        .scroll-map {
+          grid-area: 2 / 2;
+        }
+      }
+
+      &.odd {
+        .scroll-preview-container {
+          grid-area: 2 / 2;
+        }
+
+        .scroll-map {
+          grid-area: 2 / 1;
+        }
+      }
+    }
+
+    .scroll-map {
+      order: 4;
+
       .map-wrapper {
         min-height: unset;
-        width: 40vw;
+        width: 50vw;
         aspect-ratio: 1 / 1;
+        margin: unset !important;
+        float: unset !important;
+        /*width: 100%; */
+
+        @media (min-width: 768px) {
+          margin-top: unset;
+            width: 35vw;
+        }
       }
+      .map-share {
+        display: none;
+      }
+
     }
 
     .post-content {
@@ -78,12 +101,12 @@ html:has(.scroll-layout) {
     }
 
     .scroll-header {
-
       display: flex;
       align-items: center;
       margin-bottom: 2rem;
       flex-direction: column;
       justify-content: space-between;
+      order: 1;
 
       @media (min-width: 768px) {
         flex-direction: row;
@@ -95,48 +118,75 @@ html:has(.scroll-layout) {
         margin-block-end: unset;
 
         @media (min-width: 768px) {
-          width: 70%;
           font-size: xxx-large;
         }
       }
 
       .date {
+        display: none;
+
         @media (min-width: 768px) {
+          display: block;
           width: 25%;
+          max-width: 15rem;
         }
       }
+    }
 
-
+    .scroll-preview-container {
+      order: 2;
     }
 
     .readmore-container {
       justify-content: center;
       display: flex;
 
-      .readmore {
-        @include invert-button($background: var(--page-background));
-      }
-
       @media (min-width: 768px) {
         grid-column: span 2 / span 2;
-        grid-row-start: 4;
+        grid-row-start: 5;
+        display: grid;
+      }
+
+      .readmore {
+        @include invert-button($background: var(--page-background));
       }
     }
 
     .scroll-content {
+      display: flex;
+      order: 5;
 
-      @media (max-width: $image-zoom-width) {
+      @media (min-width: 768px) {
         display: grid;
+        grid-column: span 2 / span 2;
+        grid-area: 4 / 1;
       }
 
       .content-container {
+        display: flex;
+        flex-direction: column;
 
-        @media (max-width: $image-zoom-width) {
+        @media (min-width: 768px) {
           display: grid;
+
+
         }
 
-        .content-section :has(.map-wrapper) {
-          display: none;
+        .content-section {
+          &:has(.map-wrapper) {
+            display: none;
+
+            & + .content-section {
+              /* TODO: Add indicator */
+              display: none;
+            }
+
+          }
+
+          .map-wrapper {
+            max-width: 100vw;
+          }
+
         }
 
         h1, h2, h3 {
@@ -150,25 +200,23 @@ html:has(.scroll-layout) {
     }
 
     .preview-container {
-      display: flex;
-      height: max-content;
       position: relative;
-      display: flex;
-      flex-direction: column;
-      max-width: 98vw;
+      display: block;
+      max-width: fit-content;
 
-      @media (max-width: $image-zoom-width) {
-        display: grid;
+      @media (min-width: 768px) {
+        display: inline-grid;
       }
 
       .scan-container {
-        position: absolute;
-        order: 0;
-        max-width: 98vw;
+        /*position: absolute;*/
+        max-width: unset;
         width: min-content;
 
+
         .preview.scan {
-          max-width: unset;
+
+          filter: grayscale(1);
         }
 
         &.odd {
@@ -180,11 +228,7 @@ html:has(.scroll-layout) {
         }
 
         .cover-link {
-          /*
-          position: absolute;
-          top: 0;
-          left: 0;
-          */
+          display: block;
 
           &:first {
             position: relative;
@@ -196,7 +240,11 @@ html:has(.scroll-layout) {
           }
 
           .preview {
-            max-width: unset;
+            max-width: calc(50vw - 8rem);
+
+            @media (max-width: 768px) {
+              max-width: 95vw;
+            }
           }
         }
       }
