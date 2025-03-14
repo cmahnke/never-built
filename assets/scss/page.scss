@@ -329,7 +329,7 @@ body {
   .tags {
     font-weight: 100;
     font-style: italic;
-    font-size: 2rem;
+    font-size: 6vw;
     word-wrap: break-word;
     display: flex;
     flex-direction: column;
@@ -338,6 +338,7 @@ body {
     @media (min-width: 768px) {
       text-align: end;
       word-wrap: unset;
+      font-size: 2rem;
     }
 
     a {
