@@ -83,4 +83,6 @@ description: ''
 | 2023 |      27428 |
 {{< /chart >}}
 
-Da die Universität sehr eng mit der Stadt verwoben ist, waren viele geplante Projekte Teil der Universität.
+Da die Universität sehr eng mit der Stadt verwoben ist, waren viele geplante Projekte Teil der Universität. Die Studierendenzahl verdoppelte sich zwischen 1950 und 1960 und stieg bis 1970 um weitere 50% [^1].
+
+[^1]: [Studierende nach Fakultäten](https://duva-stg-extern.kdgoe.de/aswdb/tmp/30FA096C1122211E-table.xlsx) (Excel Datei), Stadt Göttingen.

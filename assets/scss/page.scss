@@ -369,6 +369,7 @@ i.book-reference {
   }
 }
 
+.tag-list-content .footnotes,
 .content .footnotes {
   padding-top: 2rem;
   width: 80%;
@@ -379,6 +380,20 @@ i.book-reference {
     color: black;
     border: .3ex solid black;
     position: relative;
+  }
+}
+
+.tag-list-content .footnotes {
+  font-size: x-small;
+  clear: both;
+
+  @media (min-width: 768px) {
+    width: 40%;
+    margin: auto 0 auto auto;
+  }
+
+  a {
+    @include invert-link();
   }
 }
 
