@@ -170,6 +170,8 @@ function getScrollReference(start, reference) {
   }
 }
 
+/* Trigger functions */
+
 function defaultTriggerFunc() {
   let effects = Array.from(arguments).slice(-1)[0]
   const target = this;
