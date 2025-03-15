@@ -17,9 +17,18 @@ const functionMap = {
 }
 
 export function setupBook() {
-  if (!document.querySelectorAll('.scroll-layout, .scroll-trigged')) {
+  let type;
+  let rootContainer = document.querySelectorAll('.scroll-layout, .scroll-trigged');
+  if (!rootContainer.length) {
     return;
+  } else {
+    if (rootContainer[0].classList.contains('scroll-trigged')) {
+      type = 'trigged';
+    } else {
+      type = 'layout';
+    }
   }
+
   Array.from(document.querySelectorAll('.preview-container[data-image-regions]')).forEach((elem) => {
     const images = JSON.parse(elem.dataset.imageRegions);
     const scan = elem.querySelector('.scan');
@@ -66,12 +75,10 @@ export function setupBook() {
       });
     })
   });
-  addEffects();
+  addEffects(type);
 }
 
-function addEffects() {
-
-
+function addEffects(type) {
   let elementEffects = {};
   const effectElements = Array.from(document.querySelectorAll(`[class*="${effectCSSPrefix}"]`));
   effectElements.forEach((elem) => {
@@ -216,8 +223,7 @@ function fade (direction = 'in', duration = 1000) {
     opacity = 0
   }
 
-  //let args = Array.from(arguments).slice(1)
-  console.log(`called fade (with ${direction}) on `, direction, arguments)
+  //console.log(`called fade (with ${direction}) on `, direction, arguments)
   return animate(this, { opacity: opacity, duration: duration })
 }
 
@@ -232,8 +238,7 @@ function translate (direction, axis = 'x', duration = 1000) {
   if (axis === 'y') {
     translatePos = [0, direction]
   }
-  //let args = Array.from(arguments)
-  console.log("called translate on ", this,  direction)
+  //console.log("called translate on ", this,  direction)
   return animate(this, { translate: translatePos, duration: duration })
 }
 
