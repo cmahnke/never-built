@@ -146,6 +146,10 @@ enableRobotsTXT = true
   changeFreq = 'weekly'
 
 [module]
+  [module.hugoVersion]
+      extended = true
+      min = "0.143.0"
+
   [[module.mounts]]
     source = "assets/scss"
     target = "assets/scss"
@@ -181,3 +185,11 @@ enableRobotsTXT = true
   [[module.mounts]]
     source = "data"
     target = "assets/json"
+
+  [[module.mounts]]
+    source = "hugo_stats.json"
+    target = "assets/watching/hugo_stats.json"
+
+[build]
+  [build.buildStats]
+    enable = true
