@@ -130,11 +130,13 @@ export function addOverlay(map, markerOptions) {
   map.addOverlay(overlay);
 
   map.on('singleclick', function (event) {
-    var feature = map.forEachFeatureAtPixel(event.pixel,
-      function(feature, layer) {
-        console.log(feature)
-        return feature;
-      }, markerOptions);
+    let features = map.getFeaturesAtPixel(event.pixel);
+    let feature;
+    if (features.length > 1) {
+      feature = mergeFeatures(features);
+    } else {
+      feature = features[0];
+    }
     if (feature && "geometry" in feature.getProperties()) {
       featurePopUp(feature, overlay, content);
     }
@@ -175,9 +177,6 @@ export function setupMarker (marker, layer) {
  */
 
 function setupMap(element, geojson, source, cluster, marker) {
-
-
-
 
 
   function clusterMemberStyle(clusterMember) {
@@ -232,8 +231,6 @@ function setupMap(element, geojson, source, cluster, marker) {
   }
 
   function mergeFeatures (featureArray) {
-    //console.log(featureArray);
-
     var title = "";
     var popupContent = "";
 

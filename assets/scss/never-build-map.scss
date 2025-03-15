@@ -138,57 +138,63 @@ body.dir-map {
       border-radius: unset;
     }
 
-    .ol-overlay-container .ol-popup {
-      display: unset;
-      filter: unset;
-      border-radius: unset;
-      border: .3ex solid #000;
-      padding: 2rem .6rem 1rem .6rem;
-      min-width: 30vw;
-      font-size: 1.4rem;
+    .ol-overlay-container {
+      .ol-popup {
+        display: unset;
+        filter: unset;
+        border-radius: unset;
+        border: .3ex solid #000;
+        padding: 2rem .6rem 1rem .6rem;
+        min-width: 30vw;
+        font-size: 1.4rem;
 
-      &:after, &:before {
-        border-top-color: black;
-      }
+        .geojsonPopup + .geojsonPopup {
+          padding-top: 1rem;
+        }
 
-      h1 {
-        margin-block-start: .6rem;
-        margin-block-end: .6rem;
-      }
+        &:after, &:before {
+          border-top-color: black;
+        }
+
+        h1 {
+          margin-block-start: .6rem;
+          margin-block-end: .6rem;
+        }
 
 
-      .popup-content {
-        font-size: 1rem;
-      }
+        .popup-content {
+          font-size: 1rem;
+        }
 
-      .link {
-        margin-top: .8rem;
-        font-size: 1rem;
-      }
+        .link {
+          margin-top: .8rem;
+          font-size: 1rem;
+        }
 
-      a.ol-popup-closer {
-        position: absolute !important;
-        top: .2rem;
-        right: .6rem;
-        font-size: 2.2rem;
-        text-decoration-style: unset !important;
-        text-decoration-line: unset;
-        text-decoration-thickness: unset;
-        text-decoration-skip-ink: unset;
-        text-decoration: none !important;
+        a.ol-popup-closer {
+          position: absolute !important;
+          top: .2rem;
+          right: .6rem;
+          font-size: 2.2rem;
+          text-decoration-style: unset !important;
+          text-decoration-line: unset;
+          text-decoration-thickness: unset;
+          text-decoration-skip-ink: unset;
+          text-decoration: none !important;
 
-        &:after {
-          content: "✖" !important;
-          position: relative !important;
-          display: block;
-          background-color: var(--ol-background-color) !important;
-          font-weight: bold;
-          text-decoration: none;
-          font-size: inherit;
-          font-size: 2rem;
-          mix-blend-mode: unset !important;
-          transform: unset !important;
-          transition: unset !important;
+          &:after {
+            content: "✖" !important;
+            position: relative !important;
+            display: block;
+            background-color: var(--ol-background-color) !important;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: inherit;
+            font-size: 2rem;
+            mix-blend-mode: unset !important;
+            transform: unset !important;
+            transition: unset !important;
+          }
         }
       }
     }
