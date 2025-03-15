@@ -38,15 +38,27 @@ function bodyLinkHandler(e, timeout) {
   if (timeout === undefined) {
     timeout = defaultTransitionMs;
   }
+  let animatedElement = e.target
+  let additionalClasses = "";
+  if (e.target.classList.contains('readmore')) {
+    let heading = e.target.closest(':has(h1), :has(h2)');
+    heading = heading.querySelector('h1 a, h2 a');
+    if (heading !== undefined) {
+      animatedElement = heading
+      if (heading.dataset.animationClasses) {
+        additionalClasses += " " + heading.dataset.animationClasses;
+      }
+    }
+  }
   const anchor = e.target.closest('a');
-  var additionalClasses = "";
+
   if (e.target.dataset.animationClasses) {
     additionalClasses = e.target.dataset.animationClasses;
   }
   if (anchor.dataset.animationClasses) {
     additionalClasses += " " + anchor.dataset.animationClasses;
   }
-  const clone = cloneElement(e.target, ignoreProperties);
+  const clone = cloneElement(animatedElement, ignoreProperties);
   addOverlay(clone, overlayClassName, additionalClasses.trim());
   setTimeout(function(){ clone.classList.add(animationClassName) }, 2);
   const callback = () => {

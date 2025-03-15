@@ -68,7 +68,6 @@
           </div>
         {{- end -}}
 
-
         {{- if .Params.geojson -}}
           {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-preview-container" -}}
             <div class="scroll-map {{ $class }} {{ $animationClass }}">
@@ -84,7 +83,7 @@
           {{- partial "content.html" . -}}
         </div>
         <div class="readmore-container">
-          <a href="{{ .RelPermalink }}" class="readmore no-animation" title="{{ i18n "readmore" }}">{{ i18n "readmore" }}</a>
+          <a href="{{ .RelPermalink }}" class="readmore" title="{{ i18n "readmore" }}">{{ i18n "readmore" }}</a>
         </div>
 
         {{- end -}}

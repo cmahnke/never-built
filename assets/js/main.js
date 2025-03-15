@@ -77,7 +77,7 @@ console.log(target, targetTop, topHeight, window.getComputedStyle(heading, '::be
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  var links = Array.from(document.querySelectorAll('a.click-animation'));
+  var links = Array.from(document.querySelectorAll('a.click-animation, a.readmore'));
   document.querySelectorAll('.main a').forEach((link) => {
     const compStyles = window.getComputedStyle(link);
     if (!link.hasAttribute("href")) {
