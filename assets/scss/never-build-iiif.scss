@@ -1,6 +1,4 @@
-.ol-viewport {
-  border-radius: unset;
-}
+
 
 .iiif {
   margin: auto;
@@ -12,6 +10,10 @@
   .iiif-image {
     font-size: $map-font-size;
     padding: unset;
+
+    .ol-viewport {
+      border-radius: unset;
+    }
 
     .share {
       margin-right: 1rem;

@@ -5,13 +5,23 @@ const ignoreProperties = ["overflow", "word-break", "letter-spacing", "text-shad
 export const overlayClassName = "animated-link-overlay";
 export const animationClassName = "animate";
 
-export function addPrefetch(url) {
-  if (!url.startsWith('//') && !url.startsWith('http')) {
+export const defaultAllowedPrefetch = ['localhost', 'wikipedia.org', 'projektemacher.org', 'christianmahnke.de', 'goettingen.xyz']
+
+export function addPrefetch(url, allowedPrefetch) {
+  if (!url.startsWith('/') && !url.startsWith('//') && !url.startsWith('http')) {
     return;
+  }
+  if (allowedPrefetch !== undefined && !url.startsWith('/')) {
+    const parsed = URL.parse(url);
+    if (!allowedPrefetch.filter(domain => { return parsed.hostname.endsWith(domain) }).length) {
+      return
+    }
   }
   const head = document.querySelector('head');
   const prefetch = `<link rel="prefetch" href="${url}" as="document">`;
-  head.insertAdjacentHTML('beforeend', prefetch);
+  if (!head.querySelector(`link[href="${url}"]`)) {
+    head.insertAdjacentHTML('beforeend', prefetch);
+  }
 }
 
 function addOverlay(elem, cls, additionalClasses) {
@@ -84,7 +94,7 @@ function menuLinkHandler(e, timeout) {
 export function setupAnimatedLinks(links) {
   links.forEach((link) => {
     if (link.hasAttribute('href')) {
-      addPrefetch(link.getAttribute('href'));
+      addPrefetch(link.getAttribute('href'), defaultAllowedPrefetch);
     }
     link.addEventListener("click", (event) => {
       bodyLinkHandler(event);

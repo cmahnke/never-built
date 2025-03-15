@@ -70,6 +70,10 @@ body:not(.meta) {
   }
 }
 
+.ol-viewport {
+  border-radius: unset;
+}
+
 .ol-touch .ol-control button {
   font-size: $ol-touch-botton-size;
 }
