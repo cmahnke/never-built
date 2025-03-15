@@ -37,6 +37,7 @@
     }
     .viewer {
       margin: auto;
+      width: 100%;
 
       @media (max-width: 37.5em) {
         width: 100%;
@@ -47,10 +48,37 @@
 }
 
 .section-single {
+  .iiif {
+    margin: auto;
+  }
+
   .post.section {
     .post-content {
       .iiif .iiif-image {
         width: 50%;
+      }
+    }
+  }
+}
+
+.main {
+
+  .article-single,
+  .section-single {
+    .meta,
+    .post .content .original-pages {
+      .iiif {
+
+        .viewer {
+          @media (min-width: 768px) {
+            width: 80%;
+          }
+        }
+
+
+        &:only-of-type .viewer {
+          margin: auto;
+        }
       }
     }
   }

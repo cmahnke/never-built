@@ -26,24 +26,24 @@ Die folgenden JavaScript und CSS Frameworks werden benutzt:
 
 Das Kartenmaterial stammt von [OpenStreetMap](https://www.openstreetmap.org/#map=13/51.53544/9.92340), der Anzeigestil ist ["Toner"](https://github.com/openmaptiles/maptiler-toner-gl-style). Die Darstellung erfolgt mittels [OpenLayers](https://openlayers.org/).
 
+## Bildbearbeitung und -optimierung
+
 Die Nachbearbeitung der Digitalisate wurde mit [ScanTailor Advanced](https://github.com/4lex4/scantailor-advanced) durchgeführt.
 
-Für die Darstellung der Digitalisate von Einzelbildern wird [OpenLayers](https://openlayers.org/) verwendet. Die jeweils angezeigten Ausschnitte wurden mit [libvips](https://libvips.github.io/libvips/) erzeugt.
+Für die Darstellung der Digitalisate von Einzelbildern wird [OpenLayers](https://openlayers.org/) verwendet. Die jeweils angezeigten Ausschnitte wurden mit [libvips](https://libvips.github.io/libvips/) erzeugt. Die Bildoptimierung erfolgte mittels [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN):
+
+{{< html/include file="realesrgan.bib.html" >}}
+
+## Hosting
 
 Die Seite wird von [GitHub](https://github.com/) gehosted.
 
-## Bildoptimierung
+## Datenschutzerklärung
 
-* [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN)
-
-{{< html/include file="realesrgan.bib.html" >}}
+Die Datenschutzerklärung ist [hier](/privacy) verfügbar.
 
 # Kontakt
 
 "Never Build Göttingen" ist ein [Projekt](https://projektemacher.org) von **[Christian Mahnke](https://christianmahnke.de/)**.
 
 Kontakt ist via [E-Mail](mailto:never-build@projektemacher.org) möglich.
-
-# Datenschutzerklärung
-
-Die Datenschutzerklärung ist [hier](/privacy) verfügbar.

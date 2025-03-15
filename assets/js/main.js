@@ -8,6 +8,11 @@ import {Style, Fill, Stroke, Icon} from 'ol/style.js';
 const defaultMapFont = "Roboto Mono Variable";
 const animatedLinkColor = ["black", "#000", "#000000", "rgb(0, 0, 0)"]
 
+//Needed agains Safari caching
+window.addEventListener('beforeunload', () => {
+  document.querySelector(".animated-link-overlay").remove()
+});
+
 
 window.projektemacherMap = async function(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font) {
   var bgElem;
@@ -104,7 +109,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var imageZoomWidth = window.getComputedStyle(document.body)
   imageZoomWidth = imageZoomWidth.getPropertyValue('--image-zoom-width');
   let widthMQL = window.matchMedia(`(max-width: ${imageZoomWidth})`);
-  console.log(widthMQL.matches, document.querySelectorAll('.scroll-layout').length)
   if (widthMQL.matches && !document.querySelectorAll('.scroll-layout').length) {
     const zoomable = document.querySelectorAll('.article-single .content-container figure img, .article-single .content .featured img')
     imageViewer(zoomable)

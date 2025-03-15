@@ -246,19 +246,6 @@ body {
         max-width: 40%;
       }
     }
-
-    .meta,
-    .post .content .post-body {
-      .iiif {
-        .viewer {
-          width: 80%;
-        }
-
-        &:only-of-type .viewer {
-          margin: auto;
-        }
-      }
-    }
   }
 
   .article-single {
