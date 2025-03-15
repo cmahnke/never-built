@@ -11,7 +11,7 @@ const animatedLinkColor = ["black", "#000", "#000000", "rgb(0, 0, 0)"]
 
 //Needed agains Safari caching
 const browser = detect();
-if (browser && browser.name === 'safari') {
+if (browser && (browser.name === 'safari' || browser.name === 'ios' || browser.name === 'ios-webview')) {
   window.addEventListener('beforeunload', () => {
     document.querySelector(".animated-link-overlay").remove()
   });
