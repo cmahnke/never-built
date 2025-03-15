@@ -1,3 +1,4 @@
+# Tags
 [high-rise]
 other = "Hochhaus"
 
@@ -16,6 +17,33 @@ other = "Geschäftsbau"
 [transport]
 other = "Verkehrsinfrastruktur"
 
+# Term pages
+[building]
+other = "Gebäude"
+
+[person]
+other = "Architekt*in"
+
+# Term links
+[wikipedia]
+other = "Wikipedia"
+
+[gnd]
+other = "Gemeinsame Normdatei (GND)"
+
+[wikidata]
+other = "Wikidata"
+
+[archinform]
+other = "Internationale Architektur-Datenbank"
+
+[entry]
+other = "Eintrag"
+
+[moreInformationAbout]
+other = "Weitere Informationen über"
+
+# Website
 [post-preview]
 other = "Beitragsvorschau"
 

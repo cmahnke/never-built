@@ -1,11 +1,46 @@
 <div class="list">
+  {{- $params := .Page.Params -}}
   {{- $tag := i18n .Data.Term -}}
   {{- if eq $tag "" -}}
     {{- $tag = .Data.Term -}}
   {{- end -}}
+  {{- if eq $tag "" -}}
+    {{- $tag = . -}}
+  {{- end -}}
+  {{- $prefix := i18n "Tag" -}}
+  {{- $type := "" -}}
+  {{- with $params.type -}}
+    {{- if ne (i18n .) "" -}}
+      {{- $prefix = i18n . -}}
+      {{- $type = . -}}
+      {{- $tag = $.Title -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $heading := printf "%s: %s" $prefix $tag -}}
   <div class="section-head">
-    <h1 class="post-section section-head-title tag-list-title post-title">{{ i18n "Tag" }}: {{ $tag }}</h1>
+    <h1 class="post-section section-head-title tag-list-title post-title">{{ $heading }}</h1>
   </div>
+
+  {{- if ne $type "" -}}
+    <div class="term-meta-container {{ $type }}">
+      <h2 class="term-meta-heading">{{ i18n "moreInformationAbout" }} {{ $tag }}</h2>
+      <ul class="term-meta-list {{ $type }}">
+        {{- if isset $params "wikipedia" -}}
+          <li class="wikipedia-link"><a href="{{ $params.wikipedia }}" title="{{ i18n "wikipedia" }} {{ i18n "entry" }}">{{ i18n "wikipedia" }} {{ i18n "entry" }}</a></li>
+        {{- end -}}
+        {{- if isset $params "gnd" -}}
+          <li class="gnd-link"><a href="https://d-nb.info/gnd/{{ $params.gnd }}" title="{{ i18n "gnd" }} {{ i18n "entry" }}">{{ i18n "gnd" }} {{ i18n "entry" }}</a></li>
+        {{- end -}}
+        {{- if isset $params "wikidata" -}}
+          <li class="wikidatae-link"><a href="https://www.wikidata.org/wiki/Special:EntityPage/{{ $params.wikidata }}" title="{{ i18n "wikidata" }} {{ i18n "entry" }}">{{ i18n "wikidata" }} {{ i18n "entry" }}</a></li>
+        {{- end -}}
+        {{- if isset $params "archinform" -}}
+          <li class="archinform-link"><a href="https://deu.archinform.net/{{ $params.archinform }}.htm" title="{{ i18n "archinform" }} {{ i18n "entry" }}">{{ i18n "archinform" }} {{ i18n "entry" }}</a></li>
+        {{- end -}}
+      </ul>
+    </div>
+  {{- end -}}
+
   {{- if ne $.Page.File nil -}}
     {{- if ne $.Content "" -}}
       <div class="tag-list-content">
