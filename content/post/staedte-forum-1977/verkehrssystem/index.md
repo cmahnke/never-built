@@ -22,7 +22,6 @@ resources:
 ---
 
 Eine weitere Planungsvariante der Ost-Tangente...
-
 <!--more-->
 
 # Ost-Tangente

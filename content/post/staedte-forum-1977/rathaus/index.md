@@ -12,8 +12,8 @@ params:
   cover: model.jpg
   geojson:
     coordinates:
-    - 9.9326044
-    - 51.5416565
+    - 9.94044400517248
+    - 51.528463189172896
 draft: true
 resources:
 - src: "page046.jxl"

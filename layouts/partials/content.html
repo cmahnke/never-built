@@ -16,15 +16,17 @@
         {{- end -}}
         {{- $blocks = $blocks | append (slice $block) -}}
         {{- $block = slice -}}
-        {{- if ne $suffix "" -}}
+        {{- if and (ne $suffix "") (ne $suffix "\n") -}}
           {{- $block = $block | append $suffix -}}
         {{- end -}}
       {{- else -}}
         {{- if hasPrefix $line "#" -}}
-          {{- if eq (len $blocks) 1 -}}
-            {{- $blocks = $blocks | append (slice $block) -}}
-          {{- else -}}
-            {{- $blocks = $blocks | append $block -}}
+          {{- if not (and (eq (len $block) 1) (eq (index $block 0) "")) -}}
+            {{- if eq (len $blocks) 1 -}}
+              {{- $blocks = $blocks | append (slice $block) -}}
+            {{- else -}}
+              {{- $blocks = $blocks | append $block -}}
+            {{- end -}}
           {{- end -}}
           {{- $block = slice -}}
         {{- end -}}
@@ -34,6 +36,7 @@
     {{/*{{- if gt (len $block) 0 -}}*/}}
       {{- $blocks = $blocks | append $block -}}
     {{/*{{- end -}}*/}}
+
 
     {{- range $i, $block := $blocks -}}
       {{- if eq $i 0 -}}
@@ -46,10 +49,12 @@
       {{- if eq (strings.TrimSpace $sectionHTML) (strings.TrimSpace $.Summary) -}}
         {{- $class = printf "%s summary" $class -}}
       {{- end -}}
-      {{- $animationClass := partial "scrollify/class-resolver.html" "content-section" -}}
-      <div class="content-section {{ $class }} {{ printf "content-section-%d" $counter }} {{ $animationClass }}">
-        {{- $sectionHTML | safeHTML -}}
-      </div>
+      {{/* {{- if ne $sectionHTML "" -}} */}}
+        {{- $animationClass := partial "scrollify/class-resolver.html" "content-section" -}}
+        <div class="content-section {{ $class }} {{ printf "content-section-%d" $counter }} {{ $animationClass }}">
+          {{- $sectionHTML | safeHTML -}}
+        </div>
+      {{/* {{- end -}} */}}
     {{- end -}}
   {{- else -}}
     {{- $animationClass := partial "scrollify/class-resolver.html" "summary" -}}

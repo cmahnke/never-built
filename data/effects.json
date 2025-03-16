@@ -18,14 +18,14 @@
     { "layoutClass": "scroll-preview-container",
       "animationClass": ""
     },
-    { "layoutClass": "",
-      "animationClass": ""
+    { "layoutClass": "scroll-preview-container",
+      "animationClass": "_efTrigger-scroll"
     },
-    { "layoutClass": "",
-      "animationClass": ""
+    { "layoutClass": "scroll-overlay-image-container",
+      "animationClass": "_efTrigger-scroll"
     },
-    { "layoutClass": "",
-      "animationClass": ""
+    { "layoutClass": "scroll-map-container",
+      "animationClass": "_efTrigger-scroll _effect-translate-in"
     }
   ],
   "functions": {
