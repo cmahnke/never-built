@@ -66,7 +66,6 @@ content/**/ogPreview-tmp*.*g
 content/**/ogPreview-overlay.*g
 content/**/manifest-enriched.json
 assets/css/
-models
 weights
 models-*
 static/map-styles
