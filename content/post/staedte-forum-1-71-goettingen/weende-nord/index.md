@@ -1,5 +1,5 @@
 ---
-title: "Wende Nord"
+title: "Weende Nord"
 date: 2025-04-16T17:15:07+02:00
 tags:
 - high-rise
