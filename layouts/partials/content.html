@@ -1,11 +1,26 @@
+{{- $context := . -}}
+{{- $addAnimationClasses := false -}}
+{{- $animationClassPrefix := "" -}}
+{{- if and (reflect.IsMap .) (isset . "context") -}}
+  {{- $context = .context -}}
+  {{- if and (reflect.IsMap .) (isset . "animate") -}}
+    {{- $addAnimationClasses = .animate -}}
+    {{- end -}}
+  {{- if and (reflect.IsMap .) (isset . "animatePrefix") -}}
+    {{- $animationClassPrefix = .animatePrefix -}}
+  {{- end -}}
+{{- end -}}
 {{-  $classes := slice "even" "odd" -}}
 
-{{- $animationClass := partial "scrollify/class-resolver.html" "content-container" -}}
+{{- $animationClass := "" -}}
+{{- if $addAnimationClasses -}}
+  {{- $animationClass = partial "scrollify/class-resolver.html" (printf "%scontent-container" $animationClassPrefix) -}}
+{{- end -}}
 <div class="content-container {{ $animationClass }}">
-  {{-  if .Truncated -}}
+  {{-  if $context.Truncated -}}
     {{- $blocks := slice "" -}}
     {{- $block := slice -}}
-    {{- range (split .RawContent "\n") -}}
+    {{- range (split $context.RawContent "\n") -}}
       {{- $line := . -}}
       {{- if strings.Contains $line "<!--more-->" -}}
         {{- $matches := findRESubmatch `(?m)^(.*?)<!--more-->(.*)$` $line -}}
@@ -33,9 +48,7 @@
         {{- $block = $block | append $line -}}
       {{- end -}}
     {{- end -}}
-    {{/*{{- if gt (len $block) 0 -}}*/}}
-      {{- $blocks = $blocks | append $block -}}
-    {{/*{{- end -}}*/}}
+    {{- $blocks = $blocks | append $block -}}
 
 
     {{- range $i, $block := $blocks -}}
@@ -45,21 +58,26 @@
       {{- $counter := sub $i 1 -}}
       {{- $class := index $classes (mod $counter 2) -}}
       {{- $section := delimit . "\n" -}}
-      {{- $sectionHTML := $section | $.RenderString (dict "display" "block" "markup" "markdown") -}}
-      {{- if eq (strings.TrimSpace $sectionHTML) (strings.TrimSpace $.Summary) -}}
+      {{- $sectionHTML := $section | $context.RenderString (dict "display" "block" "markup" "markdown") -}}
+      {{- if eq (strings.TrimSpace $sectionHTML) (strings.TrimSpace $context.Summary) -}}
         {{- $class = printf "%s summary" $class -}}
       {{- end -}}
-      {{/* {{- if ne $sectionHTML "" -}} */}}
-        {{- $animationClass := partial "scrollify/class-resolver.html" "content-section" -}}
+        {{- $animationClass := "" -}}
+        {{- if $addAnimationClasses -}}
+          {{- $animationClass = partial "scrollify/class-resolver.html" (printf "%scontent-section" $animationClassPrefix) -}}
+        {{- end -}}
+        
         <div class="content-section {{ $class }} {{ printf "content-section-%d" $counter }} {{ $animationClass }}">
           {{- $sectionHTML | safeHTML -}}
         </div>
-      {{/* {{- end -}} */}}
     {{- end -}}
   {{- else -}}
-    {{- $animationClass := partial "scrollify/class-resolver.html" "summary" -}}
+    {{- $animationClass := "" -}}
+    {{- if $addAnimationClasses -}}
+      {{- $animationClass = partial "scrollify/class-resolver.html" (printf "%scontent-summary" $animationClassPrefix) -}}
+    {{- end -}}
     <div class="summary {{ $animationClass }}">
-      {{- .Summary -}}
+      {{- $context.Summary -}}
     </div>
   {{-  end -}}
 </div>

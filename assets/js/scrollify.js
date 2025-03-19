@@ -12,13 +12,20 @@ const usePx = false;
 const functionMap = {
   "defaultTrigger": {func: defaultTriggerFunc, meta: {}},
   "inview": {func: inViewTrigger, meta: {}},
-  "scroll": {func: scrollTrigger, meta: {}},
+  "scroll": {func: scrollTrigger, meta: {triggered: inViewTrigger}},
   "fade": {func: fade, meta: {scrollable: true}},
-  "translate": {func: translateHorizontal, meta: {
+  "slide": {func: translateHorizontal, meta: {
     scrollable: true,
-//    init: initTranslateHorizontal
   }},
-  "addclass": {func: addClass, meta: {scrollable: false}}
+  "shift": {func: shiftHorizontal, meta: {
+    scrollable: true,
+  }},
+  "scale": {func: scale, meta: {scrollable: true}},
+  "blur": {func: blur, meta: {scrollable: true}},
+  "whitebox": {func: textBackground, meta: {scrollable: true}},
+  "emphasis": {func: textEmphasis, meta: {scrollable: true}},
+  "addclass": {func: addClass, meta: {scrollable: false}},
+  "textshadow": {func: textShadow, meta: {scrollable: true}}
 }
 
 export function setupBook() {
@@ -85,17 +92,35 @@ export function setupBook() {
 }
 
 function addAlignment() {
+  function getFloat(elem) {
+
+    let computedStyle = window.getComputedStyle(elem);
+    const floatProperty =  computedStyle.getPropertyValue("float")
+    if (floatProperty !== 'none' && floatProperty !== '') {
+      return floatProperty
+    }
+    return false;
+  }
   const effectElements = Array.from(document.querySelectorAll(`[class*="${effectCSSPrefix}"]`));
   effectElements.forEach((elem) => {
-    const box = elem.getBoundingClientRect();
-    const center = (box.left + box.right) / 2;
-    if (center < window.innerWidth / 3) {
-      elem.classList.add(`${scrollAlignmenPrefix}left`)
-    } else if (center > (window.innerWidth / 3) * 2) {
-      elem.classList.add(`${scrollAlignmenPrefix}right`)
+    let alignment;
+    if (getFloat(elem)) {
+      alignment = getFloat(elem)
+    } else if (elem.firstElementChild !== null && getFloat(elem.firstElementChild)) {
+      alignment = getFloat(elem.firstElementChild)
     } else {
-      elem.classList.add(`${scrollAlignmenPrefix}center`)
+      const box = elem.getBoundingClientRect();
+      const center = (box.left + box.right) / 2;
+
+      if (center < window.innerWidth / 3) {
+        alignment = "left"
+      } else if (center > (window.innerWidth / 3) * 2) {
+        alignment = "right"
+      } else {
+        alignment = "center"
+      }
     }
+    elem.classList.add(`${scrollAlignmenPrefix}${alignment}`)
   });
 }
 
@@ -129,7 +154,12 @@ function addEffects(type) {
           console.log(`Trigger ${trigger[0]} is not defined!`)
           return
         }
-        functionMap[trigger[0]].func.apply(elem, [...trigger.slice(1), effects])
+        let triggerFunction = functionMap[trigger[0]].func
+        if (type === "trigged" && "meta" in functionMap[trigger[0]] && "triggered" in functionMap[trigger[0]].meta) {
+          triggerFunction = functionMap[trigger[0]].meta.triggered
+          console.log("Replaces scroll with inView trigger")
+        }
+        triggerFunction.apply(elem, [effects, ...trigger.slice(1)])
       });
     }
   });
@@ -140,7 +170,9 @@ function exec(cmd) {
   if (!(cmd.name in functionMap)) {
     return
   }
-  return functionMap[cmd.name].func.apply(cmd.target, cmd.args)
+  if ("func" in functionMap[cmd.name]) {
+    return functionMap[cmd.name].func.apply(cmd.target, cmd.args)
+  }
 }
 
 function parseClass (cls, prefix) {
@@ -213,10 +245,8 @@ function disableTransition(elem, func) {
   element.style.transition = transition
 }
 
-
 /* Trigger functions */
-function defaultTriggerFunc() {
-  let effects = Array.from(arguments).slice(-1)[0]
+function defaultTriggerFunc(effects) {
   const target = this;
   if (!Array.isArray(effects)) {
     effects = [effects]
@@ -230,9 +260,17 @@ function defaultTriggerFunc() {
   }
 }
 
-function inViewTrigger(offset) {
-  let effects = Array.from(arguments).slice(-1)[0]
+function inViewTrigger(effects, offset = '0px') {
   const target = this;
+
+  if ((typeof offset === "string") && !offset.endsWith('px')) {
+    offset = '0px'
+  }
+
+  if (offset && !isNaN(offset)) {
+    offset += "%";
+  }
+
   inView(target, (element) => {
     if (effects !== undefined) {
       effects.forEach(effect => {
@@ -242,29 +280,53 @@ function inViewTrigger(offset) {
       });
     }
   }, { margin: `0px ${offset} 0px 0px` })
-
 }
 
-function scrollTrigger() {
-  let effects = Array.from(arguments).slice(-1)[0]
-
+function scrollTrigger(effects, targetOffset = null, containerOffset = null) {
   const target = this;
   const reference = getScrollReference(this)
+
   if (effects !== undefined) {
+
     effects.forEach(effect => {
       if (!functionMap[effect.name].meta.scrollable) {
         throw new Error("Effect is not scrollable!");
       }
       if (effect !== undefined) {
-        /*
-        scroll((progress, info) => {
-          console.log(target, info)
-        })
-        */
+        let offset = ["start end", "start 30%"];
+
+        if (targetOffset === null && containerOffset === null) {
+          /*
+          const box = target.getBoundingClientRect();
+          if (box.height > window.innerWidth / 3) {
+            offset[0] = "end start";
+          }
+          */
+        } else {
+          if (!isNaN(targetOffset)) {
+            targetOffset += "%";
+          }
+          if (!isNaN(containerOffset)) {
+            containerOffset += "%";
+          }
+
+          offset = [`${targetOffset} ${containerOffset}`]
+        }
+
+        if (arguments.length >= 5) {
+          if (!isNaN(arguments[3])) {
+            arguments[3] += "%";
+          }
+          if (!isNaN(arguments[4])) {
+            arguments[4] += "%";
+          }
+
+          offset.push(`${arguments[3]} ${arguments[4]}`)
+        }
 
         scroll(exec(effect), {
           target: target,
-          offset: ["start end", "start 30%"]
+          offset: offset
         })
       }
     });
@@ -284,22 +346,28 @@ function fade (direction = 'in', duration = 1000) {
   return animate(this, { opacity: opacity, duration: duration })
 }
 
-function initTranslateHorizontal(direction) {
+function shiftHorizontal(direction = 'in', distance = "10%", safe = false, duration = 1000) {
   const alignment = getAlignment(this);
-  let initial;
-  if (direction === 'in' && alignment === 'right') {
-    initial = '100%'
+  if (distance && !isNaN(distance)) {
+    distance += "%";
   }
-  if (direction === 'out' && alignment === 'left') {
-    initial = '-100%'
+  if (alignment === "center" && safe) {
+    return animate(this)
+  }
+  if (direction === 'in' && alignment === 'right') {
+    translatePos = [0, `-${distance}`]
+  } else if (direction === 'out' && alignment === 'left') {
+    translatePos = [0, `-${distance}`]
+  } else if (direction === 'in' && alignment === 'left') {
+    translatePos = [0, `${distance}`]
+  } else if (direction === 'out' && alignment === 'right') {
+    translatePos = [0, `${distance}`]
   }
 
-  if (initial !== undefined) {
-    this.style.translate = `${initial}`
-  }
+  return animate(this, { translate: translatePos, duration: duration })
 }
 
-function translateHorizontal (direction = 'in', axis = 'x', duration = 1000) {
+function translateHorizontal (direction = 'in', duration = 1000) {
   const random = ['-100%', '100%'][(Math.random() < 0.5) * 1]
   const alignment = getAlignment(this);
   let initial, translatePos;
@@ -317,10 +385,46 @@ function translateHorizontal (direction = 'in', axis = 'x', duration = 1000) {
   } else {
     throw new Error(`Unhandled alignment '${direction}' for `, this);
   }
-  if (axis === 'y') {
-    throw new Error("Y axis for translate isn't immplemented!");
-  }
   return animate(this, { translate: translatePos, duration: duration })
+}
+
+function scale (direction = 'in', factor = 200, duration = 1000) {
+  const alignment = getAlignment(this);
+  let origin = {};
+  /*
+  if (direction === 'in') {
+    if (alignment === 'right') {
+      origin["transform-origin"] =  "center left"
+    } else if (alignment === 'left') {
+      origin["transform-origin"] =  "center right"
+    } else {
+      throw new Error(`Unhandled alignment '${direction}' for `, this);
+    }
+  }
+  */
+
+  return animate(this, { ...origin, scale: factor/100, duration: duration })
+}
+
+function blur(radius = 5, duration = 1000) {
+  if (!radius.match(/.+\w{2,3}$/gm)) {
+    radius += "px";
+  }
+  return animate(this, { filter: `blur(${radius})`, duration: duration })
+}
+
+function textBackground(background = '#fff', scale = 1.05, duration = 1000) {
+  const currentBackground = window.getComputedStyle(this).getPropertyValue('--page-background');
+  return animate(this, { scale: scale, background: [currentBackground, background], duration: duration })
+}
+
+function textEmphasis(scale = 1.05, duration = 1000) {
+  return animate(this, { scale: scale, background: background, duration: duration })
+}
+
+
+function textShadow (x = 10, y = 10, blur = 10, color = "#fff") {
+  return animate(this, { scale: scale, textShadow: `${x} ${y} ${blur} ${color}`, duration: duration })
 }
 
 function addClass(cls) {

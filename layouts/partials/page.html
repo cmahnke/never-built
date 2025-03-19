@@ -47,10 +47,13 @@
 
       <div class="post-body">
         {{- if .Params.geojson -}}
-          {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
-          {{- $coordinates := (index .Params.geojson "coordinates") -}}
-          {{- $center := slice (index $coordinates 0) (index $coordinates 1) -}}
-          {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "minZoom" 12 "initialZoom" 15 "maxZoom" 15 "disabled" true) -}}
+          {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-map-container" -}}
+            <div class="scroll-map {{ $class }} {{ $animationClass }}">
+              {{- $geojson := partial "geojson/featureCollection.geojson" (slice .) -}}
+              {{- $coordinates := (index .Params.geojson "coordinates") -}}
+              {{- $center := slice (index $coordinates 0) (index $coordinates 1) -}}
+              {{- partial "maps/projektemacher.html" (dict "context" . "geojson" $geojson "center" $center "minZoom" 12 "initialZoom" 15 "maxZoom" 15 "disabled" true) -}}
+            </div>
         {{- end -}}
 
 

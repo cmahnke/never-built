@@ -40,12 +40,14 @@
             {{ end }}
           {{- end -}}
           {{- $data = jsonify $data -}}
+
           {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-preview-container" -}}
           <div class="preview-container scroll-preview-container {{ $class }} {{ $animationClass }}"{{ if ne $data "" }} data-image-regions="{{  $data }}"{{ end }}>
             {{- range $i, $img := $previewNames -}}
               {{- with $pageContext.Resources.GetMatch $img -}}
                 <a class="cover-link" href="{{ $pageContext.Permalink }}">
-                  <img class="{{printf "preview img-%d" $i}} {{ $class }}" src="{{ (.Fit $fit).RelPermalink }}" data-image-name="{{ $img}}" />
+                  {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-preview-overlay-image" -}}
+                  <img class="preview {{printf "img-%d" $i}} {{ $class }} {{ $animationClass }}" src="{{ (.Fit $fit).RelPermalink }}" data-image-name="{{ $img}}" />
                 </a>
               {{- else -}}
                 {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $pageContext.Path $img -}}
@@ -57,10 +59,11 @@
             {{- end -}}
             {{- if $previewImg -}}
               {{- with $previewImg -}}
-                {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-overlay-image-container" -}}
-                <div class="scan-container {{ $class }} scroll-overlay-image-container">
-                  <a class="cover-link" href="{{ $pageContext.Permalink }} {{ $animationClass }}">
-                      <img class="preview scan" src="{{ $previewImg.RelPermalink }}" />
+
+                <div class="scan-container {{ $class }} scroll-preview-scan-image">
+                  <a class="cover-link" href="{{ $pageContext.Permalink }}">
+                    {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-preview-scan-image" -}}
+                    <img class="preview scan {{ $animationClass }}" src="{{ $previewImg.RelPermalink }}" />
                   </a>
                 </div>
               {{ end }}
@@ -80,7 +83,7 @@
 
         {{- if or .Summary .Content -}}
         <div class="scroll-content">
-          {{- partial "content.html" . -}}
+          {{- partial "content.html" (dict "context" . "animate" true "animatePrefix" "scroll-") -}}
         </div>
         <div class="readmore-container">
           <a href="{{ .RelPermalink }}" class="readmore" title="{{ i18n "readmore" }}">{{ i18n "readmore" }}</a>

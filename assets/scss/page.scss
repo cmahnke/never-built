@@ -451,14 +451,19 @@ i.book-reference {
   overflow: hidden;
   .content {
 
-    .post-body > .map-wrapper {
+    /*
+    .post-body > .scroll-map-container {
       animation-name: slide-in-right;
       animation-duration: $page-elements-duration;
       animation-fill-mode: forwards;
+
+      .map-wrapper {
+
+      }
     }
+    */
 
     .post-content {
-
       .map-wrapper.show {
         animation-name: slide-in-bottom;
         animation-duration: $page-elements-duration;
@@ -498,8 +503,6 @@ i.book-reference {
           }
         }
       }
-
     }
-
   }
 }

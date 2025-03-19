@@ -8,19 +8,23 @@ body:not(.meta) {
     .article-single,
     .section-single {
 
-      .post-body > .map-wrapper {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        max-width: 50%;
-        cursor: not-allowed;
+      .post-body > .scroll-map {
 
-        @media (min-width: 768px) {
-          min-height: unset;
-          width: 30vw;
-          margin-top: unset;
-          margin-bottom: 4rem;
+        .map-wrapper {
+          display: inline-block;
+          width: 100%;
+          aspect-ratio: 1 / 1;
+          max-width: 50%;
+          cursor: not-allowed;
 
-          flex-basis: 50%;
+          @media (min-width: 768px) {
+            min-height: unset;
+            width: 30vw;
+            margin-top: unset;
+            margin-bottom: 4rem;
+
+            flex-basis: 50%;
+          }
         }
       }
 

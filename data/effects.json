@@ -1,7 +1,7 @@
 { "mappings":
   [
     { "layoutClass": "scroll-item",
-      "animationClass": "_effect-fade-in"
+      "animationClass": ""
     },
     { "layoutClass": "content-section",
       "animationClass": ""
@@ -10,26 +10,31 @@
       "animationClass": ""
     },
     { "layoutClass": "scroll-header",
-      "animationClass": "_effect-translate-in _efTrigger-inview-50px"
+      "animationClass": "_effect-slide-in _efTrigger-inview-50px"
     },
     { "layoutClass": "scroll-title",
-      "animationClass": "_effect-translate-in"
+      "animationClass": "_effect-slide-in"
     },
     { "layoutClass": "scroll-preview-container",
       "animationClass": ""
     },
-    { "layoutClass": "scroll-preview-container",
-      "animationClass": "_efTrigger-scroll"
+    { "layoutClass": "scroll-content-container",
+      "animationClass": ""
     },
-    { "layoutClass": "scroll-overlay-image-container",
-      "animationClass": "_efTrigger-scroll"
+    { "layoutClass": "scroll-content-section",
+      "animationClass": "_efTrigger-scroll-start-75-start-40 _effect-whitebox _effect-shift-in-15-true"
+    },
+    { "layoutClass": "scroll-content-summary",
+      "animationClass": "_efTrigger-scroll _effect-emphasis"
+    },
+    { "layoutClass": "scroll-preview-overlay-image",
+      "animationClass": "_efTrigger-scroll-start-50-start-20 _effect-scale-in-145"
+    },
+    { "layoutClass": "scroll-preview-scan-image",
+      "animationClass": "_efTrigger-scroll-start-50-start-5 _effect-scale-in-250 _effect-blur-5"
     },
     { "layoutClass": "scroll-map-container",
-      "animationClass": "_efTrigger-scroll _effect-translate-in"
+      "animationClass": "_efTrigger-scroll _effect-slide-in"
     }
-  ],
-  "functions": {
-    "translate": {},
-    "fade": {}
-  }
+  ]
 }
