@@ -57,6 +57,7 @@ jobs:
         run: |
           ./scripts/setup.sh
           rm -f content/post/.gitignore
+          sed -i '/static\/map/d' .gitignore 
 
       - name: Generate stats
         run: |
