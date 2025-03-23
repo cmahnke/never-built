@@ -1,3 +1,7 @@
 [submodule "themes/projektemacher-base"]
 	path = themes/projektemacher-base
 	url = https://github.com/cmahnke/projektemacher-base.git
+
+[submodule "never-build-redirect"]
+	path = never-build-redirect
+	url = https://github.com/cmahnke/never-build.git
