@@ -1,6 +1,6 @@
-baseURL = 'https://never-build.goettingen.xyz/'
+baseURL = 'https://never-built.goettingen.xyz/'
 languageCode = 'de'
-title = 'Never Build Göttingen'
+title = 'Never Built Göttingen'
 languagecode = "de"
 defaultcontentlanguage = "de"
 copyright = "Christian Mahnke"
