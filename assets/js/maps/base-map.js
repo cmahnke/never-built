@@ -94,8 +94,12 @@ function mergeFeatures (featureArray) {
   var popupContent = "";
 
   featureArray.forEach(feature => {
-    title += feature.get("title") + ", ";
-    popupContent += feature.get("popupContent");
+    if (feature.get("title") !== undefined) {
+      title += feature.get("title") + ", ";
+    }
+    if (feature.get("popupContent") !== undefined) {
+      popupContent += feature.get("popupContent");
+    }
   });
 
   featureArray[0].set("title", title);

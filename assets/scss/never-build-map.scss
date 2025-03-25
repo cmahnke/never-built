@@ -163,8 +163,9 @@ body.dir-map {
         h1 {
           margin-block-start: .6rem;
           margin-block-end: .6rem;
+          hyphens: auto;
+          word-break: unset !important;
         }
-
 
         .popup-content {
           font-size: 1rem;
