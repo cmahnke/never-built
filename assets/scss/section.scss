@@ -28,11 +28,14 @@
   .meta {
     a {
       @include invert-link($color: $accent-color);
-      color: black;
-      text-decoration-style: dotted;
-      text-decoration-line: underline;
-      text-decoration-thickness: 1px;
-      text-decoration-skip-ink: auto;
+
+      & {
+        color: black;
+        text-decoration-style: dotted;
+        text-decoration-line: underline;
+        text-decoration-thickness: 1px;
+        text-decoration-skip-ink: auto;
+      }
 
       &:hover {
         text-decoration: none;

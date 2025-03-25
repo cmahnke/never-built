@@ -57,7 +57,7 @@ jobs:
         run: |
           ./scripts/setup.sh
           rm -f content/post/.gitignore
-          sed -i '/static\/map/d' .gitignore 
+          sed -i '/static\/map/d' .gitignore
 
       - name: Generate stats
         run: |
@@ -67,7 +67,7 @@ jobs:
         run: hugo --printI18nWarnings --printUnusedTemplates
 
       - name: Build Hugo future site
-        run: hugo -F -b https://never-build.goettingen.xyz/future/ -d ./future
+        run: hugo -F -b https://never-built.goettingen.xyz/future/ -d ./future
 
       - name: Puppeteer
         run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh
