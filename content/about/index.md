@@ -9,7 +9,13 @@ displayinlist: false
 Derzeit fehlen noch (mindestens) die folgenden Entwürfe:
 * Kriegergedächniskirche von Dominikus Böhm um 1923, In: Ulrich Weisner (Hsg.) - Böhm: Väter und Söhne, Seite 49
 * Entwürfe von [Lucy Hillebrand](https://de.wikipedia.org/wiki/Lucy_Hillebrand)
+  * Heim für afrikanische, deutsche und asiatische Studenten
+  * Stadthalle und Mensa
+  * Nikolausberg
+  * Wohnhaushochhaus am Lohberg
 * Entwürfe für die Umgestaltung der [Lokhalle Göttingen](https://de.wikipedia.org/wiki/Lokhalle_G%C3%B6ttingen)
+  * Von Lucy Hillebrand
+* Weende: An der Lutter
 * Unterführung unter dem Nikolausberger Weg (Von Campus in den Botanischen Garten)
 
 # Kolophon
