@@ -1,0 +1,460 @@
+{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "https://never-built.goettingen.xyz/future/collection.json",
+  "type": "Collection",
+  "label": {
+      "de": [
+        "Never Built Göttingen"
+      ]},
+  "items": [{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/verkehrssystem/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/verkehrssystem/page198/full/full/0/default_hu_c9fab05947bdbb3d.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 416,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/verkehrssystem/page198/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6999,
+        "width": 5049,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1977/verkehrssystem/page198",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Das Verkehrssystem der Göttinger Innenstadt"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/page139/full/full/0/default_hu_7382a8af331662f.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 424,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/page139/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 7002,
+        "width": 4955,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/page139",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Gemeindezentrum Grone-Süd"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/neustadt/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/neustadt/page023/full/full/0/default_hu_b81cd23e9464e8ec.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 416,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/neustadt/page023/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6990,
+        "width": 5040,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1977/neustadt/page023",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Sanierungsgebiet \"Neustadt-Ostseite\""
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/front/full/full/0/default_hu_5a90c4ffb0d9d746.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 408,
+    "width": 300
+  }],"label": {
+          "de": [
+            "Städteforum 1977"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/page073/full/full/0/default_hu_7bd27a1012871290.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 426,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/page073/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 7009,
+        "width": 4931,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/page073",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Altenwohnstift am Warteberg (Planung) in Göttingen-Herberhausen"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/page085/full/full/0/default_hu_774c24d9e05f5937.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 425,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/page085/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6997,
+        "width": 4944,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/page085",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Demonstrativbauvorhaben Holtenser Berg, Göttingen"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066/full/full/0/default_hu_5441f17e557b20b2.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 429,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 7003,
+        "width": 4897,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Bauten für den Verkehr"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/page065/full/full/0/default_hu_341841944e23c3b6.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 430,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/page065/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6999,
+        "width": 4886,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/page065",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Studentenwohnheim Papenberg"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061/full/full/0/default_hu_97c6769dfeca52a9.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 430,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 7007,
+        "width": 4892,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Medizinische Fakultät"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/front/full/full/0/default_hu_e8bb7f2acb9963b1.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 419,
+    "width": 300
+  }],"label": {
+          "de": [
+            "Bauinformation Nr. 1 März 1967"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/page037/full/full/0/default_hu_43f6ed3069667abe.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 426,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/page037/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 7009,
+        "width": 4931,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/page037",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Geplante Bauvorhaben"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/habichts-weg/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/habichts-weg/page106/full/full/0/default_hu_6ad43a2871f42962.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 442,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/habichts-weg/page106/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6996,
+        "width": 4747,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/habichts-weg/page106",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Moderner Städtebau Bebauungsplan am Habichtsweg"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/weende-nord/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/weende-nord/page138/full/full/0/default_hu_c2def33597ef956d.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 431,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/weende-nord/page138/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6988,
+        "width": 4860,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/weende-nord/page138",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Weende Nord"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/neustadt/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/neustadt/page136/full/full/0/default_hu_b9e4b56c63f20d5.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 436,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/neustadt/page136/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6989,
+        "width": 4814,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/neustadt/page136",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Sanierung Neustadt"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/volksbank/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/volksbank/page083/full/full/0/default_hu_35f20956741a5764.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 443,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/volksbank/page083/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6990,
+        "width": 4733,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/volksbank/page083",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Volksbank Göttingen eGmbH"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/lohmuehlenweg/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/lohmuehlenweg/page120/full/full/0/default_hu_4a7be02e1374e628.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 437,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/lohmuehlenweg/page120/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6994,
+        "width": 4806,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/lohmuehlenweg/page120",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Bauvorhaben Lohmühlenweg"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default_hu_2a027ea19960fd80.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 439,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6992,
+        "width": 4774,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Nahziele der städtischen Verkehrsentwicklung unter Berücksichtigung des fließenden und ruhenden Verkehrs"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/holtenser-berg/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/holtenser-berg/page128/full/full/0/default_hu_49d36af74b1f61c9.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 433,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/holtenser-berg/page128/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6991,
+        "width": 4839,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/holtenser-berg/page128",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Wohnsiedlung Holtenser Berg"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/klinikum/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default_hu_5d92e5bd1bf71609.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 447,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6989,
+        "width": 4686,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/klinikum/page066",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Medizinische Fakultät"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default_hu_dd9d60c72b104d11.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 443,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6987,
+        "width": 4732,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page064",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Ausbau Geisteswissenschaftliches Zentrum"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/front/full/full/0/default_hu_781e0374aa6860ec.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 427,
+    "width": 300
+  }],"label": {
+          "de": [
+            "Städteforum 1/71 Göttingen"
+          ]}
+      }]
+}

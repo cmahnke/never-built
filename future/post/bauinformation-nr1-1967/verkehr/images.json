@@ -1,0 +1,24 @@
+[
+  {
+    "image": "page066.jxl",
+    "size": [4897, 7003],
+    "areas": [
+      {
+        "name": "blueprint",
+        "postprocess": ["grayscale_simple", "preview"],
+        "position": {
+          "x": 253,
+          "y": 2728
+        },
+        "size": {
+          "x": 4378,
+          "y": 4037
+        }
+      }
+    ]
+  },
+  {
+    "image": "page067.jxl",
+    "size": [4927, 7003]
+  }
+]

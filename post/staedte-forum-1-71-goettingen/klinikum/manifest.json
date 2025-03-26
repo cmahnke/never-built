@@ -1,0 +1,137 @@
+{"@context": "http://iiif.io/api/presentation/3/context.json",
+"type": "Manifest",
+"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/manifest.json",
+"viewingDirection": "left-to-right","behavior":["paged"],"requiredStatement": {
+  "label": { "en": [ "Attribution" ],
+    "de": [ "Namensnennung" ]
+  },
+  "value": {"de": ["Bereitgestellt von Projektemacher"]}
+}
+,"thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default_hu_5d92e5bd1bf71609.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 447,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6989,
+        "width": 4686,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"provider": [
+  {
+    "id": "https://projektemacher.org/",
+    "type": "Agent",
+    "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+    "homepage": [
+      {
+        "id": "https://projektemacher.org/",
+        "type": "Text",
+        "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+        "format": "text/html"
+    }
+  ],
+  "logo": [
+    {"id": "https://projektemacher.org/images/logo.png",
+        "type": "Image",
+        "format": "image/png",
+        "height": 1024,
+        "width": 1024}
+  ],
+  "seeAlso": [
+    {
+      "id": "https://projektemacher.org/projektemacher.json",
+      "type": "Dataset",
+      "format": "application/ld+json",
+      "profile": "https://schema.org/"
+    }
+  ]
+  }
+]
+,
+
+"homepage": [
+  {
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/manifest.json",
+    "type": "Text",
+    "format": "text/html",
+
+    "label": {
+        "de": [
+          "Never Built Göttingen: Medizinische Fakultät"
+        ]}
+  }
+],"label": {
+    "de": [
+      "Medizinische Fakultät"
+    ]}
+,"items": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/canvas/preview",
+          "type": "Canvas","label": {"none":["page066"]},"height": 6989,
+            "width": 4686,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default_hu_5d92e5bd1bf71609.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 447,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/annotation/page066",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/annotation/page066/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6989,
+                  "width": 4686,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/canvas/page067",
+          "type": "Canvas","label": {"none":["page067"]},"height": 6965,
+            "width": 4745,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page067/full/full/0/default_hu_6af8e29d348d1637.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 440,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/annotation/page067",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/annotation/page067/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page067/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6965,
+                  "width": 4745,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page067",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/canvas/page067"
+            }]
+          }]
+       }]
+}

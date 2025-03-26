@@ -1,0 +1,79 @@
+{
+  "type": "FeatureCollection",
+  "features": [{
+  "type": "Feature",
+  "properties": {
+      "name": "Bauvorhaben Lohmühlenweg",
+      "popupContent": "\u003cdiv class=\"geojsonPopup\"\u003e\n    \u003cdiv class=\"title\"\u003e\n        Bauvorhaben Lohmühlenweg\n    \u003c/div\u003e\n    \u003cdiv class=\"popup-content\"\u003e\n        Ein Hochhaus für die Innenstadt\u0026hellip;\n    \u003c/div\u003e\u003cdiv class=\"link\"\u003e\u003ca href=\"/post/staedte-forum-1-71-goettingen/lohmuehlenweg/\"\u003eMehr lesen...\u003c/a\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [9.931259,51.530537]
+  }
+}
+
+
+
+
+,{
+  "type": "Feature",
+  "properties": {
+      "name": "Nahziele der städtischen Verkehrsentwicklung unter Berücksichtigung des fließenden und ruhenden Verkehrs",
+      "popupContent": "\u003cdiv class=\"geojsonPopup\"\u003e\n    \u003cdiv class=\"title\"\u003e\n        Nahziele der städtischen Verkehrsentwicklung unter Berücksichtigung des fließenden und ruhenden Verkehrs\n    \u003c/div\u003e\n    \u003cdiv class=\"popup-content\"\u003e\n        Der Ringschluss mit dem Bulldozer\u0026hellip;\n    \u003c/div\u003e\u003cdiv class=\"link\"\u003e\u003ca href=\"/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/\"\u003eMehr lesen...\u003c/a\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [9.942461,51.537681]
+  }
+}
+
+
+
+
+,{
+  "type": "Feature",
+  "properties": {
+      "name": "Wohnsiedlung Holtenser Berg",
+      "popupContent": "\u003cdiv class=\"geojsonPopup\"\u003e\n    \u003cdiv class=\"title\"\u003e\n        Wohnsiedlung Holtenser Berg\n    \u003c/div\u003e\n    \u003cdiv class=\"popup-content\"\u003e\n        Der Holtenser Berg mit einem Turm\u0026hellip;\n    \u003c/div\u003e\u003cdiv class=\"link\"\u003e\u003ca href=\"/post/staedte-forum-1-71-goettingen/holtenser-berg/\"\u003eMehr lesen...\u003c/a\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [9.904611,51.561513]
+  }
+}
+
+
+
+
+,{
+  "type": "Feature",
+  "properties": {
+      "name": "Medizinische Fakultät",
+      "popupContent": "\u003cdiv class=\"geojsonPopup\"\u003e\n    \u003cdiv class=\"title\"\u003e\n        Medizinische Fakultät\n    \u003c/div\u003e\n    \u003cdiv class=\"popup-content\"\u003e\n        Ein \u0026ldquo;vollständiger\u0026rdquo; Entwurf für das Klinikum\u0026hellip;\n    \u003c/div\u003e\u003cdiv class=\"link\"\u003e\u003ca href=\"/post/staedte-forum-1-71-goettingen/klinikum/\"\u003eMehr lesen...\u003c/a\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [9.943691,51.550553]
+  }
+}
+
+
+
+
+,{
+  "type": "Feature",
+  "properties": {
+      "name": "Ausbau Geisteswissenschaftliches Zentrum",
+      "popupContent": "\u003cdiv class=\"geojsonPopup\"\u003e\n    \u003cdiv class=\"title\"\u003e\n        Ausbau Geisteswissenschaftliches Zentrum\n    \u003c/div\u003e\n    \u003cdiv class=\"popup-content\"\u003e\n        Die drei blauen Türme waren der Anlass für dieses Blog\u0026hellip;\n    \u003c/div\u003e\u003cdiv class=\"link\"\u003e\u003ca href=\"/post/staedte-forum-1-71-goettingen/gwz/\"\u003eMehr lesen...\u003c/a\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n"
+  },
+  "geometry": {
+    "type": "Point",
+    "coordinates": [9.935313,51.541721]
+  }
+}
+
+
+
+
+]
+}

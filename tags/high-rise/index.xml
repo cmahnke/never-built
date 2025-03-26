@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hochhaus on Never Built Göttingen</title>
+    <link>https://never-built.goettingen.xyz/tags/high-rise/</link>
+    <description>Recent content in Hochhaus on Never Built Göttingen</description>
+    <generator>Hugo</generator>
+    <language>de</language>
+    <managingEditor>mail@christianmahnke.de (Christian Mahnke)</managingEditor>
+    <webMaster>mail@christianmahnke.de (Christian Mahnke)</webMaster>
+    <copyright>Christian Mahnke</copyright>
+    <atom:link href="https://never-built.goettingen.xyz/tags/high-rise/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bauvorhaben Lohmühlenweg</title>
+      <link>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/manifest.json</link>
+      <pubDate>Wed, 26 Mar 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/manifest.json</guid>
+      <description>&lt;p&gt;Ein Hochhaus für die Innenstadt&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Wohnsiedlung Holtenser Berg</title>
+      <link>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/manifest.json</link>
+      <pubDate>Wed, 12 Mar 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/manifest.json</guid>
+      <description>&lt;p&gt;Der Holtenser Berg mit einem Turm&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Medizinische Fakultät</title>
+      <link>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/manifest.json</link>
+      <pubDate>Wed, 05 Mar 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/manifest.json</guid>
+      <description>&lt;p&gt;Ein &amp;ldquo;vollständiger&amp;rdquo; Entwurf für das Klinikum&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Ausbau Geisteswissenschaftliches Zentrum</title>
+      <link>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/manifest.json</link>
+      <pubDate>Wed, 26 Feb 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/manifest.json</guid>
+      <description>&lt;p&gt;Die drei blauen Türme waren der Anlass für dieses Blog&amp;hellip;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

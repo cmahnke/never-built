@@ -1,0 +1,38 @@
+[
+  {
+    "image": "page064.jxl",
+    "size": [4732, 6987],
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 4682,
+          "y": 3108
+        }
+      }
+    ]
+  },
+  {
+    "image": "page065.jxl",
+    "size": [4749, 6990],
+    "areas": [
+      {
+        "name": "blueprint",
+        "postprocess": ["white_balance", "grayscale_simple", "preview"],
+        "position": {
+          "x": 1518,
+          "y": 0
+        },
+        "size": {
+          "x": 2956,
+          "y": 3152
+        }
+      }
+    ]
+  }
+]

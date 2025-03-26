@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Universität on Never Built Göttingen</title>
+    <link>https://never-built.goettingen.xyz/future/tags/commercial/</link>
+    <description>Recent content in Universität on Never Built Göttingen</description>
+    <generator>Hugo</generator>
+    <language>de</language>
+    <managingEditor>mail@christianmahnke.de (Christian Mahnke)</managingEditor>
+    <webMaster>mail@christianmahnke.de (Christian Mahnke)</webMaster>
+    <copyright>Christian Mahnke</copyright>
+    <atom:link href="https://never-built.goettingen.xyz/future/tags/commercial/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Geplante Bauvorhaben</title>
+      <link>https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/manifest.json</link>
+      <pubDate>Wed, 30 Apr 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/manifest.json</guid>
+      <description>&lt;p&gt;Die Volksbank mit einem zweigeschossigen Sockel&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Volksbank Göttingen eGmbH</title>
+      <link>https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/volksbank/manifest.json</link>
+      <pubDate>Wed, 02 Apr 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/volksbank/manifest.json</guid>
+      <description>&lt;p&gt;Ein nie realisierter Wallaufgang&amp;hellip;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

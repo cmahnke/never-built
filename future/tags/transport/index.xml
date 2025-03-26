@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Verkehrsinfrastruktur on Never Built Göttingen</title>
+    <link>https://never-built.goettingen.xyz/future/tags/transport/</link>
+    <description>Recent content in Verkehrsinfrastruktur on Never Built Göttingen</description>
+    <generator>Hugo</generator>
+    <language>de</language>
+    <managingEditor>mail@christianmahnke.de (Christian Mahnke)</managingEditor>
+    <webMaster>mail@christianmahnke.de (Christian Mahnke)</webMaster>
+    <copyright>Christian Mahnke</copyright>
+    <atom:link href="https://never-built.goettingen.xyz/future/tags/transport/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Das Verkehrssystem der Göttinger Innenstadt</title>
+      <link>https://never-built.goettingen.xyz/future/post/staedte-forum-1977/verkehrssystem/manifest.json</link>
+      <pubDate>Wed, 09 Jul 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/staedte-forum-1977/verkehrssystem/manifest.json</guid>
+      <description>&lt;p&gt;Eine weitere Planungsvariante der Ost-Tangente&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Bauten für den Verkehr</title>
+      <link>https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/manifest.json</link>
+      <pubDate>Wed, 21 May 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/manifest.json</guid>
+      <description>&lt;p&gt;Göttingen als autogerechte Stadt&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Nahziele der städtischen Verkehrsentwicklung unter Berücksichtigung des fließenden und ruhenden Verkehrs</title>
+      <link>https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/manifest.json</link>
+      <pubDate>Wed, 19 Mar 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/manifest.json</guid>
+      <description>&lt;p&gt;Der Ringschluss mit dem Bulldozer&amp;hellip;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

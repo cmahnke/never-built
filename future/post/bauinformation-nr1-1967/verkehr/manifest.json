@@ -1,0 +1,137 @@
+{"@context": "http://iiif.io/api/presentation/3/context.json",
+"type": "Manifest",
+"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/manifest.json",
+"viewingDirection": "left-to-right","behavior":["paged"],"requiredStatement": {
+  "label": { "en": [ "Attribution" ],
+    "de": [ "Namensnennung" ]
+  },
+  "value": {"de": ["Bereitgestellt von Projektemacher"]}
+}
+,"thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066/full/full/0/default_hu_5441f17e557b20b2.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 429,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 7003,
+        "width": 4897,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"provider": [
+  {
+    "id": "https://projektemacher.org/",
+    "type": "Agent",
+    "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+    "homepage": [
+      {
+        "id": "https://projektemacher.org/",
+        "type": "Text",
+        "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+        "format": "text/html"
+    }
+  ],
+  "logo": [
+    {"id": "https://projektemacher.org/images/logo.png",
+        "type": "Image",
+        "format": "image/png",
+        "height": 1024,
+        "width": 1024}
+  ],
+  "seeAlso": [
+    {
+      "id": "https://projektemacher.org/projektemacher.json",
+      "type": "Dataset",
+      "format": "application/ld+json",
+      "profile": "https://schema.org/"
+    }
+  ]
+  }
+]
+,
+
+"homepage": [
+  {
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/manifest.json",
+    "type": "Text",
+    "format": "text/html",
+
+    "label": {
+        "de": [
+          "Never Built Göttingen: Bauten für den Verkehr"
+        ]}
+  }
+],"label": {
+    "de": [
+      "Bauten für den Verkehr"
+    ]}
+,"items": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/canvas/preview",
+          "type": "Canvas","label": {"none":["page066"]},"height": 7003,
+            "width": 4897,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066/full/full/0/default_hu_5441f17e557b20b2.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 429,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/annotation/page066",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/annotation/page066/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7003,
+                  "width": 4897,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/canvas/page067",
+          "type": "Canvas","label": {"none":["page067"]},"height": 7003,
+            "width": 4927,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page067/full/full/0/default_hu_fdc53824780d4f0c.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 426,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/annotation/page067",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/annotation/page067/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page067/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7003,
+                  "width": 4927,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page067",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/canvas/page067"
+            }]
+          }]
+       }]
+}

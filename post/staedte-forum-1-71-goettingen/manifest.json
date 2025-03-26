@@ -1,0 +1,374 @@
+{"@context": "http://iiif.io/api/presentation/3/context.json",
+"type": "Manifest",
+"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/manifest.json",
+"viewingDirection": "left-to-right","behavior":["paged"],"requiredStatement": {
+  "label": { "en": [ "Attribution" ],
+    "de": [ "Namensnennung" ]
+  },
+  "value": {"de": ["Bereitgestellt von Projektemacher"]}
+}
+,"thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/front/full/full/0/default_hu_781e0374aa6860ec.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 427,
+    "width": 300
+  }],"provider": [
+  {
+    "id": "https://projektemacher.org/",
+    "type": "Agent",
+    "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+    "homepage": [
+      {
+        "id": "https://projektemacher.org/",
+        "type": "Text",
+        "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+        "format": "text/html"
+    }
+  ],
+  "logo": [
+    {"id": "https://projektemacher.org/images/logo.png",
+        "type": "Image",
+        "format": "image/png",
+        "height": 1024,
+        "width": 1024}
+  ],
+  "seeAlso": [
+    {
+      "id": "https://projektemacher.org/projektemacher.json",
+      "type": "Dataset",
+      "format": "application/ld+json",
+      "profile": "https://schema.org/"
+    }
+  ]
+  }
+]
+,
+
+"homepage": [
+  {
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/manifest.json",
+    "type": "Text",
+    "format": "text/html",
+
+    "label": {
+        "de": [
+          "Never Built Göttingen: Städteforum 1/71 Göttingen"
+        ]}
+  }
+],"label": {
+    "de": [
+      "Städteforum 1/71 Göttingen"
+    ]}
+,"items": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/canvas/front",
+          "type": "Canvas","label": {"de":["Vorderansicht"],"en":["Front"]},"height": 6988,
+            "width": 4915,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/front/full/full/0/default_hu_781e0374aa6860ec.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 427,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/annotation/front",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/annotation/front/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/front/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6988,
+                  "width": 4915,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/front",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/canvas/front"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/canvas/preview",
+          "type": "Canvas","label": {"none":["page120"]},"height": 6994,
+            "width": 4806,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/page120/full/full/0/default_hu_4a7be02e1374e628.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 437,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/annotation/page120",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/annotation/page120/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/page120/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6994,
+                  "width": 4806,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/page120",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/canvas/page034",
+          "type": "Canvas","label": {"none":["page034"]},"height": 6996,
+            "width": 4720,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page034/full/full/0/default_hu_39d730910f8fc61d.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 445,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/annotation/page034",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/annotation/page034/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page034/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6996,
+                  "width": 4720,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page034",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/canvas/page034"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/canvas/preview",
+          "type": "Canvas","label": {"none":["page035"]},"height": 6992,
+            "width": 4774,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default_hu_2a027ea19960fd80.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 439,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/annotation/page035",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/annotation/page035/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6992,
+                  "width": 4774,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/canvas/preview",
+          "type": "Canvas","label": {"none":["page128"]},"height": 6991,
+            "width": 4839,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/page128/full/full/0/default_hu_49d36af74b1f61c9.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 433,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/annotation/page128",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/annotation/page128/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/page128/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6991,
+                  "width": 4839,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/page128",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/canvas/page129",
+          "type": "Canvas","label": {"none":["page129"]},"height": 6987,
+            "width": 4785,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/page129/full/full/0/default_hu_2f73fe7088f47ced.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 438,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/annotation/page129",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/annotation/page129/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/page129/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6987,
+                  "width": 4785,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/page129",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/canvas/page129"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/canvas/preview",
+          "type": "Canvas","label": {"none":["page066"]},"height": 6989,
+            "width": 4686,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default_hu_5d92e5bd1bf71609.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 447,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/annotation/page066",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/annotation/page066/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6989,
+                  "width": 4686,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/canvas/page067",
+          "type": "Canvas","label": {"none":["page067"]},"height": 6965,
+            "width": 4745,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page067/full/full/0/default_hu_6af8e29d348d1637.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 440,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/annotation/page067",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/annotation/page067/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page067/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6965,
+                  "width": 4745,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page067",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/canvas/page067"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/canvas/preview",
+          "type": "Canvas","label": {"none":["page064"]},"height": 6987,
+            "width": 4732,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default_hu_dd9d60c72b104d11.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 443,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/annotation/page064",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/annotation/page064/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6987,
+                  "width": 4732,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/page064",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/canvas/page065",
+          "type": "Canvas","label": {"none":["page065"]},"height": 6990,
+            "width": 4749,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/page065/full/full/0/default_hu_aa17d90ee1038b61.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 442,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/annotation/page065",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/annotation/page065/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/page065/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6990,
+                  "width": 4749,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/page065",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/canvas/page065"
+            }]
+          }]
+       }]
+}

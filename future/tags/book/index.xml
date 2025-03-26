@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Book on Never Built Göttingen</title>
+    <link>https://never-built.goettingen.xyz/future/tags/book/</link>
+    <description>Recent content in Book on Never Built Göttingen</description>
+    <generator>Hugo</generator>
+    <language>de</language>
+    <managingEditor>mail@christianmahnke.de (Christian Mahnke)</managingEditor>
+    <webMaster>mail@christianmahnke.de (Christian Mahnke)</webMaster>
+    <copyright>Christian Mahnke</copyright>
+    <lastBuildDate>Tue, 25 Mar 2025 15:24:39 +0100</lastBuildDate>
+    <atom:link href="https://never-built.goettingen.xyz/future/tags/book/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Städteforum 1977</title>
+      <link>https://never-built.goettingen.xyz/future/post/staedte-forum-1977/manifest.json</link>
+      <pubDate>Wed, 18 Jun 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/staedte-forum-1977/manifest.json</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Bauinformation Nr. 1 März 1967</title>
+      <link>https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/manifest.json</link>
+      <pubDate>Wed, 30 Apr 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/manifest.json</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Städteforum 1/71 Göttingen</title>
+      <link>https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/manifest.json</link>
+      <pubDate>Wed, 26 Feb 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/manifest.json</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

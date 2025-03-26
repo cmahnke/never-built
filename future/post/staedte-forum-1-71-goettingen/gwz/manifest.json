@@ -1,0 +1,137 @@
+{"@context": "http://iiif.io/api/presentation/3/context.json",
+"type": "Manifest",
+"id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/manifest.json",
+"viewingDirection": "left-to-right","behavior":["paged"],"requiredStatement": {
+  "label": { "en": [ "Attribution" ],
+    "de": [ "Namensnennung" ]
+  },
+  "value": {"de": ["Bereitgestellt von Projektemacher"]}
+}
+,"thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default_hu_dd9d60c72b104d11.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 443,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6987,
+        "width": 4732,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page064",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"provider": [
+  {
+    "id": "https://projektemacher.org/",
+    "type": "Agent",
+    "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+    "homepage": [
+      {
+        "id": "https://projektemacher.org/",
+        "type": "Text",
+        "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+        "format": "text/html"
+    }
+  ],
+  "logo": [
+    {"id": "https://projektemacher.org/images/logo.png",
+        "type": "Image",
+        "format": "image/png",
+        "height": 1024,
+        "width": 1024}
+  ],
+  "seeAlso": [
+    {
+      "id": "https://projektemacher.org/projektemacher.json",
+      "type": "Dataset",
+      "format": "application/ld+json",
+      "profile": "https://schema.org/"
+    }
+  ]
+  }
+]
+,
+
+"homepage": [
+  {
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/manifest.json",
+    "type": "Text",
+    "format": "text/html",
+
+    "label": {
+        "de": [
+          "Never Built Göttingen: Ausbau Geisteswissenschaftliches Zentrum"
+        ]}
+  }
+],"label": {
+    "de": [
+      "Ausbau Geisteswissenschaftliches Zentrum"
+    ]}
+,"items": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/canvas/preview",
+          "type": "Canvas","label": {"none":["page064"]},"height": 6987,
+            "width": 4732,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default_hu_dd9d60c72b104d11.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 443,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/annotation/page064",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/annotation/page064/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6987,
+                  "width": 4732,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page064",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/canvas/page065",
+          "type": "Canvas","label": {"none":["page065"]},"height": 6990,
+            "width": 4749,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page065/full/full/0/default_hu_aa17d90ee1038b61.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 442,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/annotation/page065",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/annotation/page065/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page065/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6990,
+                  "width": 4749,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/page065",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/staedte-forum-1-71-goettingen/gwz/canvas/page065"
+            }]
+          }]
+       }]
+}

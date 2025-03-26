@@ -1,0 +1,106 @@
+{"@context": "http://iiif.io/api/presentation/3/context.json",
+"type": "Manifest",
+"id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/manifest.json",
+"viewingDirection": "left-to-right","behavior":["paged"],"requiredStatement": {
+  "label": { "en": [ "Attribution" ],
+    "de": [ "Namensnennung" ]
+  },
+  "value": {"de": ["Bereitgestellt von Projektemacher"]}
+}
+,"thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/page139/full/full/0/default_hu_7382a8af331662f.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 424,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/page139/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 7002,
+        "width": 4955,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/page139",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"provider": [
+  {
+    "id": "https://projektemacher.org/",
+    "type": "Agent",
+    "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+    "homepage": [
+      {
+        "id": "https://projektemacher.org/",
+        "type": "Text",
+        "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+        "format": "text/html"
+    }
+  ],
+  "logo": [
+    {"id": "https://projektemacher.org/images/logo.png",
+        "type": "Image",
+        "format": "image/png",
+        "height": 1024,
+        "width": 1024}
+  ],
+  "seeAlso": [
+    {
+      "id": "https://projektemacher.org/projektemacher.json",
+      "type": "Dataset",
+      "format": "application/ld+json",
+      "profile": "https://schema.org/"
+    }
+  ]
+  }
+]
+,
+
+"homepage": [
+  {
+    "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/manifest.json",
+    "type": "Text",
+    "format": "text/html",
+
+    "label": {
+        "de": [
+          "Never Built Göttingen: Gemeindezentrum Grone-Süd"
+        ]}
+  }
+],"label": {
+    "de": [
+      "Gemeindezentrum Grone-Süd"
+    ]}
+,"items": [{
+          "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/canvas/preview",
+          "type": "Canvas","label": {"none":["page139"]},"height": 7002,
+            "width": 4955,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/page139/full/full/0/default_hu_7382a8af331662f.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 424,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/annotation/page139",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/annotation/page139/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/page139/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7002,
+                  "width": 4955,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/page139",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/canvas/preview"
+            }]
+          }]
+       }]
+}

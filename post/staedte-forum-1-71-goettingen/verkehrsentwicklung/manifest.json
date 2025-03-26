@@ -1,0 +1,137 @@
+{"@context": "http://iiif.io/api/presentation/3/context.json",
+"type": "Manifest",
+"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/manifest.json",
+"viewingDirection": "left-to-right","behavior":["paged"],"requiredStatement": {
+  "label": { "en": [ "Attribution" ],
+    "de": [ "Namensnennung" ]
+  },
+  "value": {"de": ["Bereitgestellt von Projektemacher"]}
+}
+,"thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default_hu_2a027ea19960fd80.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 439,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6992,
+        "width": 4774,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"provider": [
+  {
+    "id": "https://projektemacher.org/",
+    "type": "Agent",
+    "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+    "homepage": [
+      {
+        "id": "https://projektemacher.org/",
+        "type": "Text",
+        "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+        "format": "text/html"
+    }
+  ],
+  "logo": [
+    {"id": "https://projektemacher.org/images/logo.png",
+        "type": "Image",
+        "format": "image/png",
+        "height": 1024,
+        "width": 1024}
+  ],
+  "seeAlso": [
+    {
+      "id": "https://projektemacher.org/projektemacher.json",
+      "type": "Dataset",
+      "format": "application/ld+json",
+      "profile": "https://schema.org/"
+    }
+  ]
+  }
+]
+,
+
+"homepage": [
+  {
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/manifest.json",
+    "type": "Text",
+    "format": "text/html",
+
+    "label": {
+        "de": [
+          "Never Built Göttingen: Nahziele der städtischen Verkehrsentwicklung unter Berücksichtigung des fließenden und ruhenden Verkehrs"
+        ]}
+  }
+],"label": {
+    "de": [
+      "Nahziele der städtischen Verkehrsentwicklung unter Berücksichtigung des fließenden und ruhenden Verkehrs"
+    ]}
+,"items": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/canvas/page034",
+          "type": "Canvas","label": {"none":["page034"]},"height": 6996,
+            "width": 4720,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page034/full/full/0/default_hu_39d730910f8fc61d.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 445,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/annotation/page034",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/annotation/page034/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page034/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6996,
+                  "width": 4720,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page034",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/canvas/page034"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/canvas/preview",
+          "type": "Canvas","label": {"none":["page035"]},"height": 6992,
+            "width": 4774,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default_hu_2a027ea19960fd80.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 439,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/annotation/page035",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/annotation/page035/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6992,
+                  "width": 4774,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/canvas/preview"
+            }]
+          }]
+       }]
+}

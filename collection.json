@@ -1,0 +1,137 @@
+{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "https://never-built.goettingen.xyz/collection.json",
+  "type": "Collection",
+  "label": {
+      "de": [
+        "Never Built Göttingen"
+      ]},
+  "items": [{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/page120/full/full/0/default_hu_4a7be02e1374e628.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 437,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/page120/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6994,
+        "width": 4806,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/lohmuehlenweg/page120",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Bauvorhaben Lohmühlenweg"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default_hu_2a027ea19960fd80.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 439,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6992,
+        "width": 4774,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/verkehrsentwicklung/page035",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Nahziele der städtischen Verkehrsentwicklung unter Berücksichtigung des fließenden und ruhenden Verkehrs"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/page128/full/full/0/default_hu_49d36af74b1f61c9.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 433,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/page128/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6991,
+        "width": 4839,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/holtenser-berg/page128",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Wohnsiedlung Holtenser Berg"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default_hu_5d92e5bd1bf71609.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 447,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6989,
+        "width": 4686,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/page066",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Medizinische Fakultät"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default_hu_dd9d60c72b104d11.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 443,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/page064/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 6987,
+        "width": 4732,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/page064",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"label": {
+          "de": [
+            "Ausbau Geisteswissenschaftliches Zentrum"
+          ]}
+      },{
+        "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/manifest.json",
+        "type": "Manifest","thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/front/full/full/0/default_hu_781e0374aa6860ec.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 427,
+    "width": 300
+  }],"label": {
+          "de": [
+            "Städteforum 1/71 Göttingen"
+          ]}
+      }]
+}

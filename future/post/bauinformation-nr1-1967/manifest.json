@@ -1,0 +1,374 @@
+{"@context": "http://iiif.io/api/presentation/3/context.json",
+"type": "Manifest",
+"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/manifest.json",
+"viewingDirection": "left-to-right","behavior":["paged"],"requiredStatement": {
+  "label": { "en": [ "Attribution" ],
+    "de": [ "Namensnennung" ]
+  },
+  "value": {"de": ["Bereitgestellt von Projektemacher"]}
+}
+,"thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/front/full/full/0/default_hu_e8bb7f2acb9963b1.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 419,
+    "width": 300
+  }],"provider": [
+  {
+    "id": "https://projektemacher.org/",
+    "type": "Agent",
+    "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+    "homepage": [
+      {
+        "id": "https://projektemacher.org/",
+        "type": "Text",
+        "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+        "format": "text/html"
+    }
+  ],
+  "logo": [
+    {"id": "https://projektemacher.org/images/logo.png",
+        "type": "Image",
+        "format": "image/png",
+        "height": 1024,
+        "width": 1024}
+  ],
+  "seeAlso": [
+    {
+      "id": "https://projektemacher.org/projektemacher.json",
+      "type": "Dataset",
+      "format": "application/ld+json",
+      "profile": "https://schema.org/"
+    }
+  ]
+  }
+]
+,
+
+"homepage": [
+  {
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/manifest.json",
+    "type": "Text",
+    "format": "text/html",
+
+    "label": {
+        "de": [
+          "Never Built Göttingen: Bauinformation Nr. 1 März 1967"
+        ]}
+  }
+],"label": {
+    "de": [
+      "Bauinformation Nr. 1 März 1967"
+    ]}
+,"items": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/canvas/front",
+          "type": "Canvas","label": {"de":["Vorderansicht"],"en":["Front"]},"height": 6994,
+            "width": 5010,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/front/full/full/0/default_hu_e8bb7f2acb9963b1.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 419,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/annotation/front",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/annotation/front/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/front/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6994,
+                  "width": 5010,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/front",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/canvas/front"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/canvas/preview",
+          "type": "Canvas","label": {"none":["page073"]},"height": 7009,
+            "width": 4931,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/page073/full/full/0/default_hu_7bd27a1012871290.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 426,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/annotation/page073",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/annotation/page073/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/page073/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7009,
+                  "width": 4931,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/page073",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/canvas/page084",
+          "type": "Canvas","label": {"none":["page084"]},"height": 7003,
+            "width": 4918,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/page084/full/full/0/default_hu_9ba2f8508712b290.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 427,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/annotation/page084",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/annotation/page084/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/page084/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7003,
+                  "width": 4918,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/page084",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/canvas/page084"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/canvas/preview",
+          "type": "Canvas","label": {"none":["page085"]},"height": 6997,
+            "width": 4944,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/page085/full/full/0/default_hu_774c24d9e05f5937.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 425,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/annotation/page085",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/annotation/page085/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/page085/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6997,
+                  "width": 4944,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/page085",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/holtenser-berg/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/canvas/preview",
+          "type": "Canvas","label": {"none":["page066"]},"height": 7003,
+            "width": 4897,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066/full/full/0/default_hu_5441f17e557b20b2.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 429,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/annotation/page066",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/annotation/page066/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7003,
+                  "width": 4897,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page066",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/canvas/page067",
+          "type": "Canvas","label": {"none":["page067"]},"height": 7003,
+            "width": 4927,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page067/full/full/0/default_hu_fdc53824780d4f0c.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 426,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/annotation/page067",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/annotation/page067/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page067/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7003,
+                  "width": 4927,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/page067",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/verkehr/canvas/page067"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/canvas/preview",
+          "type": "Canvas","label": {"none":["page065"]},"height": 6999,
+            "width": 4886,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/page065/full/full/0/default_hu_341841944e23c3b6.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 430,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/annotation/page065",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/annotation/page065/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/page065/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6999,
+                  "width": 4886,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/page065",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/papenberg/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/canvas/page060",
+          "type": "Canvas","label": {"none":["page060"]},"height": 6995,
+            "width": 4910,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page060/full/full/0/default_hu_1948b88a9c4ffdc6.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 427,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/annotation/page060",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/annotation/page060/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page060/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6995,
+                  "width": 4910,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page060",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/canvas/page060"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/canvas/preview",
+          "type": "Canvas","label": {"none":["page061"]},"height": 7007,
+            "width": 4892,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061/full/full/0/default_hu_97c6769dfeca52a9.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 430,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/annotation/page061",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/annotation/page061/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7007,
+                  "width": 4892,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/canvas/preview"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/canvas/preview",
+          "type": "Canvas","label": {"none":["page037"]},"height": 7009,
+            "width": 4931,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/page037/full/full/0/default_hu_43f6ed3069667abe.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 426,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/annotation/page037",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/annotation/page037/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/page037/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7009,
+                  "width": 4931,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/page037",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/iduna-zentrum-volksbank/canvas/preview"
+            }]
+          }]
+       }]
+}

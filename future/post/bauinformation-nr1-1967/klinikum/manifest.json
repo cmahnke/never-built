@@ -1,0 +1,137 @@
+{"@context": "http://iiif.io/api/presentation/3/context.json",
+"type": "Manifest",
+"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/manifest.json",
+"viewingDirection": "left-to-right","behavior":["paged"],"requiredStatement": {
+  "label": { "en": [ "Attribution" ],
+    "de": [ "Namensnennung" ]
+  },
+  "value": {"de": ["Bereitgestellt von Projektemacher"]}
+}
+,"thumbnail": [{
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061/full/full/0/default_hu_97c6769dfeca52a9.jpg",
+    "format": "image/jpeg",
+    "type":"Image",
+    "height": 430,
+    "width": 300
+  },{
+        "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061/full/full/0/default.jpg",
+        "format": "image/jpeg",
+        "type":"Image",
+        "height": 7007,
+        "width": 4892,
+        "service": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061",
+          "type": "ImageService2",
+          "profile":"level0"
+        }]
+      }],"provider": [
+  {
+    "id": "https://projektemacher.org/",
+    "type": "Agent",
+    "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+    "homepage": [
+      {
+        "id": "https://projektemacher.org/",
+        "type": "Text",
+        "label": { "en": [ "Projektemacher" ], "de": [ "Projektemacher" ] },
+        "format": "text/html"
+    }
+  ],
+  "logo": [
+    {"id": "https://projektemacher.org/images/logo.png",
+        "type": "Image",
+        "format": "image/png",
+        "height": 1024,
+        "width": 1024}
+  ],
+  "seeAlso": [
+    {
+      "id": "https://projektemacher.org/projektemacher.json",
+      "type": "Dataset",
+      "format": "application/ld+json",
+      "profile": "https://schema.org/"
+    }
+  ]
+  }
+]
+,
+
+"homepage": [
+  {
+    "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/manifest.json",
+    "type": "Text",
+    "format": "text/html",
+
+    "label": {
+        "de": [
+          "Never Built Göttingen: Medizinische Fakultät"
+        ]}
+  }
+],"label": {
+    "de": [
+      "Medizinische Fakultät"
+    ]}
+,"items": [{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/canvas/page060",
+          "type": "Canvas","label": {"none":["page060"]},"height": 6995,
+            "width": 4910,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page060/full/full/0/default_hu_1948b88a9c4ffdc6.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 427,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/annotation/page060",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/annotation/page060/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page060/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 6995,
+                  "width": 4910,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page060",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/canvas/page060"
+            }]
+          }]
+       },{
+          "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/canvas/preview",
+          "type": "Canvas","label": {"none":["page061"]},"height": 7007,
+            "width": 4892,
+            "thumbnail": [{
+                "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061/full/full/0/default_hu_97c6769dfeca52a9.jpg",
+                "format": "image/jpeg",
+                "type":"Image",
+                "height": 430,
+                "width": 300
+              }
+            ],"items": [{
+            "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/annotation/page061",
+            "type": "AnnotationPage",
+            "items":[{
+              "id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/annotation/page061/image",
+              "type": "Annotation",
+              "motivation":"painting",
+              "body":{"id": "https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061/full/full/0/default.jpg",
+                  "type": "Image",
+                  "format": "image/jpeg",
+                  "height": 7007,
+                  "width": 4892,
+                  "service": [{
+                    "id":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/page061",
+                    "type": "ImageService2",
+                    "profile":"level0"
+                  }]},
+              "target":"https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/klinikum/canvas/preview"
+            }]
+          }]
+       }]
+}

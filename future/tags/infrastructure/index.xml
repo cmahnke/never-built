@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Infrastruktur on Never Built Göttingen</title>
+    <link>https://never-built.goettingen.xyz/future/tags/infrastructure/</link>
+    <description>Recent content in Infrastruktur on Never Built Göttingen</description>
+    <generator>Hugo</generator>
+    <language>de</language>
+    <managingEditor>mail@christianmahnke.de (Christian Mahnke)</managingEditor>
+    <webMaster>mail@christianmahnke.de (Christian Mahnke)</webMaster>
+    <copyright>Christian Mahnke</copyright>
+    <atom:link href="https://never-built.goettingen.xyz/future/tags/infrastructure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gemeindezentrum Grone-Süd</title>
+      <link>https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/manifest.json</link>
+      <pubDate>Wed, 02 Jul 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/staedte-forum-1977/gemeindezentrum-grone-sued/manifest.json</guid>
+      <description>&lt;p&gt;Das Gemeindezentrum in Grone besteht noch heute&amp;hellip;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Altenwohnstift am Warteberg (Planung) in Göttingen-Herberhausen</title>
+      <link>https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/manifest.json</link>
+      <pubDate>Wed, 04 Jun 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+      <guid>https://never-built.goettingen.xyz/future/post/bauinformation-nr1-1967/warteberg/manifest.json</guid>
+      <description>&lt;p&gt;Eine Seniorenresidenz im Wald bei Herberhausen&amp;hellip;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
