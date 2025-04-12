@@ -5,6 +5,6 @@
 
 {{- partial "3d/model.html" (dict "context" . "model" $model ) -}}
 
-{{- define "partials/shortcodes/model-metadata.html" -}}
+{{- define "shortcodes/model-metadata.html" -}}
   {{- (dict "css" slice "js" (slice "js/model.js") "scss" (slice "scss/model.scss")) | jsonify -}}
 {{- end -}}
