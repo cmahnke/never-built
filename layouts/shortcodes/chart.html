@@ -24,6 +24,6 @@
   });
 </script>
 
-{{- define "partials/shortcodes/chart-metadata.html" -}}
+{{- define "_partials/shortcodes/chart-metadata.html" -}}
   {{- (dict "css" slice "js" (slice "js/chart.js") "scss" (slice "scss/chart.scss")) | jsonify -}}
 {{- end -}}
