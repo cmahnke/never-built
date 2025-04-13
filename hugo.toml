@@ -150,10 +150,6 @@ enableRobotsTXT = true
     extended = true
     min = '0.146.3'
 
-  [module.hugoVersion]
-      extended = true
-      min = "0.143.0"
-
   [[module.mounts]]
     source = "assets/scss"
     target = "assets/scss"
