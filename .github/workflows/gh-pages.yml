@@ -69,8 +69,8 @@ jobs:
       - name: Build Hugo future site
         run: hugo -F -b https://never-built.goettingen.xyz/future/ -d ./future
 
-#      - name: Puppeteer
-#        run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh
+      - name: Puppeteer
+        run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh
 
       - name: Archive links
         run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14
