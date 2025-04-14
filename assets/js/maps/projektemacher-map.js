@@ -17,7 +17,7 @@ import {Control, FullScreen, Zoom, MousePosition} from 'ol/control';
 import {Circle as CircleStyle, RegularShape, Style, Fill, Stroke, Text, Icon} from 'ol/style.js';
 
 const defaultSprites = "/map-styles/sprite";
-const defaultFonts = "css/{font-family}.css";
+const defaultFonts = "/css/fonts/{font-family}.css";
 
 function geoJSONVectorSource(geojson) {
   var parser = new GeoJSON({dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});

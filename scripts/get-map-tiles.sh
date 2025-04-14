@@ -11,6 +11,11 @@ if ! test -d "$TILES_DIR"; then
   IMAGE="ghcr.io/cmahnke/map-data/goettingen:latest"
 
   docker pull --platform linux/amd64 "$IMAGE"
+  if [ $? -ne 0 ]; then
+    echo
+    echo "Failed to get Docker image ($IMAGE), is the deamon running?"
+    exit 1
+  fi
 
   CONTAINER_ID=`docker create $IMAGE`
 
