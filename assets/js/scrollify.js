@@ -1,5 +1,5 @@
 import {animate, scroll, inView} from 'motion';
-import * as effectConfig from '../json/effects.json';
+//import * as effectConfig from '../json/effects.json';
 
 export const effectMap = {"fade": undefined, "translate": undefined};
 const effectCSSPrefix = "_effect-";
