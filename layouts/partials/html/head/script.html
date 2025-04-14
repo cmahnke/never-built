@@ -1,0 +1,66 @@
+{{- $defines := dict "process.env.NODE_ENV" `"production"` -}}
+
+{{- $defaultScriptEntrypoint := "js/main.js" -}}
+
+{{- with $.Page.Params.defaultScriptEntrypoint -}}
+    {{- $defaultScriptEntrypoint = . -}}
+{{- end -}}
+
+{{- if hugo.IsServer -}}
+  {{ $defines = dict "process.env.NODE_ENV" `"development"` }}
+{{- end -}}
+
+{{- $externals := slice "domain" -}}
+{{- $mainOpts := dict "targetPath" "js/main.js" "externals" $externals "defines" $defines "minify" hugo.IsProduction -}}
+{{- $main := resources.Get $defaultScriptEntrypoint | js.Build $mainOpts -}}
+
+{{- $jsResources := slice -}}
+{{- $js := slice -}}
+
+
+{{- if ne (printf "%T" .) "*hugolib.pageState" -}}
+    {{- if (isset . "js") -}}
+        {{- if reflect.IsSlice .js -}}
+            {{- $js = .js -}}
+        {{- else if ne .js "" -}}
+            {{- $js = slice .js -}}
+        {{- end -}}
+        {{- range $file := $js -}}
+            {{- if eq (printf "%T" $file) "string" -}}
+                {{- if ne (resources.Get $file) nil -}}
+                    {{- $jsResources = $jsResources | append (resources.Get $file) -}}
+                {{- else -}}
+                    {{- warnf "[partials/html/head/script.html] Can't read file %s maybe you've forgot to add a module mount?" $file -}}
+                {{- end -}}
+            {{- else if eq (printf "%T" $file) "*resources.resourceAdapter" -}}
+                {{ $jsResources = $jsResources | append $file -}}
+            {{- else if eq (printf "%T" $file) "resource.Resources" -}}
+                {{ $jsResources = $jsResources | append $file -}}
+            {{- else -}}
+                {{- warnf "[partials/html/head/script.html] File %s needs to be string or ResourceAdapter" $file -}}
+            {{- end -}}
+        {{- end -}}
+    {{- end -}}
+{{- else -}}
+    {{- warnf "[partials/html/head/script.html] Called without params - just using %s" $defaultScriptEntrypoint -}}
+{{- end -}}
+
+{{- $jsResources = union (slice $main) $jsResources -}}
+
+{{- $fileName := "" -}}
+{{- range $file := $jsResources -}}
+    {{- $fileName = printf "%s%s" $fileName $file.Name -}}
+{{- end -}}
+{{- $fileName = md5 $fileName -}}
+
+{{/*
+{{- $mainJs := "" -}}
+{{- if not hugo.IsServer -}}
+    {{- $mainJs = $jsResources | resources.Concat (printf "js/%s.js" $fileName) | minify | fingerprint -}}
+{{- else -}}
+    {{- $mainJs = $jsResources | resources.Concat (printf "js/%s.js" $fileName) | fingerprint -}}
+{{- end -}}
+*/}}
+{{- $mainJs := $jsResources | resources.Concat (printf "js/%s.js" $fileName) | fingerprint -}}
+
+<script src="{{ $mainJs.RelPermalink }}" integrity="{{ $mainJs.Data.Integrity | html }}"></script>
