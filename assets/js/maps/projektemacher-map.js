@@ -82,8 +82,10 @@ function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, 
 
   if (fontPath !== undefined) {
     style["ol:webfonts"] = fontPath;
+    style.metadata["ol:webfonts"] = fontPath;
   } else {
     style["ol:webfonts"] = defaultFonts;
+    style.metadata["ol:webfonts"] = defaultFonts;
   }
   if (initialzoom !== undefined) {
     style.zoom = initialzoom;
