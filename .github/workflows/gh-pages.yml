@@ -73,7 +73,11 @@ jobs:
         run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh
 
       - name: Archive links
-        run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14
+        run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14 -o archived-urls.txt
+
+      - name: Save URL list
+        run: |
+          cp archived-urls.txt docs/
 
       - name: Copy future
         run: mv ./future ./docs/
