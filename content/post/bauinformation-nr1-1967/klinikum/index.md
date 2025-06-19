@@ -4,6 +4,7 @@ date: 2025-05-07T17:15:07+02:00
 tags:
 - high-rise
 - university
+- medical-center
 outputs:
   - iiif-manifest
   - html

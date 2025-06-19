@@ -5,6 +5,9 @@ other = "Hochhaus"
 [university]
 other = "Universität"
 
+[medical-center]
+other = "Universitätsmedizin"
+
 [infrastructure]
 other = "Infrastruktur"
 
