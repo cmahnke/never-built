@@ -11,6 +11,8 @@ import numpy as np
 import cv2
 import pywt
 
+Image.MAX_IMAGE_PIXELS = None
+
 image_meta = "images.json"
 default_dir = "content/post"
 gitignore_file = ".gitignore"

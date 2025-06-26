@@ -20,6 +20,9 @@ other = "Geschäftsbau"
 [transport]
 other = "Verkehrsinfrastruktur"
 
+[frame]
+other = "Rahmen"
+
 # Term pages
 [building]
 other = "Gebäude"
