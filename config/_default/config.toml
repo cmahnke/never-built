@@ -8,6 +8,7 @@
   disableScale = true
   description = "Das nicht gebaute Göttingen"
   subTitle = "Das nicht gebaute Göttingen"
+  wikidata = true
   debug = true
   headerimage = false
 
