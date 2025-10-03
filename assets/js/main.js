@@ -96,6 +96,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
         return;
       }
     }
+    if (link.href.startsWith('#')) {
+      return;
+    }
+
+    if (URL.canParse(link.href)) {
+      if (isCurrentPage(link.href)) {
+        return;
+      }
+    }
 
     if (animatedLinkColor.includes(compStyles.getPropertyValue("color")) && !link.firstElementChild &&  !link.classList.contains("no-animation")) {
       links.push(link);
@@ -123,3 +132,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
 });
+
+function isCurrentPage(url) {
+  try {
+    const linkURL = new URL(url);
+    return linkURL.pathname === window.location.pathname;
+  } catch (error) {
+    console.error("Invalid URL provided:", urlString, error);
+    return false;
+  }
+}
