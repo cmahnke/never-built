@@ -17,3 +17,4 @@ citeproc-py-styles
 requests
 osmium
 termcolor
+pillow
