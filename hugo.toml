@@ -9,7 +9,7 @@ canonifyurls = true
 disablePathToLower = true
 disableKinds = ["taxonomy"]
 ignoreErrors = ["error-disable-taxonomy"]
-theme = ["projektemacher-base"]
+theme = ["projektemacher-base", "hugo-xml-exporter"]
 enableGitInfo = true
 preserveTaxonomyNames = true
 enableRobotsTXT = true
@@ -136,6 +136,11 @@ enableRobotsTXT = true
     baseName = "collection"
     notAlternative = true
 
+  [outputFormats.xml-export]
+    mediaType = "application/xml"
+    baseName = "xml-export"
+    isPlainText = true
+    notAlternative = true
 
 [privacy]
   [privacy.instagram]
