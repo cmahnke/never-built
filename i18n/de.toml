@@ -57,7 +57,7 @@ other = "Beitragsvorschau"
 other = "Bibliografischer Nachweis"
 
 [book-list-count]
-single = "Beitrag in diesem Buch"
+one = "Beitrag in diesem Buch"
 other = "Beiträge in diesem Buch"
 
 [section-heading]
