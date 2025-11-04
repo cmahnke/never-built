@@ -22,6 +22,7 @@ content/**/*-boxed.jpg
 content/**/front/
 content/**/title/
 content/**/cover/
+content/**/photo/
 content/**/img*/
 content/**/page*/
 content/**/end-*/
@@ -75,3 +76,5 @@ assets/jsconfig.json
 static/images/apple-touch-icon.png
 *.bak.jpg
 *.bib.html
+assets/scss/flags/flags.scss
+pagefind

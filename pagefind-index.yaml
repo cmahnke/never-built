@@ -5,10 +5,7 @@ files:
     - '**/*.htm'
     - '**/*.html'
   exclude:
-    - 'tags/**'
-    - 'en/tags/**'
     - 'post/page/*/**'
-    - 'en/post/page/*/**'
     - 'search/**'
     - 'en/search/**'
     - 'meta/**'
@@ -18,8 +15,6 @@ files:
     - '404.html'
     - 'map/**'
     - 'en/map/**'
-    - 'future/**'
-    - 'en/future/**'
 
 content:
   ignore:
@@ -27,7 +22,8 @@ content:
 index:
 # Tagging attributes
   body:
-    - .content-container
+    - .post-summary
+    - .post-body
   ignore:
     - header.header
     - footer.footer: all

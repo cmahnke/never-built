@@ -44,8 +44,13 @@ enableRobotsTXT = true
         weight = 4
 
       [[languages.de.menu.main]]
-        name = "Über"
+        name = "Suche"
+        URL = "/search/"
         weight = 5
+
+      [[languages.de.menu.main]]
+        name = "Über"
+        weight = 6
         url = "/about/"
 
 [markup]
@@ -182,6 +187,14 @@ enableRobotsTXT = true
   [[module.mounts]]
       source = "node_modules/photoswipe/src/photoswipe.css"
       target = "assets/scss/photoswipe/photoswipe.css"
+
+  [[module.mounts]]
+      source = "node_modules/@pagefind/modular-ui/css/"
+      target = "assets/scss/pagefind"
+
+  [[module.mounts]]
+      source = "node_modules/@pagefind/default-ui"
+      target = "assets/js/pagefind"
 
   [[module.mounts]]
     source = "static/images"

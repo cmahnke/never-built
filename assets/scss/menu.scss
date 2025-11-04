@@ -230,6 +230,12 @@ header .menu {
             content: url($info-light);
           }
         }
+
+        &.navto-search {
+          .link-icon:after {
+            content: url($search-light);
+          }
+        }
       }
     }
   }

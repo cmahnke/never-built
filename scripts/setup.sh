@@ -37,3 +37,8 @@ SOURCE="static/images/favicon.svg" OPTIONS="-background none" ./themes/projektem
 
 ./scripts/map.sh
 ./themes/projektemacher-base/scripts/json-lint.sh
+
+echo "Make sure './scripts/post-build/index.sh' is executed"
+if [ -d ./scripts/post-build ] ; then
+    echo "Don't forget to run post build scripts after 'hugo'!"
+fi

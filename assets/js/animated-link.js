@@ -4,6 +4,7 @@ export const defaultTransitionMs = 800;
 const ignoreProperties = ["overflow", "word-break", "letter-spacing", "text-shadow", "transition", "transform", "background"];
 export const overlayClassName = "animated-link-overlay";
 export const animationClassName = "animate";
+import {detect} from 'detect-browser';
 
 export const defaultAllowedPrefetch = ['localhost', 'wikipedia.org', 'projektemacher.org', 'christianmahnke.de', 'goettingen.xyz']
 
@@ -78,6 +79,12 @@ function bodyLinkHandler(e, timeout) {
 }
 
 function menuLinkHandler(e, timeout) {
+  /*
+  const browser = detect();
+  if (browser && browser.name === 'firefox') {
+    return;
+  }
+  */
   e.preventDefault();
   if (timeout === undefined) {
     timeout = defaultTransitionMs;
@@ -92,6 +99,13 @@ function menuLinkHandler(e, timeout) {
 }
 
 export function setupAnimatedLinks(links) {
+  /*
+  const browser = detect();
+  if (browser && browser.name === 'firefox') {
+    return;
+  }
+  */
+
   links.forEach((link) => {
     if (link.hasAttribute('href')) {
       addPrefetch(link.getAttribute('href'), defaultAllowedPrefetch);
