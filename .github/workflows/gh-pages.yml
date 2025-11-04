@@ -79,6 +79,14 @@ jobs:
       - name: Build Hugo future site
         run: hugo -F -b https://never-built.goettingen.xyz/future/ -d ./future
 
+      # - name: Create export
+      #   run: |
+      #     hugo -F --renderSegments print
+      #
+      # - name: Generate catalogue
+      #   run: |
+      #     docker run -v `pwd`:`pwd` -w `pwd` yeslogic/prince:latest --fileroot `pwd`/future ./future/print.html -o book.pdf
+
       - name: Puppeteer
         run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh
 
