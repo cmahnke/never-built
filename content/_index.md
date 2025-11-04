@@ -5,7 +5,7 @@ outputs:
   - iiif-collection
   - html
   - rss
-  - xml-export
+  - print
 ---
 
 Ein Göttingen, das nicht gebaut wurde...
