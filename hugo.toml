@@ -141,9 +141,9 @@ enableRobotsTXT = true
     baseName = "collection"
     notAlternative = true
 
-  [outputFormats.xml-export]
-    mediaType = "application/xml"
-    baseName = "xml-export"
+  [outputFormats.print]
+    mediaType = "text/html"
+    baseName = "print"
     isPlainText = true
     notAlternative = true
 

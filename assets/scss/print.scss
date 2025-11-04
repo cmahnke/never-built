@@ -1,0 +1,137 @@
+@use "fonts/bodoni-moda" as *;
+@use "fonts/space-mono" as *;
+
+
+$heading-font: 'Bodoni Moda', times;
+$body-font: 'Space Mono', serif;
+
+@page {
+  size: A5 portrait !important;
+  margin-top: 1cm;
+  margin-right: 1cm;
+  margin-bottom: 1cm;
+  margin-left: 1cm;
+
+
+}
+
+@page :not(:first) {
+  @Bottom-right {
+    content: counter(pageNumber);
+  }
+}
+
+body {
+  font-family: $body-font;
+  counter-reset: pageNumber;
+}
+
+article {
+  .page {
+    counter-increment: pageNumber;
+    page-break-after: always;
+    height: 100vh;
+    break-after: page;
+    position: relative;
+  }
+
+  .post-title {
+    bookmark-level: 2;
+    bookmark-label: content(text);
+    text-align: right;
+  }
+
+  .heading-top,
+  .heading-front,
+  .heading-back {
+    text-align: right;
+  }
+
+  .full-height-image-container {
+    z-index: -10;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .hanger-img {
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+section {
+  page-break-after: always;
+  break-after: page;
+}
+
+.page-number {
+  content: counter(pageNumber);
+}
+
+h1, h2, h3 {
+  font-family: $heading-font;
+  font-weight: 200;
+}
+
+.indexes {
+  font-size: 10pt;
+
+  .index-heading {
+    font-size: 22pt;
+  }
+
+  .index-container {
+    .index-heading {
+      bookmark-level: 2;
+      bookmark-label: content(text);
+    }
+
+    .sub-index {
+      bookmark-level: 3;
+      bookmark-label: content([data-sub-heading-title]);
+    }
+
+  }
+
+  .index {
+    columns: 2;
+    gap: 5%;
+
+    &:not(.material) > li {
+      break-inside: avoid-column;
+    }
+  }
+
+  .description {
+    font-style: italic;
+  }
+
+  .sub-index {
+    /*
+    padding-inline-start: 14pt;
+    */
+    padding-left: 14pt;
+  }
+
+  .index-entry > .title {
+    margin-top: 6pt;
+  }
+
+  a {
+    /* display: inline-block; */
+
+    &:after {
+      content: leader(dotted) target-counter(attr(href), pageNumber);
+    }
+  }
+
+  a,
+  a:hover,
+  a:visited {
+      text-decoration: none;
+      color: black;
+  }
+}
