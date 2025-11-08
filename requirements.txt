@@ -18,3 +18,5 @@ requests
 osmium
 termcolor
 pillow
+shapely
+geojson

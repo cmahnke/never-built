@@ -46,7 +46,6 @@ jobs:
 
       - name: Install required dependencies
         run: |
-          docker pull ghcr.io/cmahnke/map-tools/osm2world:latest
           ./scripts/github-setup.sh
 
       - name: Setup Hugo

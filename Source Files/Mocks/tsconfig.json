@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "strictPropertyInitialization": false,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "noEmit": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "allowJs": true,
+    "typeRoots": [],
+    "target": "es2020",
+    "skipLibCheck": true,
+    "lib": ["dom", "es2020"]
+  },
+  "include": [
+    "3D/assets/**/*"
+  ],
+  "exclude": ["node_modules", "**/*.spec.ts", "dist/**/*"]
+}

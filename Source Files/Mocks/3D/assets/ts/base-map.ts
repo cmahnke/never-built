@@ -1,16 +1,29 @@
 import Map from 'ol/Map';
-import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorLayer} from 'ol/layer';
 import View from 'ol/View';
 import GeoJSON from 'ol/format/GeoJSON';
 import Overlay from 'ol/Overlay';
 import {fromLonLat} from 'ol/proj';
-import {OSM, XYZ, Cluster, Vector as VectorSource} from 'ol/source';
+import {Cluster, Vector as VectorSource} from 'ol/source';
+import Feature, { FeatureLike } from 'ol/Feature.js';
 import {createEmpty, extend, getHeight, getWidth} from 'ol/extent.js';
-import {Control, FullScreen, Zoom} from 'ol/control';
+import {FullScreen, Zoom} from 'ol/control';
 import {Circle as CircleStyle, RegularShape, Style, Fill, Stroke, Text, Icon} from 'ol/style.js';
+import { Geometry, SimpleGeometry } from 'ol/geom';
+import RenderFeature from 'ol/render/Feature';
 
+type TooltipSet = {
+  zoomIn: string;
+  zoomOut: string;
+  fullscreen: string;
+  rotate: string;
+  rotateLeft: string;
+  rotateRight: string;
+};
 
-export const toolTips = { 'de': {'zoomIn': 'Vergrößern', 'zoomOut': 'Verkleinern', 'fullscreen': 'Vollbildansicht', 'rotate': 'Rotation zurücksetzen', 'rotateLeft': '90° nach links drehen', 'rotateRight': '90° nach rechst drehen'},
+export type ToolTips = Record<string, TooltipSet>;
+
+export const toolTips: ToolTips = { 'de': {'zoomIn': 'Vergrößern', 'zoomOut': 'Verkleinern', 'fullscreen': 'Vollbildansicht', 'rotate': 'Rotation zurücksetzen', 'rotateLeft': '90° nach links drehen', 'rotateRight': '90° nach rechst drehen'},
                  'en': {'zoomIn': 'Zoom in', 'zoomOut': 'Zoom out', 'fullscreen': 'Toggle full-screen', 'rotate': 'Reset rotation', 'rotateLeft': 'Rotate 90° left', 'rotateRight': 'Rotate 90° right'}};
 
 export const defaultVectorSource = "https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf";
@@ -26,15 +39,17 @@ export function getLang() {
   return lang;
 }
 
-export function bboxExtent (bbox) {
+export function bboxExtent (bbox: string | string[] |number[]) {
   if (typeof bbox === "string") {
-    bbox = bbox.split(",");
+    bbox = (bbox as string).split(",");
   }
-  bbox = bbox.flat().map(e => { return e.toString() });
-  return fromLonLat([bbox[0],bbox[1]]).concat(fromLonLat([bbox[2], bbox[3]]));
+  bbox = bbox as number[];
+  //bbox = bbox.flat().map(e => { return e.toString() });
+  bbox = bbox.flat().map(Number)
+  return fromLonLat([bbox[0], bbox[1]]).concat(fromLonLat([bbox[2], bbox[3]]));
 }
 
-export function absUrl(url) {
+export function absUrl(url: string) {
   if (url.startsWith("http") || url.startsWith("//")) {
     return url;
   } else {
@@ -46,14 +61,13 @@ export function absUrl(url) {
   }
 }
 
-export function loadOrParse(str) {
+export function loadOrParse(str: string) {
   var obj;
   if (typeof str === 'object') {
     return str;
   }
   try {
-    //TODO: check it this is right the variable 'json' is never passed to this function
-    obj = JSON.parse(json);
+    obj = JSON.parse(str);
   } catch (e) {
     obj = fetch(str)
     .then(response => response.json())
@@ -67,7 +81,7 @@ export function loadOrParse(str) {
   return obj;
 }
 
-export function loadGeoJSON(url) {
+export function loadGeoJSON(url: string) {
   fetch(url)
     .then(function(response) {
       response.json()
@@ -90,7 +104,15 @@ export function loadGeoJSON(url) {
     });
 }
 
-function mergeFeatures (featureArray) {
+// This is a silly hack to work arround some OL type system stupidity
+function featureFix (feature: FeatureLike): Feature {
+  return new Feature({
+    geometry: feature.getGeometry() as Geometry,
+    ...feature.getProperties(),
+  })
+}
+
+function mergeFeatures (featureArray: Feature[]) {
   var title = "";
   var popupContent = "";
 
@@ -109,13 +131,13 @@ function mergeFeatures (featureArray) {
   return featureArray[0];
 }
 
-export function addOverlay(map, markerOptions) {
+export function addOverlay(map: Map) {
   const target = map.getTargetElement();
   const container = target.parentElement.querySelector('.ol-popup');;
   const content = container.querySelector('.ol-popup-content');
-  const closer = container.querySelector('.ol-popup-closer');
+  const closer = container.querySelector('.ol-popup-closer') as HTMLElement;
 
-  function featurePopUp(feature, overlay) {
+  function featurePopUp(feature: Feature<any>, overlay: Overlay) {
     var geometry = feature.getGeometry();
     var coord = geometry.getCoordinates();
     var popup = '<h1>' + feature.get('name') + '</h1>';
@@ -125,46 +147,45 @@ export function addOverlay(map, markerOptions) {
   }
 
   const overlay = new Overlay({
-    element: container,
+    element: container as HTMLElement,
     autoPan: true,
-    autoPanAnimation: {
-      duration: 250
-    }
   });
 
   map.addOverlay(overlay);
 
   map.on('singleclick', function (event) {
-    let features = map.getFeaturesAtPixel(event.pixel);
-    let feature;
+    let features: FeatureLike[] = map.getFeaturesAtPixel(event.pixel);
+    let feature: FeatureLike;
     if (features.length > 1) {
-      feature = mergeFeatures(features);
+      features = features.map(feature => featureFix(feature)) as Feature[];
+      feature = mergeFeatures(features as Feature[]);
     } else {
       feature = features[0];
     }
     if (feature && "geometry" in feature.getProperties()) {
-      featurePopUp(feature, overlay, content);
+      featurePopUp(featureFix(feature), overlay);
     }
   });
 
-  closer.onclick = function() {
+  closer.addEventListener('click', function() {
       overlay.setPosition(undefined);
       closer.blur();
       return false;
-  };
+  });
   return overlay;
 }
 
-export function featurePopUp(feature, overlay, content) {
-  var geometry = feature.getGeometry();
+export function featurePopUp(feature: Feature | RenderFeature, overlay: Overlay, content: HTMLElement) {
+  var geometry = featureFix(feature).getGeometry() as SimpleGeometry;
   var coord = geometry.getCoordinates();
+
   var popup = '<h1>' + feature.get('name') + '</h1>';
   popup += feature.get('popupContent');
   content.innerHTML = popup;
   overlay.setPosition(coord);
 }
 
-export function setupMarker (marker, layer) {
+export function setupMarker (marker: any, layer: VectorLayer<any>) {
   /* Marker style */
   if (marker !== undefined && marker) { 
     var iconStyle = new Style({image: new Icon(marker)});
@@ -181,10 +202,10 @@ export function setupMarker (marker, layer) {
  *  marker: JSON containing marker setup
  */
 
-function setupMap(element, geojson, source, cluster, marker) {
+function setupMap(element: HTMLElement, geojson: any, source: any, cluster: boolean, marker: any) {
 
 
-  function clusterMemberStyle(clusterMember) {
+  function clusterMemberStyle(clusterMember: Feature<any>) {
     if (marker !== undefined && marker) {
       return new Style({
         geometry: clusterMember.getGeometry(),
@@ -198,7 +219,7 @@ function setupMap(element, geojson, source, cluster, marker) {
     }
   }
 
-  function clusterStyle(feature) {
+  function clusterStyle(feature: Feature<any>) {
     const size = feature.get('features').length;
     if (size > 1) {
       if (marker !== undefined && marker) {
@@ -231,11 +252,11 @@ function setupMap(element, geojson, source, cluster, marker) {
         ];
       }
     }
-    const originalFeature = feature.get('features')[0];
+    const originalFeature: Feature<any> = feature.get('features')[0];
     return clusterMemberStyle(originalFeature);
   }
 
-  function mergeFeatures (featureArray) {
+  function mergeFeatures (featureArray: Feature<any>[]) {
     var title = "";
     var popupContent = "";
 
@@ -280,10 +301,10 @@ function setupMap(element, geojson, source, cluster, marker) {
     // Popup elements
     var container = document.getElementById(element + '-popup');
     var content = document.getElementById(element + '-popup-content');
-    var closer = document.getElementById(element + '-popup-closer');
+    var closer = document.getElementById(element + '-popup-closer') as HTMLElement;
 
     var map = new Map({
-            controls: [new Zoom({zoomInTipLabel: toolTips[lang]['zoomIn'], zoomOutTipLabel: toolTips[lang]['zoomOut']}),
+            controls: [new Zoom({zoomInTipLabel: toolTips[lang]['zoomIn'], zoomOutTipLabel: toolTips[lang]['zoomOut'] as string}),
                        new FullScreen({tipLabel: toolTips[lang]['fullscreen']})],
             layers: [baseLayer],
             target: element,
@@ -293,9 +314,6 @@ function setupMap(element, geojson, source, cluster, marker) {
     overlay = new Overlay({
         element: container,
         autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
     });
 
     map.addOverlay(overlay);
@@ -325,7 +343,7 @@ function setupMap(element, geojson, source, cluster, marker) {
                         features: parser.readFeatures(geojson)
                     });
 
-                    var vectorLayer;
+                    var vectorLayer: VectorLayer<any>;
                     if (cluster !== undefined && cluster) {
                       // See https://openlayers.org/en/latest/examples/clusters-dynamic.html
                       const clusterSource = new Cluster({
@@ -339,13 +357,14 @@ function setupMap(element, geojson, source, cluster, marker) {
                       });
 
                       map.on('click', (event) => {
+                        let clickFeature: FeatureLike;
                         vectorLayer.getFeatures(event.pixel).then((features) => {
                           if (features.length > 0) {
                             const clusterMembers = features[0].get('features');
                             if (clusterMembers.length > 1) {
                               // Calculate the extent of the cluster members.
                               const extent = createEmpty();
-                              clusterMembers.forEach((feature) =>
+                              clusterMembers.forEach((feature: Feature) =>
                                 extend(extent, feature.getGeometry().getExtent()),
                               );
                               const view = map.getView();
@@ -360,9 +379,8 @@ function setupMap(element, geojson, source, cluster, marker) {
                                 } else {
                                   clickFeature = mergeFeatures(features[0].get('features'));
                                 }
-                                featurePopUp(clickFeature);
-                                clickResolution = resolution;
-                                //TODO: check for what this is needed
+                                featurePopUp(clickFeature, overlay, content);
+                                const clickResolution = resolution;
                                 //clusterCircles.setStyle(clusterCircleStyle);
                               } else {
                                 // Zoom to the extent of the cluster members.
@@ -370,7 +388,7 @@ function setupMap(element, geojson, source, cluster, marker) {
                               }
                             } else if (clusterMembers.length == 1) {
                               clickFeature = clusterMembers[0];
-                              featurePopUp(clickFeature);
+                              featurePopUp(clickFeature, overlay, content);
                             }
                           }
                         });
@@ -381,24 +399,24 @@ function setupMap(element, geojson, source, cluster, marker) {
                           source: vectorSource
                       });
 
-                      if (iconStyle !== undefined) {
-                        vectorLayer.setStyle(iconStyle);
+                      if (marker) {
+                        setupMarker(marker, vectorLayer);
                       }
 
                       map.on('click', function (event) {
-                          var feature = map.forEachFeatureAtPixel(event.pixel,
+                          const feature = map.forEachFeatureAtPixel(event.pixel,
                               function(feature, layer) {
                                   return feature;
-                              }, markerOptions);
+                              });
 
                           if (feature) {
-                            featurePopUp(feature);
+                            featurePopUp(feature, overlay, content);
                           }
 
                       });
 
                     }
-                    vectorLayer.reportError = true;
+                    //vectorLayer.reportError = true;
                     map.addLayer(vectorLayer);
 
                     map.setView(
