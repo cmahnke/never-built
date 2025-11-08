@@ -11,6 +11,7 @@ const mimeTypes = { ".glb": "model/gltf-binary" };
 export default defineConfig({
   server: {
     host: "127.0.0.1",
+    /*
     proxy: {
       "/map/tiles": {
         target: "http://never-build.goettingen.xyz",
@@ -30,6 +31,7 @@ export default defineConfig({
         }
       }
     }
+    */
   },
   base: "./",
   plugins: [
@@ -38,13 +40,10 @@ export default defineConfig({
       apply: "build"
     },
     stylelint({ build: true, dev: false, lintOnStart: true }),
-    DynamicPublicDirectory(
-      ["3D/public/**"],
-      {
-        ssr: false,
-        mimeTypes
-      }
-    ),
+    DynamicPublicDirectory(["3D/public/**"], {
+      ssr: false,
+      mimeTypes
+    })
   ],
   build: {
     //target: 'esnext',
@@ -66,7 +65,6 @@ export default defineConfig({
         find: /~(.+)/,
         replacement: join(process.cwd(), "node_modules/$1")
       }
-
     ]
   },
   optimizeDeps: {
