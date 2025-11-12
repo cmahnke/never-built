@@ -260,43 +260,60 @@ def merge_osm(args: argparse.Namespace) -> None:
         logger.error(f"Output file '{args.output}' already exists. Use -f or --force to overwrite.")
         sys.exit(1)
 
-    # --- Step 1: Build mask from patch file ---
-    logger.info(f"--- Step 1: Building mask from {args.patch} ---")
-    mask_builder = AreaMaskBuilder()
-    mask_builder.apply_file(args.patch, locations=True, idx='flex_mem')
-
-    if not mask_builder.geometries:
-        logger.warning("No closed ways or areas found in patch file to build a mask. The base file will not be filtered.")
-        mask = unary_union([]) # empty geometry
-    else:
-        logger.info(f"Found {len(mask_builder.geometries)} areas/closed ways in patch file.")
-        mask = unary_union(mask_builder.geometries)
-
-    # --- Step 2: Filter base file ---
-    logger.info(f"--- Step 2: Filtering areas from {args.base} ---")
     filtered_base_path = "filtered_base_temp.osm.pbf"
-    writer = osmium.io.Writer(filtered_base_path)
-    area_filter = AreaFilter(writer, mask)
-    area_filter.apply_file(args.base, locations=True, idx='flex_mem')
-    writer.close()
-    logger.info(f"Filtered base file written to {filtered_base_path}")
-
-    # --- Step 3: Merge patch and filtered base ---
-    logger.info(f"--- Step 3: Merging patch and filtered base into {args.output} ---")
-    merge_command = [
-        "osmium", "merge",
-        args.patch,
-        filtered_base_path,
-        "-o", args.output, "--overwrite"
-    ]
+    sorted_patch_path = "sorted_patch_temp.osm.pbf"
+    sorted_filtered_base_path = "sorted_filtered_base_temp.osm.pbf"
     try:
-        subprocess.run(merge_command, check=True, capture_output=True, text=True)
-        logger.info("Merge complete.")
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Osmium merge failed: {e.stderr}")
+        # --- Step 1: Build mask from patch file ---
+        logger.info(f"--- Step 1: Building mask from {args.patch} ---")
+        mask_builder = AreaMaskBuilder()
+        mask_builder.apply_file(args.patch, locations=True, idx='flex_mem')
+
+        if not mask_builder.geometries:
+            logger.warning("No closed ways or areas found in patch file to build a mask. The base file will not be filtered.")
+            mask = unary_union([]) # empty geometry
+        else:
+            logger.info(f"Found {len(mask_builder.geometries)} areas/closed ways in patch file.")
+            mask = unary_union(mask_builder.geometries)
+
+        # --- Step 2: Filter base file ---
+        logger.info(f"--- Step 2: Filtering areas from {args.base} ---")
+        writer = osm.SimpleWriter(filtered_base_path)
+        area_filter = AreaFilter(writer, mask)
+        area_filter.apply_file(args.base, locations=True, idx='flex_mem')
+        writer.close()
+        logger.info(f"Filtered base file written to {filtered_base_path}")
+
+        # --- Step 3: Sort files before merging ---
+        logger.info(f"--- Step 3: Sorting temporary files for merge ---")
+        sort_patch_command = ["osmium", "sort", args.patch, "-o", sorted_patch_path, "--overwrite"]
+        sort_base_command = ["osmium", "sort", filtered_base_path, "-o", sorted_filtered_base_path, "--overwrite"]
+        subprocess.run(sort_patch_command, check=True, capture_output=True, text=True)
+        subprocess.run(sort_base_command, check=True, capture_output=True, text=True)
+        logger.info("Sorting complete.")
+
+        # --- Step 4: Merge patch and filtered base ---
+        logger.info(f"--- Step 4: Merging sorted files into {args.output} ---")
+        merge_command = [
+            "osmium", "merge",
+            sorted_patch_path,
+            sorted_filtered_base_path,
+            "-o", args.output, "--overwrite"
+        ]
+        try:
+            subprocess.run(merge_command, check=True, capture_output=True, text=True)
+            logger.info("Merge complete.")
+        except subprocess.CalledProcessError as e:
+            # The error message from osmium might be in stdout or stderr
+            output = e.stderr or e.stdout
+            logger.error(f"Osmium merge failed: {output}")
     finally:
         if os.path.exists(filtered_base_path):
             os.remove(filtered_base_path)
+        if os.path.exists(sorted_patch_path):
+            os.remove(sorted_patch_path)
+        if os.path.exists(sorted_filtered_base_path):
+            os.remove(sorted_filtered_base_path)
 
 
 def main() -> None:
@@ -332,7 +349,7 @@ def main() -> None:
     merge_parser.add_argument('-o', '--output', required=True, help="The path for the final merged output file.")
     merge_parser.add_argument('-f', '--force', action='store_true', help="Overwrite output file if it exists.")
     merge_parser.add_argument('-v', '--verbose', action='store_true', help="Enable verbose (DEBUG) logging.")
-    merge_parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='Show this help message and exit.')
+    #merge_parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='Show this help message and exit.')
 
     args = parser.parse_args()
 

@@ -32,6 +32,8 @@ if ! test -r "$PBF"; then
   do
     mv $file $(dirname $file)/$(basename $file | cut -d. -f1).osm.pbf
   done
+  python scripts/filter_osm.py  filter -v  -p updates/Blauer-Turm.osm -o 3d/public/Blauer-Turm.osm --tag-key meta --tag-value update
+
 fi
 
 if ! test -r "$PBF"; then
