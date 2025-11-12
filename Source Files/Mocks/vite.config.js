@@ -6,11 +6,18 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 import { DynamicPublicDirectory } from "vite-multiple-assets";
 import { NodePackageImporter } from "sass";
 
-const mimeTypes = { ".glb": "model/gltf-binary" };
+const mimeTypes = {
+  ".glb": "model/gltf-binary",
+  ".pbf": "application/vnd.mapbox-vector-tile"
+  //".pbf": "application/gzip"
+};
+const publicDirs = ["3d/public/**"];
 
 export default defineConfig({
+  appType: "mpa",
   server: {
     host: "127.0.0.1",
+    publicDir: false
     /*
     proxy: {
       "/map/tiles": {
@@ -33,21 +40,16 @@ export default defineConfig({
     }
     */
   },
-  base: "./",
   plugins: [
     nodePolyfills(),
-    {
-      apply: "build"
-    },
     stylelint({ build: true, dev: false, lintOnStart: true }),
-    DynamicPublicDirectory(["3D/public/**"], {
+    DynamicPublicDirectory(publicDirs, {
       ssr: false,
       mimeTypes
     })
   ],
   build: {
-    //target: 'esnext',
-    target: "es2020",
+    target: "es2022",
     commonjsOptions: { transformMixedEsModules: true },
     rollupOptions: {
       input: {

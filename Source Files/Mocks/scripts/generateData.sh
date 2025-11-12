@@ -2,14 +2,17 @@
 
 DOCKER_IMAGE=ghcr.io/cmahnke/map-tools/planetiler:latest
 DATA_IMAGE=ghcr.io/cmahnke/map-data/goettingen:latest
-TILES_DIR=./public/map
+TILES_DIR=./3d/public/map
 COVERAGE=goettingen
 MAX_ZOOM=15
-TILE_COMPRESSION=gzip
+TILE_COMPRESSION=none
 PLANETILER_OPTS="--use_wikidata=true"
+BBOX="9.7 51.45 10.1 51.6"
+PBF=$TILES_DIR/${COVERAGE}.osm.pbf
 
+# go install github.com/lmikolajczak/wms-tiles-downloader@v0.3.2
 
-if ! test -d "$TILES_DIR"; then
+if ! test -r "$PBF"; then
   mkdir -p $TILES_DIR
 
   docker pull --platform linux/amd64 "$DATA_IMAGE"
@@ -19,26 +22,47 @@ if ! test -d "$TILES_DIR"; then
     exit 1
   fi
 
-  CONTAINER_ID=`docker create $DATAIMAGE`
+  CONTAINER_ID=`docker create $DATA_IMAGE`
 
   #docker export $CONTAINER_ID  tar -xC $TMP_DIR
   docker cp "$CONTAINER_ID:data/." "$TILES_DIR"
   docker rm $CONTAINER_ID
+  rm -r $TILES_DIR/tiles
+  for file in $(find $TILES_DIR/ -name "*.osm.pbf");
+  do
+    mv $file $(dirname $file)/$(basename $file | cut -d. -f1).osm.pbf
+  done
 fi
 
-docker pull "$DOCKER_IMAGE"
-if [ $? -ne 0 ]; then
-  echo
-  echo "Failed to get Docker image ($DOCKER_IMAGE), is the deamon running?"
+if ! test -r "$PBF"; then
+  echo "No input file!"
   exit 1
+fi
+
+if [ -z "$(docker images -q "$DOCKER_IMAGE" 2> /dev/null)" ]; then
+  docker pull "$DOCKER_IMAGE"
+  if [ $? -ne 0 ]; then
+    echo
+    echo "Failed to get Docker image ($DOCKER_IMAGE), is the deamon running?"
+    exit 1
+  fi
 fi
 
 CMD="java -Xmx4g -jar /opt/planetiler/planetiler-dist-0.9.4-SNAPSHOT-with-deps.jar"
 #CMD="/opt/planetiler/bin/planetiler"
+BBOX=$(echo $BBOX| tr ' ' ',')
 
-ARGS="--download=true --languages=de,en --osm-path=$TILES_DIR/${COVERAGE}.osm.pbf --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --building_merge_z13=false --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS"
+echo "Using $PBF"
+ARGS="--download=true --languages=de,en --osm-path=$PBF --osm_parse_node_bounds=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --building_merge_z13=false --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --force --bounds=${BBOX} --exclude-layers=building"
 
 docker run -v "`pwd`:`pwd`" -w "`pwd`" $DOCKER_IMAGE $CMD $ARGS
+if [ $? -ne 0 ]; then
+    echo
+    echo "Failed process Tiles, is the Docker deamon running?"
+    exit 1
+  fi
 
-
+rm -r $TILES_DIR/tiles
 mb-util --silent --image_format=pbf ./data/output.mbtiles $TILES_DIR/tiles
+
+#python scripts/wms_downloader.py "https://opendata.lgln.niedersachsen.de/doorman/noauth/dgm_wms" -v --layer-name "ni_dgm1_farbe" --bbox 51.45 9.7 51.6 10.1 --crs EPSG:4326 --zoom 9-15 -f --crs EPSG:4326 -o $TILES_DIR/tiles

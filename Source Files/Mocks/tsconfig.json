@@ -12,9 +12,9 @@
     "strict": false,
     "allowJs": true,
     "typeRoots": [],
-    "target": "es2020",
+    "target": "es2022",
     "skipLibCheck": true,
-    "lib": ["dom", "es2020"]
+    "lib": ["dom", "es2022"]
   },
   "include": ["3D/assets/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts", "dist/**/*"]

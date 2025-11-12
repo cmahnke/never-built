@@ -1,2 +1,4 @@
 osmium
 shapely
+requests
+pyproj
