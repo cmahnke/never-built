@@ -3,7 +3,7 @@ import { center, points } from "@turf/turf";
 import { absUrl, loadOrParse } from "./base-map";
 import { grainyBWLayer } from "./layers/grainy-bw-layer";
 import { updateStyle, defaultSprites } from "./styles";
-import { createTreeLayer } from "./layers/tree-layer";
+import { treeLayer } from "./layers/tree-layer";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { StyleSpecification } from "maplibre-gl";
 //import maplibregl from 'maplibre-gl';
@@ -11,8 +11,9 @@ import { StyleSpecification } from "maplibre-gl";
 const metaJson = "/map/tiles/metadata.json";
 const styleJson = "/map-styles/style.json";
 const tilesUrl = "/map/tiles/{z}/{x}/{y}.pbf";
-const zoom = 14;
+const zoom = 17;
 const minZoom = 4;
+const defaultCenter = [9.935793,51.540400]
 
 const metaObj = await loadOrParse(metaJson);
 let centerObj: [number, number];
@@ -63,6 +64,9 @@ style.layers = style.layers.filter((layer) => {
   if ("type" in layer && layer.id.startsWith("building")) {
     return false;
   }
+  if (layer.id.includes("label") || layer.id.includes("admin") || layer.id == "housenumber") {
+    return false;
+  }
   return true;
 });
 
@@ -72,16 +76,16 @@ console.log(metaObj, centerObj, style, spriteUrl);
 const map = new maplibregl.Map({
   container: "map",
   style: style,
-  center: centerObj,
+  center: defaultCenter,
   zoom: zoom,
   minZoom: minZoom,
   
-  pitch: 60,
-  bearing: -60
+  pitch: 75,
+  bearing: -10
   
 });
 // See https://github.com/onthegomap/planetiler/discussions/1389#discussioncomment-14924016
-map.setVerticalFieldOfView(5);
+map.setVerticalFieldOfView(60);
 
 map.on("load", () => {
   const source = "never_built";
@@ -112,10 +116,11 @@ map.on("load", () => {
 */
 
 
-  //map.addLayer(grainyBWLayer);
+  // Configure and add the tree layer
+  treeLayer.source = "openmaptiles";
+  treeLayer.sourceLayer = "tree";
+  
 
-
-  //map.addLayer(createTreeLayer(map));
   map.addLayer({
     id: "3d-buildings",
     source: "openmaptiles",
@@ -128,6 +133,9 @@ map.on("load", () => {
       "fill-extrusion-base": ["get", "min_height"]
     }
   });
+  map.addLayer(treeLayer);
+
+  map.addLayer(grainyBWLayer);
 
   map.on("click", "3d-buildings", (e) => {
     if (e.features?.length) {

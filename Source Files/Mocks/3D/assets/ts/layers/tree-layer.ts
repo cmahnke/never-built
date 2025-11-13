@@ -4,24 +4,19 @@ import { mat4 } from "gl-matrix";
 
 const vertexShaderSource = `
     uniform mat4 u_matrix;
-    attribute vec3 a_pos;
-    attribute vec3 a_normal;
-    uniform vec3 u_light_direction;
-    varying float v_light;
+    attribute vec2 a_pos;
 
     void main() {
-        gl_Position = u_matrix * vec4(a_pos, 1.0);
-        v_light = max(0.0, dot(normalize(a_normal), u_light_direction)) * 0.5 + 0.5;
+        gl_Position = u_matrix * vec4(a_pos, 0.0, 1.0);
+        gl_PointSize = 10.0;
     }
 `;
 
 const fragmentShaderSource = `
     precision mediump float;
-    varying float v_light;
-    uniform vec4 u_color;
 
     void main() {
-        gl_FragColor = vec4(u_color.rgb * v_light, u_color.a);
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Red
     }
 `;
 
@@ -65,13 +60,18 @@ function createSphere(radius: number, segments: number, rings: number) {
   };
 }
 
-export function createTreeLayer(map: maplibregl.Map): maplibregl.CustomLayerInterface {
-  const treeLayer: maplibregl.CustomLayerInterface = {
+export const treeLayer: maplibregl.CustomLayerInterface & { source: string; sourceLayer: string } = {
     id: "tree-layer",
     type: "custom",
     renderingMode: "3d",
 
+    // Configurable properties
+    source: 'openmaptiles',
+    sourceLayer: 'tree',
+
     onAdd: function (map, gl) {
+      this.map = map;
+
       const vertexShader = gl.createShader(gl.VERTEX_SHADER);
       gl.shaderSource(vertexShader, vertexShaderSource);
       gl.compileShader(vertexShader);
@@ -86,55 +86,21 @@ export function createTreeLayer(map: maplibregl.Map): maplibregl.CustomLayerInte
       gl.linkProgram(this.program);
 
       this.a_pos = gl.getAttribLocation(this.program, "a_pos");
-      this.a_normal = gl.getAttribLocation(this.program, "a_normal");
       this.u_matrix = gl.getUniformLocation(this.program, "u_matrix");
-      this.u_color = gl.getUniformLocation(this.program, "u_color");
-      this.u_light_direction = gl.getUniformLocation(this.program, "u_light_direction");
-
-      const sphereGeom = createSphere(4, 16, 16);
-      this.sphereVertexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.sphereVertexBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, sphereGeom.vertices, gl.STATIC_DRAW);
-
-      this.sphereNormalBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.sphereNormalBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, sphereGeom.normals, gl.STATIC_DRAW);
-
-      this.sphereIndexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.sphereIndexBuffer);
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, sphereGeom.indices, gl.STATIC_DRAW);
-      this.sphereIndexCount = sphereGeom.indices.length;
-
-      const trunkGeom = {
-        vertices: new Float32Array([0, 0, -5, 0, 0, 5]),
-        normals: new Float32Array([1, 0, 0, 1, 0, 0]) // Dummy normals
-      };
-      this.trunkVertexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.trunkVertexBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, trunkGeom.vertices, gl.STATIC_DRAW);
-
-      this.trunkNormalBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.trunkNormalBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, trunkGeom.normals, gl.STATIC_DRAW);
+      this.dotBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.dotBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0]), gl.STATIC_DRAW);
     },
 
-    //TODO: Make source configurable
     render: function (gl: WebGLRenderingContext, matrix: number[]) {
-      const features = map.querySourceFeatures("openmaptiles", { sourceLayer: "tree" });
-      //console.log(features);
-      const trees = features.filter((f) => f.properties.class === "type" && f.properties.subclass === "tree");
-      //const trees = features;
+      const features = this.map.querySourceFeatures(this.source, { sourceLayer: this.sourceLayer });
 
       gl.useProgram(this.program);
 
-      const lightDirection = map.getLight().position.map((n) => n * 1000);
-      gl.uniform3f(this.u_light_direction, lightDirection[0], lightDirection[1], lightDirection[2]);
-
-      trees.forEach((tree) => {
+      features.forEach((tree) => {
         // Ensure the geometry is a Point type and has valid coordinates
         if (tree.geometry && tree.geometry.type === 'Point' && Array.isArray(tree.geometry.coordinates) && tree.geometry.coordinates.length >= 2) {
           const coords = tree.geometry.coordinates as [number, number];
-          // Check if coordinates are valid numbers
           if (isNaN(coords[0]) || isNaN(coords[1])) {
             console.warn("Invalid coordinates for tree feature:", tree);
             return; // Skip this feature if coordinates are NaN
@@ -142,57 +108,21 @@ export function createTreeLayer(map: maplibregl.Map): maplibregl.CustomLayerInte
 
           const location = maplibregl.MercatorCoordinate.fromLngLat(coords as maplibregl.LngLatLike, 0);
 
-          // Use the height property from OSM for the tree's height, otherwise default to 10 meters.
-          const treeHeight = tree.properties.height ? parseFloat(tree.properties.height) : 10;
-
-          // The trunk will be scaled to the tree's height.
-          const trunkHeight = treeHeight * 0.7;
-          const canopyRadius = treeHeight * 0.3;
-
-          const treeMatrix = mat4.clone(matrix as mat4);
-          mat4.translate(treeMatrix, treeMatrix, [location.x, location.y, location.z]);
-
-          // Render trunk
-          const trunkMatrix = mat4.clone(treeMatrix);
-
-          gl.uniform4f(this.u_color, 0.3, 0.2, 0.1, 1.0);
-          gl.uniformMatrix4fv(this.u_matrix, false, trunkMatrix);
-
-          gl.bindBuffer(gl.ARRAY_BUFFER, this.trunkVertexBuffer);
+          const modelMatrix = mat4.create();
+          mat4.translate(modelMatrix, modelMatrix, [location.x, location.y, location.z]);
+          mat4.multiply(modelMatrix, matrix as mat4, modelMatrix);
+          
+          gl.uniformMatrix4fv(this.u_matrix, false, modelMatrix);
+          
+          gl.bindBuffer(gl.ARRAY_BUFFER, this.dotBuffer);
           gl.enableVertexAttribArray(this.a_pos);
-          gl.vertexAttribPointer(this.a_pos, 3, gl.FLOAT, false, 0, 0);
-
-          gl.bindBuffer(gl.ARRAY_BUFFER, this.trunkNormalBuffer);
-          gl.vertexAttribPointer(this.a_normal, 3, gl.FLOAT, false, 0, 0);
-
-          gl.lineWidth(2);
-          gl.drawArrays(gl.LINES, 0, 2);
-
-          // Render canopy
-          const canopyMatrix = mat4.clone(treeMatrix);
-          mat4.translate(canopyMatrix, canopyMatrix, [0, 0, trunkHeight]); // Position canopy on top of the trunk
-          mat4.scale(canopyMatrix, canopyMatrix, [canopyRadius / 4, canopyRadius / 4, canopyRadius / 4]); // Scale canopy based on radius
-
-          gl.uniform4f(this.u_color, 0.1, 0.5, 0.1, 1.0);
-          gl.uniformMatrix4fv(this.u_matrix, false, canopyMatrix);
-
-          gl.bindBuffer(gl.ARRAY_BUFFER, this.sphereVertexBuffer);
-          gl.enableVertexAttribArray(this.a_pos);
-          gl.vertexAttribPointer(this.a_pos, 3, gl.FLOAT, false, 0, 0);
-
-          gl.bindBuffer(gl.ARRAY_BUFFER, this.sphereNormalBuffer);
-          gl.enableVertexAttribArray(this.a_normal);
-          gl.vertexAttribPointer(this.a_normal, 3, gl.FLOAT, false, 0, 0);
-
-          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.sphereIndexBuffer);
-          gl.drawElements(gl.TRIANGLES, this.sphereIndexCount, gl.UNSIGNED_SHORT, 0);
+          gl.vertexAttribPointer(this.a_pos, 2, gl.FLOAT, false, 0, 0);
+          gl.drawArrays(gl.POINTS, 0, 1);
         } else {
           console.warn("Skipping feature with non-Point geometry or invalid coordinates:", tree);
         }
       });
 
-      map.triggerRepaint();
+      this.map.triggerRepaint();
     }
-  };
-  return treeLayer;
-}
+};
