@@ -1,0 +1,19 @@
+#seed.yml
+# -------------------------------
+# MapProxy seeding configuration.
+# -------------------------------
+
+seeds:
+  dgm1_seed:
+    caches: [dgm1_cache]
+    coverages: [goettingen]
+# It's possible to configure the (zoom) levels to be fetched
+    levels:
+      from: 11
+      to: 16
+
+coverages:
+  goettingen:
+# This limits the downloaded tiles to a area arround Göttingen
+    bbox: [9.7, 51.45, 10.1, 51.6]
+    srs: EPSG:4326

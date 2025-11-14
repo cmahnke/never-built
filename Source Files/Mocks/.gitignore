@@ -2,3 +2,6 @@ data
 tiles
 dist
 3d/public/mp-styles
+cache_data
+3d/public/topo-map
+test.*

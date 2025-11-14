@@ -67,4 +67,9 @@ if [ $? -ne 0 ]; then
 rm -r $TILES_DIR/tiles
 mb-util --silent --image_format=pbf ./data/output.mbtiles $TILES_DIR/tiles
 
-#python scripts/wms_downloader.py "https://opendata.lgln.niedersachsen.de/doorman/noauth/dgm_wms" -v --layer-name "ni_dgm1_farbe" --bbox 51.45 9.7 51.6 10.1 --crs EPSG:4326 --zoom 9-15 -f --crs EPSG:4326 -o $TILES_DIR/tiles
+docker run -v "`pwd`:`pwd`" -w "`pwd`" --entrypoint="" ghcr.io/mapproxy/mapproxy/mapproxy:6.0.1 /mapproxy/.local/bin/mapproxy-seed -s conf/seed.yaml -f conf/mapproxy.yaml
+
+rm -r $TILES_DIR/../topo-map/tile-locks
+cp -r $TILES_DIR/../topo-map/* $TILES_DIR/tiles/
+
+rm -r $TILES_DIR/../topo-map

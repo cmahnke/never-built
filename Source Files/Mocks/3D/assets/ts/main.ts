@@ -80,7 +80,7 @@ const map = new maplibregl.Map({
   zoom: zoom,
   minZoom: minZoom,
   
-  pitch: 75,
+  pitch: 55,
   bearing: -10
   
 });
@@ -92,35 +92,38 @@ map.on("load", () => {
 
   map.addSource(source, {
     type: "vector",
-    minzoom: 0,
+    minzoom: 9,
     maxzoom: 15
   });
 
   const layers = map.getStyle().layers;
-  /*
-  map.addSource('topo-tiles', {
+
+  map.addSource('terrainSource', {
     'type': 'raster-dem',
     'tiles': [
       '/map/tiles/{z}/{x}/{y}.png'
     ],
     'tileSize': 256,
-    minzoom: 9,
-    maxzoom: 15
+    minzoom: 11,
+    maxzoom: 16,
+    encoding: "custom",
+    baseShift: 0,
+    redFactor: 1,
+    greenFactor: 1,
+    blueFactor: 1,
+    /*
+    paint: {
+      "raster-resampling": "linear"
+    }
+    */
   });
 
-  map.addLayer({
-    'id': 'topo-layer',
-    'type': 'raster',
-    'source': 'topo-tiles',
-  });
-*/
-
-
-  // Configure and add the tree layer
-  treeLayer.source = "openmaptiles";
-  treeLayer.sourceLayer = "tree";
   
-
+  map.setTerrain({
+    source: 'terrainSource',
+    exaggeration: 1
+  });
+  
   map.addLayer({
     id: "3d-buildings",
     source: "openmaptiles",
@@ -133,7 +136,12 @@ map.on("load", () => {
       "fill-extrusion-base": ["get", "min_height"]
     }
   });
+  /*
+  // Configure and add the tree layer
+  treeLayer.source = "openmaptiles";
+  treeLayer.sourceLayer = "tree";
   map.addLayer(treeLayer);
+  */
 
   map.addLayer(grainyBWLayer);
 
