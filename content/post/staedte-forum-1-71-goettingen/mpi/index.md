@@ -32,4 +32,4 @@ hat hier einen recht sperrigen Namen: "Institutsneubauten für ein biophysikalis
 
 Unten ein Photo des Gebäudes kurz nach der Fertigstellung, es fällt auf, dass der letzte Turm anders ausgeführt wurde.
 
-{{< iiif/iiif src="photo/info.json"  >}}
+{{< iiif/iiif src="mpi/info.json"  >}}
