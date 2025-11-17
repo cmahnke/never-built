@@ -3,17 +3,17 @@
 # MapProxy configuration.
 # -----------------------
 services:
-# this is the webservice usefull during setting up the configuration
+  # this is the webservice usefull during setting up the configuration
   demo:
- # The service to serve the tiles 
+  # The service to serve the tiles
   tms:
     use_grid_names: false
-    origin: 'nw'
+    origin: "nw"
 
 sources:
   dgm1_wms:
     type: wms
-    supported_srs: ['EPSG:4326']
+    supported_srs: ["EPSG:4326"]
     wms_opts:
       featureinfo: true
     req:
@@ -27,30 +27,30 @@ layers:
     sources: [dgm1_cache]
 
 caches:
-# This is the cache for the reprojected tiles, save them
+  # This is the cache for the reprojected tiles, save them
   dgm1_cache:
     grids: [webmercator]
     sources: [dgm1_cache_original]
-# This defines the location and directory structure of the downloaded tiles
+    # This defines the location and directory structure of the downloaded tiles
     cache:
       type: file
       directory: ../3d/public/topo-map
       directory_layout: tms
       coverage:
-          bbox: [9.7, 51.45, 10.1, 51.6]
-          srs: EPSG:4326
-# This is the cache for the dowloaded tiles, don't save them
+        bbox: [9.7, 51.45, 10.1, 51.6]
+        srs: EPSG:4326
+  # This is the cache for the dowloaded tiles, don't save them
   dgm1_cache_original:
     sources: [dgm1_wms]
     grids: [dgm1_grid]
     disable_storage: true
 
 grids:
-# The SRS for the source, needed to mal Mapproxy reproject the tiles
+  # The SRS for the source, needed to mal Mapproxy reproject the tiles
   dgm1_grid:
-    srs: 'EPSG:4326'
+    srs: "EPSG:4326"
     num_levels: 16
-    tile_size: [256,256]
+    tile_size: [256, 256]
   webmercator:
     base: GLOBAL_WEBMERCATOR
 
@@ -62,6 +62,6 @@ globals:
     formats:
       image/png:
         encoding_options:
-# This is important for the topographic tiles, to make sure that the colors
-# match between tiles. Otherwise you'll see jups in height between tiles.
+          # This is important for the topographic tiles, to make sure that the colors
+          # match between tiles. Otherwise you'll see jups in height between tiles.
           quantizer: mediancut

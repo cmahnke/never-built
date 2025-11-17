@@ -1,18 +1,18 @@
 import "maplibre-gl";
 
 export const grainyBWLayer: maplibregl.CustomLayerInterface = {
-    id: 'grainy-bw',
-    type: 'custom',
-    renderingMode: '2d',
+  id: "grainy-bw",
+  type: "custom",
+  renderingMode: "2d",
 
-    // Configurable properties with default values
-    grainAmount: 0.06,
-    blurIntensity: 0.7,
-    halftoneSize: 0.0,
-    halftoneAngle: 45.0,
+  // Configurable properties with default values
+  grainAmount: 0.06,
+  blurIntensity: 0.7,
+  halftoneSize: 0.0,
+  halftoneAngle: 45.0,
 
-    onAdd: function(map, gl) {
-        const vertexSource = `
+  onAdd: function (map, gl) {
+    const vertexSource = `
             attribute vec2 a_pos;
             varying vec2 v_tex_pos;
             void main() {
@@ -21,7 +21,7 @@ export const grainyBWLayer: maplibregl.CustomLayerInterface = {
             }
         `;
 
-        const fragmentSource = `
+    const fragmentSource = `
             precision mediump float;
             varying vec2 v_tex_pos;
             uniform sampler2D u_texture;
@@ -75,62 +75,62 @@ export const grainyBWLayer: maplibregl.CustomLayerInterface = {
             }
         `;
 
-        const vertexShader = gl.createShader(gl.VERTEX_SHADER);
-        gl.shaderSource(vertexShader, vertexSource);
-        gl.compileShader(vertexShader);
+    const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vertexShader, vertexSource);
+    gl.compileShader(vertexShader);
 
-        const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-        gl.shaderSource(fragmentShader, fragmentSource);
-        gl.compileShader(fragmentShader);
+    const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fragmentShader, fragmentSource);
+    gl.compileShader(fragmentShader);
 
-        this.program = gl.createProgram();
-        gl.attachShader(this.program, vertexShader);
-        gl.attachShader(this.program, fragmentShader);
-        gl.linkProgram(this.program);
+    this.program = gl.createProgram();
+    gl.attachShader(this.program, vertexShader);
+    gl.attachShader(this.program, fragmentShader);
+    gl.linkProgram(this.program);
 
-        this.a_pos = gl.getAttribLocation(this.program, "a_pos");
-        this.u_texture = gl.getUniformLocation(this.program, "u_texture");
-        this.u_resolution = gl.getUniformLocation(this.program, "u_resolution");
-        this.u_grain_amount = gl.getUniformLocation(this.program, "u_grain_amount");
-        this.u_blur_intensity = gl.getUniformLocation(this.program, "u_blur_intensity");
-        this.u_halftone_size = gl.getUniformLocation(this.program, "u_halftone_size");
-        this.u_halftone_angle = gl.getUniformLocation(this.program, "u_halftone_angle");
+    this.a_pos = gl.getAttribLocation(this.program, "a_pos");
+    this.u_texture = gl.getUniformLocation(this.program, "u_texture");
+    this.u_resolution = gl.getUniformLocation(this.program, "u_resolution");
+    this.u_grain_amount = gl.getUniformLocation(this.program, "u_grain_amount");
+    this.u_blur_intensity = gl.getUniformLocation(this.program, "u_blur_intensity");
+    this.u_halftone_size = gl.getUniformLocation(this.program, "u_halftone_size");
+    this.u_halftone_angle = gl.getUniformLocation(this.program, "u_halftone_angle");
 
-        const buf = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0, 1, 1, 1]), gl.STATIC_DRAW);
-        this.buffer = buf;
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0, 1, 1, 1]), gl.STATIC_DRAW);
+    this.buffer = buf;
 
-        // Create a texture to hold the map's content
-        this.texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    },
-    render: function(gl, matrix) {
-        // Copy the map's content to the texture
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.drawingBufferWidth, gl.drawingBufferHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-        gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight, 0);
+    // Create a texture to hold the map's content
+    this.texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  },
+  render: function (gl, matrix) {
+    // Copy the map's content to the texture
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.drawingBufferWidth, gl.drawingBufferHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight, 0);
 
-        gl.useProgram(this.program);
+    gl.useProgram(this.program);
 
-        // Set uniforms
-        gl.uniform2f(this.u_resolution, gl.drawingBufferWidth, gl.drawingBufferHeight);
-        gl.uniform1i(this.u_texture, 0); // texture unit 0
-        gl.uniform1f(this.u_grain_amount, this.grainAmount);
-        gl.uniform1f(this.u_blur_intensity, this.blurIntensity);
-        gl.uniform1f(this.u_halftone_size, this.halftoneSize);
-        gl.uniform1f(this.u_halftone_angle, this.halftoneAngle);
+    // Set uniforms
+    gl.uniform2f(this.u_resolution, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    gl.uniform1i(this.u_texture, 0); // texture unit 0
+    gl.uniform1f(this.u_grain_amount, this.grainAmount);
+    gl.uniform1f(this.u_blur_intensity, this.blurIntensity);
+    gl.uniform1f(this.u_halftone_size, this.halftoneSize);
+    gl.uniform1f(this.u_halftone_angle, this.halftoneAngle);
 
-        // Bind the vertex buffer and set the attribute pointer
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-        gl.enableVertexAttribArray(this.a_pos);
-        gl.vertexAttribPointer(this.a_pos, 2, gl.FLOAT, false, 0, 0);
+    // Bind the vertex buffer and set the attribute pointer
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+    gl.enableVertexAttribArray(this.a_pos);
+    gl.vertexAttribPointer(this.a_pos, 2, gl.FLOAT, false, 0, 0);
 
-        // Draw the fullscreen quad
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    }
-}
+    // Draw the fullscreen quad
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+};
