@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 DOCKER_IMAGE=ghcr.io/cmahnke/map-tools/planetiler:latest
 DATA_IMAGE=ghcr.io/cmahnke/map-data/goettingen:latest
 TILES_DIR=./3d/public/map
@@ -32,8 +34,9 @@ if ! test -r "$PBF"; then
   do
     mv $file $(dirname $file)/$(basename $file | cut -d. -f1).osm.pbf
   done
-  python scripts/osm_patcher.py  filter -v  -p updates/Blauer-Turm.osm -o 3d/public/Blauer-Turm.osm -f -v
-
+  python scripts/osm_tool.py  filter -v  -p updates/Blauer-Turm.osm -o 3d/public/Blauer-Turm.osm -f -v
+  python scripts/osm_tool.py patch -i $TILES_DIR/goettingen.osm.pbf -p 3d/public/Blauer-Turm.osm -o $TILES_DIR/goettingen-nb.osm.pbf -v -f
+  PBF=$TILES_DIR/goettingen-nb.osm.pbf
 fi
 
 if ! test -r "$PBF"; then
@@ -59,17 +62,17 @@ ARGS="--download=true --languages=de,en --osm-path=$PBF --osm_parse_node_bounds=
 
 docker run -v "`pwd`:`pwd`" -w "`pwd`" $DOCKER_IMAGE $CMD $ARGS
 if [ $? -ne 0 ]; then
-    echo
-    echo "Failed process Tiles, is the Docker deamon running?"
-    exit 1
-  fi
+  echo
+  echo "Failed process Tiles, is the Docker deamon running?"
+  exit 1
+fi
 
-rm -r $TILES_DIR/tiles
+rm -rf $TILES_DIR/tiles
 mb-util --silent --image_format=pbf ./data/output.mbtiles $TILES_DIR/tiles
 
 docker run -v "`pwd`:`pwd`" -w "`pwd`" --entrypoint="" ghcr.io/mapproxy/mapproxy/mapproxy:6.0.1 /mapproxy/.local/bin/mapproxy-seed -s conf/seed.yaml -f conf/mapproxy.yaml
 
-rm -r $TILES_DIR/../topo-map/tile-locks
+rm -rf $TILES_DIR/../topo-map/tile-locks
 cp -r $TILES_DIR/../topo-map/* $TILES_DIR/tiles/
 
-rm -r $TILES_DIR/../topo-map
+rm -rf $TILES_DIR/../topo-map

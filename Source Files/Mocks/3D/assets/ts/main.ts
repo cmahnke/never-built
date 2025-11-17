@@ -6,6 +6,7 @@ import { updateStyle, defaultSprites } from "./styles";
 import { treeLayer } from "./layers/tree-layer";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { StyleSpecification } from "maplibre-gl";
+import chroma from "chroma-js";
 //import maplibregl from 'maplibre-gl';
 
 const metaJson = "/map/tiles/metadata.json";
@@ -14,6 +15,14 @@ const tilesUrl = "/map/tiles/{z}/{x}/{y}.pbf";
 const zoom = 17;
 const minZoom = 4;
 const defaultCenter = [9.935793,51.540400]
+
+const fog = "#dcdbdf";
+const sky = "#87ceeb";
+const blend = .5;
+  
+//const skyColors = chroma.scale([fog, sky]).domain([1, 100000], 7, 'log').colors(6);
+
+const skyColors = chroma.scale([fog, sky]).mode('lab').colors(6);
 
 const metaObj = await loadOrParse(metaJson);
 let centerObj: [number, number];
@@ -73,6 +82,29 @@ style.layers = style.layers.filter((layer) => {
 
 console.log(metaObj, centerObj, style, spriteUrl);
 
+const terrainSource = {
+    'type': 'raster-dem',
+    'tiles': [
+      '/map/tiles/{z}/{x}/{y}.png'
+    ],
+    'tileSize': 256,
+    minzoom: 11,
+    maxzoom: 15,
+    encoding: "custom",
+    baseShift: 0,
+    redFactor: .4,
+    greenFactor: .4,
+    blueFactor: .4,
+    antialias: true
+    /*
+    paint: {
+      "raster-resampling": "linear"
+    }
+    */
+  };
+  
+
+
 const map = new maplibregl.Map({
   container: "map",
   style: style,
@@ -80,12 +112,12 @@ const map = new maplibregl.Map({
   zoom: zoom,
   minZoom: minZoom,
   
-  pitch: 55,
+  pitch: 70,
   bearing: -10
   
 });
 // See https://github.com/onthegomap/planetiler/discussions/1389#discussioncomment-14924016
-map.setVerticalFieldOfView(60);
+map.setVerticalFieldOfView(30);
 
 map.on("load", () => {
   const source = "never_built";
@@ -98,32 +130,32 @@ map.on("load", () => {
 
   const layers = map.getStyle().layers;
 
-  map.addSource('terrainSource', {
-    'type': 'raster-dem',
-    'tiles': [
-      '/map/tiles/{z}/{x}/{y}.png'
-    ],
-    'tileSize': 256,
-    minzoom: 11,
-    maxzoom: 16,
-    encoding: "custom",
-    baseShift: 0,
-    redFactor: 1,
-    greenFactor: 1,
-    blueFactor: 1,
-    /*
-    paint: {
-      "raster-resampling": "linear"
-    }
-    */
-  });
+  map.addSource('terrainSource', terrainSource);
+  map.addSource('hillshadeSource', terrainSource);
 
-  
   map.setTerrain({
     source: 'terrainSource',
     exaggeration: 1
   });
   
+  map.addLayer({
+      id: 'hills',
+      type: 'hillshade',
+      source: 'hillshadeSource',
+      layout: {visibility: 'visible'},
+      paint: {'hillshade-shadow-color': '#473B24'}
+  })
+  
+  
+  map.setSky({
+    'sky-color': skyColors[0],
+    'sky-horizon-blend': blend,
+    'horizon-color': skyColors[2],
+    'horizon-fog-blend': blend,
+    'fog-color': skyColors[5],
+    'fog-ground-blend': 0,
+  })
+
   map.addLayer({
     id: "3d-buildings",
     source: "openmaptiles",
@@ -136,12 +168,12 @@ map.on("load", () => {
       "fill-extrusion-base": ["get", "min_height"]
     }
   });
-  /*
+  
   // Configure and add the tree layer
   treeLayer.source = "openmaptiles";
   treeLayer.sourceLayer = "tree";
   map.addLayer(treeLayer);
-  */
+  
 
   map.addLayer(grainyBWLayer);
 

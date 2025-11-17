@@ -2,6 +2,5 @@ osmium
 shapely
 requests
 pyproj
-osm2geojson
-quackosm
-geopandas shapely
+geopandas
+shapely

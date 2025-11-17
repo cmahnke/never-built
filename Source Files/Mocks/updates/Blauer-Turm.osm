@@ -67,8 +67,8 @@
   </node>
   <node id='-25953' action='modify' visible='true' lat='51.54255463538' lon='9.93639766451' />
   <node id='-25954' action='modify' visible='true' lat='51.54250688519' lon='9.93586745456' />
-  <node id='-25955' action='modify' visible='true' lat='51.54245389751' lon='9.93587979168' />
-  <node id='-25956' action='modify' visible='true' lat='51.54244453059' lon='9.93577578317'>
+  <node id='-25955' action='modify' visible='true' lat='51.54245562517' lon='9.93587915063' />
+  <node id='-25956' action='modify' visible='true' lat='51.54244546087' lon='9.93577556949'>
     <tag k='entrance' v='yes' />
     <tag k='indoor' v='yes' />
     <tag k='level' v='0' />
