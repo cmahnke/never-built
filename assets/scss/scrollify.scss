@@ -215,6 +215,10 @@ html:has(.scroll-layout) {
           grid-template-columns: 1fr 1fr 1fr;
         }
 
+        .iiif.iiif-image {
+          display: none;
+        }
+
         .content-section {
           padding: 1rem;
           width: 85%;

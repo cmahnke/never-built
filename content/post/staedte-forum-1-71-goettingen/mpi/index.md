@@ -1,6 +1,6 @@
 ---
 title: "Institutsneubauten für ein biophysikalisch-chemisches Zentrum der Max-Planck-Gesellschaft zur Förderung der Wissenschaften e. V. in Göttingen-Nikolausberg"
-date: 2025-03-05T17:15:07+02:00
+date: 2025-08-05T17:15:07+02:00
 tags:
 - high-rise
 - university
@@ -14,7 +14,6 @@ params:
     coordinates:
     - 9.9633186
     - 51.5605084
-draft: true
 resources:
 - src: "page072.jxl"
   name: preview
@@ -30,3 +29,7 @@ Das MPI am Fassberg...
 <!--more-->
 
 hat hier einen recht sperrigen Namen: "Institutsneubauten für ein biophysikalisch-chemisches Zentrum der Max-Planck-Gesellschaft zur Förderung der Wissenschaften e. V. in Göttingen-Nikolausberg"
+
+Unten ein Photo des Gebäudes kurz nach der Fertigstellung, es fällt auf, dass der letzte Turm anders ausgeführt wurde.
+
+{{< iiif/iiif src="photo/info.json"  >}}
