@@ -116,8 +116,8 @@ jobs:
         run: |
           cp archived-urls.txt docs/
 
-      - name: Copy future
-        run: mv ./future ./docs/
+      # - name: Copy future
+      #   run: mv ./future ./docs/
 
       # - name: Cleanup Build
       #   run: |
