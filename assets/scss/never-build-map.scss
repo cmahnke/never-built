@@ -97,6 +97,10 @@ ol-viewport {
   }
 }
 
+.ol-attribution {
+  font-family: $text-font;
+}
+
 .rotate-left .icon-left:after,
 .rotate-right .icon-right:after {
   background-position: center top;

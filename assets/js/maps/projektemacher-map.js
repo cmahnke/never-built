@@ -1,4 +1,5 @@
 import {Map, View} from 'ol';
+import Attribution from 'ol/control/Attribution.js';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import VectorSource from 'ol/source/Vector.js';
 import VectorLayer from 'ol/layer/Vector.js';
@@ -135,12 +136,16 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
   const layers = [];
   var geojsonSource = geoJSONVectorSource(geojsonObj);
 
-  let controls = {controls: []};
+  const attribution = new Attribution({
+    collapsible: true,
+  });
+
+  let controls = {controls: [attribution]};
   if (disabled) {
     controls["interactions"] = [];
   } else {
     controls.controls = [new Zoom({zoomInTipLabel: toolTips[lang]['zoomIn'], zoomOutTipLabel: toolTips[lang]['zoomOut']}),
-      new FullScreen({tipLabel: toolTips[lang]['fullscreen']})]
+      new FullScreen({tipLabel: toolTips[lang]['fullscreen']}), attribution]
   }
 
   if (debug) {
