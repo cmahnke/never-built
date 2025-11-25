@@ -19,6 +19,8 @@ import {Control, FullScreen, Zoom, MousePosition} from 'ol/control';
 
 const defaultSprites = "/map-styles/sprite";
 const defaultFonts = "/css/fonts/{font-family}.css";
+const defaultAttribution = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>';
+
 
 function geoJSONVectorSource(geojson) {
   var parser = new GeoJSON({dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
@@ -50,7 +52,7 @@ function checkMapboxStyle(style) {
   return false;
 }
 
-export async function projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font) {
+export async function projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font, attribution) {
   var geojsonObj, styleObj, bboxObj, bboxObj, centerObj, markerObj;
   const lang = getLang();
   source = absUrl(source);
@@ -103,6 +105,10 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
     debug = false;
   }
 
+  if (attribution === undefined) {
+    attribution = defaultAttribution;
+  }
+
   if (initialZoom === undefined) {
     initialZoom = 0;
   }
@@ -127,7 +133,7 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
 
   if (style !== undefined) {
     styleObj = await loadOrParse(style)
-    styleObj = updateStyle(styleObj, source, initialZoom, undefined, undefined, bboxObj, centerObj, background, absUrl(defaultSprites), defaultFonts, font);
+    styleObj = updateStyle(styleObj, source, initialZoom, undefined, undefined, bboxObj, centerObj, background, absUrl(defaultSprites), defaultFonts, font, attribution);
   } else {
     styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }
@@ -136,16 +142,14 @@ export async function projektemacherMap(elem, geojson, source, style, bbox, cent
   const layers = [];
   var geojsonSource = geoJSONVectorSource(geojsonObj);
 
-  const attribution = new Attribution({
-    collapsible: true,
-  });
-
-  let controls = {controls: [attribution]};
+  let controls = {controls: [new Attribution({
+    collapsible: false,
+  })]};
   if (disabled) {
     controls["interactions"] = [];
   } else {
     controls.controls = [new Zoom({zoomInTipLabel: toolTips[lang]['zoomIn'], zoomOutTipLabel: toolTips[lang]['zoomOut']}),
-      new FullScreen({tipLabel: toolTips[lang]['fullscreen']}), attribution]
+      new FullScreen({tipLabel: toolTips[lang]['fullscreen']}), new Attribution({collapsible: true})]
   }
 
   if (debug) {

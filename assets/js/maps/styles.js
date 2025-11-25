@@ -1,7 +1,7 @@
 const defaultSprites = "/map-styles/sprite";
 const defaultFonts = "/css/fonts/{font-family}.css";
 
-export function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, background, sprites, fontPath, font) {
+export function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, center, background, sprites, fontPath, font, attribution) {
   const sourceKey = Object.keys(style.sources)[0]
   const source = style.sources[sourceKey]
 
@@ -20,6 +20,10 @@ export function updateStyle(style, url, initialzoom, minzoom, maxzoom, bounds, c
     bounds = bounds.flat().map(e => { return Number(e) });
     source["bounds"] = bounds
   }
+  if (attribution !== undefined) {
+    source["attribution"] = attribution;
+  }
+
   if (center !== undefined) {
     style.center = center;
   }

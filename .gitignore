@@ -78,3 +78,4 @@ static/images/apple-touch-icon.png
 *.bib.html
 assets/scss/flags/flags.scss
 pagefind
+assets/scss/npm-fonts
