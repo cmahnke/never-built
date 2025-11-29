@@ -31,10 +31,6 @@ content/**/front*/
 content/**/back/
 content/**/back*/
 content/**/end/a
-content/future/3d/**/*-right.*
-content/future/3d/**/*-left.*
-content/future/3d/**/*.gif
-content/future/3d/**/*.jps
 content/**/img*-*.png
 content/**/page*-*.png
 content/**/img*-*.json
@@ -51,7 +47,6 @@ static/fonts
 # 3D Models
 content/**/*.gtlf
 content/**/*.glb
-!content/**/uranium.glb
 data/stats.json
 !content/**/img/*.hdr.jpeg
 scripts/__pycache__
@@ -60,8 +55,6 @@ tmp*.jpg
 Source Files/front.hdr
 static/images/cm.*
 static/images/logo.*
-Source Files/Marmolada/model.blend1
-Source Files/Marmolada/clipped.tif.aux.xml
 content/**/ogPreview.*g
 content/**/ogPreview-tmp*.*g
 content/**/ogPreview-overlay.*g
@@ -79,3 +72,5 @@ static/images/apple-touch-icon.png
 assets/scss/flags/flags.scss
 pagefind
 assets/scss/npm-fonts
+#content/post/**/cut*.jpg
+#content/post/**/blueprint*.jpg
