@@ -23,7 +23,7 @@
         {{ .Title }}
     </div>
     <div class="popup-content">
-        {{ $content | markdownify }}
+        {{ $content | markdownify | htmlUnescape | safeHTML }}
     </div>
     {{- $image := partial "preview/preview-internal.html" (dict "context" . "fit" $fit "postProcess" false) -}}
     {{- $image := .Resources.Get (printf "%s-anaglyph.jpg" $baseImageName) -}}
