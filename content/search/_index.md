@@ -8,6 +8,8 @@ displayinlist: false
 archive: false
 news: false
 sectionContent: false
+sitemap:
+  disable: true
 cascade:
   - target:
       kind: '{page,section}'
