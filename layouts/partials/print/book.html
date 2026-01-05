@@ -1,0 +1,57 @@
+{{- $section := "catalogue" -}}
+{{- $indexTypes := slice "place" "store" "retail_chain" "type" "feature" "purpose" "brand" "material" "other" -}}
+
+{{- $printSection := where .Site.Pages "Section" "eq" $section -}}
+{{- $sectionPage := (index $printSection 0).Parent -}}
+{{- $printSection = where $printSection ".Params.print" "eq" true -}}
+
+{{/* First pass, generate TOC*/}}
+{{- site.Store.Set "toc" slice -}}
+{{- $frontMatter := partial "print/print-pages.html" (dict "context" . "section" $sectionPage "pages" $printSection "op" "lt" "weight" 100 "sectionclass" "front-matter" "toconly" true) -}}
+{{- $tocEntries := $frontMatter.toc -}}
+{{- $entries := partial "print/entries.html" (dict "context" .) -}}
+{{- $tocEntries = $tocEntries | append $entries.toc -}}
+{{- $middle := partial "print/print-pages.html" (dict "context" . "section" $sectionPage "pages" $printSection "filter" (slice (dict "op" "gt" "weight" 100) (dict "op" "lt" "weight" 999)) "sectionclass" "front-matter" "toconly" true) -}}
+{{- $tocEntries = $tocEntries | append $middle.toc -}}
+{{- $indexes := partial "print/indexes.html" (dict "context" .) -}}
+{{- $tocEntries = $tocEntries | append $indexes.toc -}}
+{{- $backmatter := partial "print/print-pages.html" (dict "context" . "section" $sectionPage "pages" $printSection "op" "gt" "weight" 999 "sectionclass" "back-matter" "sectiontitle" (i18n "back-matter") "toconly" true) -}}
+{{- range $backmatter.toc -}}
+  {{- $tocEntries = $tocEntries | append . -}}
+{{- end -}}
+
+{{- site.Store.Set "toc" $tocEntries -}}
+
+{{/* Second pass, (re-)generate content */}}
+{{- $frontMatter := partial "print/print-pages.html" (dict "context" . "section" $sectionPage "pages" $printSection "op" "lt" "weight" 100 "sectionclass" "front-matter") -}}
+{{- $frontMatter.content | safeHTML -}}
+
+{{- $entries.content | safeHTML -}}
+{{- $middle := partial "print/print-pages.html" (dict "context" . "section" $sectionPage "pages" $printSection "filter" (slice (dict "op" "gt" "weight" 100) (dict "op" "lt" "weight" 999)) "sectionclass" "appendix") -}}
+{{- if ne $middle.content false -}}
+  {{- $middle.content | safeHTML -}}
+{{- end -}}
+
+{{- $indexes.content | safeHTML -}}
+
+{{- $backmatter := partial "print/print-pages.html" (dict "context" . "section" $sectionPage "pages" $printSection "op" "gt" "weight" 999 "sectionclass" "back-matter" "sectiontitle" (i18n "back-matter")) -}}
+{{- $backmatter.content | safeHTML -}}
+
+{{- partial "print/vivliostyle-toc.html" (dict "context" . "entries" $tocEntries) -}}
+
+
+{{ define "_partials/print/vivliostyle-toc.html" }}
+  {{- $context := . -}}
+  {{- $entries := slice -}}
+  {{- if reflect.IsMap . -}}
+    {{- $context = .context -}}
+    {{- $entries = .entries -}}
+  {{- else -}}
+    {{- errorf "[print/toc.html] Needs params as dict, not just context" .RelPermalink -}}
+  {{- end -}}
+  <nav role="doc-toc">
+    <h2>{{ i18n "toc" }}</h2>
+    {{- $toc := partial "print/toc.html" (dict "entries" $entries ) -}}
+    {{- $toc | safeHTML -}}
+  </nav>
+{{- end -}}

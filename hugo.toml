@@ -84,12 +84,14 @@ enableRobotsTXT = true
     ellipsis = '&hellip;'
     emDash = '&mdash;'
     enDash = '&ndash;'
-    leftAngleQuote = '&laquo;'
-    leftDoubleQuote = '&ldquo;'
-    leftSingleQuote = '&lsquo;'
     rightAngleQuote = '&raquo;'
-    rightDoubleQuote = '&rdquo;'
-    rightSingleQuote = '&rsquo;'
+    #rightDoubleQuote = '&rdquo;'
+    rightDoubleQuote = '&ldquo;'
+    #rightSingleQuote = '&rsquo;'
+    rightSingleQuote = '&lsquo;'
+    leftAngleQuote = '&laquo;'
+    leftDoubleQuote = '&bdquo;'
+    leftSingleQuote = '&sbquo;'
 
   [markup.goldmark.parser]
     autoHeadingID = true
@@ -97,9 +99,26 @@ enableRobotsTXT = true
 
     [markup.goldmark.parser.attribute]
       block = true
+      title = true
+      list = true
+      image = true
 
 [markup.highlight]
   noClasses = false
+
+[sitemap]
+  changeFreq = 'weekly'
+
+[segments]
+  [segments.print]
+    [[segments.print.excludes]]
+      lang = 'en'
+      output = '{html,rss,iiif-manifest,iiif-collection}'
+      path = '{/links/**,/map/**,/about/**}'
+    [[segments.print.includes]]
+      kind = '{home}'
+      lang = "de"
+      output = '{print}'
 
 [imaging]
     quality = 95
