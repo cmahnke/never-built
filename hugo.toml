@@ -106,9 +106,6 @@ enableRobotsTXT = true
 [markup.highlight]
   noClasses = false
 
-[sitemap]
-  changeFreq = 'weekly'
-
 [imaging]
     quality = 95
 
