@@ -5,6 +5,3 @@
 [submodule "never-build-redirect"]
 	path = never-build-redirect
 	url = https://github.com/cmahnke/never-build.git
-[submodule "themes/hugo-xml-exporter"]
-	path = themes/hugo-xml-exporter
-	url = https://github.com/cmahnke/hugo-xml-exporter.git
