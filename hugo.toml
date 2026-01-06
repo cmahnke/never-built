@@ -109,17 +109,6 @@ enableRobotsTXT = true
 [sitemap]
   changeFreq = 'weekly'
 
-[segments]
-  [segments.print]
-    [[segments.print.excludes]]
-      lang = 'en'
-      output = '{html,rss,iiif-manifest,iiif-collection}'
-      path = '{/links/**,/map/**,/about/**}'
-    [[segments.print.includes]]
-      kind = '{home}'
-      lang = "de"
-      output = '{print}'
-
 [imaging]
     quality = 95
 
