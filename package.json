@@ -19,8 +19,7 @@
     "cssnano": "^7.1.2",
     "gltf-pipeline": "^4.3.0",
     "obj2gltf": "^3.2.0",
-    "postcss": "^8.5.6",
-    "toml-eslint-parser": "^1.0.1"
+    "postcss": "^8.5.6"
   },
   "name": "never-build",
   "version": "0.1.0"
