@@ -1,6 +1,6 @@
 [params]
   paginate = 5
-  copyrightYears = "MMXXV"
+  copyrightYears = "MMXXV - MMXXVI"
   enableBlogPost = true
   enableTOC = true
   favicon_svg = "/images/cm.svg"
