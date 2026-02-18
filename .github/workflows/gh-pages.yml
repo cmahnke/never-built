@@ -15,7 +15,7 @@ concurrency:
 env:
   HUGO_VERSION: 0.155.3
   DEPENDENCY_MANAGER: npm
-  PYTHON_VERSION: '3.13'
+  PYTHON_VERSION: '3.12'
 
 jobs:
   deploy:
