@@ -8,7 +8,6 @@ PyWavelets
 torchvision
 setuptools
 #git+https://github.com/xinntao/Real-ESRGAN
-git+https://github.com/ai-forever/Real-ESRGAN
 # pip install huggingface_hub==0.25 --no-deps --force-reinstall
 #huggingface_hub==0.25
 #pybtex
@@ -21,3 +20,5 @@ termcolor
 pillow
 shapely
 geojson
+py-real-esrgan
+#git+https://github.com/ai-forever/Real-ESRGAN
