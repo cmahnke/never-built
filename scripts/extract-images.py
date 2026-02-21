@@ -243,7 +243,8 @@ def enhance_ai(img, params=None, factor=4, smoothen=False, weights="RealESRGAN_x
     global model
     from huggingface_hub import hf_hub_download
     def cached_download_stub(config_file_url, cache_dir="", force_filename=""):
-        from RealESRGAN.model import HF_MODELS
+        #from RealESRGAN.model import HF_MODELS
+        from py_real_esrgan.model import HF_MODELS
         import re
         scale = re.sub(r'http.*_x(\d).pth', '\\1', config_file_url)
         repo = HF_MODELS[int(scale)]['repo_id']
