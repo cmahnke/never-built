@@ -1,17 +1,17 @@
 {
   "dependencies": {
     "@glidejs/glide": "^3.7.1",
-    "@turf/turf": "^7.3.2",
+    "@turf/turf": "^7.3.4",
     "detect-browser": "5.3.0",
     "echarts": "^6.0.0",
-    "motion": "^12.26.2",
-    "ol-mapbox-style": "^12.5.0",
+    "motion": "^12.34.3",
+    "ol-mapbox-style": "^13.3.0",
     "photoswipe": "^5.4.4",
     "terminal.css": "^0.7.5",
-    "three": "^0.182.0"
+    "three": "^0.183.1"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^7.0.2",
+    "@fullhuman/postcss-purgecss": "^8.0.0",
     "@gltf-transform/cli": "^4.3.0",
     "@gltf-transform/core": "^4.3.0",
     "@gltf-transform/extensions": "^4.3.0",
