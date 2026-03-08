@@ -4,3 +4,4 @@ requests
 pyproj
 geopandas
 shapely
+huggingface_hub

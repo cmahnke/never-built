@@ -22,3 +22,4 @@ shapely
 geojson
 py-real-esrgan
 #git+https://github.com/ai-forever/Real-ESRGAN
+huggingface_hub
