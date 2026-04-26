@@ -64,6 +64,13 @@ jobs:
         run: |
           ./themes/projektemacher-base/scripts/github/setup-hugo.sh ${{ env.HUGO_VERSION }}
 
+      - name: Get Hugo cache
+        uses: actions/cache@v5
+        with:
+          path: resources
+          key: hugo-cache-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: hugo-cache-${{ runner.os }}
+
       - name: Create IIIF derivates
         run: docker run -e CHOWN_UID=${UID} -e URL_PREFIX="https://never-build.goettingen.xyz/" -v ${PWD}:${PWD} ghcr.io/cmahnke/iiif-action:latest-jxl-uploader sh -c "cd ${PWD} && ./scripts/iiif.sh"
 
