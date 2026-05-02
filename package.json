@@ -1,14 +1,14 @@
 {
   "dependencies": {
     "@glidejs/glide": "^3.7.1",
-    "@turf/turf": "^7.3.4",
+    "@turf/turf": "^7.3.5",
     "detect-browser": "5.3.0",
     "echarts": "^6.0.0",
-    "motion": "^12.35.1",
+    "motion": "^12.38.0",
     "ol-mapbox-style": "^12.5.0",
     "photoswipe": "^5.4.4",
     "terminal.css": "^0.7.5",
-    "three": "^0.183.2"
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^8.0.0",
