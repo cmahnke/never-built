@@ -218,6 +218,8 @@ enableRobotsTXT = true
     enable = true
 
 [security]
+  allowContent = ['^text/html$', '^text/markdown$']
+
   [security.http]
     mediaTypes = ['^application/json$', '^application/json;\s?charset=[uU][tT][fF]-8$', '^application/sparql-results\+json;\s?charset=[uU][tT][fF]-8$']
 
