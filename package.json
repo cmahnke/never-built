@@ -4,11 +4,11 @@
     "@turf/turf": "^7.3.5",
     "detect-browser": "5.3.0",
     "echarts": "^6.1.0",
-    "motion": "^12.40.0",
-    "ol-mapbox-style": "^12.5.0",
+    "motion": "^12.42.0",
+    "ol-mapbox-style": "^13.4.1",
     "photoswipe": "^5.4.4",
     "terminal.css": "^0.7.5",
-    "three": "^0.184.0"
+    "three": "^0.185.0"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^8.0.0",
@@ -16,10 +16,10 @@
     "@gltf-transform/core": "^4.4.0",
     "@gltf-transform/extensions": "^4.4.0",
     "@gltf-transform/functions": "^4.4.0",
-    "cssnano": "^8.0.1",
+    "cssnano": "^8.0.2",
     "gltf-pipeline": "^4.3.1",
     "obj2gltf": "^3.2.0",
-    "postcss": "^8.5.15"
+    "postcss": "^8.5.16"
   },
   "name": "never-build",
   "version": "0.1.0"
