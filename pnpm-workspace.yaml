@@ -9,3 +9,5 @@ allowBuilds:
   tify: true
 blockExoticSubdeps: false
 ignoreScripts: false
+minimumReleaseAgeExclude:
+  - mapbox-gl@3.26.0
