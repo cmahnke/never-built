@@ -198,6 +198,10 @@ enableRobotsTXT = true
       target = "assets/scss/photoswipe/photoswipe.css"
 
   [[module.mounts]]
+      source = "node_modules/maplibre-gl/dist/maplibre-gl.css"
+      target = "assets/scss/maps/maplibre-gl.css"
+
+  [[module.mounts]]
       source = "node_modules/@pagefind/modular-ui/css/"
       target = "assets/scss/pagefind"
 
