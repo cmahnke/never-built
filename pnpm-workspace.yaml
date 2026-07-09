@@ -1,0 +1,11 @@
+packages:
+  - .
+allowBuilds:
+  canvas: true
+  esbuild: true
+  protobufjs: true
+  puppeteer: true
+  sharp: true
+  tify: true
+blockExoticSubdeps: false
+ignoreScripts: false
