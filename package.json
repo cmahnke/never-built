@@ -8,7 +8,11 @@
     "ol-mapbox-style": "^12.5.0",
     "photoswipe": "^5.4.4",
     "terminal.css": "^0.7.5",
-    "three": "^0.185.1"
+    "three": "^0.185.1",
+    "@turf/turf": "^7.3.5",
+    "chroma-js": "^3.2.0",
+    "mapbox-gl": "^3.26.0",
+    "maplibre-gl": "^5.24.0"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^8.0.0",
