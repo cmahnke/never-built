@@ -2,7 +2,7 @@
 title: "Bauinformation Nr. 1 März 1967"
 date: 2025-04-30T17:15:07+02:00
 js:
-  - js/maps/mapWrapper.js
+  - ts/maps/mapWrapper.ts
 tags:
 - book
 worldcat: https://search.worldcat.org/de/title/839032633
