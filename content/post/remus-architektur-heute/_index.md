@@ -4,7 +4,7 @@ date: 2025-07-15T17:15:07+02:00
 tags:
 - book
 js:
-  - ts/maps/mapWrapper.ts
+  - ts/maps/map.ts
 worldcat: https://search.worldcat.org/de/title/254199014
 outputs:
   - iiif-manifest

@@ -81,6 +81,10 @@ export function updateStyle(
     source["attribution"] = attribution;
   }
 
+  if (typeof source["attribution"] == "boolean") {
+    delete source["attribution"];
+  }
+
   if (center !== undefined) {
     style.center = center;
   }

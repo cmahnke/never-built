@@ -116,6 +116,9 @@ enableRobotsTXT = true
     suffixes = ["json", "jsonld"]
   [mediaTypes."image/jxl"]
     suffixes = ["jxl"]
+  [mediaTypes."text/css"]
+    suffixes = ["css"]
+    mimes = ["text/css"]
 
 [outputFormats]
   [outputFormats.geojson]
