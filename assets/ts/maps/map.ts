@@ -474,12 +474,36 @@ export function updateStyle(
 
   // `font` here must be a font-family name that actually exists via a CSS
   // @font-face rule loaded through `fontPath`, NOT a glyphs fontstack name.
+  /*
   if (font !== undefined) {
     style.layers.forEach((layer) => {
       if (layer.type === 'symbol' && layer.layout && 'text-font' in layer.layout) {
         const textFont = (layer.layout as any)['text-font'];
         if (Array.isArray(textFont)) {
           textFont[0] = font;
+        }
+      }
+    });
+  }
+  */
+
+  if (font !== undefined) {
+    style.layers.forEach((layer) => {
+      if (layer.type === "symbol" && layer.layout && 'text-font' in layer.layout) {
+        const textFont = layer.layout["text-font"];
+        if (Array.isArray(textFont)) {
+          textFont[0] = font;
+        } else if (typeof textFont === "object" && textFont !== null) {
+          if ("stops" in textFont) {
+            const stopsObj = textFont as { stops: Array<Array<unknown>> };
+            stopsObj.stops.forEach((stop) => {
+              stop.forEach((s) => {
+                if (Array.isArray(s)) {
+                  s[0] = font;
+                }
+              });
+            });
+          }
         }
       }
     });
