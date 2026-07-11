@@ -10,6 +10,7 @@ import maplibregl, {
   GeoJSONSource,
 } from 'maplibre-gl';
 import type {
+  PopupOptions,
   StyleSpecification,
   LayerSpecification,
   VectorSourceSpecification,
@@ -29,11 +30,18 @@ import type { Feature, FeatureCollection } from 'geojson';
 
 const defaultSprites = '/map-styles/sprite';
 
+const popupOptions: PopupOptions = { anchor: 'bottom-left', maxWidth: 'none' };
+
+/** Pixel tolerance around a click point when looking for overlapping point
+ * features to merge into a single popup — mirrors the original OpenLayers
+ * setup's `markerOptions.hitTolerance`. */
+const popupHitTolerance = 8;
+
 /**
  * CSS template used to dynamically load @font-face rules per font-family
- * name, e.g. "/css/fonts/Roboto%20Mono%20Variable.css". This is the
- * ORIGINAL "ol:webfonts" concept from the OpenLayers/ol-mapbox-style setup
- * — MapLibre doesn't know about that metadata convention natively, so we
+ * name, e.g. "/css/fonts/roboto-mono-variable.css". This is the ORIGINAL
+ * "ol:webfonts" concept from the OpenLayers/ol-mapbox-style setup —
+ * MapLibre doesn't know about that metadata convention natively, so we
  * replicate the loading behavior ourselves via <link> tags + the Font
  * Loading API.
  */
@@ -444,13 +452,10 @@ export function updateStyle(
     });
   }
 
-  // FIX: Always strip any pre-existing "glyphs" URL from the loaded style —
-  // it may point to a third-party service (MapTiler, Mapbox, etc.) with an
-  // unresolved API-key placeholder (e.g. "...?key={key}") or one that's
-  // blocked by CSP. Without this, MapLibre will repeatedly try (and fail)
-  // to fetch every single glyph range over the network before falling back
-  // to local rendering. Since we preload real web fonts via
-  // preloadStyleFonts(), no glyphs endpoint is needed at all.
+  // Always strip any pre-existing "glyphs" URL from the loaded style — it
+  // may point to a third-party service (MapTiler, Mapbox, etc.) with an
+  // unresolved API-key placeholder or one that's blocked by CSP. Text
+  // rendering relies entirely on locally loaded web fonts instead.
   if ('glyphs' in style) {
     delete (style as any).glyphs;
   }
@@ -722,6 +727,35 @@ function addClusterLayers(map: Map, sourceId: string): void {
   } as CircleLayerSpecification);
 }
 
+/**
+ * Merges the `name` and `popupContent` properties of multiple overlapping
+ * point features into a single combined popup payload — restores the
+ * original OpenLayers behavior (`mergeFeatures()`), which combined
+ * multiple markers at the same point into one popup instead of only
+ * showing the topmost feature.
+ */
+function mergeFeatureProperties(
+  features: Array<{ properties?: Record<string, any> | null }>
+): { name?: string; popupContent?: string } {
+  const names: string[] = [];
+  let popupContent = '';
+
+  features.forEach((feature) => {
+    const props = feature.properties ?? {};
+    if (props.name !== undefined && props.name !== null && props.name !== '') {
+      names.push(String(props.name));
+    }
+    if (props.popupContent !== undefined && props.popupContent !== null) {
+      popupContent += props.popupContent;
+    }
+  });
+
+  return {
+    name: names.length > 0 ? names.join(', ') : undefined,
+    popupContent: popupContent || undefined,
+  };
+}
+
 function showPopup(
   map: Map,
   lngLat: LngLatLike,
@@ -729,7 +763,7 @@ function showPopup(
   popupContent: string | undefined
 ): void {
   const html = `<h1>${name ?? ''}</h1>${popupContent ?? ''}`;
-  new Popup().setLngLat(lngLat).setHTML(html).addTo(map);
+  new Popup(popupOptions).setLngLat(lngLat).setHTML(html).addTo(map);
 }
 
 /* =========================================================================
@@ -881,7 +915,7 @@ export async function projektemacherMap(
   });
 
   if (!disabled) {
-    map.addControl(new NavigationControl({}), 'top-right');
+    map.addControl(new NavigationControl({}), 'top-left');
     map.addControl(new FullscreenControl(), 'top-right');
   }
   map.addControl(new AttributionControl({ compact: true, customAttribution: attribution }));
@@ -927,19 +961,36 @@ export async function projektemacherMap(
         : [`${sourceId}-points`];
 
       map.on('click', clickableLayers, async (e) => {
-        const feature = e.features?.[0];
-        if (!feature) return;
+        // Query all features within a small tolerance around the click
+        // point (not just the topmost one) so overlapping markers can be
+        // merged into a single popup, matching the original OpenLayers
+        // behavior of combining multiple point features at the same
+        // location into one popup instead of showing only the topmost.
+        const bufferedBox: [[number, number], [number, number]] = [
+          [e.point.x - popupHitTolerance, e.point.y - popupHitTolerance],
+          [e.point.x + popupHitTolerance, e.point.y + popupHitTolerance],
+        ];
+        const features = map.queryRenderedFeatures(bufferedBox, { layers: clickableLayers });
+        if (features.length === 0) return;
 
-        if (feature.properties?.cluster && feature.properties?.cluster_id !== undefined) {
+        // If any cluster feature is among the hits, expand the cluster
+        // instead of showing a popup.
+        const clusterFeature = features.find(
+          (f) => f.properties?.cluster && f.properties?.cluster_id !== undefined
+        );
+        if (clusterFeature) {
           const src = map.getSource(sourceId) as GeoJSONSource;
-          const clusterId = feature.properties.cluster_id as number;
+          const clusterId = clusterFeature.properties!.cluster_id as number;
           const zoom = await src.getClusterExpansionZoom(clusterId);
-          map.easeTo({ center: (feature.geometry as any).coordinates, zoom });
+          map.easeTo({ center: (clusterFeature.geometry as any).coordinates, zoom });
           return;
         }
 
-        const lngLat = (feature.geometry as any).coordinates as LngLatLike;
-        showPopup(map, lngLat, feature.properties?.name, feature.properties?.popupContent);
+        // Merge all remaining (non-cluster) point features at this
+        // location into a single popup.
+        const merged = mergeFeatureProperties(features);
+        const lngLat = (features[0].geometry as any).coordinates as LngLatLike;
+        showPopup(map, lngLat, merged.name, merged.popupContent);
       });
 
       map.on('mouseenter', clickableLayers, () => {

@@ -5,6 +5,11 @@
     position: relative;
 }
 
+.maplibregl-map {
+  font-size: 1rem;
+  font-family: var(--text-font);
+}
+
 .ol-viewport {
   border-radius: 1em;
 
@@ -13,17 +18,30 @@
   }
 }
 
+.maplibregl-popup {
+  /*min-width: unset; */
+  padding: unset;
+  border-radius: unset;
+  min-width: 30vw;
+
+  .maplibregl-popup-tip {
+    display: none;
+  }
+}
+
+.maplibregl-popup-content,
 .ol-popup {
+  padding: 2rem .6rem 1rem;
   position: absolute;
   min-width: 250px;
   background-color: white;
   filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-  padding: 10px;
   border-radius: 10px;
   border: 1px solid #ccc;
   bottom: 12px;
   left: -50px;
-  font-size: 1em;
+  font-size: 1.4rem;
+  max-width: 42rem;
 
   @media (max-width: 30em) {
     border-radius: unset;
@@ -45,6 +63,8 @@
     text-align: center;
     font-size: 1.2em !important;
     margin: .2em 0;
+    margin-bottom: .8rem;
+    line-height: normal;
   }
 
   .title {
@@ -55,11 +75,13 @@
   .popup-content {
     font-weight: 500;
     text-align: center;
-    font-size: 0.8em;
+    font-size: 1rem;
   }
 
   .link {
     text-align: center;
+    margin: .6rem;
+    font-size: 1rem;
   }
 
   .preview {
@@ -67,38 +89,174 @@
   }
 }
 
-.ol-popup::after,
-.ol-popup::before {
-  top: 100%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
+.ol-popup {
+  &::after,
+  &::before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &::after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+  }
+
+  &::before {
+    border-top-color: #ccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+  }
 }
 
-.ol-popup::after {
-  border-top-color: white;
-  border-width: 10px;
-  left: 48px;
-  margin-left: -10px;
-}
-
-.ol-popup::before {
-  border-top-color: #ccc;
-  border-width: 11px;
-  left: 48px;
-  margin-left: -11px;
-}
-
+.maplibregl-popup-close-button,
 .ol-popup-closer {
   text-decoration: none;
   position: absolute;
   top: 2px;
   right: 8px;
+  font-size: 2rem;
+  padding: unset;
+  transform: rotate(0deg);
+  transition: transform 250ms;
+
+  &:hover {
+    background-color: unset;
+    transform: rotate(180deg);
+    transition: transform 250ms;
+  }
 }
 
 .ol-popup-closer::after {
   content: "✖";
+}
+
+.maplibregl-popup-content {
+  border-radius: unset;
+  box-shadow: unset;
+  position: unset;
+  border: .3ex solid #000;
+  filter: unset;
+}
+
+.maplibregl-ctrl.maplibregl-ctrl-attrib,
+.maplibregl-ctrl-attrib-button {
+  /* padding: .7rem;*/
+  padding: .6rem;
+}
+
+.maplibregl-ctrl-attrib {
+  min-height: unset;
+  box-sizing: border-box;
+
+  .maplibregl-ctrl-attrib-inner {
+    margin-right: calc(1.375em + (.3ex  * 2));
+    height: 1.375em;
+    align-content: center;
+    padding-left: .2rem;
+  }
+
+  &.maplibregl-compact,
+  &.maplibregl-compact-show {
+    margin: .6rem;
+  }
+
+  &.maplibregl-compact-show .maplibregl-ctrl-attrib-button {
+    background-color: white;
+  }
+
+  &.maplibregl-compact {
+    border-radius: unset;
+    min-height: unset;
+  }
+
+  &.maplibregl-compact-show {
+    padding: unset;
+
+    .maplibregl-ctrl-attrib-button:after {
+      content: '>';
+    }
+  }
+
+  .maplibregl-ctrl-attrib-button {
+    background-color: white;
+    background-image: unset;
+
+    &:after {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      content: 'i';
+      text-align: center;
+    }
+
+    &:focus {
+      box-shadow: unset;
+    }
+  }
+}
+
+.maplibregl-ctrl {
+  border-radius: unset;
+
+  .maplibregl-ctrl-attrib-button,
+  button {
+    border: .3ex solid #000;
+    border-radius: unset;
+    height: 1.375em;
+    width: 1.375em;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .maplibregl-ctrl-icon {
+    position: relative;
+    background-image: unset;
+
+    &:after {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+  }
+
+  button.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon {
+    background-image: unset;
+
+    &:after {
+      content: '+';
+    }
+  }
+
+  button.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon {
+    background-image: unset;
+
+    &:after {
+      content: '-';
+    }
+  }
+
+  button.maplibregl-ctrl-fullscreen .maplibregl-ctrl-icon {
+    background-image: unset;
+
+    &:after {
+      content: '⤢';
+    }
+  }
+
+  .maplibregl-ctrl-compass {
+    display: none;
+  }
 }
