@@ -120,12 +120,12 @@ jobs:
       - name: Puppeteer
         run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh
 
-      - name: Archive links
-        run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14 -o archived-urls.txt
+      # - name: Archive links
+      #   run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14 -o archived-urls.txt
 
-      - name: Save URL list
-        run: |
-          cp archived-urls.txt docs/
+      # - name: Save URL list
+      #   run: |
+      #     cp archived-urls.txt docs/
 
       # - name: Copy future
       #   run: mv ./future ./docs/
@@ -146,3 +146,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
           force_orphan: true
+
+  archive:
+    needs: deploy
+    uses: ./.github/workflows/archive.yml
+    secrets: inherit

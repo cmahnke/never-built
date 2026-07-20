@@ -1,0 +1,48 @@
+name: Archive on Archive.org
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}-archive-org-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.13"
+
+permissions:
+  contents: read
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+          path: docs
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install required dependencies
+        run: |
+          ./themes/projektemacher-base/scripts/github/jxl-0.11.1.sh
+          ./themes/projektemacher-base/scripts/github/setup-dependencies.sh
+          ./themes/projektemacher-base/scripts/github/python-dependencies.sh
+
+      - name: Archive links
+        env:
+          INTERNET_ARCHIVE_ACCESS_KEY: ${{ secrets.INTERNET_ARCHIVE_ACCESS_KEY }}
+          INTERNET_ARCHIVE_SECRET_KEY: ${{ secrets.INTERNET_ARCHIVE_SECRET_KEY }}
+        run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14 -o archived-urls.txt
