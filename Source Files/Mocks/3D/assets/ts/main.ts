@@ -1,4 +1,4 @@
-import "maplibre-gl";
+import * as maplibregl from 'maplibre-gl'
 import { center, points } from "@turf/turf";
 import { absUrl, loadOrParse } from "./base-map";
 import { grainyBWLayer } from "./layers/grainy-bw-layer";
@@ -7,18 +7,28 @@ import { treeLayer } from "./layers/tree-layer";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { StyleSpecification } from "maplibre-gl";
 import chroma from "chroma-js";
-//import maplibregl from 'maplibre-gl';
 
 const metaJson = "/map/tiles/metadata.json";
 const styleJson = "/map-styles/style.json";
 const tilesUrl = "/map/tiles/{z}/{x}/{y}.pbf";
-const zoom = 17;
+const zoom = 17; // 17
 const minZoom = 4;
 const defaultCenter = [9.935793, 51.5404];
+
 
 const fog = "#dcdbdf";
 const sky = "#87ceeb";
 const blend = 0.5;
+
+const initialPos = {
+  //cameraLngLat: new maplibregl.LngLat(...defaultCenter),
+  cameraLngLat: defaultCenter,
+  //cameraLngLat: [9.7, 51.3],
+  cameraAlt: 100,
+  bearing: -10,
+  pitch: 75,
+  roll: 0
+};
 
 //const skyColors = chroma.scale([fog, sky]).domain([1, 100000], 7, 'log').colors(6);
 
@@ -27,8 +37,8 @@ const skyColors = chroma.scale([fog, sky]).mode("lab").colors(6);
 const metaObj = await loadOrParse(metaJson);
 let centerObj: [number, number];
 centerObj = metaObj.center.split(",").slice(0, 2).map(Number) as [number, number];
-
-console.log(centerObj);
+//
+console.log(centerObj, initialPos);
 if (metaObj !== undefined && metaObj.length !== 0) {
   const bboxObj = metaObj.bounds.split(",").slice(0, 4).map(Number);
   const c = center(
@@ -84,13 +94,13 @@ const terrainSource = {
   tiles: ["/map/tiles/{z}/{x}/{y}.png"],
   tileSize: 256,
   minzoom: 11,
-  maxzoom: 15,
+  maxzoom: 16,
   encoding: "custom",
   baseShift: 0,
   redFactor: 0.4,
   greenFactor: 0.4,
   blueFactor: 0.4,
-  antialias: true
+  //antialias: true
   /*
     paint: {
       "raster-resampling": "linear"
@@ -104,12 +114,13 @@ const map = new maplibregl.Map({
   center: defaultCenter,
   zoom: zoom,
   minZoom: minZoom,
+  maxPitch: 65,
 
-  pitch: 70,
-  bearing: -10
+  pitch: initialPos.pitch,
+  bearing: initialPos.bearing
 });
 // See https://github.com/onthegomap/planetiler/discussions/1389#discussioncomment-14924016
-map.setVerticalFieldOfView(30);
+//map.setVerticalFieldOfView(35);
 
 map.on("load", () => {
   const source = "never_built";
@@ -163,7 +174,7 @@ map.on("load", () => {
   // Configure and add the tree layer
   treeLayer.source = "openmaptiles";
   treeLayer.sourceLayer = "tree";
-  map.addLayer(treeLayer);
+  //map.addLayer(treeLayer);
 
   map.addLayer(grainyBWLayer);
 
@@ -191,7 +202,12 @@ map.on("load", () => {
   map.on("mouseleave", "3d-buildings", () => {
     map.getCanvas().style.cursor = "";
   });
+
 });
+
+const camPos = map.calculateCameraOptionsFromCameraLngLatAltRotation(initialPos.cameraLngLat, initialPos.cameraAlt, initialPos.bearing, initialPos.pitch, initialPos.roll);
+console.log(camPos);
+//map.jumpTo(camPos);
 
 console.log(map);
 

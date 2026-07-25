@@ -78,6 +78,9 @@ export default defineConfig({
         api: "modern-compiler",
         importers: [new NodePackageImporter()]
       }
-    }
+    },
+    postcss: {
+      plugins: [],
+    },
   }
 });
