@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 TILES_DIR=./static/map
 BASE_MAP=goettingen.osm.pbf
 
@@ -23,4 +25,4 @@ do
   echo "Processing ${MAP}"
 done
 
-#docker run -it -v `pwd`:`pwd` -w `pwd` ghcr.io/cmahnke/map-tools/osm2world:latest 
+#docker run -it -v `pwd`:`pwd` -w `pwd` ghcr.io/cmahnke/map-tools/osm2world:latest

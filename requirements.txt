@@ -25,3 +25,5 @@ py-real-esrgan
 huggingface_hub
 pyproj
 geopandas
+# https://github.com/smellman/mbutil
+smellman-mbutil

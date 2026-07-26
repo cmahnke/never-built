@@ -54,3 +54,9 @@ Never Build Göttingen
   * Original 1024 - 100 %
   * Top: 66 - 6.4453125
   * Bottom: 114 - 11.1328125
+
+
+# More on map data
+* https://github.com/ngageoint/hootenanny/blob/master/docs/user/CommandLineExamples.asciidoc#conflate-only-buildings
+* https://github.com/tordanik/OSM2World
+* https://wiki.openstreetmap.org/wiki/OSM2World

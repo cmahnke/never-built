@@ -8,9 +8,12 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { StyleSpecification } from "maplibre-gl";
 import chroma from "chroma-js";
 
-const metaJson = "/map/tiles/metadata.json";
+
+const tileSource = "Blauer-Turm";
+const metaJson = `/map/${tileSource}/metadata.json`;
 const styleJson = "/map-styles/style.json";
-const tilesUrl = "/map/tiles/{z}/{x}/{y}.pbf";
+const tilesUrl = `/map/${tileSource}/{z}/{x}/{y}.pbf`;
+const topRasterTile = "/map/tiles/{z}/{x}/{y}.png";
 const zoom = 17; // 17
 const minZoom = 4;
 const defaultCenter = [9.935793, 51.5404];
@@ -91,7 +94,7 @@ console.log(metaObj, centerObj, style, spriteUrl);
 
 const terrainSource = {
   type: "raster-dem",
-  tiles: ["/map/tiles/{z}/{x}/{y}.png"],
+  tiles: [topoRasterTiles],
   tileSize: 256,
   minzoom: 11,
   maxzoom: 16,

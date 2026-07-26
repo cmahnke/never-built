@@ -19,7 +19,12 @@
     <meta name="theme-color" content="#e0e0e0">
 
     {{- partial "html/head/style.html" (dict "context" . "css" "css/style.css") -}}
-    {{- partial "html/head/script.html" (dict "context" . "js" (partial "html/head/iiif-js.html" .)) -}}
+
+    {{- if and (isset site.Params "js") (eq site.Params.js "esm") -}}
+      {{- partial "html/head/script.html" (dict "context" . "js" (partial "html/head/iiif-js.html" .) "opts" (dict "format" "esm")) -}}
+    {{- else -}}
+      {{- partial "html/head/script.html" (dict "context" . "js" (partial "html/head/iiif-js.html" .)) -}}
+    {{- end -}}
 
     <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_32 | default "/images/favicon-32.png" | absURL }}" sizes="32x32">
     <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_16 | default "/images/favicon-16.png" | absURL }}" sizes="16x16">

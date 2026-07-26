@@ -12,3 +12,5 @@ do
 done
 
 rm -r $TILES_DIR
+# Planetiler data
+rm -r ./data

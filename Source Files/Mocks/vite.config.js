@@ -17,7 +17,13 @@ export default defineConfig({
   appType: "mpa",
   server: {
     host: "127.0.0.1",
-    publicDir: false
+    publicDir: false,
+    fs: {
+      allow: [
+        "../..",
+        "../../static"
+      ]
+    }
     /*
     proxy: {
       "/map/tiles": {

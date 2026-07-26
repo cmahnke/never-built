@@ -112,6 +112,7 @@
   <div class="share map-share"><a href="{{ $geojson }}" title="{{ i18n "download-geojson" }}" download>{{ i18n "download-geojson" }}</a></div>
 {{- end -}}
 <script type="text/javascript">
+  //window.addEventListener('DOMContentLoaded', (event) => {
     var {{ $var | safeJS }} = window.projektemacherMap(
       {{ partial "js/type.html" $id | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $geojson | htmlUnescape | safeJS }},
@@ -129,5 +130,6 @@
       {{ partial "js/type.html" $debug | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $marker | htmlUnescape | safeJS}});
       /*{{ if $marker }}, {{ $marker | safeJS}}  {{ end }});*/
-  {{ $var | safeJS }}.then(map => {map.updateSize()});
+    {{ $var | safeJS }}.then(map => {map.updateSize()});
+  //});
 </script>

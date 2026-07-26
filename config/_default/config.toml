@@ -11,6 +11,7 @@
   wikidata = true
   debug = true
   headerimage = false
+  #js = "esm"
 
 [params.author]
   email = 'mail@christianmahnke.de'

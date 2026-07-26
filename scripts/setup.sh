@@ -10,6 +10,7 @@ echo "Set SKIP_IIIF to something to disable generation of IIIF derivates"
 
 # Get map
 ./scripts/get-map-tiles.sh
+./scripts/generate-3d-map.sh
 
 python ./scripts/extract-images.py -d
 
@@ -36,6 +37,7 @@ SOURCE="static/images/favicon.svg" OPTIONS="-background none" ./themes/projektem
 #SOURCE="themes/projektemacher-base/static/images/cm.svg" OPTIONS="-transparent white static/images/favicon-128.png" ./themes/projektemacher-base/scripts/favicon.sh
 
 ./scripts/map.sh
+
 ./themes/projektemacher-base/scripts/json-lint.sh
 
 echo "Make sure './scripts/post-build/index.sh' is executed"

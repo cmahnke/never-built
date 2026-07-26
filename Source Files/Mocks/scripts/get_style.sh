@@ -2,6 +2,8 @@
 STYLE_URL=https://github.com/openmaptiles/maptiler-basic-gl-style/archive/refs/tags/v1.10.tar.gz
 STYLE_DIR=./3d/public/map-styles
 
+echo "See ../../scripts/get-map-tiles.sh"
+exit 1
 
 declare -a SPRITES=("https://openmaptiles.github.io/maptiler-basic-gl-style/sprite.json" "https://openmaptiles.github.io/maptiler-toner-gl-style/sprite@2x.json" "https://openmaptiles.github.io/maptiler-toner-gl-style/sprite.png" "https://openmaptiles.github.io/maptiler-toner-gl-style/sprite@2x.png")
 
