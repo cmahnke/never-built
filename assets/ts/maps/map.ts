@@ -946,7 +946,11 @@ export async function projektemacherMap(
     map.addControl(new NavigationControl({}), 'top-left');
     map.addControl(new FullscreenControl(), 'top-right');
   }
-  map.addControl(new AttributionControl({ compact: true, customAttribution: attribution }));
+  const attributionControl = new AttributionControl({ compact: true, customAttribution: attribution })
+  //attributionControl.onAdd(map).open = false;
+
+  map.addControl(attributionControl);
+
 
   if (debug) {
     console.log(
@@ -988,38 +992,35 @@ export async function projektemacherMap(
         ? [`${sourceId}-clusters`, `${sourceId}-unclustered`]
         : [`${sourceId}-points`];
 
-      map.on('click', clickableLayers, async (e) => {
-        // Query all features within a small tolerance around the click
-        // point (not just the topmost one) so overlapping markers can be
-        // merged into a single popup, matching the original OpenLayers
-        // behavior of combining multiple point features at the same
-        // location into one popup instead of showing only the topmost.
-        const bufferedBox: [[number, number], [number, number]] = [
-          [e.point.x - popupHitTolerance, e.point.y - popupHitTolerance],
-          [e.point.x + popupHitTolerance, e.point.y + popupHitTolerance],
-        ];
-        const features = map.queryRenderedFeatures(bufferedBox, { layers: clickableLayers });
-        if (features.length === 0) return;
+        map.on('click', clickableLayers, async (e) => {
+          const bufferedBox: [[number, number], [number, number]] = [
+            [e.point.x - popupHitTolerance, e.point.y - popupHitTolerance],
+            [e.point.x + popupHitTolerance, e.point.y + popupHitTolerance],
+          ];
+          const features = map.queryRenderedFeatures(bufferedBox, { layers: clickableLayers });
+          if (features.length === 0) return;
 
-        // If any cluster feature is among the hits, expand the cluster
-        // instead of showing a popup.
-        const clusterFeature = features.find(
-          (f) => f.properties?.cluster && f.properties?.cluster_id !== undefined
-        );
-        if (clusterFeature) {
-          const src = map.getSource(sourceId) as GeoJSONSource;
-          const clusterId = clusterFeature.properties!.cluster_id as number;
-          const zoom = await src.getClusterExpansionZoom(clusterId);
-          map.easeTo({ center: (clusterFeature.geometry as any).coordinates, zoom });
-          return;
-        }
+          const clusterFeature = features.find(
+            (f) => f.properties?.cluster && f.properties?.cluster_id !== undefined
+          );
+          if (clusterFeature) {
+            const src = map.getSource(sourceId) as GeoJSONSource;
+            const clusterId = clusterFeature.properties!.cluster_id as number;
+            const zoom = await src.getClusterExpansionZoom(clusterId);
+            map.easeTo({ center: (clusterFeature.geometry as any).coordinates, zoom });
+            return;
+          }
 
-        // Merge all remaining (non-cluster) point features at this
-        // location into a single popup.
-        const merged = mergeFeatureProperties(features);
-        const lngLat = (features[0].geometry as any).coordinates as LngLatLike;
-        showPopup(map, lngLat, merged.name, merged.popupContent);
-      });
+          const merged = mergeFeatureProperties(features);
+          const lngLat = (features[0].geometry as any).coordinates as LngLatLike;
+
+          // NEU: Karte auf den geklickten Punkt zentrieren, damit das Popup
+          // mittig im sichtbaren Kartenausschnitt erscheint (z.B. bei Pfeil-Markern
+          // aus addRouteAndMarkerLayers()).
+          map.easeTo({ center: lngLat, duration: 300 });
+
+          showPopup(map, lngLat, merged.name, merged.popupContent);
+        });
 
       map.on('mouseenter', clickableLayers, () => {
         map.getCanvas().style.cursor = 'pointer';
