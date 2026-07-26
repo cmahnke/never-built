@@ -47,7 +47,7 @@ do
 
     for file in $(find $TILES_DIR/ -name "*.osm.pbf");
     do
-      mv $file $(dirname $file)/$(basename $file | cut -d. -f1).osm.pbf
+      mv $file $(dirname $file)/$(basename $file | cut -d. -f1).osm.pbf 2>/dev/null || true
     done
 
     python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o $TMP_DIR/$FILE_NAME -f -v
