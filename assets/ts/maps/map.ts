@@ -8,6 +8,7 @@ import maplibregl, {
   LngLatLike,
   LngLatBoundsLike,
   GeoJSONSource,
+  setWorkerUrl,
 } from 'maplibre-gl';
 import type {
   PopupOptions,
@@ -23,6 +24,9 @@ import type {
 } from 'maplibre-gl';
 import { bbox as turfBbox, center as turfCenter } from '@turf/turf';
 import type { Feature, FeatureCollection } from 'geojson';
+
+//setWorkerUrl(new URL('/js/maplibre-gl/maplibre-gl-worker.mjs', import.meta.url).toString());
+setWorkerUrl('/js/maplibre-gl/maplibre-gl-worker.mjs');
 
 /* =========================================================================
  * Shared defaults

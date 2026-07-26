@@ -197,20 +197,25 @@ enableRobotsTXT = true
     target = "assets/scss/glide.scss"
 
   [[module.mounts]]
-      source = "node_modules/photoswipe/src/photoswipe.css"
-      target = "assets/scss/photoswipe/photoswipe.css"
+    source = "node_modules/photoswipe/src/photoswipe.css"
+    target = "assets/scss/photoswipe/photoswipe.css"
 
   [[module.mounts]]
-      source = "node_modules/maplibre-gl/dist/maplibre-gl.css"
-      target = "assets/scss/maps/maplibre-gl.css"
+    source = "node_modules/maplibre-gl/dist/maplibre-gl.css"
+    target = "assets/scss/maps/maplibre-gl.css"
 
   [[module.mounts]]
-      source = "node_modules/@pagefind/modular-ui/css/"
-      target = "assets/scss/pagefind"
+    source = "node_modules/@pagefind/modular-ui/css/"
+    target = "assets/scss/pagefind"
 
   [[module.mounts]]
-      source = "node_modules/@pagefind/default-ui"
-      target = "assets/js/pagefind"
+    source = "node_modules/@pagefind/default-ui"
+    target = "assets/js/pagefind"
+
+  # See node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs
+  [[module.mounts]]
+    source = "node_modules/maplibre-gl/dist/"
+    target = "static/js/maplibre-gl"
 
   [[module.mounts]]
     source = "static/images"
