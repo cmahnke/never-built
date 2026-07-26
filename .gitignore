@@ -76,5 +76,5 @@ assets/scss/npm-fonts
 #content/post/**/blueprint*.jpg
 
 static/map
-data/*
+planetiler-data/*
 content/**/tmp

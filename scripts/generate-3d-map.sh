@@ -6,7 +6,7 @@ DOCKER_IMAGE=ghcr.io/cmahnke/map-tools/planetiler:latest
 DATA_IMAGE=ghcr.io/cmahnke/map-data/goettingen:latest
 TILES_DIR="$(dirname "$(realpath "$0")")/../static/map/"
 COVERAGE=goettingen
-MAX_ZOOM=15
+MAX_ZOOM=16
 TILE_COMPRESSION=none
 PLANETILER_OPTS="--use_wikidata=true"
 BBOX="9.7 51.45 10.1 51.6"
@@ -79,9 +79,10 @@ do
   #CMD="/opt/planetiler/bin/planetiler"
   BBOX=$(echo $BBOX| tr ' ' ',')
 
+  OUTPUT_FILE=$TMP_DIR/output.mbtiles
   PBF=$MAP_FILE
   echo "Using $PBF"
-  ARGS="--download=true --languages=de,en --osm-path=$PBF --osm_parse_node_bounds=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --building_merge_z13=false --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --force --bounds=${BBOX} --exclude-layers=building"
+  ARGS="--download_dir=planetiler-data/sources --tmpdir=planetiler-data/tmp --tile_weights=planetiler-data/tile_weights.tsv.gz --download=true --languages=de,en --osm-path=$PBF --osm_parse_node_bounds=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --building_merge_z13=true --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --force --bounds=${BBOX} --exclude-layers=building --output=$OUTPUT_FILE"
 
   #docker run -v "`pwd`:`pwd`" -w "`pwd`" $DOCKER_IMAGE $CMD $ARGS
   docker run -v "$(pwd):$(pwd)" -w "$(pwd)" "$DOCKER_IMAGE" sh -c "$CMD \"\$@\"" -- $ARGS
@@ -92,7 +93,7 @@ do
     exit 1
   fi
 
-  mb-util --silent --image_format=pbf ./data/output.mbtiles $POST_TILES
+  mb-util --silent --image_format=pbf $OUTPUT_FILE $POST_TILES
 
   # TODO: This won't work this way.
   # if test -r "$MASTER_TILE_DIR"; then
