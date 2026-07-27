@@ -1,11 +1,18 @@
 import * as maplibregl from 'maplibre-gl'
+import type {
+  StyleSpecification,
+  RasterDEMSourceSpecification,
+  VectorSourceSpecification,
+  MapMouseEvent,
+  MapGeoJSONFeature,
+  LayerSpecification,
+} from "maplibre-gl";
 import { center, points } from "@turf/turf";
 import { loadOrParse } from "./base-map";
 import { grainyBWLayer } from "./layers/grainy-bw-layer";
-import { updateStyle, defaultSprites } from "./styles";
+import { updateStyle, setupDefaultStyle, defaultSprites } from './styles';
 import { treeLayer } from "./layers/tree-layer";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { StyleSpecification } from "maplibre-gl";
 import chroma from "chroma-js";
 
 const tileSource      = "Blauer-Turm";
@@ -21,7 +28,15 @@ const fog   = "#dcdbdf";
 const sky   = "#87ceeb";
 const blend = 0.5;
 
-const initialPos = {
+interface InitialCameraPosition {
+  cameraLngLat: [number, number];
+  cameraAlt:    number;
+  bearing:      number;
+  pitch:        number;
+  roll:         number;
+}
+
+const initialPos: InitialCameraPosition = {
   cameraLngLat: defaultCenter,
   cameraAlt:    100,
   bearing:      -10,
@@ -29,15 +44,22 @@ const initialPos = {
   roll:         0,
 };
 
-const skyColors = chroma.scale([fog, sky]).mode("lab").colors(6);
+const skyColors: string[] = chroma.scale([fog, sky]).mode("lab").colors(6);
 
 // ─── Meta / style loading ─────────────────────────────────────────────────────
 
-const metaObj = await loadOrParse(metaJson);
+interface MetaObj {
+  center:  string;
+  bounds?: string;
+  [key: string]: unknown;
+}
+
+const metaObj = (await loadOrParse(metaJson)) as MetaObj;
+
 let centerObj: [number, number] = metaObj.center
   .split(",").slice(0, 2).map(Number) as [number, number];
 
-if (metaObj?.bounds) {
+if (metaObj.bounds) {
   const bboxObj = metaObj.bounds.split(",").slice(0, 4).map(Number);
   const c = center(points([
     [bboxObj[0], bboxObj[1]],
@@ -49,30 +71,87 @@ if (metaObj?.bounds) {
   centerObj = [0, 0];
 }
 
-const spriteUrl = window.location.origin + defaultSprites;
-const baseStyle  = await loadOrParse(styleJson);
-const url        = window.location.origin + tilesUrl;
+const spriteUrl       = window.location.origin + defaultSprites;
+const loadedStyleJson = (await loadOrParse(styleJson)) as StyleSpecification;
+const url             = window.location.origin + tilesUrl;
 
-const style = updateStyle(
-  baseStyle, url, 14, minZoom, 15,
+function cloneStyle(s: StyleSpecification): StyleSpecification {
+  return JSON.parse(JSON.stringify(s)) as StyleSpecification;
+}
+
+/**
+ * Layers that should be hidden (not removed) while in 3D mode, because
+ * they're visually replaced by dynamic 3D equivalents (e.g. the flat
+ * building fill is replaced by the extruded `3d-buildings` layer).
+ */
+const HIDDEN_IN_3D = new Set<string>(["building_fill"]);
+
+/**
+ * "flatStyle" is the plain `styleJson`, only with the tile source URL /
+ * sprite wired up. Buildings, labels, admin boundaries etc. all stay as
+ * declared in the original style — this is what we show when the camera
+ * looks straight down and 3D is disabled.
+ */
+const flatStyle: StyleSpecification = updateStyle(
+  cloneStyle(loadedStyleJson), url, 14, minZoom, 15,
   undefined, undefined, undefined, undefined, undefined,
   spriteUrl
 ) as StyleSpecification;
 
-style.light = {
-  anchor:    "viewport",
-  color:     "#fff",
-  intensity: 0.4,
-  position:  [1.15, 210, 30],
+/**
+ * "style3D" is the customized version used while tilted:
+ *  - labels/admin boundaries are removed entirely
+ *  - `building_fill` is hidden via layout.visibility (not removed) since
+ *    the extruded `3d-buildings` layer replaces it visually
+ *  - a custom light is applied
+ */
+function buildStyle3D(): StyleSpecification {
+  const s: StyleSpecification = updateStyle(
+    cloneStyle(loadedStyleJson), url, 14, minZoom, 15,
+    undefined, undefined, undefined, undefined, undefined,
+    spriteUrl
+  ) as StyleSpecification;
+
+  s.light = {
+    anchor:    "viewport",
+    color:     "#fff",
+    intensity: 0.4,
+    position:  [1.15, 210, 30],
+  };
+
+  s.layers = s.layers
+    .filter((layer: LayerSpecification) => {
+      if (layer.id.includes("label") || layer.id.includes("admin") || layer.id === "housenumber") return false;
+      return true;
+    })
+    .map((layer: LayerSpecification): LayerSpecification => {
+      if (HIDDEN_IN_3D.has(layer.id)) {
+        return {
+          ...layer,
+          layout: {
+            ...("layout" in layer ? layer.layout : {}),
+            visibility: "none",
+          },
+        } as LayerSpecification;
+      }
+      return layer;
+    });
+
+  return s;
+}
+
+const style3D: StyleSpecification = buildStyle3D();
+
+/**
+ * MapLibre's official `RasterDEMSourceSpecification` doesn't know about
+ * `baseShift` (custom decoding parameter used by our terrain encoder),
+ * so we extend the type instead of casting to `any`.
+ */
+type CustomRasterDemSource = RasterDEMSourceSpecification & {
+  baseShift: number;
 };
 
-style.layers = style.layers.filter((layer) => {
-  if ("type" in layer && layer.id.startsWith("building")) return false;
-  if (layer.id.includes("label") || layer.id.includes("admin") || layer.id === "housenumber") return false;
-  return true;
-});
-
-const terrainSourceDef = {
+const terrainSourceDef: CustomRasterDemSource = {
   type:        "raster-dem",
   tiles:       [topoRasterTiles],
   tileSize:    256,
@@ -85,11 +164,25 @@ const terrainSourceDef = {
   blueFactor:  0.4,
 };
 
+const neverBuiltSource: VectorSourceSpecification = {
+  type:    "vector",
+  minzoom: 9,
+  maxzoom: 15,
+};
+
 // ─── Map ──────────────────────────────────────────────────────────────────────
+
+const OVERHEAD_THRESHOLD = 5;
+const TRANSITION_MS      = 600;
+
+type ViewMode = "3D" | "flat";
+
+let currentMode: ViewMode =
+  initialPos.pitch < OVERHEAD_THRESHOLD ? "flat" : "3D";
 
 const map = new maplibregl.Map({
   container: "map",
-  style,
+  style: currentMode === "3D" ? style3D : flatStyle,
   center:   defaultCenter,
   zoom,
   minZoom,
@@ -100,10 +193,15 @@ const map = new maplibregl.Map({
 
 // ─── 3D transition ────────────────────────────────────────────────────────────
 
-const OVERHEAD_THRESHOLD = 5;
-const TRANSITION_MS      = 600;
+interface Tween {
+  value:     number;
+  target:    number;
+  startVal:  number;
+  startTime: number;
+  raf:       number;
+}
 
-const tween = {
+const tween: Tween = {
   value:     1,   // 0 = flat/overhead, 1 = full 3D
   target:    1,
   startVal:  1,
@@ -119,19 +217,14 @@ function easeCubic(t: number): number {
 
 /**
  * Apply interpolated value v ∈ [0,1] to all animated properties.
- *
- * Rules:
- *  - Only touch paint properties that are DECLARED in addLayer paint blocks.
- *  - NEVER call setTerrain here — it recalculates camera and causes z-rotation.
- *  - Hills layer uses visibility toggle at tween end, not opacity
- *    (hillshade has no opacity paint property).
+ * Only meaningful while `currentMode === "3D"` (the flat style doesn't
+ * have these layers at all).
  */
 function applyTweenValue(m: maplibregl.Map, v: number): void {
   if (m.getLayer("3d-buildings")) {
     m.setPaintProperty("3d-buildings", "fill-extrusion-opacity", v);
   }
 
-  // Tree custom layer
   treeLayer.opacity = v;
 
   m.triggerRepaint();
@@ -139,31 +232,30 @@ function applyTweenValue(m: maplibregl.Map, v: number): void {
 
 /**
  * Called once when the tween finishes.
- * Safe to toggle visibility here because we are fully faded.
  */
 function onTweenComplete(m: maplibregl.Map, flat: boolean): void {
-  // Show/hide hillshade only when buildings are already invisible
-  // so the pop-in is not visible.
   if (m.getLayer("hills")) {
     m.setLayoutProperty("hills", "visibility", flat ? "none" : "visible");
+  }
+
+  if (flat && currentMode === "3D") {
+    switchToFlat(m);
   }
 }
 
 function startTween(m: maplibregl.Map, target: number): void {
-  if (tween.target === target) return;
+  if (tween.target === target && tween.value === target) return;
 
   cancelAnimationFrame(tween.raf);
   tween.target    = target;
   tween.startVal  = tween.value;
   tween.startTime = performance.now();
 
-  // When going 3D→flat, show hills immediately so they fade with buildings.
-  // When going flat→3D, show hills immediately too.
   if (m.getLayer("hills")) {
     m.setLayoutProperty("hills", "visibility", "visible");
   }
 
-  const tick = (now: number) => {
+  const tick = (now: number): void => {
     const elapsed  = now - tween.startTime;
     const progress = Math.min(elapsed / TRANSITION_MS, 1);
     tween.value    = tween.startVal +
@@ -188,35 +280,51 @@ function isOverhead(m: maplibregl.Map): boolean {
 }
 
 function sync3DVisibility(m: maplibregl.Map): void {
-  startTween(m, isOverhead(m) ? 0 : 1);
+  const target = isOverhead(m) ? 0 : 1;
+
+  if (target === 1 && currentMode === "flat") {
+    switchTo3D(m, () => startTween(m, target));
+    return;
+  }
+
+  startTween(m, target);
 }
 
-// ─── Load ─────────────────────────────────────────────────────────────────────
+// ─── Style switching ──────────────────────────────────────────────────────────
 
-map.on("load", () => {
-  map.addSource("never_built", { type: "vector", minzoom: 9, maxzoom: 15 });
-  map.addSource("terrainSource", terrainSourceDef);
-  map.addSource("hillshadeSource", terrainSourceDef);
+/**
+ * Adds all the sources/layers that only make sense in 3D mode.
+ * Safe to call multiple times (guards against duplicates), needed after
+ * every `setStyle(style3D)` since that resets sources/layers.
+ */
+function attachDynamicLayers(m: maplibregl.Map): void {
+  if (!m.getSource("never_built")) {
+    m.addSource("never_built", neverBuiltSource);
+  }
+  if (!m.getSource("terrainSource")) {
+    m.addSource("terrainSource", terrainSourceDef);
+  }
+  if (!m.getSource("hillshadeSource")) {
+    m.addSource("hillshadeSource", terrainSourceDef);
+  }
 
-  // Terrain exaggeration is set ONCE and never touched again.
-  // Changing it mid-session causes camera z-rotation in MapLibre.
-  map.setTerrain({ source: "terrainSource", exaggeration: 1 });
+  // Terrain exaggeration is set ONCE per style-load and never touched again.
+  m.setTerrain({ source: "terrainSource", exaggeration: 1 });
 
-  map.addLayer({
-    id:     "hills",
-    type:   "hillshade",
-    source: "hillshadeSource",
-    layout: { visibility: "visible" },
-    paint: {
-      // hillshade-exaggeration controls intensity (0–1), this is the
-      // only numeric paint property hillshade layers support.
-      // Do NOT add hillshade-opacity — it does not exist.
-      "hillshade-shadow-color":    "#473B24",
-      "hillshade-exaggeration":    0.5,
-    },
-  });
+  if (!m.getLayer("hills")) {
+    m.addLayer({
+      id:     "hills",
+      type:   "hillshade",
+      source: "hillshadeSource",
+      layout: { visibility: "visible" },
+      paint: {
+        "hillshade-shadow-color": "#473B24",
+        "hillshade-exaggeration": 0.5,
+      },
+    });
+  }
 
-  map.setSky({
+  m.setSky({
     "sky-color":         skyColors[0],
     "sky-horizon-blend": blend,
     "horizon-color":     skyColors[2],
@@ -225,60 +333,104 @@ map.on("load", () => {
     "fog-ground-blend":  0,
   });
 
-  map.addLayer({
-    id:             "3d-buildings",
-    source:         "openmaptiles",
-    "source-layer": "building",
-    type:           "fill-extrusion",
-    minzoom:        13,
-    paint: {
-      "fill-extrusion-color":   ["case", ["has", "color"], ["get", "color"], "#aaa"],
-      "fill-extrusion-height":  ["get", "render_height"],
-      "fill-extrusion-base":    ["get", "min_height"],
-      "fill-extrusion-opacity": 1,   // declared here so setPaintProperty works
-    },
+  if (!m.getLayer("3d-buildings")) {
+    m.addLayer({
+      id:             "3d-buildings",
+      source:         "openmaptiles",
+      "source-layer": "building",
+      type:           "fill-extrusion",
+      minzoom:        13,
+      paint: {
+        "fill-extrusion-color":   ["case", ["has", "color"], ["get", "color"], "#aaa"],
+        "fill-extrusion-height":  ["get", "render_height"],
+        "fill-extrusion-base":    ["get", "min_height"],
+        "fill-extrusion-opacity": tween.value,
+      },
+    });
+  }
+
+  if (!m.getLayer(treeLayer.id)) {
+    treeLayer.source      = "openmaptiles";
+    treeLayer.sourceLayer = "tree";
+    treeLayer.debug       = true;
+    treeLayer.opacity     = tween.value;
+    m.addLayer(treeLayer);
+  }
+
+  if (!m.getLayer(grainyBWLayer.id)) {
+    m.addLayer(grainyBWLayer);
+  }
+}
+
+function switchTo3D(m: maplibregl.Map, after?: () => void): void {
+  if (currentMode === "3D") {
+    after?.();
+    return;
+  }
+  currentMode = "3D";
+  m.setStyle(cloneStyle(style3D), { diff: false });
+  m.once("style.load", () => {
+    attachDynamicLayers(m);
+    after?.();
   });
+}
 
-  treeLayer.source      = "openmaptiles";
-  treeLayer.sourceLayer = "tree";
-  treeLayer.debug       = true;
-  treeLayer.opacity     = 1;
-  map.addLayer(treeLayer);
+function switchToFlat(m: maplibregl.Map): void {
+  if (currentMode === "flat") return;
+  currentMode = "flat";
+  m.setTerrain(null);
+  m.setStyle(cloneStyle(flatStyle), { diff: false });
+}
 
-  map.addLayer(grainyBWLayer);
+// ─── Load ─────────────────────────────────────────────────────────────────────
 
-  // ── Apply initial state without animating ─────────────────────────────────
+map.on("load", () => {
+  if (currentMode === "3D") {
+    attachDynamicLayers(map);
+  }
+
   const startFlat = isOverhead(map);
   tween.value  = startFlat ? 0 : 1;
   tween.target = startFlat ? 0 : 1;
   applyTweenValue(map, tween.value);
-  onTweenComplete(map, startFlat);
+  if (currentMode === "3D" && map.getLayer("hills")) {
+    map.setLayoutProperty("hills", "visibility", startFlat ? "none" : "visible");
+  }
 
-  // ── React to pitch changes ────────────────────────────────────────────────
   map.on("pitch", () => sync3DVisibility(map));
+});
 
-  // ── Building popup ────────────────────────────────────────────────────────
-  map.on("click", "3d-buildings", (e) => {
-    if (e.features?.length) {
-      const props = e.features[0].properties;
-      let html = "<h4>Building Properties</h4><table>";
-      for (const key in props) {
-        html += `<tr><td><strong>${key}</strong></td><td>${props[key]}</td></tr>`;
-      }
-      html += "</table>";
-      new maplibregl.Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(html)
-        .addTo(map);
-    }
-  });
+// ── Building popup / hover (style-agnostic, layer existence checked) ─────────
 
-  map.on("mouseenter", "3d-buildings", () => {
-    map.getCanvas().style.cursor = "pointer";
+map.on("click", (e: MapMouseEvent) => {
+  if (!map.getLayer("3d-buildings")) return;
+
+  const features: MapGeoJSONFeature[] = map.queryRenderedFeatures(e.point, {
+    layers: ["3d-buildings"],
   });
-  map.on("mouseleave", "3d-buildings", () => {
+  if (!features.length) return;
+
+  const props = features[0].properties ?? {};
+  let html = "<h4>Building Properties</h4><table>";
+  for (const key of Object.keys(props)) {
+    html += `<tr><td><strong>${key}</strong></td><td>${String(props[key])}</td></tr>`;
+  }
+  html += "</table>";
+  new maplibregl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML(html)
+    .addTo(map);
+});
+
+map.on("mousemove", (e: MapMouseEvent) => {
+  if (!map.getLayer("3d-buildings")) {
     map.getCanvas().style.cursor = "";
+    return;
+  }
+  const features: MapGeoJSONFeature[] = map.queryRenderedFeatures(e.point, {
+    layers: ["3d-buildings"],
   });
+  map.getCanvas().style.cursor = features.length ? "pointer" : "";
 });
 
 // ─── Initial camera ───────────────────────────────────────────────────────────
