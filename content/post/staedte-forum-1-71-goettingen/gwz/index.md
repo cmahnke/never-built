@@ -18,6 +18,7 @@ params:
     - 9.935313
     - 51.541721
   featured: true
+  3d: true
 resources:
 - src: "page064.jxl"
   name: preview
@@ -30,7 +31,7 @@ resources:
 
 Die drei blauen Türme waren der Anlass für dieses Blog...
 <!--more-->
-... und sind auch die Grundlage für das Icon und die Fehlerseite.
+... und sind auch die Grundlage für das Icon und die [Fehlerseite](/404).
 
 In diesem Modell sind neben dem heute bestehenden blauen Turm noch zwei weitere enthalten. Diese ware als potentielle Erweiterungen projektiert und sogar höher als der tatsächlich gebaute.
 

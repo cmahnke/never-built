@@ -20,10 +20,26 @@
 
     {{- partial "html/head/style.html" (dict "context" . "css" "css/style.css") -}}
 
+    {{- $jsIncludes := partial "html/head/iiif-js.html" . -}}
+    {{/*
+    {{- with .Page.File -}}
+      {{- if or (hasPrefix .Path "post") (hasPrefix .Path "/post") -}}
+        {{ $opts := dict
+          "targetPath" "js/map.js"
+          "minify" true
+          "params" (dict "env" hugo.Environment)
+        }}
+        {{ $js := resources.Get "ts/maps/map.ts" | js.Build $opts }}
+
+        {{- $jsIncludes = $jsIncludes | append $js.RelPermalink -}}
+      {{- end -}}
+    {{- end -}}
+    */}}
+
     {{- if and (isset site.Params "js") (eq site.Params.js "esm") -}}
-      {{- partial "html/head/script.html" (dict "context" . "js" (partial "html/head/iiif-js.html" .) "opts" (dict "format" "esm")) -}}
+      {{- partial "html/head/script.html" (dict "context" . "js" $jsIncludes "opts" (dict "format" "esm")) -}}
     {{- else -}}
-      {{- partial "html/head/script.html" (dict "context" . "js" (partial "html/head/iiif-js.html" .)) -}}
+      {{- partial "html/head/script.html" (dict "context" . "js" $jsIncludes) -}}
     {{- end -}}
 
     <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_32 | default "/images/favicon-32.png" | absURL }}" sizes="32x32">
