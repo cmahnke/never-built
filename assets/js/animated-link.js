@@ -12,6 +12,9 @@ export function addPrefetch(url, allowedPrefetch) {
   if (!url.startsWith('/') && !url.startsWith('//') && !url.startsWith('http')) {
     return;
   }
+  if (url.includes('/404')) {
+    return
+  }
   if (allowedPrefetch !== undefined && !url.startsWith('/')) {
     const parsed = URL.parse(url);
     if (!allowedPrefetch.filter(domain => { return parsed.hostname.endsWith(domain) }).length) {
