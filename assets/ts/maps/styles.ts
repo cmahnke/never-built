@@ -1,5 +1,19 @@
-const defaultSprites = "/map-styles/sprite";
-const defaultFonts = "/css/fonts/{font-family}.css";
+//import type { AnySourceData, Style as MBStyle, VectorSourceImpl } from "mapbox-gl";
+import type {
+  LngLatLike,
+  StyleSpecification,
+  VectorSourceSpecification,
+  BackgroundLayerSpecification,
+} from 'maplibre-gl';
+
+// NOTE: adjust this import path to wherever `buildDefaultStyle` actually
+// lives in your project — it wasn't included in the original snippet.
+import { buildDefaultStyle } from "./default-style";
+
+export const defaultSprites = "/map-styles/sprite";
+export const defaultFonts = "/css/fonts/{font-family}.css";
+export const defaultAttribution =
+  '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>';
 
 interface StyleSource {
   tiles?: string[];
@@ -16,8 +30,15 @@ interface LayerPaint {
   [key: string]: unknown;
 }
 
+/**
+ * A single zoom→font-name stop pair, e.g. `[12, "Noto Sans Regular"]`.
+ * Using a concrete tuple type instead of `unknown[]` lets us avoid any
+ * `Array.isArray()` narrowing-to-`any[]` tricks later on.
+ */
+type ZoomFontStop = [number, string];
+
 interface LayerLayout {
-  "text-font"?: string[] | { stops?: Array<Array<string | unknown>> } | unknown;
+  "text-font"?: string[] | { stops?: ZoomFontStop[] };
   [key: string]: unknown;
 }
 
@@ -36,7 +57,7 @@ interface StyleMetadata {
 interface Style {
   sources: Record<string, StyleSource>;
   layers: StyleLayer[];
-  metadata: StyleMetadata;
+  metadata?: StyleMetadata;
   center?: [number, number] | number[];
   zoom?: number;
   glyphs?: string;
@@ -52,7 +73,7 @@ export function updateStyle(
   minzoom?: number,
   maxzoom?: number,
   bounds?: number[][],
-  center?: [number, number] | number[],
+  center?: LngLatLike,
   background?: string,
   sprites?: string,
   fontPath?: string,
@@ -67,89 +88,128 @@ export function updateStyle(
     delete source.url;
   }
 
-  if (minzoom !== undefined) {
-    source["minzoom"] = minzoom;
-  }
-  if (maxzoom !== undefined) {
-    source["maxzoom"] = maxzoom;
-  }
+  if (minzoom !== undefined) source.minzoom = minzoom;
+  if (maxzoom !== undefined) source.maxzoom = maxzoom;
   if (bounds !== undefined) {
-    const flatBounds = bounds.flat().map((e) => Number(e));
-    source["bounds"] = flatBounds;
-  }
-  if (attribution !== undefined) {
-    source["attribution"] = attribution;
+    source.bounds = bounds.flat().map((e: number) => Number(e));
   }
 
-  if (typeof source["attribution"] == "boolean") {
-    delete source["attribution"];
+  // Defensive: only ever write a real string into `attribution`, and strip
+  // out any pre-existing invalid (e.g. boolean) value from the loaded style.
+  if (attribution !== undefined && typeof attribution === "string") {
+    source.attribution = attribution;
+  } else if (typeof source.attribution !== "string") {
+    if (attribution !== undefined) {
+      console.warn(
+        `updateStyle(): "attribution" must be a string, got ${typeof attribution} ` +
+          `(${JSON.stringify(attribution)}). Falling back to default attribution. ` +
+          `Check the call site — arguments may be shifted/mismatched.`
+      );
+      source.attribution = defaultAttribution;
+    } else {
+      delete source.attribution;
+    }
   }
 
   if (center !== undefined) {
-    style.center = center;
-  }
-
-  if (background !== undefined) {
-    style.layers.forEach((layer) => {
-      if ("type" in layer && layer.type === "background" && layer.paint) {
-        layer.paint["background-color"] = background;
-      }
-    });
-  }
-
-  if (fontPath !== undefined) {
-    style["ol:webfonts"] = fontPath;
-    style.metadata["ol:webfonts"] = fontPath;
-  } else {
-    style["ol:webfonts"] = defaultFonts;
-    style.metadata["ol:webfonts"] = defaultFonts;
+    style.center = center as [number, number];
   }
   if (initialzoom !== undefined) {
     style.zoom = initialzoom;
+  }
+
+  if (background !== undefined) {
+    style.layers.forEach((layer: StyleLayer) => {
+      if (layer.type === "background") {
+        layer.paint = { ...layer.paint, "background-color": background };
+      }
+    });
   }
 
   if ("glyphs" in style) {
     delete style.glyphs;
   }
 
-  if ("sprite" in style) {
-    if (sprites === undefined) {
-      //delete style.sprite;
-      style.sprite = null;
-    } else {
-      style.sprite = sprites;
-    }
+  if (style.sprite !== undefined) {
+    style.sprite = sprites === undefined ? undefined : sprites;
   }
-  Object.keys(style.metadata).forEach((key) => {
-    if (key.startsWith("mapbox") || key.startsWith("openmaptiles")) {
-      delete style.metadata[key];
-    }
-  });
+
+  if (style.metadata) {
+    const metadata: StyleMetadata = style.metadata;
+    Object.keys(metadata).forEach((key: string) => {
+      if (key.startsWith("mapbox") || key.startsWith("openmaptiles")) {
+        delete metadata[key];
+      }
+    });
+  }
 
   if (font !== undefined) {
-    style.layers.forEach((layer) => {
-      if (layer.type === "symbol" && layer.layout) {
-        if ("text-font" in layer.layout) {
-          const textFont = layer.layout["text-font"];
-          if (Array.isArray(textFont)) {
-            textFont[0] = font;
-          } else if (typeof textFont === "object" && textFont !== null) {
-            if ("stops" in textFont) {
-              const stopsObj = textFont as { stops: Array<Array<unknown>> };
-              stopsObj.stops.forEach((stop) => {
-                stop.forEach((s) => {
-                  if (Array.isArray(s)) {
-                    s[0] = font;
-                  }
-                });
-              });
-            }
-          }
+    style.layers.forEach((layer: StyleLayer) => {
+      if (layer.type === "symbol" && layer.layout && "text-font" in layer.layout) {
+        const textFont = layer.layout["text-font"];
+        if (Array.isArray(textFont)) {
+          textFont[0] = font;
+        } else if (textFont && typeof textFont === "object" && "stops" in textFont) {
+          const stops: ZoomFontStop[] = textFont.stops ?? [];
+          stops.forEach((stop: ZoomFontStop) => {
+            stop[1] = font;
+          });
         }
       }
     });
   }
 
+  style.metadata = {
+    ...(style.metadata ?? {}),
+    "projektemacher:fontPath": fontPath ?? defaultFonts,
+  };
+
   style.sources[sourceKey] = source;
+  return style;
+}
+
+/**
+ * MapLibre's official `VectorSourceSpecification` types `bounds` as a
+ * strict 4-tuple (`[number, number, number, number]`), but here we build
+ * it from a flattened, arbitrary-length array — so we widen it locally
+ * instead of reaching for `any`.
+ */
+type ExtendedVectorSource = VectorSourceSpecification & {
+  bounds?: number[];
+};
+
+export function setupDefaultStyle(
+  source: string,
+  initialzoom?: number,
+  minzoom?: number,
+  maxzoom?: number,
+  bounds?: number[][],
+  center?: LngLatLike,
+  background?: string
+): StyleSpecification {
+  const style: StyleSpecification = buildDefaultStyle(source);
+  const src = style.sources.vector_layer_ as ExtendedVectorSource;
+
+  src.tiles = [source];
+  if (minzoom !== undefined) src.minzoom = minzoom;
+  if (maxzoom !== undefined) src.maxzoom = maxzoom;
+  if (bounds !== undefined) {
+    src.bounds = bounds.flat().map((e: number) => Number(e));
+  }
+  if (background !== undefined) {
+    const bgLayer = style.layers[0] as BackgroundLayerSpecification;
+    bgLayer.paint = {
+      ...bgLayer.paint,
+      "background-color": background,
+    };
+  }
+
+  if (center !== undefined) {
+    style.center = center as [number, number];
+  }
+  if (initialzoom !== undefined) {
+    style.zoom = initialzoom;
+  }
+
   return style;
 }
