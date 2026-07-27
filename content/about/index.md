@@ -22,7 +22,7 @@ Derzeit fehlen noch (mindestens) die folgenden Entwürfe:
 
 Diese Seite wurde mit [Hugo](https://gohugo.io/) generiert.
 
-Als Schriftarten kommen [League Spartan](https://github.com/theleagueof/league-spartan) und [Roboto Mono](https://github.com/googlefonts/roboto-3-classic) zum Einsatz.
+Als Schriftarten kommen [League Spartan](https://github.com/theleagueof/league-spartan), [Roboto Mono](https://github.com/googlefonts/roboto-3-classic) und [Newsreader Variable](https://github.com/productiontype/Newsreader) zum Einsatz.
 
 Die folgenden JavaScript und CSS Frameworks werden benutzt:
 * [normalize.css](https://necolas.github.io/normalize.css/)
@@ -30,7 +30,7 @@ Die folgenden JavaScript und CSS Frameworks werden benutzt:
 * [Apache ECharts](https://echarts.apache.org/) - Für animierte Grafiken
 * [Motion.dev](https://motion.dev/) - Für positionsabhängige Animationen
 
-Das Kartenmaterial stammt von [OpenStreetMap](https://www.openstreetmap.org/#map=13/51.53544/9.92340), der Anzeigestil ist ["Toner"](https://github.com/openmaptiles/maptiler-toner-gl-style). Die Darstellung erfolgt mittels [OpenLayers](https://openlayers.org/).
+Das Kartenmaterial stammt von [OpenStreetMap](https://www.openstreetmap.org/#map=13/51.53544/9.92340), der Anzeigestil ist ["Toner"](https://github.com/openmaptiles/maptiler-toner-gl-style). Die Darstellung erfolgt mittels [MapLibre GL JS](https://maplibre.org/projects/gl-js/).
 
 ## Bildbearbeitung und -optimierung
 
