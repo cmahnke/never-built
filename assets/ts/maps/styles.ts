@@ -6,10 +6,6 @@ import type {
   BackgroundLayerSpecification,
 } from 'maplibre-gl';
 
-// NOTE: adjust this import path to wherever `buildDefaultStyle` actually
-// lives in your project — it wasn't included in the original snippet.
-import { buildDefaultStyle } from "./default-style";
-
 export const defaultSprites = "/map-styles/sprite";
 export const defaultFonts = "/css/fonts/{font-family}.css";
 export const defaultAttribution =
@@ -152,7 +148,7 @@ export function updateStyle(
         } else if (textFont && typeof textFont === "object" && "stops" in textFont) {
           const stops: ZoomFontStop[] = textFont.stops ?? [];
           stops.forEach((stop: ZoomFontStop) => {
-            stop[1] = font;
+            stop[1] = [font];
           });
         }
       }
