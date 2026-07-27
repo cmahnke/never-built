@@ -382,17 +382,6 @@ export function setupDefaultStyle(
   return style;
 }
 
-/* =========================================================================
- * updateStyle — `fontPath` is a CSS template (the original "ol:webfonts"
- * concept), NOT a glyphs PBF template. `font` overrides the primary
- * text-font entry in every symbol layer.
- *
- * IMPORTANT: Any pre-existing `style.glyphs` value (e.g. pointing to
- * MapTiler/Mapbox with an unresolved API-key placeholder, or blocked by
- * CSP) is explicitly removed, since text rendering relies entirely on
- * locally loaded web fonts instead (see preloadStyleFonts()).
- * ========================================================================= */
-
 export function updateStyle(
   style: StyleSpecification,
   url: string,
@@ -1014,9 +1003,6 @@ export async function projektemacherMap(
           const merged = mergeFeatureProperties(features);
           const lngLat = (features[0].geometry as any).coordinates as LngLatLike;
 
-          // NEU: Karte auf den geklickten Punkt zentrieren, damit das Popup
-          // mittig im sichtbaren Kartenausschnitt erscheint (z.B. bei Pfeil-Markern
-          // aus addRouteAndMarkerLayers()).
           map.easeTo({ center: lngLat, duration: 300 });
 
           showPopup(map, lngLat, merged.name, merged.popupContent);

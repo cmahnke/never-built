@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-STYLE_URL=https://github.com/openmaptiles/maptiler-basic-gl-style/archive/refs/tags/v1.10.tar.gz
+#STYLE_URL=https://github.com/openmaptiles/maptiler-basic-gl-style/archive/refs/tags/v1.10.tar.gz
+STYLE_URL=https://github.com/openmaptiles/maptiler-toner-gl-style/archive/refs/tags/v1.0.tar.gz
 STYLE_DIR=./static/map-styles
 TILES_DIR=./static/map
 
@@ -47,6 +48,7 @@ if ! test -d "STYLE_DIR"; then
   do
     wget -P $STYLE_DIR/ "$SPRITE"
   done
+  #npx gl-style-migrate $STYLE_DIR/style.json | sponge $STYLE_DIR/style.json
 else
   echo "Directory $STYLE_DIR exists."
 fi

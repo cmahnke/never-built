@@ -93,7 +93,9 @@ do
     exit 1
   fi
 
-  mb-util --silent --image_format=pbf $OUTPUT_FILE $POST_TILES
+  if [ ! -d "$POST_TILES" ]; then
+    mb-util --silent --image_format=pbf "$OUTPUT_FILE" "$POST_TILES"
+  fi
 
   # TODO: This won't work this way.
   # if test -r "$MASTER_TILE_DIR"; then
