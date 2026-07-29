@@ -50,9 +50,10 @@ do
       mv $file $(dirname $file)/$(basename $file | cut -d. -f1).osm.pbf 2>/dev/null || true
     done
 
-    python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o $TMP_DIR/$FILE_NAME -f -v
-    python scripts/osm_tool.py patch -i $PBF -p $TMP_DIR/$FILE_NAME -o $MAP_FILE -v -f
-    rm -r $TMP_DIR
+    PATCH_FILE_NAME=$FILE_BASE_NAME-patch.osm
+    echo "Writing patch to $TMP_DIR/$PATCH_FILE_NAME"
+    python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o $TMP_DIR/$PATCH_FILE_NAME --tag meta=projektemacher -f -v
+    python scripts/osm_tool.py patch -i $PBF -p $TMP_DIR/$PATCH_FILE_NAME -o $MAP_FILE -v -f
   fi
 
   if ! test -r "$MAP_FILE"; then
@@ -82,7 +83,8 @@ do
   OUTPUT_FILE=$TMP_DIR/output.mbtiles
   PBF=$MAP_FILE
   echo "Using $PBF"
-  ARGS="--download_dir=planetiler-data/sources --tmpdir=planetiler-data/tmp --tile_weights=planetiler-data/tile_weights.tsv.gz --download=true --languages=de,en --osm-path=$PBF --osm_parse_node_bounds=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --building_merge_z13=true --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --force --bounds=${BBOX} --exclude-layers=building --output=$OUTPUT_FILE"
+  ARGS="--download_dir=planetiler-data/sources --tmpdir=planetiler-data/tmp --tile_weights=planetiler-data/tile_weights.tsv.gz --download=true --languages=de,en --osm-path=$PBF --osm_parse_node_bounds=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --bounds=${BBOX} --force --exclude-layers=building --output=$OUTPUT_FILE"
+  #
 
   #docker run -v "`pwd`:`pwd`" -w "`pwd`" $DOCKER_IMAGE $CMD $ARGS
   docker run -v "$(pwd):$(pwd)" -w "$(pwd)" "$DOCKER_IMAGE" sh -c "$CMD \"\$@\"" -- $ARGS
@@ -96,6 +98,9 @@ do
   if [ ! -d "$POST_TILES" ]; then
     mb-util --silent --image_format=pbf "$OUTPUT_FILE" "$POST_TILES"
   fi
+
+  mv "$TMP_DIR/$PATCH_FILE_NAME" "$POST_TILES/"
+  rm -r $TMP_DIR
 
   # TODO: This won't work this way.
   # if test -r "$MASTER_TILE_DIR"; then

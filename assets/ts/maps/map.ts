@@ -24,7 +24,7 @@ import type {
 } from 'maplibre-gl';
 import { bbox as turfBbox, center as turfCenter } from '@turf/turf';
 import type { Feature, FeatureCollection } from 'geojson';
-import { updateStyle, setupDefaultStyle } from './styles';
+import { updateStyle, setupDefaultStyle, buildDefaultStyle } from './styles';
 
 setWorkerUrl('/js/maplibre-gl/maplibre-gl-worker.mjs');
 
@@ -272,85 +272,7 @@ async function preloadStyleFonts(
  * default map style
  * ========================================================================= */
 
-type LayerColorTuple = [string, number, number, number];
 
-const defaultStyleLayers: LayerColorTuple[] = [
-  ['water', 6, 204, 204],
-  ['water_name', 2, 44, 91],
-  ['waterway', 35, 117, 224],
-  ['landcover', 83, 224, 51],
-  ['landuse', 229, 180, 4],
-  ['park', 132, 234, 91],
-  ['boundary', 197, 69, 211],
-  ['aeroway', 81, 174, 181],
-  ['transportation', 242, 182, 72],
-  ['transportation_name', 188, 107, 56],
-  ['building', 43, 43, 43],
-  ['housenumber', 40, 40, 40],
-  ['place', 242, 14, 147],
-  ['mountain_peak', 98, 237, 247],
-  ['poi', 59, 181, 10],
-];
-
-function buildDefaultStyle(source: string): StyleSpecification {
-  const backgroundLayer: BackgroundLayerSpecification = {
-    id: 'background',
-    type: 'background',
-    paint: { 'background-color': 'rgb(250,250,250)' },
-  };
-
-  const fillLayers: FillLayerSpecification[] = defaultStyleLayers.map(([id, r, g, b]) => ({
-    id: `vector_layer__${id}_polygon`,
-    type: 'fill',
-    source: 'vector_layer_',
-    'source-layer': id,
-    filter: ['==', ['geometry-type'], 'Polygon'],
-    paint: {
-      'fill-color': `rgba(${r}, ${g}, ${b}, 0.3)`,
-      'fill-antialias': true,
-      'fill-outline-color': `rgba(${r}, ${g}, ${b}, 0.3)`,
-    },
-  }));
-
-  const lineLayers: LineLayerSpecification[] = defaultStyleLayers.map(([id, r, g, b]) => ({
-    id: `vector_layer__${id}_line`,
-    type: 'line',
-    source: 'vector_layer_',
-    'source-layer': id,
-    filter: ['==', ['geometry-type'], 'LineString'],
-    layout: { 'line-join': 'round', 'line-cap': 'round' },
-    paint: { 'line-color': `rgba(${r}, ${g}, ${b}, 0.6)` },
-  }));
-
-  const circleLayers: CircleLayerSpecification[] = defaultStyleLayers.map(([id, r, g, b]) => ({
-    id: `vector_layer__${id}_circle`,
-    type: 'circle',
-    source: 'vector_layer_',
-    'source-layer': id,
-    filter: ['==', ['geometry-type'], 'Point'],
-    paint: { 'circle-color': `rgba(${r}, ${g}, ${b}, 0.8)`, 'circle-radius': 2 },
-  }));
-
-  const vectorSource: VectorSourceSpecification = {
-    type: 'vector',
-    tiles: [source],
-    minzoom: 0,
-    maxzoom: 14,
-    attribution: '&copy; OpenStreetMap contributors and Natural Earth',
-  };
-
-  const layers: LayerSpecification[] = [backgroundLayer, ...fillLayers, ...lineLayers, ...circleLayers];
-
-  // NOTE: no `glyphs` key set at all — the default style has no symbol/text
-  // layers, and custom styles that DO have text layers rely on local
-  // web-font rendering via `preloadStyleFonts()` instead of a PBF endpoint.
-  return {
-    version: 8,
-    metadata: { inspect: true },
-    sources: { vector_layer_: vectorSource },
-    layers,
-  } as StyleSpecification;
-}
 
 
 

@@ -5,12 +5,11 @@ import View from 'ol/View';
 import GeoJSON from 'ol/format/GeoJSON';
 import Overlay from 'ol/Overlay';
 import { fromLonLat } from 'ol/proj';
-import { OSM, XYZ, Cluster, Vector as VectorSource } from 'ol/source';
+import { OSM, Cluster, Vector as VectorSource } from 'ol/source';
 import { createEmpty, extend, getHeight, getWidth, Extent } from 'ol/extent.js';
-import { Control, FullScreen, Zoom } from 'ol/control';
+import { FullScreen, Zoom } from 'ol/control';
 import {
   Circle as CircleStyle,
-  RegularShape,
   Style,
   Fill,
   Stroke,
@@ -111,10 +110,10 @@ export function loadOrParse(str: string | object): object | Promise<object | voi
     obj = fetch(str)
       .then((response) => response.json())
       .catch(function (body) {
-        console.log(`Could not read JSON from ${str}` + body);
+        console.log(`Could not read JSON from ${str}` + body, e);
       })
       .catch(function () {
-        console.log(`Could not read data from URL ${str}`);
+        console.log(`Could not read data from URL ${str}`, e);
       });
   }
   return obj;
