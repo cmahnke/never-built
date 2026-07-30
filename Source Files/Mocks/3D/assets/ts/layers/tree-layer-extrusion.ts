@@ -2,13 +2,7 @@
 //
 // (header comments unchanged — omitted here for brevity, keep as-is)
 
-import type {
-  Map as MapLibreMap,
-  MapGeoJSONFeature,
-  MapSourceDataEvent,
-  FilterSpecification,
-  GeoJSONSource,
-} from "maplibre-gl";
+import type { Map as MapLibreMap, MapGeoJSONFeature, MapSourceDataEvent, FilterSpecification, GeoJSONSource } from "maplibre-gl";
 
 // ─── GeoJSON typing ─────────────────────────────────────────────────────────
 //
@@ -36,7 +30,7 @@ function mulberry32(seed: number): () => number {
   let a = seed;
   return function (): number {
     a |= 0;
-    a = (a + 0x6D2B79F5) | 0;
+    a = (a + 0x6d2b79f5) | 0;
     let t = Math.imul(a ^ (a >>> 15), 1 | a);
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
@@ -64,9 +58,7 @@ function toRad(deg: number): number {
 function haversineMeters(lng1: number, lat1: number, lng2: number, lat2: number): number {
   const dLat = toRad(lat2 - lat1);
   const dLng = toRad(lng2 - lng1);
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
   return 2 * EARTH_RADIUS_METERS * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -81,21 +73,13 @@ function metersToDegreesLng(meters: number, atLat: number): number {
 /** Generates a closed polygon ring approximating a circle of `radiusMeters`
  *  centered at (lng, lat), with `segments` sides. Used for both the trunk
  *  footprint and each canopy "ring" (stacked cylinder band). */
-function circleRing(
-  lng: number,
-  lat: number,
-  radiusMeters: number,
-  segments: number
-): number[][] {
+function circleRing(lng: number, lat: number, radiusMeters: number, segments: number): number[][] {
   const ring: number[][] = [];
   for (let i = 0; i <= segments; i++) {
     const angle = (i / segments) * Math.PI * 2;
     const dx = Math.cos(angle) * radiusMeters;
     const dy = Math.sin(angle) * radiusMeters;
-    ring.push([
-      lng + metersToDegreesLng(dx, lat),
-      lat + metersToDegreesLat(dy),
-    ]);
+    ring.push([lng + metersToDegreesLng(dx, lat), lat + metersToDegreesLat(dy)]);
   }
   return ring;
 }
@@ -107,10 +91,7 @@ interface SampledPoint {
 
 /** Walks a polyline and returns points spaced `spacingMeters` apart along
  *  its length. Always includes the line's starting vertex. */
-function sampleLineAtSpacing(
-  coords: Array<[number, number]>,
-  spacingMeters: number
-): SampledPoint[] {
+function sampleLineAtSpacing(coords: Array<[number, number]>, spacingMeters: number): SampledPoint[] {
   const result: SampledPoint[] = [];
   if (coords.length < 2 || spacingMeters <= 0) return result;
 
@@ -195,10 +176,18 @@ export class TreeLayer {
   private map: MapLibreMap | undefined;
   private refreshTimer: ReturnType<typeof setTimeout> | undefined;
 
-  private get trunkSourceId(): string { return `${this.id}-trunk-source`; }
-  private get canopySourceId(): string { return `${this.id}-canopy-source`; }
-  private get trunkLayerId(): string { return `${this.id}-trunk-layer`; }
-  private get canopyLayerId(): string { return `${this.id}-canopy-layer`; }
+  private get trunkSourceId(): string {
+    return `${this.id}-trunk-source`;
+  }
+  private get canopySourceId(): string {
+    return `${this.id}-canopy-source`;
+  }
+  private get trunkLayerId(): string {
+    return `${this.id}-trunk-layer`;
+  }
+  private get canopyLayerId(): string {
+    return `${this.id}-canopy-layer`;
+  }
 
   private onSourceData = (e: MapSourceDataEvent): void => {
     if (e.sourceId === this.source && e.isSourceLoaded) this.scheduleRefresh();
@@ -213,12 +202,12 @@ export class TreeLayer {
     map.addSource(this.trunkSourceId, {
       type: "geojson",
       data: emptyFeatureCollection(),
-      maxzoom: 22,
+      maxzoom: 22
     });
     map.addSource(this.canopySourceId, {
       type: "geojson",
       data: emptyFeatureCollection(),
-      maxzoom: 22,
+      maxzoom: 22
     });
 
     map.addLayer(
@@ -231,8 +220,8 @@ export class TreeLayer {
           "fill-extrusion-color": this.trunkColor,
           "fill-extrusion-opacity": this.opacity,
           "fill-extrusion-height": ["get", "top"],
-          "fill-extrusion-base": ["get", "base"],
-        },
+          "fill-extrusion-base": ["get", "base"]
+        }
       },
       beforeId
     );
@@ -248,8 +237,8 @@ export class TreeLayer {
           "fill-extrusion-opacity": this.opacity,
           "fill-extrusion-vertical-gradient": true,
           "fill-extrusion-height": ["get", "top"],
-          "fill-extrusion-base": ["get", "base"],
-        },
+          "fill-extrusion-base": ["get", "base"]
+        }
       },
       beforeId
     );
@@ -373,7 +362,7 @@ export class TreeLayer {
     trunkFeatures.push({
       type: "Feature",
       properties: { base: clearance, top: trunkTop },
-      geometry: { type: "Polygon", coordinates: [circleRing(lng, lat, trunkRadius, this.circleSegments)] },
+      geometry: { type: "Polygon", coordinates: [circleRing(lng, lat, trunkRadius, this.circleSegments)] }
     });
 
     for (let i = 0; i < this.canopyRings; i++) {
@@ -386,12 +375,12 @@ export class TreeLayer {
         type: "Feature",
         properties: {
           base: canopyBase + tBottom * canopyHeight,
-          top: canopyBase + tTop * canopyHeight,
+          top: canopyBase + tTop * canopyHeight
         },
         geometry: {
           type: "Polygon",
-          coordinates: [circleRing(lng, lat, Math.max(radiusAtMid, 0.15), this.circleSegments)],
-        },
+          coordinates: [circleRing(lng, lat, Math.max(radiusAtMid, 0.15), this.circleSegments)]
+        }
       });
     }
   }
@@ -407,7 +396,7 @@ export class TreeLayer {
       try {
         features = this.map.querySourceFeatures(this.source, {
           sourceLayer,
-          filter: this.layerFilter,
+          filter: this.layerFilter
         });
       } catch {
         continue;
@@ -446,13 +435,12 @@ export class TreeLayer {
 
     if (this.debug) {
       console.log(
-        `[TreeLayer] rebuild: ${currentQueryTotal} raw features seen this pass — ` +
-        `breakdown by source-layer/geometry:`,
+        `[TreeLayer] rebuild: ${currentQueryTotal} raw features seen this pass — ` + `breakdown by source-layer/geometry:`,
         debugCounts
       );
       console.log(
         `[TreeLayer] persistent registry: ${this.trees.size} trees total ` +
-        `(accumulated across the whole session — never shrinks; see clear())`
+          `(accumulated across the whole session — never shrinks; see clear())`
       );
     }
   }

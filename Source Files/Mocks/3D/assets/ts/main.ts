@@ -14,13 +14,13 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 import type { LngLatLike, RasterDEMSourceSpecification, StyleSpecification } from "maplibre-gl";
 
-const debug = true;
+const debug = false;
 const tileSource = "Blauer-Turm";
 const metaJson = `/map/${tileSource}/metadata.json`;
 const styleJson = "/map-styles/style.json";
 const tilesUrl = `/map/${tileSource}/{z}/{x}/{y}.pbf`;
 const topoRasterTiles = "/map/tiles/{z}/{x}/{y}.png";
-const buildingLayerName = 'projektemacher-building';
+const buildingLayerName = "projektemacher-building";
 const zoom = 17;
 const defaultCenter: [number, number] = [9.9365, 51.5395];
 const bboxUrl = "/map/bbox.json";
@@ -42,14 +42,14 @@ const marker = {
 };
 
 const translations = {
-  "en": {
-    "map": {
-      "hideBuildings": "Show only never-built buildings"
+  en: {
+    map: {
+      hideBuildings: "Show only never-built buildings"
     }
   },
-  "de": {
-    "map": {
-      "hideBuildings": "Nur nicht gebaute Gebäude zeigen"
+  de: {
+    map: {
+      hideBuildings: "Nur nicht gebaute Gebäude zeigen"
     }
   }
 };
@@ -68,9 +68,7 @@ i18next.use(LanguageDetector).init({
 // architecture model" look consistent even when the BW post-process layer
 // is faded out (e.g. in the overhead/flat view — see applyTweenValue).
 
-const BUILDING_COLOR_DEBUG: maplibregl.DataDrivenPropertyValueSpecification<string> = [
-  "case", ["has", "color"], ["get", "color"], "#aaa"
-];
+const BUILDING_COLOR_DEBUG: maplibregl.DataDrivenPropertyValueSpecification<string> = ["case", ["has", "color"], ["get", "color"], "#aaa"];
 const BUILDING_COLOR_GREYSCALE = "#c9c9c9";
 const buildingFillColor = debug ? BUILDING_COLOR_DEBUG : BUILDING_COLOR_GREYSCALE;
 
@@ -159,10 +157,10 @@ if (styleJson !== undefined) {
 }
 
 //Rename the source for 'projektemacher-building'
-if (buildingLayerName !== undefined && buildingLayerName != '') {
-  style.layers.forEach(layer => {
-    if (layer['source-layer'] === 'building') {
-      layer['source-layer'] = 'projektemacher-building';
+if (buildingLayerName !== undefined && buildingLayerName != "") {
+  style.layers.forEach((layer) => {
+    if (layer["source-layer"] === "building") {
+      layer["source-layer"] = "projektemacher-building";
     }
   });
 }
@@ -221,9 +219,7 @@ const map = new maplibregl.Map({
 if (CAMERA_FOCAL_LENGTH_MM != 0) {
   map.setVerticalFieldOfView(CAMERA_VERTICAL_FOV_DEG);
   if (debug) {
-    console.log(
-      `[camera] focal length ${CAMERA_FOCAL_LENGTH_MM}mm -> vertical FOV ${CAMERA_VERTICAL_FOV_DEG.toFixed(2)}°`
-    );
+    console.log(`[camera] focal length ${CAMERA_FOCAL_LENGTH_MM}mm -> vertical FOV ${CAMERA_VERTICAL_FOV_DEG.toFixed(2)}°`);
   }
 }
 
@@ -240,15 +236,6 @@ if (CAMERA_FOCAL_LENGTH_MM != 0) {
 const mapContainerEl = map.getContainer();
 const loadingEl = document.getElementById("map-loading");
 
-/** Reveals the map once real tile data has actually loaded, WITHOUT
- *  relying on the "idle" event — TreeLayer's custom WebGL layer calls
- *  map.triggerRepaint() unconditionally on every frame (see
- *  tree-layer.ts), which keeps MapLibre's render loop perpetually
- *  "active" from the scheduler's point of view and can prevent "idle"
- *  from ever firing while it's active. areTilesLoaded() is a direct,
- *  synchronous check instead — polled here rather than awaited as an
- *  event, with a hard timeout fallback so the loading screen can never
- *  get stuck indefinitely even if a tile genuinely fails to load. */
 function revealMapWhenReady(m: maplibregl.Map): void {
   const POLL_INTERVAL_MS = 100;
   const MAX_WAIT_MS = 8000;
@@ -651,7 +638,7 @@ map.on("load", () => {
     id: "building-outline",
     type: "line",
     source: sourceName,
-    "source-layer": "building",
+    "source-layer": buildingLayerName,
     minzoom: 13,
     filter: BASE_BUILDING_FILTER,
     paint: { "line-color": "#333", "line-width": 0.6, "line-opacity": 0.8 }
@@ -696,7 +683,7 @@ map.on("load", () => {
   // revealMapWhenReady(map);
   map.once("idle", () => {
     revealMapWhenReady(map);
-  })
+  });
 
   // ── React to pitch changes ────────────────────────────────────────────────
   map.on("pitch", () => {

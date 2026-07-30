@@ -1,6 +1,5 @@
 // assets/ts/layers/tree-layer.ts
 
-
 import * as THREE from "three";
 import type {
   CustomLayerInterface,
@@ -8,7 +7,7 @@ import type {
   Map as MapLibreMap,
   MapGeoJSONFeature,
   MapSourceDataEvent,
-  FilterSpecification,
+  FilterSpecification
 } from "maplibre-gl";
 import { MercatorCoordinate } from "maplibre-gl";
 
@@ -24,9 +23,7 @@ function toRad(deg: number): number {
 function haversineMeters(lng1: number, lat1: number, lng2: number, lat2: number): number {
   const dLat = toRad(lat2 - lat1);
   const dLng = toRad(lng2 - lng1);
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
   return 2 * EARTH_RADIUS_METERS * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -43,10 +40,7 @@ interface SampledPoint {
   lat: number;
 }
 
-function sampleLineAtSpacing(
-  coords: Array<[number, number]>,
-  spacingMeters: number
-): SampledPoint[] {
+function sampleLineAtSpacing(coords: Array<[number, number]>, spacingMeters: number): SampledPoint[] {
   const result: SampledPoint[] = [];
   if (coords.length < 2 || spacingMeters <= 0) return result;
 
@@ -83,10 +77,7 @@ function sampleLineAtSpacing(
   return result;
 }
 
-function calculateDistanceMercatorToMeters(
-  from: MercatorCoordinate,
-  to: MercatorCoordinate
-): { dEastMeter: number; dNorthMeter: number } {
+function calculateDistanceMercatorToMeters(from: MercatorCoordinate, to: MercatorCoordinate): { dEastMeter: number; dNorthMeter: number } {
   const mercatorPerMeter = from.meterInMercatorCoordinateUnits();
   const dEast = to.x - from.x;
   const dEastMeter = dEast / mercatorPerMeter;
@@ -171,7 +162,6 @@ export class TreeLayer implements CustomLayerInterface {
   private originLat = 0;
   private originMercator: MercatorCoordinate | undefined;
 
-
   private readonly originMatrix = new THREE.Matrix4();
 
   private readonly dummy = new THREE.Object3D();
@@ -221,21 +211,17 @@ export class TreeLayer implements CustomLayerInterface {
     this.trunkGeometry = new THREE.CylinderGeometry(0.7, 1, 1, this.radialSegments);
     this.trunkGeometry.translate(0, 0.5, 0);
 
-    this.canopyGeometry = new THREE.SphereGeometry(
-      1,
-      this.radialSegments,
-      Math.max(4, Math.round(this.radialSegments / 2))
-    );
+    this.canopyGeometry = new THREE.SphereGeometry(1, this.radialSegments, Math.max(4, Math.round(this.radialSegments / 2)));
 
     this.trunkMaterial = new THREE.MeshLambertMaterial({
       color: this.trunkColor,
       transparent: true,
-      opacity: this.opacity,
+      opacity: this.opacity
     });
     this.canopyMaterial = new THREE.MeshLambertMaterial({
       color: this.canopyColor,
       transparent: true,
-      opacity: this.opacity,
+      opacity: this.opacity
     });
 
     this.trunkMesh = new THREE.InstancedMesh(this.trunkGeometry, this.trunkMaterial, this.maxTrees);
@@ -262,9 +248,9 @@ export class TreeLayer implements CustomLayerInterface {
         originMercator: {
           x: this.originMercator.x,
           y: this.originMercator.y,
-          z: this.originMercator.z,
+          z: this.originMercator.z
         },
-        scale,
+        scale
       });
     }
 
@@ -317,8 +303,8 @@ export class TreeLayer implements CustomLayerInterface {
           maxzoom: 24,
           paint: {
             "circle-radius": 0,
-            "circle-opacity": 0,
-          },
+            "circle-opacity": 0
+          }
         });
       } catch (err) {
         if (this.debug) {
@@ -416,11 +402,7 @@ export class TreeLayer implements CustomLayerInterface {
 
     const center = this.map.getCenter();
     const entries = Array.from(this.treeCache.entries());
-    entries.sort(
-      (a, b) =>
-        this.approxDistanceSq(a[1], center.lng, center.lat) -
-        this.approxDistanceSq(b[1], center.lng, center.lat)
-    );
+    entries.sort((a, b) => this.approxDistanceSq(a[1], center.lng, center.lat) - this.approxDistanceSq(b[1], center.lng, center.lat));
 
     this.treeCache.clear();
     for (let i = 0; i < hardLimit; i++) {
@@ -477,7 +459,7 @@ export class TreeLayer implements CustomLayerInterface {
       try {
         features = this.map.querySourceFeatures(this.source, {
           sourceLayer,
-          filter: this.layerFilter,
+          filter: this.layerFilter
         });
       } catch {
         continue;
@@ -521,12 +503,7 @@ export class TreeLayer implements CustomLayerInterface {
           const lines = f.geometry.coordinates as Array<Array<[number, number]>>;
           for (let li = 0; li < lines.length; li++) {
             if (addedThisCall >= perCallBudget) break;
-            addedThisCall += this.addRowTrees(
-              `${key}:${li}`,
-              lines[li],
-              f.properties,
-              perCallBudget - addedThisCall
-            );
+            addedThisCall += this.addRowTrees(`${key}:${li}`, lines[li], f.properties, perCallBudget - addedThisCall);
           }
         }
       }
@@ -550,11 +527,7 @@ export class TreeLayer implements CustomLayerInterface {
     const center = this.map.getCenter();
     let trees = Array.from(this.treeCache.values());
     if (trees.length > this.maxTrees) {
-      trees.sort(
-        (a, b) =>
-          this.approxDistanceSq(a, center.lng, center.lat) -
-          this.approxDistanceSq(b, center.lng, center.lat)
-      );
+      trees.sort((a, b) => this.approxDistanceSq(a, center.lng, center.lat) - this.approxDistanceSq(b, center.lng, center.lat));
       trees = trees.slice(0, this.maxTrees);
     }
 
@@ -564,10 +537,7 @@ export class TreeLayer implements CustomLayerInterface {
       const groundMeters = rawGround * this.terrainExaggeration;
 
       const treeMercator = MercatorCoordinate.fromLngLat([tree.lng, tree.lat], 0);
-      const { dEastMeter, dNorthMeter } = calculateDistanceMercatorToMeters(
-        this.originMercator!,
-        treeMercator
-      );
+      const { dEastMeter, dNorthMeter } = calculateDistanceMercatorToMeters(this.originMercator!, treeMercator);
 
       const east = dEastMeter;
       const north = dNorthMeter;
@@ -577,9 +547,12 @@ export class TreeLayer implements CustomLayerInterface {
         this.firstTreeLocal = { east, up, north };
         if (this.debug) {
           console.log("[TreeLayer] first tree ground calc:", {
-            lng: tree.lng, lat: tree.lat,
-            rawGround, terrainExaggeration: this.terrainExaggeration, groundMeters,
-            local: { east, up, north },
+            lng: tree.lng,
+            lat: tree.lat,
+            rawGround,
+            terrainExaggeration: this.terrainExaggeration,
+            groundMeters,
+            local: { east, up, north }
           });
         }
       }
@@ -617,7 +590,7 @@ export class TreeLayer implements CustomLayerInterface {
     if (this.debug) {
       console.log(
         `[TreeLayer] rebuilt ${index}/${this.treeCache.size} cached tree instances ` +
-        `(elevation cache size: ${this.elevationCache.size}) — raw counts:`,
+          `(elevation cache size: ${this.elevationCache.size}) — raw counts:`,
         debugCounts
       );
     }
@@ -655,7 +628,7 @@ export class TreeLayer implements CustomLayerInterface {
         local: p,
         clip: { x: clip.x, y: clip.y, z: clip.z, w: clip.w },
         ndc,
-        onScreen: Math.abs(ndc.x) <= 1 && Math.abs(ndc.y) <= 1 && clip.w > 0,
+        onScreen: Math.abs(ndc.x) <= 1 && Math.abs(ndc.y) <= 1 && clip.w > 0
       });
     }
 

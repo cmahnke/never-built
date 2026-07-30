@@ -47,7 +47,6 @@ do
 
     CONTAINER_ID=`docker create $DATA_IMAGE`
 
-    #docker export $CONTAINER_ID  tar -xC $TMP_DIR
     docker cp "$CONTAINER_ID:data/." "$TILES_DIR"
     docker rm $CONTAINER_ID
 
@@ -56,15 +55,17 @@ do
       mv $file $(dirname $file)/$(basename $file | cut -d. -f1).osm.pbf 2>/dev/null || true
     done
 
-    PATCH_FILE_NAME=$FILE_BASE_NAME-patch.osm
+    PATCH_FILE_NAME="$FILE_BASE_NAME-patch.osm"
+    OUTLINE_FILE_NAME="$FILE_BASE_NAME-meta.geojson"
     echo "Writing patch to $TMP_DIR/$PATCH_FILE_NAME"
-    python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o $TMP_DIR/$PATCH_FILE_NAME --tag meta=never-built -f -v #--no-expand-relations
+    python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o "$TMP_DIR/$PATCH_FILE_NAME" --tag meta=never-built -f -v
+    python scripts/osm_tool.py tile-info -v -i "$TMP_DIR/$PATCH_FILE_NAME" -o "$TMP_DIR/$OUTLINE_FILE_NAME"
 
     if [ "$DEBUG" = false ]; then
-      python scripts/osm_tool.py patch -i $PBF -p $TMP_DIR/$PATCH_FILE_NAME -o $MAP_FILE -v -f
+      python scripts/osm_tool.py patch -i $PBF -p "$TMP_DIR/$PATCH_FILE_NAME" -o "$MAP_FILE" -v -f
     else
       echo "DEBUG: Keeping masked file: $TMP_DIR/$FILE_BASE_NAME-masked.osm"
-      python scripts/osm_tool.py patch -i $PBF -p $TMP_DIR/$PATCH_FILE_NAME -o $MAP_FILE --dump-masked-base $TMP_DIR/$FILE_BASE_NAME-masked.osm -v -f
+      python scripts/osm_tool.py patch -i $PBF -p "$TMP_DIR/$PATCH_FILE_NAME" -o "$MAP_FILE" --dump-masked-base "$TMP_DIR/$FILE_BASE_NAME-masked.osm" -v -f
     fi
 
   fi
@@ -112,6 +113,7 @@ do
   fi
 
   mv "$TMP_DIR/$PATCH_FILE_NAME" "$POST_TILES/"
+  mv "$TMP_DIR/$OUTLINE_FILE_NAME" "$POST_TILES/"
   if [ "$DEBUG" = false ]; then
     rm -r "$TMP_DIR"
   else

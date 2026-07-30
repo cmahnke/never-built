@@ -205,10 +205,11 @@ class BoundingBoxHandler(osmium.SimpleHandler):
         self.max_lon, self.max_lat = -180.0, -90.0
 
     def node(self, n: osmium.osm.Node) -> None:
-        self.min_lon = min(self.min_lon, n.location.lon)
-        self.min_lat = min(self.min_lat, n.location.lat)
-        self.max_lon = max(self.max_lon, n.location.lon)
-        self.max_lat = max(self.max_lat, n.location.lat)
+        if n.location.valid():
+            self.min_lon = min(self.min_lon, n.location.lon)
+            self.min_lat = min(self.min_lat, n.location.lat)
+            self.max_lon = max(self.max_lon, n.location.lon)
+            self.max_lat = max(self.max_lat, n.location.lat)
 
 
 # --- Tag Parsing ---
