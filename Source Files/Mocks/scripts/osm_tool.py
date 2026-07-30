@@ -1,1 +1,0 @@
-../../../scripts/osm_tool.py

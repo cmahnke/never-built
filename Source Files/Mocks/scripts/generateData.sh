@@ -1,1 +1,0 @@
-../../../scripts/generate-3d-map.sh

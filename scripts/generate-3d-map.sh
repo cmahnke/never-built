@@ -135,4 +135,7 @@ do
   #   done < <(find "$POST_TILES" -type f -print0)
   # fi
 
+  echo "Relevant tiles in $POST_TILES/ (not filtered by min zoom level - usually 13)"
+  jq -r '.features[].properties.tiles[] | map(tostring) | join("/")' "$POST_TILES/$OUTLINE_FILE_NAME"
+
 done

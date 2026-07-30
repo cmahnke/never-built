@@ -705,9 +705,6 @@ def bbox_tiles_osm(args: argparse.Namespace) -> None:
     logger.info(f"--- Step 3: Writing GeoJSON to {output_file} ---")
     geojson = {
         "type": "FeatureCollection",
-        "properties": {
-            "tiles": tiles
-        },
         "features": [{
             "type": "Feature",
             "geometry": {
@@ -718,7 +715,9 @@ def bbox_tiles_osm(args: argparse.Namespace) -> None:
                     [min_lon, min_lat]
                 ]]
             },
-            "properties": {}
+            "properties": {
+                "tiles": tiles
+            }
         }]
     }
 
