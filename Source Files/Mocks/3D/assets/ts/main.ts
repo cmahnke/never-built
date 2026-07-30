@@ -1,4 +1,4 @@
-// never-built/Source Files/Mocks/3d/assets/ts/main.ts
+// assets/ts/main.ts
 
 import * as maplibregl from "maplibre-gl";
 import { center, points } from "@turf/turf";
@@ -18,6 +18,7 @@ const metaJson = `/map/${tileSource}/metadata.json`;
 const styleJson = "/map-styles/style.json";
 const tilesUrl = `/map/${tileSource}/{z}/{x}/{y}.pbf`;
 const topoRasterTiles = "/map/tiles/{z}/{x}/{y}.png";
+const buildingLayerName = 'projektemacher-building';
 const zoom = 17;
 const defaultCenter: [number, number] = [9.9365, 51.5395];
 const bboxUrl = "/map/bbox.json";
@@ -36,6 +37,29 @@ const marker = {
   scale: 0.075,
   src: "/images/marker.svg"
 };
+
+// ─── Building color scheme ──────────────────────────────────────────────────
+//
+// Debug mode keeps real per-building colors (useful for inspecting data).
+// Normal mode uses a flat greyscale tone instead — keeps the "physical
+// architecture model" look consistent even when the BW post-process layer
+// is faded out (e.g. in the overhead/flat view — see applyTweenValue).
+
+const BUILDING_COLOR_DEBUG: maplibregl.DataDrivenPropertyValueSpecification<string> = [
+  "case", ["has", "color"], ["get", "color"], "#aaa"
+];
+const BUILDING_COLOR_GREYSCALE = "#c9c9c9";
+const buildingFillColor = debug ? BUILDING_COLOR_DEBUG : BUILDING_COLOR_GREYSCALE;
+
+const CAMERA_FOCAL_LENGTH_MM = 50; // use 0 to use default
+const CAMERA_SENSOR_HEIGHT_MM = 24; // standard full-frame sensor height
+
+function focalLengthToVerticalFovDeg(focalLengthMm: number, sensorHeightMm = CAMERA_SENSOR_HEIGHT_MM): number {
+  const fovRad = 2 * Math.atan(sensorHeightMm / (2 * focalLengthMm));
+  return (fovRad * 180) / Math.PI;
+}
+
+const CAMERA_VERTICAL_FOV_DEG = focalLengthToVerticalFovDeg(CAMERA_FOCAL_LENGTH_MM);
 
 const fog = "#dcdbdf";
 const sky = "#87ceeb";
@@ -67,7 +91,7 @@ if (metaObj?.bounds) {
   );
   centerObj = c.geometry.coordinates as [number, number];
 } else {
-  console.warn("Can't create center from features or bbox");
+  console.error("Can't create center from features or bbox");
   centerObj = [0, 0];
 }
 
@@ -111,7 +135,19 @@ if (styleJson !== undefined) {
   style = setupDefaultStyle(tilesUrl, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
 }
 
-console.log(style);
+//Rename the source for 'projektemacher-building'
+if (buildingLayerName !== undefined && buildingLayerName != '') {
+  style.layers.forEach(layer => {
+    if (layer['source-layer'] === 'building') {
+      layer['source-layer'] = 'projektemacher-building';
+    }
+  });
+}
+
+if (debug) {
+  console.log(style);
+}
+
 const sourceName = getSouceName(style);
 
 style.light = {
@@ -159,6 +195,65 @@ const map = new maplibregl.Map({
   canvasContextAttributes: { antialias: true }
 });
 
+if (CAMERA_FOCAL_LENGTH_MM != 0) {
+  map.setVerticalFieldOfView(CAMERA_VERTICAL_FOV_DEG);
+  if (debug) {
+    console.log(
+      `[camera] focal length ${CAMERA_FOCAL_LENGTH_MM}mm -> vertical FOV ${CAMERA_VERTICAL_FOV_DEG.toFixed(2)}°`
+    );
+  }
+}
+
+// ─── Loading screen cross-fade ──────────────────────────────────────────────
+//
+// The map container (.map-3d, opacity 0 by default via CSS) and the
+// rotating-square overlay (#map-loading, opacity 1 by default) are
+// cross-faded via a CSS `transition` on their opacity, toggled by adding/
+// removing classes here — NOT via an auto-running CSS animation, since we
+// need to trigger this at a specific moment (once tiles are actually
+// rendered, not just once the style JSON is parsed) rather than
+// immediately when the elements are created. See revealMapWhenReady().
+
+const mapContainerEl = map.getContainer();
+const loadingEl = document.getElementById("map-loading");
+
+/** Reveals the map once real tile data has actually loaded, WITHOUT
+ *  relying on the "idle" event — TreeLayer's custom WebGL layer calls
+ *  map.triggerRepaint() unconditionally on every frame (see
+ *  tree-layer.ts), which keeps MapLibre's render loop perpetually
+ *  "active" from the scheduler's point of view and can prevent "idle"
+ *  from ever firing while it's active. areTilesLoaded() is a direct,
+ *  synchronous check instead — polled here rather than awaited as an
+ *  event, with a hard timeout fallback so the loading screen can never
+ *  get stuck indefinitely even if a tile genuinely fails to load. */
+function revealMapWhenReady(m: maplibregl.Map): void {
+  const POLL_INTERVAL_MS = 100;
+  const MAX_WAIT_MS = 8000;
+  const startTime = performance.now();
+
+  const reveal = (): void => {
+    mapContainerEl.classList.add("map-3d-visible");
+    loadingEl?.classList.add("map-loading-hidden");
+  };
+
+  const poll = (): void => {
+    if (m.areTilesLoaded()) {
+      reveal();
+      return;
+    }
+    if (performance.now() - startTime >= MAX_WAIT_MS) {
+      if (debug) {
+        console.warn("[loading] areTilesLoaded() never returned true within timeout — revealing map anyway.");
+      }
+      reveal();
+      return;
+    }
+    setTimeout(poll, POLL_INTERVAL_MS);
+  };
+
+  poll();
+}
+
 const attributionControl = new AttributionControl({ compact: true, customAttribution: attribution });
 
 map.addControl(attributionControl);
@@ -198,23 +293,6 @@ if (debug) {
 }
 
 // ─── "Show only never-built" checkbox control ──────────────────────────────
-//
-// Filters "3d-buildings" (and its matching "building-outline" line layer)
-// down to only features tagged meta === "never-built", on top of the
-// existing hide_3d exclusion — so unchecking always restores the normal
-// full building set, not just "no filter at all".
-//
-// ⚠️ ASSUMPTION NOT YET VERIFIED: this project's own metadata.json
-// (building source-layer field list) did not list a "meta" field as of
-// the last time it was checked in this conversation — only architect,
-// color, height, levels, material, name, render_height,
-// render_min_height, roof*, type, wikidata, windows, etc. Either the
-// tileset has since been rebuilt with this field added, or the actual
-// property name/value differs. Confirm via the existing debug building
-// popup (click a building with debug=true) before trusting this filter
-// to do anything — if the field name is wrong, the checkbox will simply
-// hide ALL buildings (since none will match), which would be an obvious
-// giveaway that the property name/value needs adjusting below.
 
 const BASE_BUILDING_FILTER: maplibregl.FilterSpecification = ["!=", ["get", "hide_3d"], true];
 
@@ -254,12 +332,12 @@ neverBuiltCheckbox.addEventListener("change", () => {
 
 const treeLayer = new TreeLayer();
 
+// Declared at module scope (not inside map.on("load", ...)) so
+// applyTweenValue() below — which also runs outside that block — can
+// reference it to fade its opacity, same pattern as treeLayer.
+const architectureModelBWLayer = new ArchitectureModelBWLayer();
+
 // ─── Building popup tracking ────────────────────────────────────────────────
-//
-// Kept as a module-level reference so it can be closed programmatically —
-// e.g. the moment the view starts transitioning to overhead (see
-// startTween below), since the building it's anchored to is about to fade
-// out and leaving the popup open looks orphaned/disconnected.
 
 let activePopup: maplibregl.Popup | undefined;
 
@@ -285,7 +363,7 @@ const tween = {
 
 // ── Terrain config ─────────────────────────────────────────────────────────
 
-const BASE_TERRAIN_EXAGGERATION = 2;
+const BASE_TERRAIN_EXAGGERATION = 1;
 
 function easeCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -298,6 +376,12 @@ function applyTweenValue(m: maplibregl.Map, v: number): void {
 
   // Tree custom layer
   treeLayer.setOpacity(v);
+
+  // Architecture-model post-process (grain/contrast/edge-darkening) layer —
+  // faded in lockstep with buildings/trees, using the same tween value, so
+  // the overhead view drops the "physical model" look along with the 3D
+  // geometry it was designed to accentuate.
+  architectureModelBWLayer.opacity = v;
 
   m.triggerRepaint();
 }
@@ -361,6 +445,15 @@ function isOverhead(m: maplibregl.Map): boolean {
 
 function sync3DVisibility(m: maplibregl.Map): void {
   startTween(m, isOverhead(m) ? 0 : 1);
+}
+
+/** Hides the "show only never-built buildings" control while looking
+ *  straight down — the flat/overhead view has no visible 3D building
+ *  extrusions to distinguish, so the toggle has nothing meaningful to
+ *  affect at that pitch. Reuses the same overhead threshold already
+ *  driving the 3D-fade tween, so both stay in sync. */
+function updateNeverBuiltControlVisibility(m: maplibregl.Map): void {
+  neverBuiltControlEl.style.display = isOverhead(m) ? "none" : "flex";
 }
 
 const FLAT_SOURCE_ID = "terrainSourceFlat";
@@ -464,6 +557,7 @@ function setTerrainFlattened(map: maplibregl.Map, flattened: boolean): void {
   const beforeElevation = map.getCameraTargetElevation();
 
   let afterElevation: number;
+  treeLayer.terrainExaggeration = flattened ? FLAT_EXAGGERATION : BASE_TERRAIN_EXAGGERATION;
 
   if (flattened) {
     const roundedTarget = Math.round(beforeElevation / FLAT_EXAGGERATION);
@@ -516,12 +610,12 @@ map.on("load", () => {
   map.addLayer({
     id: "3d-buildings",
     source: sourceName,
-    "source-layer": "building",
+    "source-layer": buildingLayerName, //"building",
     type: "fill-extrusion",
     minzoom: 13, // was 13
     filter: BASE_BUILDING_FILTER,
     paint: {
-      "fill-extrusion-color": ["case", ["has", "color"], ["get", "color"], "#aaa"],
+      "fill-extrusion-color": buildingFillColor,
       "fill-extrusion-opacity": 1,
       "fill-extrusion-vertical-gradient": true,
       "fill-extrusion-height": ["get", "render_height"],
@@ -550,15 +644,12 @@ map.on("load", () => {
   treeLayer.baseHeightMeters = 6;
   treeLayer.treeRowSpacing = 3;
   treeLayer.debug = debug;
+  treeLayer.terrainExaggeration = BASE_TERRAIN_EXAGGERATION;
   treeLayer.minzoom = 13; // matches "3d-buildings"' own minzoom
-  treeLayer.addTo(map, "building-outline"); // insert before this layer, adjust as desired
-  //treeLayer.addTo(map);
+  //treeLayer.addTo(map, "building-outline"); // insert before this layer, adjust as desired
+  treeLayer.enableSanityTriangle = true;
+  treeLayer.addTo(map);
 
-  if (debug) {
-    console.log("treeLayer.opacity:", treeLayer.opacity);
-  }
-
-  const architectureModelBWLayer = new ArchitectureModelBWLayer();
   map.addLayer(architectureModelBWLayer);
   architectureModelBWLayer.contrast = 1.5;
   architectureModelBWLayer.edgeStrength = 0.2; // stronger "cut edges"
@@ -574,9 +665,20 @@ map.on("load", () => {
   tween.target = startFlat ? 0 : 1;
   applyTweenValue(map, tween.value);
   onTweenComplete(map, startFlat);
+  updateNeverBuiltControlVisibility(map);
+
+  // Only now (after every layer above has actually been added) do we
+  // start waiting for "idle" to reveal the map — see revealMapWhenReady().
+  // revealMapWhenReady(map);
+  map.once("idle", () => {
+    revealMapWhenReady(map);
+  })
 
   // ── React to pitch changes ────────────────────────────────────────────────
-  map.on("pitch", () => sync3DVisibility(map));
+  map.on("pitch", () => {
+    sync3DVisibility(map);
+    updateNeverBuiltControlVisibility(map);
+  });
 
   // ── Building popup ────────────────────────────────────────────────────────
   if (debug) {
@@ -612,9 +714,8 @@ const camPos = map.calculateCameraOptionsFromCameraLngLatAltRotation(
   initialPos.roll
 );
 map.jumpTo(camPos);
-console.log(camPos, map);
-
 if (debug) {
+  console.log(camPos, map);
   (window as any).treeLayer = treeLayer;
   (window as any).map = map;
 }

@@ -59,7 +59,14 @@ do
     PATCH_FILE_NAME=$FILE_BASE_NAME-patch.osm
     echo "Writing patch to $TMP_DIR/$PATCH_FILE_NAME"
     python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o $TMP_DIR/$PATCH_FILE_NAME --tag meta=never-built -f -v #--no-expand-relations
-    python scripts/osm_tool.py patch -i $PBF -p $TMP_DIR/$PATCH_FILE_NAME -o $MAP_FILE --dump-masked-base $TMP_DIR/$FILE_BASE_NAME-masked.osm -v -f
+
+    if [ "$DEBUG" = false ]; then
+      python scripts/osm_tool.py patch -i $PBF -p $TMP_DIR/$PATCH_FILE_NAME -o $MAP_FILE -v -f
+    else
+      echo "DEBUG: Keeping masked file: $TMP_DIR/$FILE_BASE_NAME-masked.osm"
+      python scripts/osm_tool.py patch -i $PBF -p $TMP_DIR/$PATCH_FILE_NAME -o $MAP_FILE --dump-masked-base $TMP_DIR/$FILE_BASE_NAME-masked.osm -v -f
+    fi
+
   fi
 
   if ! test -r "$MAP_FILE"; then

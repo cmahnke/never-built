@@ -1,22 +1,5 @@
 // assets/ts/layers/tree-layer.ts
-//
-// (all prior header comments unchanged — omitted here for brevity)
-//
-// ⚠️ FIX APPLIED: removed `camera.projectionMatrixInverse = ...invert()` —
-// `Matrix4.invert()` is the CURRENT Three.js API name; versions before
-// r123 (~2021) called this method `.getInverse()` instead. If installed
-// Three.js predates that, this line threw a TypeError every frame inside
-// render(), which could plausibly result in "layer draws nothing" rather
-// than an obvious crash, depending on how MapLibre's render loop handles
-// a custom layer's render() throwing. This property was also never
-// actually required for basic MeshLambertMaterial rendering (only used
-// by advanced techniques like log-depth buffers) — removed rather than
-// version-guarded, since it wasn't doing anything useful here anyway.
-//
-// Also added: defensive console logging/try-catch around WebGLRenderer
-// construction and the render() draw call, since several earlier rounds
-// of blind guessing in this project's history wasted time — this time,
-// if trees are still invisible, we get concrete evidence instead.
+
 
 import * as THREE from "three";
 import type {
@@ -29,27 +12,6 @@ import type {
 } from "maplibre-gl";
 import { MercatorCoordinate } from "maplibre-gl";
 
-// ─── Deterministic PRNG (stable jitter across rebuilds) ────────────────────
-
-function mulberry32(seed: number): () => number {
-  let a = seed;
-  return function (): number {
-    a |= 0;
-    a = (a + 0x6D2B79F5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function hashStringToSeed(s: string): number {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) {
-    h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
-  }
-  return h;
-}
-
 // ─── Geo helpers ────────────────────────────────────────────────────────────
 
 const EARTH_RADIUS_METERS = 6371000;
@@ -57,10 +19,6 @@ const METERS_PER_DEGREE_LAT = 111320;
 
 function toRad(deg: number): number {
   return (deg * Math.PI) / 180;
-}
-
-function metersPerDegreeLng(atLat: number): number {
-  return METERS_PER_DEGREE_LAT * Math.cos(toRad(atLat));
 }
 
 function haversineMeters(lng1: number, lat1: number, lng2: number, lat2: number): number {
@@ -77,7 +35,7 @@ function metersToDegreesLat(meters: number): number {
 }
 
 function metersToDegreesLng(meters: number, atLat: number): number {
-  return meters / metersPerDegreeLng(atLat);
+  return meters / (METERS_PER_DEGREE_LAT * Math.cos(toRad(atLat)));
 }
 
 interface SampledPoint {
@@ -125,6 +83,18 @@ function sampleLineAtSpacing(
   return result;
 }
 
+function calculateDistanceMercatorToMeters(
+  from: MercatorCoordinate,
+  to: MercatorCoordinate
+): { dEastMeter: number; dNorthMeter: number } {
+  const mercatorPerMeter = from.meterInMercatorCoordinateUnits();
+  const dEast = to.x - from.x;
+  const dEastMeter = dEast / mercatorPerMeter;
+  const dNorth = from.y - to.y;
+  const dNorthMeter = dNorth / mercatorPerMeter;
+  return { dEastMeter, dNorthMeter };
+}
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 interface TreeRecord {
@@ -132,6 +102,14 @@ interface TreeRecord {
   lat: number;
   heightMeters: number;
 }
+
+interface DefaultProjectionData {
+  mainMatrix: ArrayLike<number>;
+}
+
+type RenderInputWithProjection = CustomRenderMethodInput & {
+  defaultProjectionData?: DefaultProjectionData;
+};
 
 // ─── Layer ──────────────────────────────────────────────────────────────────
 
@@ -163,15 +141,19 @@ export class TreeLayer implements CustomLayerInterface {
   canopyColor = "#6e7f52";
 
   opacity = 1;
+  heightScale = 1;
   debug = false;
+
+  /** Multiplier applied to resolved terrain elevation. */
+  terrainExaggeration = 1;
 
   maxTrees = 20000;
   refreshDebounceMs = 250;
 
-  private static readonly GROUND_CLEARANCE_METERS = 0.1;
-  private static readonly MAX_ELEVATION_RETRIES = 3;
+  ensureSourceStaysLoaded = true;
+  cacheHardLimitMultiplier = 4;
 
-  private trees = new Map<string, TreeRecord>();
+  private static readonly KEEP_ALIVE_LAYER_ID_PREFIX = "__tree_layer_keepalive__";
 
   private map: MapLibreMap | undefined;
   private renderer: THREE.WebGLRenderer | undefined;
@@ -187,18 +169,22 @@ export class TreeLayer implements CustomLayerInterface {
 
   private originLng = 0;
   private originLat = 0;
-  private originMatrix: THREE.Matrix4 | undefined;
+  private originMercator: MercatorCoordinate | undefined;
+
+
+  private readonly originMatrix = new THREE.Matrix4();
 
   private readonly dummy = new THREE.Object3D();
+  private readonly scratchMapMatrix = new THREE.Matrix4();
 
   private refreshTimer: ReturnType<typeof setTimeout> | undefined;
-  private pendingElevationRetry = false;
-  private elevationRetryCount = 0;
 
-  /** Debug-only: logs the first render() call's early-return path (or
-   *  lack thereof), so we can see EXACTLY why nothing draws, instead of
-   *  guessing. Fires once per addTo(), not every frame. */
-  private renderDiagnosticLogged = false;
+  private elevationCache = new Map<string, number>();
+
+  private treeCache = new Map<string, TreeRecord>();
+
+  private firstTreeLocal: { east: number; up: number; north: number } | undefined;
+  private diagnosticLogged = false;
 
   private onSourceData = (e: MapSourceDataEvent): void => {
     if (e.sourceId === this.source && e.isSourceLoaded) this.scheduleRefresh();
@@ -211,37 +197,25 @@ export class TreeLayer implements CustomLayerInterface {
     }
   };
 
-  // ── Lifecycle (CustomLayerInterface) ────────────────────────────────────
+  // ── Lifecycle ────────────────────────────────────────────────────────────
 
   onAdd(map: MapLibreMap, gl: WebGL2RenderingContext): void {
     this.map = map;
-    this.renderDiagnosticLogged = false;
 
-    try {
-      this.renderer = new THREE.WebGLRenderer({ canvas: map.getCanvas(), context: gl });
-      this.renderer.autoClear = false;
-      const canvas = map.getCanvas();
-      this.renderer.setSize(canvas.width, canvas.height, false);
-      if (this.debug) {
-        console.log(
-          `[TreeLayer] WebGLRenderer created OK. Three.js revision: ${THREE.REVISION}`
-        );
-      }
-    } catch (err) {
-      console.error(
-        "[TreeLayer] FAILED to construct THREE.WebGLRenderer — this layer " +
-        "cannot render at all. Full error:",
-        err
-      );
-      return;
-    }
+    this.renderer = new THREE.WebGLRenderer({ canvas: map.getCanvas(), context: gl });
+    this.renderer.autoClear = false;
+    const canvas = map.getCanvas();
+    this.renderer.setSize(canvas.width, canvas.height, false);
+
+    this.camera = new THREE.Camera();
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.Camera();
+    this.scene.rotateX(Math.PI / 2);
+    this.scene.scale.multiply(new THREE.Vector3(1, 1, -1));
 
     const ambient = new THREE.AmbientLight(0xffffff, 0.6);
     const directional = new THREE.DirectionalLight(0xffffff, 0.8);
-    directional.position.set(0.75, 1.2, -0.66);
+    directional.position.set(50, 70, -30).normalize();
     this.scene.add(ambient, directional);
 
     this.trunkGeometry = new THREE.CylinderGeometry(0.7, 1, 1, this.radialSegments);
@@ -274,25 +248,27 @@ export class TreeLayer implements CustomLayerInterface {
 
     this.originLng = map.getCenter().lng;
     this.originLat = map.getCenter().lat;
-    const originMercator = MercatorCoordinate.fromLngLat([this.originLng, this.originLat], 0);
-    const scale = originMercator.meterInMercatorCoordinateUnits();
+    this.originMercator = MercatorCoordinate.fromLngLat([this.originLng, this.originLat], 0);
 
-    this.originMatrix = new THREE.Matrix4();
-    this.originMatrix.set(
-      scale, 0,     0,     originMercator.x,
-      0,     0,     scale, originMercator.y,
-      0,     scale, 0,     originMercator.z,
-      0,     0,     0,     1
-    );
+    const scale = this.originMercator.meterInMercatorCoordinateUnits();
+    this.originMatrix
+      .makeTranslation(this.originMercator.x, this.originMercator.y, this.originMercator.z)
+      .scale(new THREE.Vector3(scale, -scale, scale));
 
     if (this.debug) {
-      console.log("[TreeLayer] origin set:", {
+      console.log("[TreeLayer] onAdd complete. origin:", {
         originLng: this.originLng,
         originLat: this.originLat,
-        originMercator: { x: originMercator.x, y: originMercator.y, z: originMercator.z },
+        originMercator: {
+          x: this.originMercator.x,
+          y: this.originMercator.y,
+          z: this.originMercator.z,
+        },
         scale,
       });
     }
+
+    this.addKeepAliveLayers(map);
 
     map.on("sourcedata", this.onSourceData);
     map.on("moveend", this.onMoveEnd);
@@ -312,12 +288,51 @@ export class TreeLayer implements CustomLayerInterface {
     window.removeEventListener("resize", this.onResize);
     clearTimeout(this.refreshTimer);
 
+    this.removeKeepAliveLayers(map);
+
     this.trunkGeometry?.dispose();
     this.canopyGeometry?.dispose();
     this.trunkMaterial?.dispose();
     this.canopyMaterial?.dispose();
 
     this.map = undefined;
+  }
+
+  // ── Keep-alive layers (fix, part 1) ─────────────────────────────────────
+
+  private addKeepAliveLayers(map: MapLibreMap): void {
+    if (!this.ensureSourceStaysLoaded) return;
+
+    for (const sourceLayer of this.sourceLayers) {
+      const layerId = `${TreeLayer.KEEP_ALIVE_LAYER_ID_PREFIX}${sourceLayer}`;
+      if (map.getLayer(layerId)) continue;
+
+      try {
+        map.addLayer({
+          id: layerId,
+          type: "circle",
+          source: this.source,
+          "source-layer": sourceLayer,
+          minzoom: 0,
+          maxzoom: 24,
+          paint: {
+            "circle-radius": 0,
+            "circle-opacity": 0,
+          },
+        });
+      } catch (err) {
+        if (this.debug) {
+          console.warn(`[TreeLayer] could not add keep-alive layer for "${sourceLayer}":`, err);
+        }
+      }
+    }
+  }
+
+  private removeKeepAliveLayers(map: MapLibreMap): void {
+    for (const sourceLayer of this.sourceLayers) {
+      const layerId = `${TreeLayer.KEEP_ALIVE_LAYER_ID_PREFIX}${sourceLayer}`;
+      if (map.getLayer(layerId)) map.removeLayer(layerId);
+    }
   }
 
   // ── Public API ───────────────────────────────────────────────────────────
@@ -332,12 +347,7 @@ export class TreeLayer implements CustomLayerInterface {
   }
 
   refresh(): void {
-    this.queryAndMergeTrees();
-  }
-
-  clear(): void {
-    this.trees.clear();
-    this.regenerateInstances();
+    this.rebuild();
   }
 
   setOpacity(v: number): void {
@@ -347,15 +357,20 @@ export class TreeLayer implements CustomLayerInterface {
     this.map?.triggerRepaint();
   }
 
-  // ── Data: query vector tile source, merge into persistent registry ─────
+  setHeightScale(v: number): void {
+    this.heightScale = v;
+    this.scheduleRefresh();
+  }
+
+  // ── Data + geometry ──────────────────────────────────────────────────────
 
   private scheduleRefresh(): void {
     clearTimeout(this.refreshTimer);
-    this.refreshTimer = setTimeout(() => this.queryAndMergeTrees(), this.refreshDebounceMs);
+    this.refreshTimer = setTimeout(() => this.rebuild(), this.refreshDebounceMs);
   }
 
-  private resolveHeightMeters(properties: MapGeoJSONFeature["properties"], rng: () => number): number {
-    const jitter = 1 + (rng() * 2 - 1) * this.heightJitter;
+  private resolveHeightMeters(properties: MapGeoJSONFeature["properties"]): number {
+    const jitter = 1 + (Math.random() * 2 - 1) * this.heightJitter;
     const rawHeight: unknown = this.heightProperty ? properties?.[this.heightProperty] : undefined;
     const propHeight = typeof rawHeight === "number" ? rawHeight : Number(rawHeight);
     const heightMeters = Number.isFinite(propHeight) ? propHeight : this.baseHeightMeters;
@@ -368,56 +383,94 @@ export class TreeLayer implements CustomLayerInterface {
     return `${sourceLayer}:${JSON.stringify(coords).slice(0, 80)}`;
   }
 
-  private rowGridKey(lng: number, lat: number): string {
-    const cellLat = metersToDegreesLat(this.treeRowSpacing);
-    const cellLng = metersToDegreesLng(this.treeRowSpacing, lat);
-    const gy = Math.round(lat / cellLat);
-    const gx = Math.round(lng / cellLng);
-    return `row:${gx}:${gy}`;
+  private elevationKey(lng: number, lat: number): string {
+    return `${lng.toFixed(5)},${lat.toFixed(5)}`;
   }
 
-  private upsertPointTree(key: string, lng: number, lat: number, properties: MapGeoJSONFeature["properties"]): void {
-    if (this.trees.has(key) || this.trees.size >= this.maxTrees) return;
-    const rng = mulberry32(hashStringToSeed(key));
-    const heightMeters = this.resolveHeightMeters(properties, rng);
-    this.trees.set(key, { lng, lat, heightMeters });
+  private resolveGroundMeters(lng: number, lat: number): number {
+    const key = this.elevationKey(lng, lat);
+    const queried = this.map!.queryTerrainElevation([lng, lat]);
+
+    if (queried !== null && Number.isFinite(queried)) {
+      this.elevationCache.set(key, queried);
+      return queried;
+    }
+
+    return this.elevationCache.get(key) ?? 0;
   }
 
-  private upsertRowSamples(coords: Array<[number, number]>, properties: MapGeoJSONFeature["properties"]): void {
+  private approxDistanceSq(t: TreeRecord, centerLng: number, centerLat: number): number {
+    const dLat = t.lat - centerLat;
+    const dLng = (t.lng - centerLng) * Math.cos(toRad(centerLat));
+    return dLat * dLat + dLng * dLng;
+  }
+
+  /**
+   * Evicts the farthest-from-current-view entries once the persistent
+   * cache grows past maxTrees * cacheHardLimitMultiplier. Keeps memory
+   * bounded during long pan sessions across large areas.
+   */
+  private pruneCacheIfNeeded(): void {
+    const hardLimit = this.maxTrees * this.cacheHardLimitMultiplier;
+    if (this.treeCache.size <= hardLimit || !this.map) return;
+
+    const center = this.map.getCenter();
+    const entries = Array.from(this.treeCache.entries());
+    entries.sort(
+      (a, b) =>
+        this.approxDistanceSq(a[1], center.lng, center.lat) -
+        this.approxDistanceSq(b[1], center.lng, center.lat)
+    );
+
+    this.treeCache.clear();
+    for (let i = 0; i < hardLimit; i++) {
+      this.treeCache.set(entries[i][0], entries[i][1]);
+    }
+  }
+
+  private addRowTrees(
+    baseKey: string,
+    coords: Array<[number, number]>,
+    properties: MapGeoJSONFeature["properties"],
+    budget: number
+  ): number {
     const samples = sampleLineAtSpacing(coords, this.treeRowSpacing);
+    let added = 0;
 
-    for (const s of samples) {
-      if (this.trees.size >= this.maxTrees) return;
+    for (let i = 0; i < samples.length; i++) {
+      if (added >= budget) break;
 
-      const key = this.rowGridKey(s.lng, s.lat);
-      if (this.trees.has(key)) continue;
+      const key = `${baseKey}:${i}`;
+      if (this.treeCache.has(key)) continue;
 
-      const rng = mulberry32(hashStringToSeed(key));
-      let { lng, lat } = s;
+      let { lng, lat } = samples[i];
       if (this.treeRowJitterMeters > 0) {
-        const offsetMeters = (rng() * 2 - 1) * this.treeRowJitterMeters;
+        const offsetMeters = (Math.random() * 2 - 1) * this.treeRowJitterMeters;
         lng += metersToDegreesLng(offsetMeters, lat);
         lat += metersToDegreesLat(offsetMeters);
       }
 
-      const heightMeters = this.resolveHeightMeters(properties, rng);
-      this.trees.set(key, { lng, lat, heightMeters });
+      this.treeCache.set(key, { lng, lat, heightMeters: this.resolveHeightMeters(properties) });
+      added++;
     }
+
+    return added;
   }
 
-  private queryAndMergeTrees(): void {
-    if (!this.map || !this.map.getSource(this.source)) {
-      if (this.debug) {
-        console.log(
-          `[TreeLayer] queryAndMergeTrees: skipped — map ${this.map ? "exists" : "MISSING"}, ` +
-          `source "${this.source}" ${this.map?.getSource(this.source) ? "exists" : "MISSING"}`
-        );
-      }
-      return;
-    }
-
-    let currentQueryTotal = 0;
+  /**
+   * Queries currently-loaded tiles and merges any NEWLY-seen features
+   * into the persistent treeCache (fix, part 2). Never removes existing
+   * cache entries here — only pruneCacheIfNeeded() does that, based on
+   * distance. A per-call budget bounds worst-case cost of a single
+   * rebuild; the cache can still grow further across subsequent calls as
+   * the user pans/zooms into new tiles.
+   */
+  private collectAndCacheTrees(): Record<string, Record<string, number>> {
     const debugCounts: Record<string, Record<string, number>> = {};
+    if (!this.map) return debugCounts;
+
+    let addedThisCall = 0;
+    const perCallBudget = this.maxTrees;
 
     for (const sourceLayer of this.sourceLayers) {
       let features: MapGeoJSONFeature[];
@@ -430,10 +483,12 @@ export class TreeLayer implements CustomLayerInterface {
         continue;
       }
 
-      currentQueryTotal += features.length;
       if (this.debug) debugCounts[sourceLayer] = {};
 
       for (const f of features) {
+        if (addedThisCall >= perCallBudget) break;
+
+        const key = this.featureKey(sourceLayer, f);
         const geomType = f.geometry?.type ?? "unknown";
         if (this.debug) {
           const layerCounts = debugCounts[sourceLayer];
@@ -441,73 +496,101 @@ export class TreeLayer implements CustomLayerInterface {
         }
 
         if (geomType === "Point") {
+          if (this.treeCache.has(key)) continue;
           const [lng, lat] = f.geometry.coordinates as [number, number];
-          this.upsertPointTree(this.featureKey(sourceLayer, f), lng, lat, f.properties);
+          this.treeCache.set(key, { lng, lat, heightMeters: this.resolveHeightMeters(f.properties) });
+          addedThisCall++;
         } else if (geomType === "MultiPoint") {
-          const coordsList = f.geometry.coordinates as Array<[number, number]>;
-          const baseKey = this.featureKey(sourceLayer, f);
-          coordsList.forEach(([lng, lat]: [number, number], i: number) => {
-            this.upsertPointTree(`${baseKey}:${i}`, lng, lat, f.properties);
-          });
+          const coordsArr = f.geometry.coordinates as Array<[number, number]>;
+          for (let i = 0; i < coordsArr.length; i++) {
+            if (addedThisCall >= perCallBudget) break;
+            const subKey = `${key}:${i}`;
+            if (this.treeCache.has(subKey)) continue;
+            const [lng, lat] = coordsArr[i];
+            this.treeCache.set(subKey, { lng, lat, heightMeters: this.resolveHeightMeters(f.properties) });
+            addedThisCall++;
+          }
         } else if (geomType === "LineString") {
-          this.upsertRowSamples(f.geometry.coordinates as Array<[number, number]>, f.properties);
+          addedThisCall += this.addRowTrees(
+            key,
+            f.geometry.coordinates as Array<[number, number]>,
+            f.properties,
+            perCallBudget - addedThisCall
+          );
         } else if (geomType === "MultiLineString") {
-          for (const line of f.geometry.coordinates as Array<Array<[number, number]>>) {
-            this.upsertRowSamples(line, f.properties);
+          const lines = f.geometry.coordinates as Array<Array<[number, number]>>;
+          for (let li = 0; li < lines.length; li++) {
+            if (addedThisCall >= perCallBudget) break;
+            addedThisCall += this.addRowTrees(
+              `${key}:${li}`,
+              lines[li],
+              f.properties,
+              perCallBudget - addedThisCall
+            );
           }
         }
       }
     }
 
-    this.regenerateInstances();
-
-    if (this.debug) {
-      console.log(
-        `[TreeLayer] query: ${currentQueryTotal} raw features seen this pass — breakdown:`,
-        debugCounts
-      );
-      console.log(`[TreeLayer] persistent registry: ${this.trees.size} trees total`);
-    }
+    return debugCounts;
   }
 
-  // ── Geometry ─────────────────────────────────────────────────────────────
+  /**
+   * Rebuilds both InstancedMesh buffers from the persistent treeCache
+   * (not directly from querySourceFeatures — see collectAndCacheTrees).
+   * If the cache holds more than maxTrees entries, only the nearest
+   * maxTrees to the current view are actually instanced this frame.
+   */
+  private rebuild(): void {
+    if (!this.map || !this.map.getSource(this.source) || !this.trunkMesh || !this.canopyMesh) return;
 
-  private regenerateInstances(): void {
-    if (!this.map || !this.trunkMesh || !this.canopyMesh) {
-      if (this.debug) {
-        console.log(
-          `[TreeLayer] regenerateInstances: skipped — map=${!!this.map}, ` +
-          `trunkMesh=${!!this.trunkMesh}, canopyMesh=${!!this.canopyMesh}`
-        );
-      }
-      return;
+    const debugCounts = this.collectAndCacheTrees();
+    this.pruneCacheIfNeeded();
+
+    const center = this.map.getCenter();
+    let trees = Array.from(this.treeCache.values());
+    if (trees.length > this.maxTrees) {
+      trees.sort(
+        (a, b) =>
+          this.approxDistanceSq(a, center.lng, center.lat) -
+          this.approxDistanceSq(b, center.lng, center.lat)
+      );
+      trees = trees.slice(0, this.maxTrees);
     }
 
-    const metersPerLng = metersPerDegreeLng(this.originLat);
     let index = 0;
-    let unresolvedElevationCount = 0;
+    for (const tree of trees) {
+      const rawGround = this.resolveGroundMeters(tree.lng, tree.lat);
+      const groundMeters = rawGround * this.terrainExaggeration;
 
-    for (const tree of this.trees.values()) {
-      if (index >= this.maxTrees) break;
+      const treeMercator = MercatorCoordinate.fromLngLat([tree.lng, tree.lat], 0);
+      const { dEastMeter, dNorthMeter } = calculateDistanceMercatorToMeters(
+        this.originMercator!,
+        treeMercator
+      );
 
-      const dxEast = (tree.lng - this.originLng) * metersPerLng;
-      const dzSouth = (this.originLat - tree.lat) * METERS_PER_DEGREE_LAT;
+      const east = dEastMeter;
+      const north = dNorthMeter;
+      const up = groundMeters;
 
-      let groundMeters = 0;
-      const queried = this.map.queryTerrainElevation([tree.lng, tree.lat]);
-      if (queried !== null && Number.isFinite(queried)) {
-        groundMeters = queried;
-      } else {
-        unresolvedElevationCount++;
+      if (index === 0) {
+        this.firstTreeLocal = { east, up, north };
+        if (this.debug) {
+          console.log("[TreeLayer] first tree ground calc:", {
+            lng: tree.lng, lat: tree.lat,
+            rawGround, terrainExaggeration: this.terrainExaggeration, groundMeters,
+            local: { east, up, north },
+          });
+        }
       }
-      groundMeters += TreeLayer.GROUND_CLEARANCE_METERS;
 
-      const heightMeters = tree.heightMeters;
+      const heightMeters = tree.heightMeters * this.heightScale;
+
       const trunkHeight = heightMeters * this.trunkHeightRatio;
       const trunkRadius = heightMeters * this.trunkRadiusRatio;
-      const trunkTop = groundMeters + trunkHeight;
+      const trunkTop = up + trunkHeight;
 
-      this.dummy.position.set(dxEast, groundMeters, dzSouth);
+      this.dummy.position.set(east, up, north);
       this.dummy.scale.set(trunkRadius, trunkHeight, trunkRadius);
       this.dummy.rotation.set(0, 0, 0);
       this.dummy.updateMatrix();
@@ -517,19 +600,11 @@ export class TreeLayer implements CustomLayerInterface {
       const canopyRadiusY = canopyRadius * this.canopyVerticalSquash;
       const canopyCenterY = trunkTop - canopyRadiusY * 0.2;
 
-      this.dummy.position.set(dxEast, canopyCenterY, dzSouth);
+      this.dummy.position.set(east, canopyCenterY, north);
       this.dummy.scale.set(canopyRadius, canopyRadiusY, canopyRadius);
       this.dummy.rotation.set(0, 0, 0);
       this.dummy.updateMatrix();
       this.canopyMesh.setMatrixAt(index, this.dummy.matrix);
-
-      if (this.debug && index === 0) {
-        console.log("[TreeLayer] first instance local-space transform:", {
-          lng: tree.lng, lat: tree.lat,
-          dxEast, dzSouth, groundMeters,
-          trunkHeight, trunkRadius, canopyRadius, canopyRadiusY,
-        });
-      }
 
       index++;
     }
@@ -541,26 +616,10 @@ export class TreeLayer implements CustomLayerInterface {
 
     if (this.debug) {
       console.log(
-        `[TreeLayer] regenerated ${index} tree instances` +
-        (unresolvedElevationCount > 0 ? ` — ${unresolvedElevationCount} unresolved elevation` : "")
+        `[TreeLayer] rebuilt ${index}/${this.treeCache.size} cached tree instances ` +
+        `(elevation cache size: ${this.elevationCache.size}) — raw counts:`,
+        debugCounts
       );
-    }
-
-    if (unresolvedElevationCount > 0 && !this.pendingElevationRetry) {
-      if (this.elevationRetryCount >= TreeLayer.MAX_ELEVATION_RETRIES) {
-        if (this.debug) {
-          console.warn(`[TreeLayer] giving up on elevation retry after ${TreeLayer.MAX_ELEVATION_RETRIES} attempts`);
-        }
-      } else {
-        this.pendingElevationRetry = true;
-        this.elevationRetryCount++;
-        this.map.once("idle", () => {
-          this.pendingElevationRetry = false;
-          this.regenerateInstances();
-        });
-      }
-    } else if (unresolvedElevationCount === 0) {
-      this.elevationRetryCount = 0;
     }
 
     this.map.triggerRepaint();
@@ -568,40 +627,40 @@ export class TreeLayer implements CustomLayerInterface {
 
   // ── Render ───────────────────────────────────────────────────────────────
 
-  render(_gl: WebGL2RenderingContext, options: CustomRenderMethodInput): void {
-    if (!this.renderDiagnosticLogged && this.debug) {
-      this.renderDiagnosticLogged = true;
-      console.log("[TreeLayer] render() first call — state check:", {
-        hasMap: !!this.map,
-        hasRenderer: !!this.renderer,
-        hasScene: !!this.scene,
-        hasCamera: !!this.camera,
-        hasOriginMatrix: !!this.originMatrix,
-        opacity: this.opacity,
-        zoom: this.map?.getZoom(),
-        minzoom: this.minzoom,
-        trunkMeshCount: this.trunkMesh?.count,
-      });
-    }
-
-    if (!this.map || !this.renderer || !this.scene || !this.camera || !this.originMatrix) return;
+  render(gl: WebGL2RenderingContext, options: CustomRenderMethodInput): void {
+    if (!this.map || !this.renderer || !this.scene || !this.camera) return;
     if (this.opacity <= 0) return;
     if (this.map.getZoom() < this.minzoom) return;
     if (!this.trunkMesh || this.trunkMesh.count === 0) return;
 
-    try {
-      const mapMatrix = new THREE.Matrix4().fromArray(
-        Array.from(options.modelViewProjectionMatrix as unknown as ArrayLike<number>)
-      );
-      const combined = new THREE.Matrix4().multiplyMatrices(mapMatrix, this.originMatrix);
+    const opts = options as RenderInputWithProjection;
+    const mainMatrixArray =
+      opts.defaultProjectionData?.mainMatrix ??
+      (options as unknown as { modelViewProjectionMatrix?: ArrayLike<number> }).modelViewProjectionMatrix;
 
-      this.camera.projectionMatrix = combined;
-
-      this.renderer.resetState();
-      this.renderer.render(this.scene, this.camera);
-      this.map.triggerRepaint();
-    } catch (err) {
-      console.error("[TreeLayer] render() threw — nothing was drawn this frame:", err);
+    if (!mainMatrixArray) {
+      if (this.debug) console.warn("[TreeLayer] no usable projection matrix found on render options");
+      return;
     }
+
+    this.scratchMapMatrix.fromArray(mainMatrixArray);
+    this.camera.projectionMatrix.multiplyMatrices(this.scratchMapMatrix, this.originMatrix);
+
+    if (this.debug && !this.diagnosticLogged && this.firstTreeLocal) {
+      this.diagnosticLogged = true;
+      const p = this.firstTreeLocal;
+      const clip = new THREE.Vector4(p.east, p.up, p.north, 1).applyMatrix4(this.camera.projectionMatrix);
+      const ndc = { x: clip.x / clip.w, y: clip.y / clip.w, z: clip.z / clip.w };
+      console.log("[TreeLayer] projection self-check:", {
+        local: p,
+        clip: { x: clip.x, y: clip.y, z: clip.z, w: clip.w },
+        ndc,
+        onScreen: Math.abs(ndc.x) <= 1 && Math.abs(ndc.y) <= 1 && clip.w > 0,
+      });
+    }
+
+    this.renderer.resetState();
+    this.renderer.render(this.scene, this.camera);
+    this.map.triggerRepaint();
   }
 }
