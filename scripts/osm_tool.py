@@ -252,17 +252,26 @@ class DependencyCollector(osmium.SimpleHandler):
     *direct* dependencies (nodes for matched ways; member refs for matched
     relations). Nested relation expansion and way->node resolution for
     relation-referenced ways are handled by separate passes afterwards
-    (see RelationExpander / WayNodeResolver and filter_osm()).
+    (see RelationExpander / WayNodeResolver and filter_osm()) -- unless
+    those passes are skipped via --no-expand-relations, in which case only
+    what this pass collects is written.
 
     Tracks two levels of ID sets per type:
       - node_ids / way_ids / relation_ids: everything that needs to be
-        written to the output (matches + all their dependencies).
+        written to the output (matches + all their dependencies, subject
+        to the above).
       - matched_node_ids / matched_way_ids / matched_relation_ids: only the
         objects that *directly* matched the filter criteria themselves, as
         opposed to being pulled in solely as a dependency. Used to scope
         --tag additions (see filter_osm()) to just the matched objects,
         so e.g. tagging a matched way doesn't also tag every one of its
         vertex nodes.
+
+    Also records, for each *matched* relation, its raw member list
+    (matched_relation_members) and its 'name' tag if any
+    (matched_relation_names). This is used by filter_osm() to warn about
+    relations that will likely end up incomplete in the output when
+    --no-expand-relations skips resolving their nested members.
     """
 
     def __init__(self, tag_key: Optional[str], tag_value: Optional[str], include_actions: Optional[str]):
@@ -278,6 +287,11 @@ class DependencyCollector(osmium.SimpleHandler):
         self.matched_node_ids: Set[int] = set()
         self.matched_way_ids: Set[int] = set()
         self.matched_relation_ids: Set[int] = set()
+
+        # rel_id -> list of (member_type, member_ref, member_role)
+        self.matched_relation_members: Dict[int, List[Tuple[str, int, str]]] = {}
+        # rel_id -> name tag (or None)
+        self.matched_relation_names: Dict[int, Optional[str]] = {}
 
     def is_match(self, elem: osmium.osm.OSMObject) -> bool:
         if self.tag_key and elem.tags.get(self.tag_key) == self.tag_value:
@@ -308,6 +322,10 @@ class DependencyCollector(osmium.SimpleHandler):
             logger.debug(f"Matching relation found: {r.id}")
             self.relation_ids.add(r.id)
             self.matched_relation_ids.add(r.id)
+            self.matched_relation_members[r.id] = [
+                (member.type, member.ref, member.role) for member in r.members
+            ]
+            self.matched_relation_names[r.id] = r.tags.get('name')
             for member in r.members:
                 if member.type == 'n':
                     self.node_ids.add(member.ref)
@@ -397,6 +415,94 @@ class DataWriter(osmium.SimpleHandler):
             self.writer.add_relation(self._with_extra_tags(r, self.deps.matched_relation_ids))
 
 
+class _CopyAllHandler(osmium.SimpleHandler):
+    """
+    Forwards every node/way/relation it sees, unmodified, to the given
+    writer. Used to re-encode an existing OSM file into a different output
+    format/container (e.g. turning an internal PBF working file into an
+    XML .osm file for debugging), since osmium.SimpleWriter picks its
+    output format based on the target path's extension.
+    """
+    def __init__(self, writer: osmium.io.Writer):
+        super().__init__()
+        self.writer = writer
+
+    def node(self, n: osmium.osm.Node) -> None:
+        self.writer.add_node(n)
+
+    def way(self, w: osmium.osm.Way) -> None:
+        self.writer.add_way(w)
+
+    def relation(self, r: osmium.osm.Relation) -> None:
+        self.writer.add_relation(r)
+
+
+class _WayIdCollector(osmium.SimpleHandler):
+    """
+    Collects the IDs of every way seen in a file. Used purely for
+    consistency-checking the masked base file produced in patch() --
+    comparing "all base ways minus explicitly excluded ones" against
+    "ways actually present in the masked file" can reveal ways that
+    silently disappeared for reasons other than deliberate exclusion
+    (e.g. an unsorted base file, or ways referencing nodes missing from
+    the base file).
+    """
+    def __init__(self):
+        super().__init__()
+        self.way_ids: Set[int] = set()
+
+    def way(self, w: osmium.osm.Way) -> None:
+        self.way_ids.add(w.id)
+
+
+class _RelationIdCollector(osmium.SimpleHandler):
+    """
+    Collects the IDs of every relation seen in a file. Used purely for
+    consistency-checking the masked base file produced in patch() (see
+    _WayIdCollector for the equivalent way-focused check).
+    """
+    def __init__(self):
+        super().__init__()
+        self.relation_ids: Set[int] = set()
+
+    def relation(self, r: osmium.osm.Relation) -> None:
+        self.relation_ids.add(r.id)
+
+
+class _RelationMemberExclusionResolver(osmium.SimpleHandler):
+    """
+    Given a set of already-excluded way IDs and relation IDs, finds
+    relations that reference any of them as a member and collects those
+    relations' IDs. Intended to be called repeatedly (fixed-point
+    iteration, mirroring RelationExpander) so that a relation excluded
+    because it references an excluded way will itself cause any relation
+    containing *it* to be excluded too (nested relations).
+
+    This is needed so that excluding a way (because it geometrically
+    intersects the patch) also excludes any relation built on top of it
+    (e.g. a multipolygon) -- otherwise the relation would either be kept
+    with a now-dangling member, or (worse) cause BackReferenceWriter's own
+    dependency resolution to resurrect the excluded way when the relation
+    itself is kept and written.
+    """
+    def __init__(self, excluded_way_ids: Set[int], excluded_relation_ids: Set[int]):
+        super().__init__()
+        self.excluded_way_ids = excluded_way_ids
+        self.excluded_relation_ids = excluded_relation_ids
+        self.newly_excluded_relation_ids: Set[int] = set()
+
+    def relation(self, r: osmium.osm.Relation) -> None:
+        if r.id in self.excluded_relation_ids:
+            return
+        for member in r.members:
+            if member.type == 'w' and member.ref in self.excluded_way_ids:
+                self.newly_excluded_relation_ids.add(r.id)
+                return
+            if member.type == 'r' and member.ref in self.excluded_relation_ids:
+                self.newly_excluded_relation_ids.add(r.id)
+                return
+
+
 # --- Tile Math Functions ---
 
 def deg_to_tile_num(lat_deg: float, lon_deg: float, zoom: int) -> Tuple[int, int]:
@@ -410,12 +516,60 @@ def deg_to_tile_num(lat_deg: float, lon_deg: float, zoom: int) -> Tuple[int, int
 
 # --- Commands ---
 
+def _log_relations_with_unexpanded_members(dep_collector: DependencyCollector) -> None:
+    """
+    Used when --no-expand-relations is set. Nested relation members and
+    way-node dependencies are not resolved in that mode, so this inspects
+    every *directly matched* relation and warns about any whose member list
+    includes way or relation members -- those members' own dependencies
+    (a member way's nodes, a member relation's members) will NOT be present
+    in the output, likely leaving the relation (or the referenced objects)
+    incomplete/dangling.
+    """
+    broken_count = 0
+    for rel_id in sorted(dep_collector.matched_relation_ids):
+        members = dep_collector.matched_relation_members.get(rel_id, [])
+        way_member_ids = [ref for (mtype, ref, role) in members if mtype == 'w']
+        relation_member_ids = [ref for (mtype, ref, role) in members if mtype == 'r']
+
+        if not way_member_ids and not relation_member_ids:
+            continue
+
+        broken_count += 1
+        name = dep_collector.matched_relation_names.get(rel_id)
+        logger.warning(
+            f"Relation {rel_id}" + (f" (name={name!r})" if name else "") +
+            f" will likely be incomplete in the output: --no-expand-relations "
+            f"does not resolve {len(way_member_ids)} way member(s)' node lists "
+            f"or {len(relation_member_ids)} nested relation member(s)."
+        )
+        if way_member_ids:
+            logger.debug(
+                f"  Relation {rel_id}: way member(s) whose nodes won't be "
+                f"resolved: {sorted(way_member_ids)}"
+            )
+        if relation_member_ids:
+            logger.debug(
+                f"  Relation {rel_id}: nested relation member(s) that won't "
+                f"be expanded: {sorted(relation_member_ids)}"
+            )
+
+    if broken_count:
+        logger.warning(
+            f"{broken_count} matched relation(s) may be incomplete in the "
+            f"output due to --no-expand-relations."
+        )
+
+
 def filter_osm(args: argparse.Namespace) -> None:
     """
     Core logic for the 'filter' subcommand. Reads an OSM file, filters
     objects based on tags or actions, and writes the result including all
     dependencies (recursively for nested relations, and node refs for
-    ways discovered via relation membership).
+    ways discovered via relation membership) -- unless --no-expand-relations
+    is given, in which case only Pass 1's direct matches/dependencies are
+    written (legacy behavior; may produce ways/relations with dangling
+    references if they were only pulled in via relation membership).
 
     If --tag is given, its key=value pairs are added to (and override any
     same-named tags on) objects that directly matched the filter criteria.
@@ -446,28 +600,37 @@ def filter_osm(args: argparse.Namespace) -> None:
     dep_collector = DependencyCollector(args.tag_key, args.tag_value, args.include_actions)
     dep_collector.apply_file(input_file, locations=True, idx='flex_mem')
 
-    logger.info("--- Pass 2: Expanding nested relation dependencies (fixed-point) ---")
-    while True:
-        expander = RelationExpander(dep_collector.relation_ids)
-        expander.apply_file(input_file, locations=False)
+    if args.no_expand_relations:
+        logger.info(
+            "--- Skipping Pass 2/3 (nested relation expansion, way node resolution): "
+            "--no-expand-relations set, restoring legacy behavior. Ways/relations "
+            "pulled in only via relation membership may be written without their "
+            "own dependencies (nodes/members) present in the output. ---"
+        )
+        _log_relations_with_unexpanded_members(dep_collector)
+    else:
+        logger.info("--- Pass 2: Expanding nested relation dependencies (fixed-point) ---")
+        while True:
+            expander = RelationExpander(dep_collector.relation_ids)
+            expander.apply_file(input_file, locations=False)
 
-        new_relation_ids = dep_collector.relation_ids | expander.relation_ids
-        new_way_ids = dep_collector.way_ids | expander.way_ids
-        new_node_ids = dep_collector.node_ids | expander.node_ids
+            new_relation_ids = dep_collector.relation_ids | expander.relation_ids
+            new_way_ids = dep_collector.way_ids | expander.way_ids
+            new_node_ids = dep_collector.node_ids | expander.node_ids
 
-        if (new_relation_ids == dep_collector.relation_ids and
-                new_way_ids == dep_collector.way_ids):
+            if (new_relation_ids == dep_collector.relation_ids and
+                    new_way_ids == dep_collector.way_ids):
+                dep_collector.node_ids = new_node_ids
+                break
+
+            dep_collector.relation_ids = new_relation_ids
+            dep_collector.way_ids = new_way_ids
             dep_collector.node_ids = new_node_ids
-            break
 
-        dep_collector.relation_ids = new_relation_ids
-        dep_collector.way_ids = new_way_ids
-        dep_collector.node_ids = new_node_ids
-
-    logger.info("--- Pass 3: Resolving node dependencies of all required ways ---")
-    way_node_resolver = WayNodeResolver(dep_collector.way_ids)
-    way_node_resolver.apply_file(input_file, locations=False)
-    dep_collector.node_ids |= way_node_resolver.node_ids
+        logger.info("--- Pass 3: Resolving node dependencies of all required ways ---")
+        way_node_resolver = WayNodeResolver(dep_collector.way_ids)
+        way_node_resolver.apply_file(input_file, locations=False)
+        dep_collector.node_ids |= way_node_resolver.node_ids
 
     logger.info(
         f"Found {len(dep_collector.node_ids)} nodes, {len(dep_collector.way_ids)} ways, "
@@ -704,18 +867,43 @@ def osm_file_to_geojson(input_file_path: str) -> dict:
         }
 
 
-def merge_cmd(args: argparse.Namespace) -> None:
+def patch_cmd(args: argparse.Namespace) -> None:
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
     base_file = args.input
-    patch = args.patch
+    patch_file = args.patch
     output_file = args.output
     overwrite = args.force
-    merge(base_file, patch, output_file, overwrite)
+    masked_base_output = args.dump_masked_base
+    patch(base_file, patch_file, output_file, overwrite, masked_base_output=masked_base_output)
 
 
-def merge(base_file, patch, output_file, overwrite) -> None:
+def patch(base_file, patch_file, output_file, overwrite, masked_base_output: Optional[str] = None) -> None:
+    """
+    Reads a base OSM file and a patch OSM file, removes closed ways in the
+    base file that intersect with polygons/areas from the patch, and writes
+    a merged result combining both (with patch IDs normalized to avoid
+    collisions).
+
+    Besides excluding ways that geometrically intersect the patch, this
+    also excludes any relation that (directly or transitively, through
+    nested relations) references one of those excluded ways -- most
+    importantly this covers multipolygon relations, whose tags commonly
+    live on the *relation* rather than on its member ways. All standalone
+    nodes (e.g. tagged POIs like trees) and all relations that do NOT
+    reference an excluded way are preserved unconditionally: the masked
+    base file processes every entity type from base_file, not just ways.
+
+    masked_base_output:
+        Optional path. If given, the intermediate "masked base" file is
+        additionally re-written there for debugging/inspection, in
+        whatever format its extension implies (e.g. '.osm' for XML, '.pbf'
+        for PBF) -- osmium.SimpleWriter picks the format the same way it
+        does for the main --output file. The internal working copy always
+        uses its own separate ".pbf" temp file regardless, so this option
+        has no effect on the actual merge logic.
+    """
 
     class IntersectionHandler(osmium.SimpleHandler):
         """
@@ -765,48 +953,72 @@ def merge(base_file, patch, output_file, overwrite) -> None:
         Filter for osmium.FileProcessor to exclude objects based on ID.
         See https://github.com/osmcode/pyosmium/issues/310
 
-        Also logs (debug) each object it discards, including its name tag
-        if present, and keeps simple counters so callers can log a summary
-        once the filter pass is complete.
+        Way and relation IDs to exclude are tracked in separate sets
+        (node/way/relation ID spaces are independent namespaces in OSM,
+        see CollisionChecker), so a way and a relation that happen to
+        share the same numeric ID are never confused. Nodes are never
+        excluded by this filter -- standalone tagged nodes (e.g.
+        natural=tree points) are always preserved in the masked base file.
+
+        Also logs (debug) each object it discards, including one notable
+        descriptive tag if present (name, service, amenity, landuse,
+        natural, building, building:part -- first match wins), and keeps
+        simple counters so callers can log a summary once the filter pass
+        is complete.
         """
-        def __init__(self, ids):
-            self.ids = ids
+
+        # Checked in order; first tag found on the object is used for logging.
+        DESCRIPTIVE_TAGS = ['name', 'service', 'amenity', 'landuse', 'natural', 'building', 'building:part']
+
+        def __init__(self, way_ids: Set[int], relation_ids: Optional[Set[int]] = None):
+            self.way_ids = way_ids
+            self.relation_ids = relation_ids or set()
             self.discarded_count = 0
-            self.discarded_named_count = 0
+            self.discarded_tagged_count = 0
+            self.discarded_way_count = 0
+            self.discarded_relation_count = 0
 
         def _log_discard(self, kind: str, obj) -> None:
-            name = obj.tags.get('name')
+            val = None
+            key = None
+            for tag in self.DESCRIPTIVE_TAGS:
+                val = obj.tags.get(tag)
+                if val:
+                    key = tag
+                    break
+
             self.discarded_count += 1
-            if name:
-                self.discarded_named_count += 1
+            if val:
+                self.discarded_tagged_count += 1
             logger.debug(
-                f"Discarding {kind} {obj.id} from base file "
-                f"(replaced by patch)" + (f", name={name!r}" if name else "")
+                f"{kind.capitalize()} {obj.id} will be excluded from base file "
+                f"(replaced by patch)" + (f", {key!r}={val!r}" if val else "")
             )
 
         def node(self, n):
-            matched = n.id in self.ids
-            if matched:
-                self._log_discard('node', n)
-            return matched
+            # Standalone nodes (e.g. tagged POIs like trees) are always
+            # kept. Base-side exclusion is only ever computed for ways
+            # (via geometric intersection) and relations referencing them.
+            return False
 
         def way(self, w):
-            matched = w.id in self.ids
+            matched = w.id in self.way_ids
             if matched:
+                self.discarded_way_count += 1
                 self._log_discard('way', w)
             return matched
 
         def relation(self, r):
-            matched = r.id in self.ids
+            matched = r.id in self.relation_ids
             if matched:
+                self.discarded_relation_count += 1
                 self._log_discard('relation', r)
             return matched
 
         def area(self, a):
-            matched = a.id in self.ids
-            if matched:
-                self._log_discard('area', a)
-            return matched
+            # Not used: base_file is processed without with_areas(), so
+            # FileProcessor never yields synthetic Area objects here.
+            return False
 
     logger.info("Generating mask and applying it to the input file.")
 
@@ -816,7 +1028,7 @@ def merge(base_file, patch, output_file, overwrite) -> None:
         # so a flipped negative ID from the patch can't silently collide
         # with an unrelated, pre-existing object in the base file.
         normalize_ids_to_positive(
-            patch, temp.name, on_collision="offset", reference_paths=[base_file]
+            patch_file, temp.name, on_collision="offset", reference_paths=[base_file]
         )
 
         wkbfab = osmium.geom.WKBFactory()
@@ -843,22 +1055,150 @@ def merge(base_file, patch, output_file, overwrite) -> None:
     ids = [i['id'] for i in results]
     logger.debug(ids)
 
-    with tempfile.NamedTemporaryFile(mode='w+t', delete=True, suffix=".pbf") as temp:
-        excluding_filter = ExcludingIdFilter(ids)
-        with osmium.BackReferenceWriter(temp.name, base_file, overwrite=True) as writer:
-            for o in osmium.FileProcessor(base_file) \
-                    .with_filter(osmium.filter.EntityFilter(osmium.osm.WAY)) \
-                    .with_filter(excluding_filter):
+    excluded_way_ids: Set[int] = set(ids)
+
+    # Any relation that references an excluded way -- directly, or via a
+    # chain of nested relations -- is excluded too. This is essential for
+    # multipolygons: their tags commonly live on the relation, not on the
+    # member ways, and keeping the relation around while its member way is
+    # gone would either leave a dangling reference or (since
+    # BackReferenceWriter resolves dependencies of whatever IS added) cause
+    # the excluded way to be silently resurrected.
+    excluded_relation_ids: Set[int] = set()
+    while True:
+        resolver = _RelationMemberExclusionResolver(excluded_way_ids, excluded_relation_ids)
+        resolver.apply_file(base_file, locations=False)
+        if not resolver.newly_excluded_relation_ids:
+            break
+        excluded_relation_ids |= resolver.newly_excluded_relation_ids
+
+    if excluded_relation_ids:
+        logger.info(
+            f"Also excluding {len(excluded_relation_ids)} relation(s) that "
+            f"(directly or transitively) reference an excluded way."
+        )
+        logger.debug(f"Excluded relation IDs: {sorted(excluded_relation_ids)}")
+
+    # The internal "masked base" working file (base_file with intersecting
+    # closed ways -- and any relation built on top of them -- removed)
+    # always uses its own guaranteed ".pbf" temp file, since it's read back
+    # further down with a hardcoded "pbf" format. If masked_base_output was
+    # requested, its content is re-encoded there afterward (format chosen
+    # from masked_base_output's extension) purely for inspection -- it
+    # never substitutes for this temp file, so the debug dump's format
+    # can't affect the actual merge logic.
+    with tempfile.NamedTemporaryFile(mode='w+t', delete=True, suffix=".pbf") as masked_base_temp:
+        masked_base_path = masked_base_temp.name
+
+        # NOTE: no EntityFilter(WAY) restriction here anymore -- nodes and
+        # relations must flow through too, otherwise every standalone
+        # tagged node (trees, etc.) and every relation (multipolygons,
+        # etc.) gets silently dropped from the masked base file, even ones
+        # completely unrelated to the patch.
+        excluding_filter = ExcludingIdFilter(way_ids=excluded_way_ids, relation_ids=excluded_relation_ids)
+        with osmium.BackReferenceWriter(masked_base_path, base_file, overwrite=True) as writer:
+            for o in osmium.FileProcessor(base_file).with_filter(excluding_filter):
                 writer.add(o)
 
         logger.info(
-            f"Discarded {excluding_filter.discarded_count} way(s) from base file "
-            f"({excluding_filter.discarded_named_count} had a name tag)."
+            f"Excluded {excluding_filter.discarded_way_count} way(s) and "
+            f"{excluding_filter.discarded_relation_count} relation(s) from base file "
+            f"({excluding_filter.discarded_tagged_count} had a notable descriptive tag "
+            f"[name/service/amenity/landuse/natural/building/building:part]). "
+            f"All standalone nodes and unrelated relations are preserved."
         )
+
+        # --- Consistency check ---
+        # BackReferenceWriter is trusted to output every way/relation NOT
+        # explicitly excluded above, plus their dependent nodes/members.
+        # But this can silently fail to hold -- e.g. if base_file isn't
+        # sorted by type/ID (a common libosmium assumption), or if some
+        # ways reference node IDs missing from base_file (dangling refs,
+        # common in bbox-clipped extracts). Compare "expected" vs. "actual"
+        # way/relation IDs in the masked file so such discrepancies are
+        # surfaced instead of silently dropping objects that were never
+        # meant to be excluded.
+        logger.info("Verifying masked base file consistency...")
+        all_base_ways = _WayIdCollector()
+        all_base_ways.apply_file(base_file, locations=False)
+
+        masked_ways = _WayIdCollector()
+        masked_ways.apply_file(masked_base_path, locations=False)
+
+        expected_way_ids = all_base_ways.way_ids - excluded_way_ids
+        unexpectedly_missing = expected_way_ids - masked_ways.way_ids
+        unexpectedly_present = masked_ways.way_ids - expected_way_ids
+
+        logger.info(
+            f"Consistency check: {len(expected_way_ids)} way(s) expected in masked "
+            f"base file, {len(masked_ways.way_ids)} found."
+        )
+        if unexpectedly_missing:
+            sample = sorted(unexpectedly_missing)[:20]
+            logger.warning(
+                f"{len(unexpectedly_missing)} way(s) are missing from the masked base "
+                f"file even though they were NOT marked for exclusion: "
+                f"{sample}{' ...' if len(unexpectedly_missing) > 20 else ''}"
+            )
+            logger.warning(
+                "This usually means base_file is not sorted by type/ID (try "
+                "'osmium sort'), or these ways reference node(s) not present in "
+                "base_file (dangling refs, common in bbox-clipped extracts, check "
+                "with 'osmium check-refs')."
+            )
+        if unexpectedly_present:
+            sample = sorted(unexpectedly_present)[:20]
+            logger.warning(
+                f"{len(unexpectedly_present)} way(s) unexpectedly present in the "
+                f"masked base file (should have been excluded): "
+                f"{sample}{' ...' if len(unexpectedly_present) > 20 else ''}"
+            )
+
+        all_base_relations = _RelationIdCollector()
+        all_base_relations.apply_file(base_file, locations=False)
+
+        masked_relations = _RelationIdCollector()
+        masked_relations.apply_file(masked_base_path, locations=False)
+
+        expected_relation_ids = all_base_relations.relation_ids - excluded_relation_ids
+        relations_unexpectedly_missing = expected_relation_ids - masked_relations.relation_ids
+        relations_unexpectedly_present = masked_relations.relation_ids - expected_relation_ids
+
+        logger.info(
+            f"Consistency check: {len(expected_relation_ids)} relation(s) expected "
+            f"in masked base file, {len(masked_relations.relation_ids)} found."
+        )
+        if relations_unexpectedly_missing:
+            sample = sorted(relations_unexpectedly_missing)[:20]
+            logger.warning(
+                f"{len(relations_unexpectedly_missing)} relation(s) are missing from "
+                f"the masked base file even though they were NOT marked for exclusion: "
+                f"{sample}{' ...' if len(relations_unexpectedly_missing) > 20 else ''}"
+            )
+        if relations_unexpectedly_present:
+            sample = sorted(relations_unexpectedly_present)[:20]
+            logger.warning(
+                f"{len(relations_unexpectedly_present)} relation(s) unexpectedly "
+                f"present in the masked base file (should have been excluded): "
+                f"{sample}{' ...' if len(relations_unexpectedly_present) > 20 else ''}"
+            )
+
+        if (not unexpectedly_missing and not unexpectedly_present
+                and not relations_unexpectedly_missing and not relations_unexpectedly_present):
+            logger.info("Consistency check passed: masked base file matches expectations.")
+
+        if masked_base_output:
+            with osmium.SimpleWriter(masked_base_output, overwrite=True) as dump_writer:
+                copy_handler = _CopyAllHandler(dump_writer)
+                copy_handler.apply_file(masked_base_path, locations=False)
+            logger.info(
+                f"Masked base file written to {masked_base_output} "
+                f"(format determined by file extension, kept for debugging via --dump-masked-base)."
+            )
 
         logger.info(f"Generated masked file. Applying patch. Overwrite: {overwrite}")
 
-        with open(temp.name, 'rb') as f:
+        with open(masked_base_path, 'rb') as f:
             with osmium.SimpleWriter(output_file, overwrite=overwrite) as writer:
                 reader = osmium.MergeInputReader()
                 reader.add_buffer(patch_buffer, "pbf")
@@ -922,6 +1262,13 @@ def main() -> None:
     filter_parser.add_argument('--tag-key', default="upload", help="The tag key to filter features by (e.g., 'highway').")
     filter_parser.add_argument('--tag-value', default="false", help="The tag value to filter features by (e.g., 'residential').")
     filter_parser.add_argument('--include-actions', help="A comma-separated list of actions to include (e.g., 'modify,create,delete').")
+    filter_parser.add_argument('--no-expand-relations', action='store_true',
+                                help="Restore legacy behavior: skip recursive resolution of nested "
+                                     "relation members and of node lists for ways discovered only via "
+                                     "relation membership. Only Pass 1's direct matches and their "
+                                     "immediate dependencies are written. May produce ways/relations "
+                                     "with dangling references in the output; affected relations are "
+                                     "logged as warnings.")
     filter_parser.add_argument('--tag', help="Comma-separated list of tag=value pairs to add to each object that "
                                               "directly matches the filter criteria (not to its pulled-in "
                                               "dependencies), e.g. --tag tag1=value1,tag2=value2")
@@ -933,12 +1280,19 @@ def main() -> None:
         'patch',
         help='Merges a patch OSM file into a base OSM file, replacing intersecting geometry.',
         description='Reads a base OSM file and a patch OSM file, removes closed ways in the base file '
-                     'that intersect with polygons/areas from the patch, and writes a merged result '
-                     'combining both (with patch IDs normalized to avoid collisions).'
+                     '(and any relation referencing them, e.g. multipolygons) that intersect with '
+                     'polygons/areas from the patch, and writes a merged result combining both (with '
+                     'patch IDs normalized to avoid collisions). Standalone nodes and unrelated '
+                     'relations are always preserved.'
     )
     patch_parser.add_argument('-i', '--input', required=True, help="The base OSM file to merge into.")
     patch_parser.add_argument('-p', '--patch', required=True, help="The path for the patch OSM file to be applied.")
     patch_parser.add_argument('-o', '--output', required=True, help="The path for the output file.")
+    patch_parser.add_argument('--dump-masked-base', metavar='FILE',
+                               help="Optional, for debugging: write the intermediate masked base file "
+                                    "(base file with intersecting closed ways and dependent relations "
+                                    "removed, before the patch is merged in) to FILE, in the format "
+                                    "implied by FILE's extension (e.g. '.osm' for XML, '.pbf' for PBF).")
     patch_parser.add_argument('-f', '--force', action='store_true', help="Overwrite output file if it exists.")
     patch_parser.add_argument('-v', '--verbose', action='store_true', help="Enable verbose (DEBUG) logging.")
 
@@ -971,7 +1325,7 @@ def main() -> None:
     elif args.command == 'tile-info':
         bbox_tiles_osm(args)
     elif args.command == 'patch':
-        merge_cmd(args)
+        patch_cmd(args)
     elif args.command == 'ways-to-polygons':
         ways_to_polygons(args)
     else:

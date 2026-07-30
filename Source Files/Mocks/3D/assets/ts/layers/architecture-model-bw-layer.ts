@@ -195,18 +195,18 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
   renderingMode = "2d" as const;
 
   // ── Tunable look parameters ────────────────────────────────────────────
-  enabled           = true;
-  antialias         = true; // toggle FXAA on/off at runtime
-  contrast          = 1.35;
-  brightness        = 0.03;
-  grainAmount       = 0.045;
-  grainSize         = 1.6;
-  vignetteStrength  = 0.35;
-  vignetteInner     = 0.35;
-  vignetteOuter     = 0.78;
-  edgeStrength      = 0.35;
-  blurStrength      = 0.0; // 0 = off, try 0.6–1.2 for a tilt-shift model look
-  paperTone: [number, number, number]  = [0.98, 0.97, 0.94];
+  enabled = true;
+  antialias = true; // toggle FXAA on/off at runtime
+  contrast = 1.35;
+  brightness = 0.03;
+  grainAmount = 0.045;
+  grainSize = 1.6;
+  vignetteStrength = 0.35;
+  vignetteInner = 0.35;
+  vignetteOuter = 0.78;
+  edgeStrength = 0.35;
+  blurStrength = 0.0; // 0 = off, try 0.6–1.2 for a tilt-shift model look
+  paperTone: [number, number, number] = [0.98, 0.97, 0.94];
   shadowTone: [number, number, number] = [0.05, 0.05, 0.06];
 
   private gl!: GL;
@@ -226,11 +226,7 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
     this.posLoc = gl.getAttribLocation(this.program, "a_position");
     this.quadBuffer = gl.createBuffer()!;
     gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
-      gl.STATIC_DRAW
-    );
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
 
     this.sceneTexture = gl.createTexture()!;
     gl.bindTexture(gl.TEXTURE_2D, this.sceneTexture);
@@ -240,12 +236,21 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
     const names = [
-      "u_scene", "u_resolution", "u_time",
-      "u_contrast", "u_brightness",
-      "u_grainAmount", "u_grainSize",
-      "u_vignetteStrength", "u_vignetteInner", "u_vignetteOuter",
-      "u_edgeStrength", "u_blurStrength", "u_antialias",
-      "u_paperTone", "u_shadowTone",
+      "u_scene",
+      "u_resolution",
+      "u_time",
+      "u_contrast",
+      "u_brightness",
+      "u_grainAmount",
+      "u_grainSize",
+      "u_vignetteStrength",
+      "u_vignetteInner",
+      "u_vignetteOuter",
+      "u_edgeStrength",
+      "u_blurStrength",
+      "u_antialias",
+      "u_paperTone",
+      "u_shadowTone"
     ];
     for (const name of names) {
       this.uniforms[name] = gl.getUniformLocation(this.program, name);

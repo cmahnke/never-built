@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+DEBUG=false
+if [ $# -gt 0 ]; then
+  DEBUG=true
+  set -x
+fi
+
 set -euo pipefail
 
 DOCKER_IMAGE=ghcr.io/cmahnke/map-tools/planetiler:latest
@@ -8,7 +14,7 @@ TILES_DIR="$(dirname "$(realpath "$0")")/../static/map/"
 COVERAGE=goettingen
 MAX_ZOOM=16
 TILE_COMPRESSION=none
-PLANETILER_OPTS="--use_wikidata=true"
+PLANETILER_OPTS="--fetch-wikidata --use_wikidata=true --osm_parse_node_bounds=true --exclude-layers=building,housenumber,aeroway"
 BBOX="9.7 51.45 10.1 51.6"
 PBF=$TILES_DIR/${COVERAGE}.osm.pbf
 MAP_DIR=./static/map/tiles/
@@ -16,7 +22,7 @@ MASTER_TILE_DIR="$(cd "$MAP_DIR" && pwd)"
 
 # https://wiki.openstreetmap.org/wiki/JOSM_file_format
 
-FILES=$(find ./content -path '*/osm/*' -name "*.osm.pbf" -o -name "*.osm")
+FILES=$(find ./content -path '*/osm/*' \( -name "*.osm.pbf" -o -name "*.osm" \))
 for OSM_PATCH in $FILES
 do
 
@@ -24,7 +30,7 @@ do
   TMP_DIR=$POST_DIR/tmp
   FILE_NAME=$(basename "$OSM_PATCH")
   FILE_BASE_NAME=$(basename $FILE_NAME .osm)
-  MAP_FILE="$TILES_DIR/$FILE_BASE_NAME.pbf"
+  MAP_FILE="$TILES_DIR/$FILE_BASE_NAME.osm.pbf"
   POST_TILES="$TILES_DIR/$FILE_BASE_NAME"
 
   echo "Processing ${OSM_PATCH} (dir '${POST_DIR}', file '${FILE_NAME}', '${FILE_BASE_NAME}') saving to '${MAP_FILE}', tiles will go to ${POST_TILES}"
@@ -52,8 +58,8 @@ do
 
     PATCH_FILE_NAME=$FILE_BASE_NAME-patch.osm
     echo "Writing patch to $TMP_DIR/$PATCH_FILE_NAME"
-    python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o $TMP_DIR/$PATCH_FILE_NAME --tag meta=projektemacher -f -v
-    python scripts/osm_tool.py patch -i $PBF -p $TMP_DIR/$PATCH_FILE_NAME -o $MAP_FILE -v -f
+    python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o $TMP_DIR/$PATCH_FILE_NAME --tag meta=never-built -f -v #--no-expand-relations
+    python scripts/osm_tool.py patch -i $PBF -p $TMP_DIR/$PATCH_FILE_NAME -o $MAP_FILE --dump-masked-base $TMP_DIR/$FILE_BASE_NAME-masked.osm -v -f
   fi
 
   if ! test -r "$MAP_FILE"; then
@@ -83,8 +89,7 @@ do
   OUTPUT_FILE=$TMP_DIR/output.mbtiles
   PBF=$MAP_FILE
   echo "Using $PBF"
-  ARGS="--download_dir=planetiler-data/sources --tmpdir=planetiler-data/tmp --tile_weights=planetiler-data/tile_weights.tsv.gz --download=true --languages=de,en --osm-path=$PBF --osm_parse_node_bounds=true --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --bounds=${BBOX} --force --exclude-layers=building --output=$OUTPUT_FILE"
-  #
+  ARGS="--download_dir=planetiler-data/sources --tmpdir=planetiler-data/tmp --tile_weights=planetiler-data/tile_weights.tsv.gz --download=true --languages=de,en --osm-path=$PBF  --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --bounds=${BBOX} --force --output=$OUTPUT_FILE"
 
   #docker run -v "`pwd`:`pwd`" -w "`pwd`" $DOCKER_IMAGE $CMD $ARGS
   docker run -v "$(pwd):$(pwd)" -w "$(pwd)" "$DOCKER_IMAGE" sh -c "$CMD \"\$@\"" -- $ARGS
@@ -100,7 +105,11 @@ do
   fi
 
   mv "$TMP_DIR/$PATCH_FILE_NAME" "$POST_TILES/"
-  rm -r $TMP_DIR
+  if [ "$DEBUG" = false ]; then
+    rm -r "$TMP_DIR"
+  else
+    echo "DEBUG: Keeping temporary directory: $TMP_DIR"
+  fi
 
   # TODO: This won't work this way.
   # if test -r "$MASTER_TILE_DIR"; then

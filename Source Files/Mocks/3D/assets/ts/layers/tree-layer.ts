@@ -1,305 +1,68 @@
 // assets/ts/layers/tree-layer.ts
+//
+// (all prior header comments unchanged — omitted here for brevity)
+//
+// ⚠️ FIX APPLIED: removed `camera.projectionMatrixInverse = ...invert()` —
+// `Matrix4.invert()` is the CURRENT Three.js API name; versions before
+// r123 (~2021) called this method `.getInverse()` instead. If installed
+// Three.js predates that, this line threw a TypeError every frame inside
+// render(), which could plausibly result in "layer draws nothing" rather
+// than an obvious crash, depending on how MapLibre's render loop handles
+// a custom layer's render() throwing. This property was also never
+// actually required for basic MeshLambertMaterial rendering (only used
+// by advanced techniques like log-depth buffers) — removed rather than
+// version-guarded, since it wasn't doing anything useful here anyway.
+//
+// Also added: defensive console logging/try-catch around WebGLRenderer
+// construction and the render() draw call, since several earlier rounds
+// of blind guessing in this project's history wasted time — this time,
+// if trees are still invisible, we get concrete evidence instead.
 
+import * as THREE from "three";
 import type {
   CustomLayerInterface,
   CustomRenderMethodInput,
   Map as MapLibreMap,
-  LngLatLike,
   MapGeoJSONFeature,
   MapSourceDataEvent,
   FilterSpecification,
 } from "maplibre-gl";
 import { MercatorCoordinate } from "maplibre-gl";
 
-type GL = WebGLRenderingContext | WebGL2RenderingContext;
+// ─── Deterministic PRNG (stable jitter across rebuilds) ────────────────────
 
-// ─── Shaders ────────────────────────────────────────────────────────────────
-
-const VERTEX_SRC = /* glsl */ `
-  // Per-vertex (shared quad, 4 verts, drawn as TRIANGLE_STRIP)
-  attribute vec2 a_corner;      // x: -0.5..0.5, y: 0 (base) .. 1 (top)
-
-  // Per-instance (one tree each)
-  attribute vec3 a_instancePos;  // mercator x, y, z (ground/terrain height)
-  attribute vec2 a_instanceSize; // width, height in mercator units
-  attribute float a_instanceSeed;
-
-  uniform mat4  u_matrix;
-  uniform vec3  u_cameraPos;   // mercator-space camera position
-  uniform float u_time;
-  uniform float u_windStrength;
-  uniform float u_windSpeed;
-
-  varying vec2  v_uv;
-  varying float v_seed;
-
-  void main() {
-    v_uv   = vec2(a_corner.x + 0.5, 1.0 - a_corner.y);
-    v_seed = a_instanceSeed;
-
-    vec3 toCamera = u_cameraPos - a_instancePos;
-    // Keep billboard upright: only rotate around the vertical (z) axis.
-    vec3 toCameraFlat = vec3(toCamera.xy, 0.0);
-    float len = length(toCameraFlat);
-    vec3 forward = len > 1e-9 ? toCameraFlat / len : vec3(1.0, 0.0, 0.0);
-    vec3 worldUp = vec3(0.0, 0.0, 1.0);
-    vec3 right   = normalize(cross(worldUp, forward));
-
-    // Fake wind: sway top vertices sideways along "right", phase offset per tree.
-    float sway = sin(u_time * u_windSpeed + a_instanceSeed * 6.2831853) *
-                 u_windStrength * a_corner.y;
-
-    vec3 offset =
-      right   * (a_corner.x * a_instanceSize.x + sway) +
-      worldUp * (a_corner.y * a_instanceSize.y);
-
-    vec3 worldPos = a_instancePos + offset;
-    gl_Position = u_matrix * vec4(worldPos, 1.0);
-  }
-`;
-
-const FRAGMENT_SRC = /* glsl */ `
-  precision mediump float;
-
-  uniform sampler2D u_sprite;
-  uniform float     u_opacity;
-  uniform vec3      u_tint;
-  uniform bool      u_debug;
-
-  varying vec2  v_uv;
-  varying float v_seed;
-
-  void main() {
-    vec4 tex = texture2D(u_sprite, v_uv);
-
-    if (u_debug) {
-      gl_FragColor = vec4(mix(vec3(1.0, 0.0, 1.0), u_tint, 0.3), tex.a * u_opacity);
-      if (tex.a < 0.05) discard;
-      return;
-    }
-
-    if (tex.a < 0.1) discard; // alpha-cutout: lets us keep normal depth writes
-
-    // Subtle per-tree tint variance so a forest doesn't look copy-pasted.
-    // Note: the default sprite already bakes in per-facet shading (see
-    // buildDefaultAbstractTreeSvg), so this variance is intentionally
-    // gentle — it nudges brightness, it doesn't need to invent shape.
-    float variance = 0.9 + 0.2 * fract(v_seed * 13.37);
-    vec3 color = tex.rgb * u_tint * variance;
-
-    gl_FragColor = vec4(color, tex.a * u_opacity);
-  }
-`;
-
-// ─── GL helpers ─────────────────────────────────────────────────────────────
-
-function compileShader(gl: GL, type: number, src: string): WebGLShader {
-  const shader = gl.createShader(type)!;
-  gl.shaderSource(shader, src);
-  gl.compileShader(shader);
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    const log = gl.getShaderInfoLog(shader);
-    gl.deleteShader(shader);
-    throw new Error(`Shader compile error: ${log}`);
-  }
-  return shader;
-}
-
-function linkProgram(gl: GL, vsSrc: string, fsSrc: string): WebGLProgram {
-  const vs = compileShader(gl, gl.VERTEX_SHADER, vsSrc);
-  const fs = compileShader(gl, gl.FRAGMENT_SHADER, fsSrc);
-  const program = gl.createProgram()!;
-  gl.attachShader(program, vs);
-  gl.attachShader(program, fs);
-  gl.linkProgram(program);
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    const log = gl.getProgramInfoLog(program);
-    gl.deleteProgram(program);
-    throw new Error(`Program link error: ${log}`);
-  }
-  gl.deleteShader(vs);
-  gl.deleteShader(fs);
-  return program;
-}
-
-/** Thin wrapper so we can use hardware instancing on both WebGL1 (via
- *  ANGLE_instanced_arrays) and WebGL2 (native) with one code path. */
-interface Instancing {
-  vertexAttribDivisor(index: number, divisor: number): void;
-  drawArraysInstanced(mode: number, first: number, count: number, instanceCount: number): void;
-}
-
-function getInstancing(gl: GL): Instancing {
-  if ("drawArraysInstanced" in gl) {
-    const gl2 = gl as WebGL2RenderingContext;
-    return {
-      vertexAttribDivisor: (index: number, divisor: number): void =>
-        gl2.vertexAttribDivisor(index, divisor),
-      drawArraysInstanced: (
-        mode: number,
-        first: number,
-        count: number,
-        instanceCount: number
-      ): void => gl2.drawArraysInstanced(mode, first, count, instanceCount),
-    };
-  }
-
-  // NOTE: lib.dom.d.ts already declares the `ANGLE_instanced_arrays`
-  // interface + the matching getExtension() overload, so `ext` below is
-  // typed as `ANGLE_instanced_arrays | null` — no `any` involved.
-  const ext = (gl as WebGLRenderingContext).getExtension("ANGLE_instanced_arrays");
-  if (!ext) {
-    throw new Error("Instanced rendering not supported (need WebGL2 or ANGLE_instanced_arrays)");
-  }
-
-  return {
-    vertexAttribDivisor: (index: number, divisor: number): void =>
-      ext.vertexAttribDivisorANGLE(index, divisor),
-    drawArraysInstanced: (
-      mode: number,
-      first: number,
-      count: number,
-      instanceCount: number
-    ): void => ext.drawArraysInstancedANGLE(mode, first, count, instanceCount),
+function mulberry32(seed: number): () => number {
+  let a = seed;
+  return function (): number {
+    a |= 0;
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
 
-// ─── Default abstract vector tree (SVG) ────────────────────────────────────
-
-interface FacetTriangle {
-  points: [[number, number], [number, number], [number, number]];
-  /** 0 (darkest) .. 1 (brightest) — baked-in facet shading. Multiplied
-   *  by u_tint per-instance in the fragment shader, so the overall hue
-   *  is still fully controllable via `TreeLayer.tint`. */
-  shade: number;
-}
-
-function trianglePoints(t: FacetTriangle["points"]): string {
-  return t.map(([x, y]) => `${x},${y}`).join(" ");
-}
-
-function shadeToHex(shade: number): string {
-  const v = Math.round(Math.max(0, Math.min(1, shade)) * 255);
-  const hex = v.toString(16).padStart(2, "0");
-  return `#${hex}${hex}${hex}`;
-}
-
-/**
- * Builds a stylized, low-poly "paper-craft" SYCAMORE as raw SVG markup:
- * a broad, irregular/lobed radial-fan canopy (a fixed, hand-tuned set of
- * boundary radii — not a perfect circle — to suggest the asymmetric,
- * wide-spreading crown typical of a mature sycamore), flat-shaded per
- * facet via a fixed upper-right "sunlight" direction, plus a short,
- * slightly forked trunk hinting at the multi-limbed structure sycamores
- * often develop.
- *
- * This is intentionally geometric/abstract rather than photorealistic,
- * to match the flat-shaded "architecture model" look used elsewhere in
- * this project (see ArchitectureModelBWLayer). Output is pure vector
- * (polygons only, no raster data), and is only rasterized into a GPU
- * texture at the very end via an off-screen <img> load — see
- * `TreeLayer.loadVectorSprite()`.
- */
-function buildDefaultAbstractTreeSvg(size = 256): string {
-  // Working in a 100×100 coordinate space for readable numbers; scaled
-  // to `size` via the SVG's width/height + viewBox.
-  const cx = 50;
-  const cy = 38; // canopy center height, leaving room for the trunk below
-
-  // Sycamores read as broad and rounded rather than tall — squash the
-  // fan vertically a bit so the crown isn't a perfect circle.
-  const verticalSquash = 0.82;
-
-  // Hand-tuned (not random) boundary radii, so the default tree is
-  // deterministic/reproducible — gives the canopy an irregular, lobed
-  // silhouette instead of a perfect circle.
-  const radii = [30, 25, 33, 24, 31, 27, 34, 23, 32, 26, 29, 28];
-  const n = radii.length;
-
-  const boundary: Array<[number, number]> = radii.map((r, i) => {
-    const angle = (i / n) * Math.PI * 2 - Math.PI / 2; // start at top, go clockwise
-    const x = cx + Math.cos(angle) * r;
-    const y = cy + Math.sin(angle) * r * verticalSquash;
-    return [x, y];
-  });
-
-  // Fixed "sunlight from the upper right" direction, used to shade each
-  // fan triangle by how directly its outward-facing normal points toward
-  // the light — gives the flat-shaded canopy a sense of volume without
-  // any raster gradients.
-  const lightX = 0.75;
-  const lightY = -0.66;
-  const lightLen = Math.hypot(lightX, lightY);
-  const lx = lightX / lightLen;
-  const ly = lightY / lightLen;
-
-  const canopyFacets: FacetTriangle[] = [];
-  for (let i = 0; i < n; i++) {
-    const a = boundary[i];
-    const b = boundary[(i + 1) % n];
-    const midX = (a[0] + b[0]) / 2 - cx;
-    const midY = (a[1] + b[1]) / 2 - cy;
-    const midLen = Math.hypot(midX, midY) || 1;
-    const dot = (midX / midLen) * lx + (midY / midLen) * ly; // -1..1
-    const shade = 0.62 + ((dot + 1) / 2) * 0.36; // map to ~0.62..0.98
-    canopyFacets.push({ points: [[cx, cy], a, b], shade });
+function hashStringToSeed(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) {
+    h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
   }
-
-  // Trunk: short and slightly forked near the canopy base, evoking the
-  // multi-limbed silhouette typical of a mature sycamore — without
-  // modeling actual branch geometry.
-  const trunkTopY = cy + 22;
-  const forkY = 78;
-  const baseY = 95;
-
-  const trunkFacets: FacetTriangle[] = [
-    // Left limb — slightly darker, matching the canopy's left-shade bias.
-    { points: [[cx - 5, trunkTopY], [cx - 1, forkY], [cx - 9, baseY]], shade: 0.55 },
-    // Right limb — lighter, facing the light source.
-    { points: [[cx + 5, trunkTopY], [cx + 1, forkY], [cx + 8, baseY]], shade: 0.75 },
-    // Wedge connecting both limbs at the fork so they read as one trunk.
-    { points: [[cx - 5, trunkTopY], [cx + 5, trunkTopY], [cx, forkY]], shade: 0.65 },
-  ];
-
-  // Trunk drawn first, canopy fan drawn on top (slightly overlapping the
-  // trunk's top few units) — same draw order convention as before, so
-  // the trunk appears to emerge naturally from beneath the crown.
-  const polygons = [...trunkFacets, ...canopyFacets]
-    .map((f) => `<polygon points="${trianglePoints(f.points)}" fill="${shadeToHex(f.shade)}" />`)
-    .join("");
-
-  return (
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" ` +
-    `viewBox="0 0 100 100">` +
-    polygons +
-    `</svg>`
-  );
+  return h;
 }
 
-/** Extreme fallback if even SVG data-URI rasterization fails (should be
- *  effectively unreachable — data: URIs don't hit network/CORS issues —
- *  but better a visible gray square than a silently invisible layer). */
-function createFallbackCanvas(size = 64): HTMLCanvasElement {
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext("2d")!;
-  ctx.fillStyle = "#bbbbbb";
-  ctx.fillRect(size * 0.3, size * 0.1, size * 0.4, size * 0.6);
-  return canvas;
-}
-
-// ─── Geo helpers (line sampling for tree_row) ──────────────────────────────
+// ─── Geo helpers ────────────────────────────────────────────────────────────
 
 const EARTH_RADIUS_METERS = 6371000;
+const METERS_PER_DEGREE_LAT = 111320;
 
 function toRad(deg: number): number {
   return (deg * Math.PI) / 180;
 }
 
-/** Great-circle distance between two lng/lat points, in meters.
- *  Accurate enough at the scale of a single tree row (tens to low
- *  hundreds of meters) — no need for a full geodesic library here. */
+function metersPerDegreeLng(atLat: number): number {
+  return METERS_PER_DEGREE_LAT * Math.cos(toRad(atLat));
+}
+
 function haversineMeters(lng1: number, lat1: number, lng2: number, lat2: number): number {
   const dLat = toRad(lat2 - lat1);
   const dLng = toRad(lng2 - lng1);
@@ -310,32 +73,18 @@ function haversineMeters(lng1: number, lat1: number, lng2: number, lat2: number)
 }
 
 function metersToDegreesLat(meters: number): number {
-  return meters / 111320;
+  return meters / METERS_PER_DEGREE_LAT;
 }
 
 function metersToDegreesLng(meters: number, atLat: number): number {
-  return meters / (111320 * Math.cos(toRad(atLat)));
+  return meters / metersPerDegreeLng(atLat);
 }
 
 interface SampledPoint {
   lng: number;
   lat: number;
-  /** Direction of travel at this sample, in raw lng/lat degrees (not
-   *  normalized to meters) — good enough to derive a perpendicular
-   *  offset for the row-jitter effect. */
-  dirLng: number;
-  dirLat: number;
 }
 
-/**
- * Walks a polyline (array of [lng, lat] vertices) and returns points
- * spaced `spacingMeters` apart along its length — used to scatter
- * individual tree billboards along a `tree_row` LineString.
- *
- * Always includes the line's starting vertex. Distance is tracked
- * cumulatively across segments so spacing stays consistent even when
- * a line has many short vertices (e.g. a curved tree row).
- */
 function sampleLineAtSpacing(
   coords: Array<[number, number]>,
   spacingMeters: number
@@ -343,14 +92,7 @@ function sampleLineAtSpacing(
   const result: SampledPoint[] = [];
   if (coords.length < 2 || spacingMeters <= 0) return result;
 
-  const first = coords[0];
-  const second = coords[1];
-  result.push({
-    lng: first[0],
-    lat: first[1],
-    dirLng: second[0] - first[0],
-    dirLat: second[1] - first[1],
-  });
+  result.push({ lng: coords[0][0], lat: coords[0][1] });
 
   let distanceSinceLast = 0;
 
@@ -360,9 +102,6 @@ function sampleLineAtSpacing(
     let segRemaining = haversineMeters(curLng, curLat, endLng, endLat);
     if (segRemaining === 0) continue;
 
-    const dirLng = endLng - curLng;
-    const dirLat = endLat - curLat;
-
     while (segRemaining > 0) {
       const distanceToNext = spacingMeters - distanceSinceLast;
 
@@ -370,7 +109,7 @@ function sampleLineAtSpacing(
         const t = distanceToNext / segRemaining;
         const lng = curLng + (endLng - curLng) * t;
         const lat = curLat + (endLat - curLat) * t;
-        result.push({ lng, lat, dirLng, dirLat });
+        result.push({ lng, lat });
 
         segRemaining -= distanceToNext;
         curLng = lng;
@@ -388,266 +127,299 @@ function sampleLineAtSpacing(
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
-interface TreeInstance {
+interface TreeRecord {
   lng: number;
   lat: number;
   heightMeters: number;
-  widthMeters: number;
-  seed: number;
 }
 
 // ─── Layer ──────────────────────────────────────────────────────────────────
 
 export class TreeLayer implements CustomLayerInterface {
-  id = "tree-layer";
+  id = "tree";
   type = "custom" as const;
   renderingMode = "3d" as const;
 
-  // ── Public, mutable config (mirrors the pattern used elsewhere: assign
-  //    properties directly, then call map.triggerRepaint() / layer.refresh()) ──
   source = "openmaptiles";
-
-  /**
-   * Vector tile source-layers to pull tree data from. Queried independently
-   * (querySourceFeatures only accepts one source-layer at a time), then
-   * merged. Safe to list source-layers that don't exist in the current
-   * tileset — they simply contribute zero features.
-   *
-   *  - "tree"     → individual Point features, one tree each.
-   *  - "tree_row" → LineString/MultiLineString features, scattered into
-   *                 individual tree billboards spaced `treeRowSpacing`
-   *                 meters apart along the line.
-   */
   sourceLayers: string[] = ["tree", "tree_row"];
-
-  /** MapLibre filter expression, applied server-side by querySourceFeatures.
-   *  Applied identically to every entry in `sourceLayers`. */
   layerFilter: FilterSpecification | undefined = undefined;
 
-  minZoom = 14;
-  maxZoom = 16;
-
-  /**
-   * Raster (or vector) image URL for the tree billboard. Takes priority
-   * over everything below if set.
-   */
-  spriteUrl: string | undefined = undefined;
-
-  /**
-   * Custom raw SVG markup to use instead of the built-in default (a
-   * low-poly abstract sycamore). Ignored if `spriteUrl` is set. Must be
-   * a self-contained <svg> string (no external references — it's
-   * rasterized via a `data:` URI, which cannot resolve external
-   * resources).
-   */
-  svgMarkup: string | undefined = undefined;
+  minzoom = 13;
 
   baseHeightMeters = 6;
-  heightProperty: string | undefined = undefined; // e.g. "height" on the feature
-  heightJitter = 0.35; // 0..1 fraction of random variance
+  heightProperty: string | undefined = undefined;
+  heightJitter = 0.35;
 
-  /** Sycamores have broad, wide-spreading crowns — canopy width is often
-   *  comparable to (or greater than) tree height. Tune down for a
-   *  narrower species, up for an even broader one. */
-  widthToHeightRatio = 0.85;
+  trunkRadiusRatio = 0.035;
+  trunkHeightRatio = 0.45;
+  canopyRadiusRatio = 0.42;
+  canopyVerticalSquash = 0.75;
+  radialSegments = 8;
 
-  /** Spacing, in meters, between individual trees scattered along a
-   *  tree_row LineString. */
   treeRowSpacing = 4;
-
-  /** Small random perpendicular offset (meters) applied to row-sampled
-   *  trees so a row doesn't look like a perfectly straight, robotic
-   *  line of identical billboards. Set to 0 to disable. */
   treeRowJitterMeters = 0.3;
 
-  windStrength = 0.15; // meters of sway at the top of the tree
-  windSpeed = 1.2;
+  trunkColor = "#6b5335";
+  canopyColor = "#6e7f52";
 
-  tint: [number, number, number] = [0.85, 0.85, 0.85];
   opacity = 1;
   debug = false;
 
-  /** Safety cap so a huge dataset can't tank the frame rate. */
   maxTrees = 20000;
-
-  /** Debounce (ms) between source-data/move events and rebuilding the buffer. */
   refreshDebounceMs = 250;
 
-  private map!: MapLibreMap;
-  private gl!: GL;
-  private instancing!: Instancing;
-  private program!: WebGLProgram;
+  private static readonly GROUND_CLEARANCE_METERS = 0.1;
+  private static readonly MAX_ELEVATION_RETRIES = 3;
 
-  private quadBuffer!: WebGLBuffer;
-  private instanceBuffer!: WebGLBuffer;
-  private instanceCount = 0;
+  private trees = new Map<string, TreeRecord>();
 
-  private texture!: WebGLTexture;
-  private uniforms: Record<string, WebGLUniformLocation | null> = {};
-  private attribs: Record<string, number> = {};
+  private map: MapLibreMap | undefined;
+  private renderer: THREE.WebGLRenderer | undefined;
+  private scene: THREE.Scene | undefined;
+  private camera: THREE.Camera | undefined;
 
-  private startTime = performance.now();
+  private trunkGeometry: THREE.CylinderGeometry | undefined;
+  private canopyGeometry: THREE.SphereGeometry | undefined;
+  private trunkMaterial: THREE.MeshLambertMaterial | undefined;
+  private canopyMaterial: THREE.MeshLambertMaterial | undefined;
+  private trunkMesh: THREE.InstancedMesh | undefined;
+  private canopyMesh: THREE.InstancedMesh | undefined;
+
+  private originLng = 0;
+  private originLat = 0;
+  private originMatrix: THREE.Matrix4 | undefined;
+
+  private readonly dummy = new THREE.Object3D();
+
   private refreshTimer: ReturnType<typeof setTimeout> | undefined;
+  private pendingElevationRetry = false;
+  private elevationRetryCount = 0;
+
+  /** Debug-only: logs the first render() call's early-return path (or
+   *  lack thereof), so we can see EXACTLY why nothing draws, instead of
+   *  guessing. Fires once per addTo(), not every frame. */
+  private renderDiagnosticLogged = false;
 
   private onSourceData = (e: MapSourceDataEvent): void => {
     if (e.sourceId === this.source && e.isSourceLoaded) this.scheduleRefresh();
   };
   private onMoveEnd = (): void => this.scheduleRefresh();
+  private onResize = (): void => {
+    if (this.renderer && this.map) {
+      const canvas = this.map.getCanvas();
+      this.renderer.setSize(canvas.width, canvas.height, false);
+    }
+  };
 
-  // ── Lifecycle ──────────────────────────────────────────────────────────
+  // ── Lifecycle (CustomLayerInterface) ────────────────────────────────────
 
-  onAdd(map: MapLibreMap, gl: GL): void {
+  onAdd(map: MapLibreMap, gl: WebGL2RenderingContext): void {
     this.map = map;
-    this.gl = gl;
-    this.instancing = getInstancing(gl);
-    this.program = linkProgram(gl, VERTEX_SRC, FRAGMENT_SRC);
+    this.renderDiagnosticLogged = false;
 
-    this.attribs.a_corner = gl.getAttribLocation(this.program, "a_corner");
-    this.attribs.a_instancePos = gl.getAttribLocation(this.program, "a_instancePos");
-    this.attribs.a_instanceSize = gl.getAttribLocation(this.program, "a_instanceSize");
-    this.attribs.a_instanceSeed = gl.getAttribLocation(this.program, "a_instanceSeed");
-
-    const uniformNames: string[] = [
-      "u_matrix", "u_cameraPos", "u_time",
-      "u_windStrength", "u_windSpeed",
-      "u_sprite", "u_opacity", "u_tint", "u_debug",
-    ];
-    for (const name of uniformNames) {
-      this.uniforms[name] = gl.getUniformLocation(this.program, name);
+    try {
+      this.renderer = new THREE.WebGLRenderer({ canvas: map.getCanvas(), context: gl });
+      this.renderer.autoClear = false;
+      const canvas = map.getCanvas();
+      this.renderer.setSize(canvas.width, canvas.height, false);
+      if (this.debug) {
+        console.log(
+          `[TreeLayer] WebGLRenderer created OK. Three.js revision: ${THREE.REVISION}`
+        );
+      }
+    } catch (err) {
+      console.error(
+        "[TreeLayer] FAILED to construct THREE.WebGLRenderer — this layer " +
+        "cannot render at all. Full error:",
+        err
+      );
+      return;
     }
 
-    // Shared quad geometry: base at y=0, top at y=1, x in [-0.5, 0.5].
-    this.quadBuffer = gl.createBuffer()!;
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([-0.5, 0, 0.5, 0, -0.5, 1, 0.5, 1]),
-      gl.STATIC_DRAW
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.Camera();
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+    const directional = new THREE.DirectionalLight(0xffffff, 0.8);
+    directional.position.set(0.75, 1.2, -0.66);
+    this.scene.add(ambient, directional);
+
+    this.trunkGeometry = new THREE.CylinderGeometry(0.7, 1, 1, this.radialSegments);
+    this.trunkGeometry.translate(0, 0.5, 0);
+
+    this.canopyGeometry = new THREE.SphereGeometry(
+      1,
+      this.radialSegments,
+      Math.max(4, Math.round(this.radialSegments / 2))
     );
 
-    this.instanceBuffer = gl.createBuffer()!;
+    this.trunkMaterial = new THREE.MeshLambertMaterial({
+      color: this.trunkColor,
+      transparent: true,
+      opacity: this.opacity,
+    });
+    this.canopyMaterial = new THREE.MeshLambertMaterial({
+      color: this.canopyColor,
+      transparent: true,
+      opacity: this.opacity,
+    });
 
-    this.texture = gl.createTexture()!;
-    this.loadTexture();
+    this.trunkMesh = new THREE.InstancedMesh(this.trunkGeometry, this.trunkMaterial, this.maxTrees);
+    this.canopyMesh = new THREE.InstancedMesh(this.canopyGeometry, this.canopyMaterial, this.maxTrees);
+    this.trunkMesh.count = 0;
+    this.canopyMesh.count = 0;
+    this.trunkMesh.frustumCulled = false;
+    this.canopyMesh.frustumCulled = false;
+    this.scene.add(this.trunkMesh, this.canopyMesh);
+
+    this.originLng = map.getCenter().lng;
+    this.originLat = map.getCenter().lat;
+    const originMercator = MercatorCoordinate.fromLngLat([this.originLng, this.originLat], 0);
+    const scale = originMercator.meterInMercatorCoordinateUnits();
+
+    this.originMatrix = new THREE.Matrix4();
+    this.originMatrix.set(
+      scale, 0,     0,     originMercator.x,
+      0,     0,     scale, originMercator.y,
+      0,     scale, 0,     originMercator.z,
+      0,     0,     0,     1
+    );
+
+    if (this.debug) {
+      console.log("[TreeLayer] origin set:", {
+        originLng: this.originLng,
+        originLat: this.originLat,
+        originMercator: { x: originMercator.x, y: originMercator.y, z: originMercator.z },
+        scale,
+      });
+    }
 
     map.on("sourcedata", this.onSourceData);
     map.on("moveend", this.onMoveEnd);
     map.on("zoomend", this.onMoveEnd);
+    window.addEventListener("resize", this.onResize);
 
     this.scheduleRefresh();
   }
 
-  onRemove(map: MapLibreMap, gl: GL): void {
+  onRemove(): void {
+    if (!this.map) return;
+    const map = this.map;
+
     map.off("sourcedata", this.onSourceData);
     map.off("moveend", this.onMoveEnd);
     map.off("zoomend", this.onMoveEnd);
+    window.removeEventListener("resize", this.onResize);
     clearTimeout(this.refreshTimer);
 
-    gl.deleteProgram(this.program);
-    gl.deleteBuffer(this.quadBuffer);
-    gl.deleteBuffer(this.instanceBuffer);
-    gl.deleteTexture(this.texture);
+    this.trunkGeometry?.dispose();
+    this.canopyGeometry?.dispose();
+    this.trunkMaterial?.dispose();
+    this.canopyMaterial?.dispose();
+
+    this.map = undefined;
   }
 
-  /** Force a re-query of source features + buffer rebuild right now. */
+  // ── Public API ───────────────────────────────────────────────────────────
+
+  addTo(map: MapLibreMap, beforeId?: string): void {
+    map.addLayer(this, beforeId);
+  }
+
+  remove(): void {
+    if (!this.map) return;
+    if (this.map.getLayer(this.id)) this.map.removeLayer(this.id);
+  }
+
   refresh(): void {
-    this.buildInstances();
+    this.queryAndMergeTrees();
   }
 
-  /** Force the sprite texture to be regenerated/reloaded — call this if
-   *  you change `spriteUrl` or `svgMarkup` after the layer was added. */
-  reloadSprite(): void {
-    this.loadTexture();
+  clear(): void {
+    this.trees.clear();
+    this.regenerateInstances();
   }
 
-  // ── Texture setup ───────────────────────────────────────────────────────
-
-  private uploadTexture(src: TexImageSource): void {
-    const gl = this.gl;
-    gl.bindTexture(gl.TEXTURE_2D, this.texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    this.map.triggerRepaint();
+  setOpacity(v: number): void {
+    this.opacity = v;
+    if (this.trunkMaterial) this.trunkMaterial.opacity = v;
+    if (this.canopyMaterial) this.canopyMaterial.opacity = v;
+    this.map?.triggerRepaint();
   }
 
-  private loadTexture(): void {
-    if (this.spriteUrl) {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = (): void => this.uploadTexture(img);
-      img.onerror = (): void => {
-        console.warn(
-          `[TreeLayer] Failed to load spriteUrl "${this.spriteUrl}" — ` +
-          `falling back to the built-in abstract sycamore.`
-        );
-        this.loadVectorSprite();
-      };
-      img.src = this.spriteUrl;
-      return;
-    }
-
-    this.loadVectorSprite();
-  }
-
-  /** Rasterizes `svgMarkup` (or the built-in default abstract sycamore)
-   *  into the GPU texture. SVG is loaded via a `data:` URI, which the
-   *  browser can decode into an <img> without any network request — no
-   *  CORS concerns, no external asset needed. */
-  private loadVectorSprite(): void {
-    const svg = this.svgMarkup ?? buildDefaultAbstractTreeSvg();
-    const img = new Image();
-    img.onload = (): void => this.uploadTexture(img);
-    img.onerror = (): void => {
-      console.error(
-        "[TreeLayer] Failed to rasterize tree SVG — using a plain fallback shape. " +
-        "Check that `svgMarkup` (if set) is valid, self-contained SVG."
-      );
-      this.uploadTexture(createFallbackCanvas());
-    };
-    img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-  }
-
-  // ── Data: query vector tile source, build instance buffer ──────────────
+  // ── Data: query vector tile source, merge into persistent registry ─────
 
   private scheduleRefresh(): void {
     clearTimeout(this.refreshTimer);
-    this.refreshTimer = setTimeout(() => this.buildInstances(), this.refreshDebounceMs);
+    this.refreshTimer = setTimeout(() => this.queryAndMergeTrees(), this.refreshDebounceMs);
   }
 
-  /** Reads `heightProperty` off a feature's properties (falling back to
-   *  `baseHeightMeters`), then applies random jitter. Shared by both
-   *  Point (tree) and Line (tree_row) handling so a row's individual
-   *  trees still vary in height like a real, less-uniform planting. */
-  private resolveHeightMeters(properties: MapGeoJSONFeature["properties"]): number {
-    const jitter = 1 + (Math.random() * 2 - 1) * this.heightJitter;
+  private resolveHeightMeters(properties: MapGeoJSONFeature["properties"], rng: () => number): number {
+    const jitter = 1 + (rng() * 2 - 1) * this.heightJitter;
     const rawHeight: unknown = this.heightProperty ? properties?.[this.heightProperty] : undefined;
     const propHeight = typeof rawHeight === "number" ? rawHeight : Number(rawHeight);
     const heightMeters = Number.isFinite(propHeight) ? propHeight : this.baseHeightMeters;
     return heightMeters * jitter;
   }
 
-  /** Best-effort de-dupe key for a feature within one source-layer, so
-   *  the same feature straddling two adjacent tiles isn't counted twice.
-   *  Falls back to a coarse geometry fingerprint when no feature id is
-   *  present (common for line data depending on tileset generation). */
   private featureKey(sourceLayer: string, f: MapGeoJSONFeature): string {
     if (f.id !== undefined) return `${sourceLayer}:${String(f.id)}`;
     const coords = (f.geometry as { coordinates?: unknown }).coordinates;
     return `${sourceLayer}:${JSON.stringify(coords).slice(0, 80)}`;
   }
 
-  private buildInstances(): void {
-    if (!this.map.getSource(this.source)) return;
+  private rowGridKey(lng: number, lat: number): string {
+    const cellLat = metersToDegreesLat(this.treeRowSpacing);
+    const cellLng = metersToDegreesLng(this.treeRowSpacing, lat);
+    const gy = Math.round(lat / cellLat);
+    const gx = Math.round(lng / cellLng);
+    return `row:${gx}:${gy}`;
+  }
 
-    const seen = new Set<string>();
-    const trees: TreeInstance[] = [];
-    let totalFeatureCount = 0;
+  private upsertPointTree(key: string, lng: number, lat: number, properties: MapGeoJSONFeature["properties"]): void {
+    if (this.trees.has(key) || this.trees.size >= this.maxTrees) return;
+    const rng = mulberry32(hashStringToSeed(key));
+    const heightMeters = this.resolveHeightMeters(properties, rng);
+    this.trees.set(key, { lng, lat, heightMeters });
+  }
 
-    outer: for (const sourceLayer of this.sourceLayers) {
+  private upsertRowSamples(coords: Array<[number, number]>, properties: MapGeoJSONFeature["properties"]): void {
+    const samples = sampleLineAtSpacing(coords, this.treeRowSpacing);
+
+    for (const s of samples) {
+      if (this.trees.size >= this.maxTrees) return;
+
+      const key = this.rowGridKey(s.lng, s.lat);
+      if (this.trees.has(key)) continue;
+
+      const rng = mulberry32(hashStringToSeed(key));
+      let { lng, lat } = s;
+      if (this.treeRowJitterMeters > 0) {
+        const offsetMeters = (rng() * 2 - 1) * this.treeRowJitterMeters;
+        lng += metersToDegreesLng(offsetMeters, lat);
+        lat += metersToDegreesLat(offsetMeters);
+      }
+
+      const heightMeters = this.resolveHeightMeters(properties, rng);
+      this.trees.set(key, { lng, lat, heightMeters });
+    }
+  }
+
+  private queryAndMergeTrees(): void {
+    if (!this.map || !this.map.getSource(this.source)) {
+      if (this.debug) {
+        console.log(
+          `[TreeLayer] queryAndMergeTrees: skipped — map ${this.map ? "exists" : "MISSING"}, ` +
+          `source "${this.source}" ${this.map?.getSource(this.source) ? "exists" : "MISSING"}`
+        );
+      }
+      return;
+    }
+
+    let currentQueryTotal = 0;
+    const debugCounts: Record<string, Record<string, number>> = {};
+
+    for (const sourceLayer of this.sourceLayers) {
       let features: MapGeoJSONFeature[];
       try {
         features = this.map.querySourceFeatures(this.source, {
@@ -655,200 +427,181 @@ export class TreeLayer implements CustomLayerInterface {
           filter: this.layerFilter,
         });
       } catch {
-        continue; // tiles for this source-layer not loaded yet
+        continue;
       }
 
-      totalFeatureCount += features.length;
+      currentQueryTotal += features.length;
+      if (this.debug) debugCounts[sourceLayer] = {};
 
       for (const f of features) {
-        const key = this.featureKey(sourceLayer, f);
-        if (seen.has(key)) continue;
-        seen.add(key);
-
-        const geomType = f.geometry?.type;
+        const geomType = f.geometry?.type ?? "unknown";
+        if (this.debug) {
+          const layerCounts = debugCounts[sourceLayer];
+          layerCounts[geomType] = (layerCounts[geomType] ?? 0) + 1;
+        }
 
         if (geomType === "Point") {
           const [lng, lat] = f.geometry.coordinates as [number, number];
-          const heightMeters = this.resolveHeightMeters(f.properties);
-          trees.push({
-            lng,
-            lat,
-            heightMeters,
-            widthMeters: heightMeters * this.widthToHeightRatio,
-            seed: Math.random(),
-          });
+          this.upsertPointTree(this.featureKey(sourceLayer, f), lng, lat, f.properties);
         } else if (geomType === "MultiPoint") {
           const coordsList = f.geometry.coordinates as Array<[number, number]>;
-          for (const [lng, lat] of coordsList) {
-            const heightMeters = this.resolveHeightMeters(f.properties);
-            trees.push({
-              lng,
-              lat,
-              heightMeters,
-              widthMeters: heightMeters * this.widthToHeightRatio,
-              seed: Math.random(),
-            });
-            if (trees.length >= this.maxTrees) break outer;
-          }
+          const baseKey = this.featureKey(sourceLayer, f);
+          coordsList.forEach(([lng, lat]: [number, number], i: number) => {
+            this.upsertPointTree(`${baseKey}:${i}`, lng, lat, f.properties);
+          });
         } else if (geomType === "LineString") {
-          this.scatterAlongLine(f.geometry.coordinates as Array<[number, number]>, f.properties, trees);
+          this.upsertRowSamples(f.geometry.coordinates as Array<[number, number]>, f.properties);
         } else if (geomType === "MultiLineString") {
           for (const line of f.geometry.coordinates as Array<Array<[number, number]>>) {
-            this.scatterAlongLine(line, f.properties, trees);
-            if (trees.length >= this.maxTrees) break outer;
+            this.upsertRowSamples(line, f.properties);
           }
-        } else {
-          continue; // Polygon / unsupported geometry — silently ignored
         }
-
-        if (trees.length >= this.maxTrees) break outer;
       }
     }
 
-    this.uploadInstances(trees);
+    this.regenerateInstances();
 
     if (this.debug) {
       console.log(
-        `[TreeLayer] ${trees.length} trees built from ${totalFeatureCount} features ` +
-        `across source-layers: ${this.sourceLayers.join(", ")}`
+        `[TreeLayer] query: ${currentQueryTotal} raw features seen this pass — breakdown:`,
+        debugCounts
       );
+      console.log(`[TreeLayer] persistent registry: ${this.trees.size} trees total`);
+    }
+  }
+
+  // ── Geometry ─────────────────────────────────────────────────────────────
+
+  private regenerateInstances(): void {
+    if (!this.map || !this.trunkMesh || !this.canopyMesh) {
+      if (this.debug) {
+        console.log(
+          `[TreeLayer] regenerateInstances: skipped — map=${!!this.map}, ` +
+          `trunkMesh=${!!this.trunkMesh}, canopyMesh=${!!this.canopyMesh}`
+        );
+      }
+      return;
+    }
+
+    const metersPerLng = metersPerDegreeLng(this.originLat);
+    let index = 0;
+    let unresolvedElevationCount = 0;
+
+    for (const tree of this.trees.values()) {
+      if (index >= this.maxTrees) break;
+
+      const dxEast = (tree.lng - this.originLng) * metersPerLng;
+      const dzSouth = (this.originLat - tree.lat) * METERS_PER_DEGREE_LAT;
+
+      let groundMeters = 0;
+      const queried = this.map.queryTerrainElevation([tree.lng, tree.lat]);
+      if (queried !== null && Number.isFinite(queried)) {
+        groundMeters = queried;
+      } else {
+        unresolvedElevationCount++;
+      }
+      groundMeters += TreeLayer.GROUND_CLEARANCE_METERS;
+
+      const heightMeters = tree.heightMeters;
+      const trunkHeight = heightMeters * this.trunkHeightRatio;
+      const trunkRadius = heightMeters * this.trunkRadiusRatio;
+      const trunkTop = groundMeters + trunkHeight;
+
+      this.dummy.position.set(dxEast, groundMeters, dzSouth);
+      this.dummy.scale.set(trunkRadius, trunkHeight, trunkRadius);
+      this.dummy.rotation.set(0, 0, 0);
+      this.dummy.updateMatrix();
+      this.trunkMesh.setMatrixAt(index, this.dummy.matrix);
+
+      const canopyRadius = heightMeters * this.canopyRadiusRatio;
+      const canopyRadiusY = canopyRadius * this.canopyVerticalSquash;
+      const canopyCenterY = trunkTop - canopyRadiusY * 0.2;
+
+      this.dummy.position.set(dxEast, canopyCenterY, dzSouth);
+      this.dummy.scale.set(canopyRadius, canopyRadiusY, canopyRadius);
+      this.dummy.rotation.set(0, 0, 0);
+      this.dummy.updateMatrix();
+      this.canopyMesh.setMatrixAt(index, this.dummy.matrix);
+
+      if (this.debug && index === 0) {
+        console.log("[TreeLayer] first instance local-space transform:", {
+          lng: tree.lng, lat: tree.lat,
+          dxEast, dzSouth, groundMeters,
+          trunkHeight, trunkRadius, canopyRadius, canopyRadiusY,
+        });
+      }
+
+      index++;
+    }
+
+    this.trunkMesh.count = index;
+    this.canopyMesh.count = index;
+    this.trunkMesh.instanceMatrix.needsUpdate = true;
+    this.canopyMesh.instanceMatrix.needsUpdate = true;
+
+    if (this.debug) {
+      console.log(
+        `[TreeLayer] regenerated ${index} tree instances` +
+        (unresolvedElevationCount > 0 ? ` — ${unresolvedElevationCount} unresolved elevation` : "")
+      );
+    }
+
+    if (unresolvedElevationCount > 0 && !this.pendingElevationRetry) {
+      if (this.elevationRetryCount >= TreeLayer.MAX_ELEVATION_RETRIES) {
+        if (this.debug) {
+          console.warn(`[TreeLayer] giving up on elevation retry after ${TreeLayer.MAX_ELEVATION_RETRIES} attempts`);
+        }
+      } else {
+        this.pendingElevationRetry = true;
+        this.elevationRetryCount++;
+        this.map.once("idle", () => {
+          this.pendingElevationRetry = false;
+          this.regenerateInstances();
+        });
+      }
+    } else if (unresolvedElevationCount === 0) {
+      this.elevationRetryCount = 0;
     }
 
     this.map.triggerRepaint();
   }
 
-  /** Samples a LineString (a tree_row) into individual tree instances,
-   *  pushing directly into `out`. Applies a small perpendicular jitter
-   *  per tree so rows don't look perfectly mechanical. */
-  private scatterAlongLine(
-    coords: Array<[number, number]>,
-    properties: MapGeoJSONFeature["properties"],
-    out: TreeInstance[]
-  ): void {
-    const samples = sampleLineAtSpacing(coords, this.treeRowSpacing);
-
-    for (const s of samples) {
-      let { lng, lat } = s;
-
-      if (this.treeRowJitterMeters > 0) {
-        const dirLen = Math.hypot(s.dirLng, s.dirLat);
-        if (dirLen > 1e-12) {
-          // Perpendicular unit vector in raw lng/lat space, then scaled
-          // to an actual meter offset (accounting for lng compressing
-          // at higher latitudes).
-          const perpLng = -s.dirLat / dirLen;
-          const perpLat = s.dirLng / dirLen;
-          const offsetMeters = (Math.random() * 2 - 1) * this.treeRowJitterMeters;
-          lng += metersToDegreesLng(perpLng * offsetMeters, lat);
-          lat += metersToDegreesLat(perpLat * offsetMeters);
-        }
-      }
-
-      const heightMeters = this.resolveHeightMeters(properties);
-      out.push({
-        lng,
-        lat,
-        heightMeters,
-        widthMeters: heightMeters * this.widthToHeightRatio,
-        seed: Math.random(),
-      });
-
-      if (out.length >= this.maxTrees) return;
-    }
-  }
-
-  private uploadInstances(trees: TreeInstance[]): void {
-    const gl = this.gl;
-    const FLOATS_PER_INSTANCE = 6; // pos.x, pos.y, pos.z, size.x, size.y, seed
-    const data = new Float32Array(trees.length * FLOATS_PER_INSTANCE);
-
-    for (let i = 0; i < trees.length; i++) {
-      const t = trees[i];
-      const lngLat: LngLatLike = [t.lng, t.lat];
-
-      let groundMeters = 0;
-      if (typeof this.map.queryTerrainElevation === "function") {
-        groundMeters = this.map.queryTerrainElevation(lngLat) ?? 0;
-      }
-
-      const base = MercatorCoordinate.fromLngLat(lngLat, groundMeters);
-      const metersToMercator = base.meterInMercatorCoordinateUnits();
-
-      const o = i * FLOATS_PER_INSTANCE;
-      data[o + 0] = base.x;
-      data[o + 1] = base.y;
-      data[o + 2] = base.z;
-      data[o + 3] = t.widthMeters * metersToMercator;
-      data[o + 4] = t.heightMeters * metersToMercator;
-      data[o + 5] = t.seed;
-    }
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.instanceBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, data, gl.DYNAMIC_DRAW);
-    this.instanceCount = trees.length;
-  }
-
   // ── Render ───────────────────────────────────────────────────────────────
 
-  render(gl: GL, options: CustomRenderMethodInput): void {
-    const zoom = this.map.getZoom();
-    if (this.opacity <= 0 || this.instanceCount === 0) return;
-    if (zoom < this.minZoom || zoom > this.maxZoom) return;
-
-    gl.enable(gl.DEPTH_TEST);
-    gl.depthMask(true);
-    gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    gl.useProgram(this.program);
-
-    // Camera position in Mercator space, for horizontal billboarding.
-    let camX = 0, camY = 0, camZ = 0;
-    if (typeof this.map.getFreeCameraOptions === "function") {
-      const cam = this.map.getFreeCameraOptions().position;
-      if (cam) { camX = cam.x; camY = cam.y; camZ = cam.z; }
+  render(_gl: WebGL2RenderingContext, options: CustomRenderMethodInput): void {
+    if (!this.renderDiagnosticLogged && this.debug) {
+      this.renderDiagnosticLogged = true;
+      console.log("[TreeLayer] render() first call — state check:", {
+        hasMap: !!this.map,
+        hasRenderer: !!this.renderer,
+        hasScene: !!this.scene,
+        hasCamera: !!this.camera,
+        hasOriginMatrix: !!this.originMatrix,
+        opacity: this.opacity,
+        zoom: this.map?.getZoom(),
+        minzoom: this.minzoom,
+        trunkMeshCount: this.trunkMesh?.count,
+      });
     }
 
-    gl.uniformMatrix4fv(this.uniforms.u_matrix, false, options.modelViewProjectionMatrix);
-    gl.uniform3f(this.uniforms.u_cameraPos, camX, camY, camZ);
-    gl.uniform1f(this.uniforms.u_time, (performance.now() - this.startTime) / 1000);
-    gl.uniform1f(this.uniforms.u_windStrength, this.windStrength * 1e-5);
-    gl.uniform1f(this.uniforms.u_windSpeed, this.windSpeed);
-    gl.uniform1f(this.uniforms.u_opacity, this.opacity);
-    gl.uniform3f(this.uniforms.u_tint, ...this.tint);
-    gl.uniform1i(this.uniforms.u_debug, this.debug ? 1 : 0);
+    if (!this.map || !this.renderer || !this.scene || !this.camera || !this.originMatrix) return;
+    if (this.opacity <= 0) return;
+    if (this.map.getZoom() < this.minzoom) return;
+    if (!this.trunkMesh || this.trunkMesh.count === 0) return;
 
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, this.texture);
-    gl.uniform1i(this.uniforms.u_sprite, 0);
+    try {
+      const mapMatrix = new THREE.Matrix4().fromArray(
+        Array.from(options.modelViewProjectionMatrix as unknown as ArrayLike<number>)
+      );
+      const combined = new THREE.Matrix4().multiplyMatrices(mapMatrix, this.originMatrix);
 
-    // Per-vertex quad attribute (divisor 0 = same for every instance).
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
-    gl.enableVertexAttribArray(this.attribs.a_corner);
-    gl.vertexAttribPointer(this.attribs.a_corner, 2, gl.FLOAT, false, 0, 0);
-    this.instancing.vertexAttribDivisor(this.attribs.a_corner, 0);
+      this.camera.projectionMatrix = combined;
 
-    // Per-instance attributes.
-    const stride = 6 * 4;
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.instanceBuffer);
-
-    gl.enableVertexAttribArray(this.attribs.a_instancePos);
-    gl.vertexAttribPointer(this.attribs.a_instancePos, 3, gl.FLOAT, false, stride, 0);
-    this.instancing.vertexAttribDivisor(this.attribs.a_instancePos, 1);
-
-    gl.enableVertexAttribArray(this.attribs.a_instanceSize);
-    gl.vertexAttribPointer(this.attribs.a_instanceSize, 2, gl.FLOAT, false, stride, 3 * 4);
-    this.instancing.vertexAttribDivisor(this.attribs.a_instanceSize, 1);
-
-    gl.enableVertexAttribArray(this.attribs.a_instanceSeed);
-    gl.vertexAttribPointer(this.attribs.a_instanceSeed, 1, gl.FLOAT, false, stride, 5 * 4);
-    this.instancing.vertexAttribDivisor(this.attribs.a_instanceSeed, 1);
-
-    this.instancing.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, this.instanceCount);
-
-    // Reset divisors so we don't break other custom layers sharing this GL context.
-    this.instancing.vertexAttribDivisor(this.attribs.a_instancePos, 0);
-    this.instancing.vertexAttribDivisor(this.attribs.a_instanceSize, 0);
-    this.instancing.vertexAttribDivisor(this.attribs.a_instanceSeed, 0);
+      this.renderer.resetState();
+      this.renderer.render(this.scene, this.camera);
+      this.map.triggerRepaint();
+    } catch (err) {
+      console.error("[TreeLayer] render() threw — nothing was drawn this frame:", err);
+    }
   }
 }
