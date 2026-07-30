@@ -108,28 +108,6 @@ window.projektemacherMap = async function(elem, geojson, source, style, bbox, ce
   if (!(typeof marker === 'object')) {
     marker = JSON.parse(marker)
   }
-  /*
-  function createStyleFunction(marker) {
-    return (feature, level) => {
-      const lineWidth = Math.floor(50 / level)
-      return [new Style({
-          image: new Icon(marker)
-        }),
-        new Style({
-          stroke: new Stroke({
-            color: 'rgba(0,0,0,1)',
-            width: lineWidth + 4
-          }),
-        }),
-        new Style({
-          stroke: new Stroke({
-            color: 'rgba(255,255,255,1)',
-            width: lineWidth
-          })
-        })]
-    };
-  }
-  */
   background = window.getComputedStyle(bgElem).getPropertyValue('--page-background');
   const map = projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font);
 

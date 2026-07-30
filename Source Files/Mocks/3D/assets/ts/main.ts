@@ -9,6 +9,8 @@ import { updateStyle, setupDefaultStyle, defaultSprites, getSouceName } from "./
 import "maplibre-gl/dist/maplibre-gl.css";
 import { NavigationControl, FullscreenControl, AttributionControl } from "maplibre-gl";
 import chroma from "chroma-js";
+import i18next from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 
 import type { LngLatLike, RasterDEMSourceSpecification, StyleSpecification } from "maplibre-gl";
 
@@ -30,6 +32,7 @@ const font = "Roboto Mono Variable";
 const fontPath = "/css/fonts/{font-family}.css";
 const background = "#eee";
 const attribution = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>';
+const buildingToggleText = "Show only never-built buildings";
 const marker = {
   anchor: [0.5, 1],
   anchorXUnits: "fraction",
@@ -37,6 +40,26 @@ const marker = {
   scale: 0.075,
   src: "/images/marker.svg"
 };
+
+const translations = {
+  "en": {
+    "map": {
+      "hideBuildings": "Show only never-built buildings"
+    }
+  },
+  "de": {
+    "map": {
+      "hideBuildings": "Nur nicht gebaute Gebäude zeigen"
+    }
+  }
+};
+
+i18next.use(LanguageDetector).init({
+  debug: false,
+  fallbackLng: "en",
+  resources: translations,
+  supportedLngs: ["en", "de"]
+});
 
 // ─── Building color scheme ──────────────────────────────────────────────────
 //
@@ -292,10 +315,11 @@ if (debug) {
   map.on("move", updateDebugOverlay);
 }
 
+const treeLayer = new TreeLayer();
+
 // ─── "Show only never-built" checkbox control ──────────────────────────────
 
 const BASE_BUILDING_FILTER: maplibregl.FilterSpecification = ["!=", ["get", "hide_3d"], true];
-
 const NEVER_BUILT_FILTER: maplibregl.FilterSpecification = ["==", ["get", "meta"], "never-built"];
 
 function applyBuildingFilter(m: maplibregl.Map, onlyNeverBuilt: boolean): void {
@@ -307,6 +331,8 @@ function applyBuildingFilter(m: maplibregl.Map, onlyNeverBuilt: boolean): void {
   if (m.getLayer("building-outline")) {
     m.setFilter("building-outline", filter);
   }
+
+  treeLayer.setOpacity(onlyNeverBuilt ? 0 : 1);
 }
 
 const neverBuiltControlEl = document.createElement("div");
@@ -319,7 +345,7 @@ neverBuiltCheckbox.style.cursor = "pointer";
 
 const neverBuiltLabel = document.createElement("label");
 neverBuiltLabel.htmlFor = "never-built-checkbox";
-neverBuiltLabel.textContent = "Show only never-built buildings";
+neverBuiltLabel.textContent = i18next.t("map:hideBuildings");
 neverBuiltLabel.style.cursor = "pointer";
 
 neverBuiltControlEl.appendChild(neverBuiltCheckbox);
@@ -329,8 +355,6 @@ map.getContainer().appendChild(neverBuiltControlEl);
 neverBuiltCheckbox.addEventListener("change", () => {
   applyBuildingFilter(map, neverBuiltCheckbox.checked);
 });
-
-const treeLayer = new TreeLayer();
 
 // Declared at module scope (not inside map.on("load", ...)) so
 // applyTweenValue() below — which also runs outside that block — can

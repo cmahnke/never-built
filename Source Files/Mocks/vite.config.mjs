@@ -24,27 +24,6 @@ export default defineConfig({
         "../../static"
       ]
     }
-    /*
-    proxy: {
-      "/map/tiles": {
-        target: "http://never-build.goettingen.xyz",
-        changeOrigin: true,
-        secure: true,
-        ws: false,
-        configure: (proxy, _options) => {
-          proxy.on("error", (err, _req, _res) => {
-            console.log("proxy error", err);
-          });
-          proxy.on("proxyReq", (proxyReq, req, _res) => {
-            console.log("Sending Request to the Target:", req.method, req.url);
-          });
-          proxy.on("proxyRes", (proxyRes, req, _res) => {
-            console.log("Received Response from the Target:", proxyRes.statusCode, req.url);
-          });
-        }
-      }
-    }
-    */
   },
   plugins: [
     nodePolyfills(),
@@ -59,7 +38,7 @@ export default defineConfig({
     commonjsOptions: { transformMixedEsModules: true },
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "3D/index.html")
+        main: resolve(import.meta.dirname, "3D/index.html")
       },
       output: {
         assetFileNames: `assets/[name].[ext]`
