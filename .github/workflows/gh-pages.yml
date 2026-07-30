@@ -120,6 +120,16 @@ jobs:
       - name: Puppeteer
         run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh
 
+      - name: Setup Mock
+        run: |
+          cd Source\ Files/Mocks/
+          npm i
+          npm run build
+          rm -r ./dist/map ./dist/map-styles
+          mv ./dist/assets ../../docs/
+          mkdir -p ../../docs/future
+          mv ./dist/3*/index.html ../../docs/future/
+
       # - name: Archive links
       #   run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14 -o archived-urls.txt
 
