@@ -27,9 +27,9 @@ for OSM_PATCH in $FILES
 do
 
   POST_DIR=$(realpath $(dirname "$OSM_PATCH")/..)
-  TMP_DIR=$POST_DIR/tmp
-  FILE_NAME=$(basename "$OSM_PATCH")
-  FILE_BASE_NAME=$(basename $FILE_NAME .osm)
+  TMP_DIR="$POST_DIR/tmp"
+  FILE_NAME="$(basename "$OSM_PATCH")"
+  FILE_BASE_NAME="$(basename $FILE_NAME .osm)"
   MAP_FILE="$TILES_DIR/$FILE_BASE_NAME.osm.pbf"
   POST_TILES="$TILES_DIR/$FILE_BASE_NAME"
 
@@ -94,7 +94,7 @@ do
   #CMD="/opt/planetiler/bin/planetiler"
   BBOX=$(echo $BBOX| tr ' ' ',')
 
-  OUTPUT_FILE=$TMP_DIR/output.mbtiles
+  OUTPUT_FILE="$TMP_DIR/output.mbtiles"
   PBF=$MAP_FILE
   echo "Using $PBF"
   ARGS="--download_dir=planetiler-data/sources --tmpdir=planetiler-data/tmp --tile_weights=planetiler-data/tile_weights.tsv.gz --download=true --languages=de,en --osm-path=$PBF  --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --bounds=${BBOX} --force --output=$OUTPUT_FILE"
@@ -115,7 +115,7 @@ do
   mv "$TMP_DIR/$PATCH_FILE_NAME" "$POST_TILES/"
   mv "$TMP_DIR/$OUTLINE_FILE_NAME" "$POST_TILES/"
   if [ "$DEBUG" = false ]; then
-    rm -r "$TMP_DIR"
+    rm -r -f "$TMP_DIR"
   else
     echo "DEBUG: Keeping temporary directory: $TMP_DIR"
   fi
@@ -137,5 +137,6 @@ do
 
   echo "Relevant tiles in $POST_TILES/ (not filtered by min zoom level - usually 13)"
   jq -r '.features[].properties.tiles[] | map(tostring) | join("/")' "$POST_TILES/$OUTLINE_FILE_NAME"
+  echo "Done processing $OSM_PATCH"
 
 done

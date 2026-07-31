@@ -36,7 +36,7 @@
                   {{- $class := "preview" -}}
                   <a class="cover-link" href="{{ $link }}">
                     {{- with $previewImg -}}
-                      <img class="{{ $class }}" src="{{ $previewImg.RelPermalink }}" />
+                      <img class="{{ $class }}" src="{{ (.Process "webp").RelPermalink }}" />
                     {{ end }}
                   </a>
                 {{- end -}}

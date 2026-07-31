@@ -1036,14 +1036,18 @@ def patch(base_file, patch_file, output_file, overwrite, masked_base_output: Opt
         with open(temp.name, 'rb') as f:
             patch_buffer = f.read()
             patch_pbf = osmium.io.FileBuffer(patch_buffer, "pbf")
-            for o in osmium.FileProcessor(patch_pbf).with_areas():
-                logger.debug(f"Generating filter primitive for {o.type_str()}, id: {o.id}")
-                wkb = None
-                if o.is_way() and not o.is_closed():
-                    wkb = shapely.from_wkb(wkbfab.create_linestring(o.nodes))
-                elif o.is_area():
-                    wkb = shapely.from_wkb(wkbfab.create_multipolygon(o))
-                polygons.append(wkb)
+            try:
+                for o in osmium.FileProcessor(patch_pbf).with_areas():
+                    logger.debug(f"Generating filter primitive for {o.type_str()}, id: {o.id}")
+                    wkb = None
+                    if o.is_way() and not o.is_closed():
+                        wkb = shapely.from_wkb(wkbfab.create_linestring(o.nodes))
+                    elif o.is_area():
+                        wkb = shapely.from_wkb(wkbfab.create_multipolygon(o))
+                    polygons.append(wkb)
+            except RuntimeError as e:
+                logger.error("IDs are not in order, this can currently happen if IDs will be dublicated by sign flipping and get prefixed", exc_info=True)
+                raise e
 
     polygons = [item for item in polygons if item is not None]
     logger.info(f"Extracted {len(polygons)} polygons to use as filter.")
