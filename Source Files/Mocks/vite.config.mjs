@@ -11,7 +11,7 @@ const mimeTypes = {
   ".pbf": "application/vnd.mapbox-vector-tile"
   //".pbf": "application/gzip"
 };
-const publicDirs = ["3d/public/**"];
+const publicDirs = ["3D/public/**"];
 
 export default defineConfig({
   appType: "mpa",
