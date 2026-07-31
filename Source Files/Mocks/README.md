@@ -7,9 +7,13 @@ Never built Göttingen Mocks
 
 * Fix transition to view from above
   * Remove shader when viewed from above
+  * Let buildings and trees shrink
+  * Reset focal length
 * Wrap in a single function
 * Fix linting errors
 * Check if tile seperation is still needed
+* Remove Open Layers
+* allow multiple input files for patching
 
 ## Preview
 
@@ -46,7 +50,7 @@ BOUNDS=https://www.openstreetmap.org/api/0.6/relation/191361/full
 
 ### 3D Buildings
 
-### Tiles to SVg
+### Tiles to SVG
 
 - [Tile mill](https://github.com/tilemill-project/tilemill/issues)
 
