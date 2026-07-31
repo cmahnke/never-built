@@ -13,6 +13,7 @@ params:
   type: frame
   featured: true
   cover: north.jpg
+  year: 1994
 resources:
 - src: "front.jxl"
   name: front

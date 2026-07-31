@@ -14,6 +14,7 @@ params:
     coordinates:
     - 9.9276414
     - 51.533846
+  year: 1971
 resources:
 - src: "page136.jxl"
   name: preview

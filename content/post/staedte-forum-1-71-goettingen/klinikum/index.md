@@ -16,6 +16,7 @@ params:
     - 9.943691
     - 51.550553
   featured: true
+  year: 1971
 resources:
 - src: "page066.jxl"
   name: preview

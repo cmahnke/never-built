@@ -13,6 +13,7 @@ params:
     coordinates:
     - 9.942461
     - 51.537681
+  year: 1971
 resources:
 - src: "page034.jxl"
   params:

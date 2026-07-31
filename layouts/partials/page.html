@@ -3,6 +3,8 @@
 {{- $defaultHeight := 1280 -}}
 {{- $fit := printf "%dx%d" $defaultWidth $defaultHeight -}}
 
+{{- partial "check-post.html" . -}}
+
 {{ $class := .Params.type }}
 <div class="post {{ $class }} scroll-trigged">
     <div class="content">

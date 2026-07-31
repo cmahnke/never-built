@@ -11,6 +11,10 @@ Never built Göttingen Mocks
 * Fix linting errors
 * Check if tile seperation is still needed
 
+## Preview
+
+https://never-built.goettingen.xyz/future/index.html
+
 ## Test data
 
 `content/post/staedte-forum-1-71-goettingen/gwz/` is the main post used for testing.

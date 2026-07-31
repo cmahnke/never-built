@@ -1,0 +1,6 @@
+{{- if and (in .Section "post") (not .Draft) -}}
+  {{- if not (isset .Params "year") -}}
+    {{- errorf "[check-post.html] Missing year in %s" .RelPermalink -}}
+  {{- end -}}
+
+{{- end -}}

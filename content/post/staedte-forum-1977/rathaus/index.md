@@ -14,6 +14,7 @@ params:
     coordinates:
     - 9.94044400517248
     - 51.528463189172896
+  year: 1977
 draft: true
 resources:
 - src: "page046.jxl"
