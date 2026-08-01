@@ -29,12 +29,7 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: "node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs",
-          dest: "assets",
-          rename: { stripBase: 3 }
-        },
-        {
-          src: "node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs",
+          src: "node_modules/maplibre-gl/dist/maplibre-gl-*",
           dest: "assets",
           rename: { stripBase: 3 }
         }
