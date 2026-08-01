@@ -125,7 +125,6 @@ jobs:
           cd Source\ Files/Mocks/
           npm i
           npm run build
-          #rm -r ./dist/map ./dist/map-styles
           mv ./dist/assets ../../docs/
           mkdir -p ../../docs/future
           mv ./dist/3*/index.html ../../docs/future/

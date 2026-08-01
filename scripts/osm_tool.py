@@ -1046,7 +1046,10 @@ def patch(base_file, patch_file, output_file, overwrite, masked_base_output: Opt
                         wkb = shapely.from_wkb(wkbfab.create_multipolygon(o))
                     polygons.append(wkb)
             except RuntimeError as e:
-                logger.error("IDs are not in order, this can currently happen if IDs will be dublicated by sign flipping and get prefixed", exc_info=True)
+                if "two points" in str(e):
+                    logger.error("Input file contains deleted nodes!", exc_info=True)
+                else:
+                    logger.error("IDs are not in order, this can currently happen if IDs will be dublicated by sign flipping and get prefixed", exc_info=True)
                 raise e
 
     polygons = [item for item in polygons if item is not None]

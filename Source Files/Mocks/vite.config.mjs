@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import stylelint from "vite-plugin-stylelint";
 import { DynamicPublicDirectory } from "vite-multiple-assets";
 import { NodePackageImporter } from "sass";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 const mimeTypes = {
   ".glb": "model/gltf-binary",
@@ -24,6 +25,15 @@ export default defineConfig({
     DynamicPublicDirectory(publicDirs, {
       ssr: false,
       mimeTypes
+    }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: "node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs",
+          dest: "assets",
+          rename: { stripBase: 3 }
+        }
+      ]
     })
   ],
   build: {
@@ -35,7 +45,7 @@ export default defineConfig({
         main: resolve(import.meta.dirname, "3D/index.html")
       },
       output: {
-        format: "esm",
+        format: "esm"
       }
     }
   },
