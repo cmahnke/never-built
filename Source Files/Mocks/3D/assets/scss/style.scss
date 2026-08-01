@@ -15,9 +15,11 @@
   $styles: all
 );
 
-#browserConsole {
-  background: #eee;
-  padding: 1.2rem;
-  margin: 1rem;
-  border-radius: 0.4rem;
+body {
+  margin: 0;
+}
+
+#map {
+  height: 100vh;
+  width: 100vw;
 }
