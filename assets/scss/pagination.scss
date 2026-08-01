@@ -35,10 +35,15 @@
       &:hover {
         transform: scale(1.05);
       }
+
     }
 
     .pagination-next {
       justify-self: flex-end;
+    }
+
+    &:has(a:only-of-type) {
+      justify-content: end;
     }
 
     .pagination-prev {

@@ -14,16 +14,17 @@
     "npm": ">=8.3.0"
   },
   "dependencies": {
+    "@fontsource-variable/roboto-mono": "^5.3.0",
     "@maplibre/maplibre-gl-style-spec": "^26.2.1",
     "@turf/turf": "^7.3.5",
     "chroma-js": "^3.2.0",
     "gl-matrix": "^3.4.4",
+    "i18next": "^26.3.6",
+    "i18next-browser-languagedetector": "^8.2.1",
     "js-cookie": "^3.0.8",
     "mapbox-gl": "^3.27.0",
     "maplibre-contour": "^0.1.0",
     "maplibre-gl": "^6.1.0",
-    "i18next": "^26.3.6",
-    "i18next-browser-languagedetector": "^8.2.1",
     "svgo": "^4.0.2",
     "three": "^0.185.1"
   },
@@ -51,7 +52,6 @@
     "vite-multiple-assets": "^2.2.6",
     "vite-plugin-checker": "^0.14.5",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-node-polyfills": "^0.28.0",
     "vite-plugin-stylelint": "^6.3.0"
   }
 }

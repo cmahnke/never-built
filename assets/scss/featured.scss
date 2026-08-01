@@ -121,4 +121,11 @@ $scale-factor: 1.05 !default;
     cursor: grabbing;
   }
 
+  .glide__slide.featured-entry {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+  }
+
 }

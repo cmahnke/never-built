@@ -5,16 +5,26 @@ Never built Göttingen Mocks
 
 ## TODO
 
-* Fix transition to view from above
-  * Remove shader when viewed from above
-  * Let buildings and trees shrink
-  * Reset focal length
-* Wrap in a single function
-* Fix linting errors
-* Check if tile seperation is still needed
-* Remove Open Layers
-* Allow multiple input files for patching
-* Avoid problems with ID order if IDs get prefixed
+- Fix transition to view from above
+  - Remove shader when viewed from above
+  - Let buildings and trees shrink
+  - Reset focal length
+  - Show street names from above
+- Wrap in a single function
+- Fix linting errors
+- Check if tile seperation is still needed
+- Remove Open Layers
+- `osm_tool`
+  - Allow multiple input files for patching
+  - Avoid problems with ID order if IDs get prefixed
+  - Trees don't get removed during masking
+  - Check if intersection also applies to bordering / shared points
+  - Also try to get deletions from osm file
+  - check "need at least two points for linestring"
+- Rendering
+  - amenity=parking_space
+  - barrier=wall
+  - check color in shader
 
 ## Preview
 
@@ -33,14 +43,14 @@ BOUNDS=https://www.openstreetmap.org/api/0.6/relation/191361/full
 
 ## Additional boundaries
 
-* Innenstadt 3608625
-* Universität 2908106
-* Nordstadt 3608412
-* Norduni 7021377
-* Weende 3730689
-* Ostviertel 4554925
-* Weststadt 3730690
-* Grone 195326
+- Innenstadt 3608625
+- Universität 2908106
+- Nordstadt 3608412
+- Norduni 7021377
+- Weende 3730689
+- Ostviertel 4554925
+- Weststadt 3730690
+- Grone 195326
 
 ## Geodata processing links
 
@@ -58,7 +68,6 @@ BOUNDS=https://www.openstreetmap.org/api/0.6/relation/191361/full
 ### Shadows
 
 - https://gist.github.com/yanik-recke/e7d4cd4763adbeff302ad114845e7c78
-
 
 ### Dump tiles
 

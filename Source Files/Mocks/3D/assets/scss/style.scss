@@ -1,13 +1,23 @@
 @use "./never-built";
 
+@use "pkg:@fontsource-utils/scss" as fontsource;
+@use "pkg:@fontsource-variable/roboto-mono/scss" as roboto-mono;
+
+@include fontsource.faces(
+  $metadata: roboto-mono.$metadata,
+  $subsets: latin,
+  $weights: (
+    300,
+    400,
+    600,
+    800,
+  ),
+  $styles: all
+);
+
 #browserConsole {
   background: #eee;
   padding: 1.2rem;
   margin: 1rem;
   border-radius: 0.4rem;
-}
-
-#map {
-  width: 100%;
-  height: 100vh;
 }
