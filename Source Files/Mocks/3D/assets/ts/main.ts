@@ -15,7 +15,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import type { LngLatLike, RasterDEMSourceSpecification, StyleSpecification } from "maplibre-gl";
 
 const debug = false;
-const tileSource = "Klinikum"; //"Blauer-Turm", "Gemeindezentrum-Grone";
+const tileSource = "Blauer-Turm"; //"Klinikum", "Gemeindezentrum-Grone";
 const metaJson = `/map/${tileSource}/metadata.json`;
 const styleJson = "/map-styles/style.json";
 const tilesUrl = `/map/${tileSource}/{z}/{x}/{y}.pbf`;
