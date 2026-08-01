@@ -32,6 +32,11 @@ export default defineConfig({
           src: "node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs",
           dest: "assets",
           rename: { stripBase: 3 }
+        },
+        {
+          src: "node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs",
+          dest: "assets",
+          rename: { stripBase: 3 }
         }
       ]
     })
@@ -45,7 +50,8 @@ export default defineConfig({
         main: resolve(import.meta.dirname, "3D/index.html")
       },
       output: {
-        format: "esm"
+        format: "esm",
+        assetFileNames: `assets/[name].[ext]`
       }
     }
   },
