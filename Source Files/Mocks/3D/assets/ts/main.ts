@@ -11,10 +11,12 @@ import { NavigationControl, FullscreenControl, AttributionControl } from "maplib
 import chroma from "chroma-js";
 import i18next from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
+import { UAParser } from 'ua-parser-js';
+
 
 import type { LngLatLike, RasterDEMSourceSpecification, StyleSpecification } from "maplibre-gl";
 
-const debug = true;
+const debug = false;
 const tileSource = "Blauer-Turm"; //"Klinikum", "Gemeindezentrum-Grone";
 const metaJson = `/map/${tileSource}/metadata.json`;
 const styleJson = "/map-styles/style.json";
@@ -40,6 +42,11 @@ const marker = {
   scale: 0.075,
   src: "/images/marker.svg"
 };
+
+if (new UAParser().getOS() == "iOS") {
+  canvasContextAttributes = {};
+}
+
 
 const translations = {
   en: {

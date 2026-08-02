@@ -73,6 +73,7 @@ $fullscreen-color: var(--base07);
 @import "model";
 @import "term";
 @import "pagefind";
+@import "images";
 
 :where(:focus-visible) {
     outline: .1875rem dashed #000;

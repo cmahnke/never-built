@@ -11,6 +11,8 @@ params:
   iiifContext: http://iiif.io/api/image/2/context.json
   cover: model-detail.jpg
   featured: true
+  featured_is_ai: true
+  cover_is_ai: true
   geojson:
     coordinates:
     - 9.904611
@@ -41,7 +43,7 @@ Trotzdem gibt es noch kleinere Unterschiede zu der tatsächlichen Ausführung, b
   src="./model-detail.jpg"
   alt="Modell des Zentrums"
   caption="Modell des Zentrums"
-  class="_efTrigger-inview-50px _effect-addclass-show"
+  class="_efTrigger-inview-50px _effect-addclass-show ai-image"
 >}}
 
 # Planungen

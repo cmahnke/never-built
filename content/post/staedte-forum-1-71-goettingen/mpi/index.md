@@ -10,6 +10,7 @@ outputs:
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
   cover: model-planned.jpg
+  cover_is_ai: true
   geojson:
     coordinates:
     - 9.9633186

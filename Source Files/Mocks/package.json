@@ -26,13 +26,14 @@
     "maplibre-contour": "^0.1.0",
     "maplibre-gl": "^6.1.0",
     "svgo": "^4.0.2",
-    "three": "^0.185.1"
+    "three": "^0.185.1",
+    "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@fontsource-utils/scss": "^0.2.4",
     "@types/node": "^26.1.2",
-    "@types/three": "^0.185.1",
+    "@types/three": "^0.185.3",
     "eslint": "^10.8.0",
     "eslint-plugin-markdownlint": "^0.10.1",
     "globals": "^17.8.0",

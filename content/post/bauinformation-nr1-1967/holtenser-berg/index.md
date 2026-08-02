@@ -10,6 +10,7 @@ outputs:
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
   cover: model-4.jpg
+  cover_is_ai: true
   geojson:
     coordinates:
     - 9.904611
@@ -40,7 +41,7 @@ Die Struktur wurde so angelegt, dass sich Wohnhäuser und Blöcke um ein Zentrum
   src="./model-1.jpg"
   alt="Entwurf 1"
   caption="Entwurf 1"
-  class="_efTrigger-inview-50px _effect-addclass-show"
+  class="_efTrigger-inview-50px _effect-addclass-show ai-image"
 >}}
 
 Hier ist das Highlight sicher die über den Hang zur Grone hängende Terrasse. Die Wohnfläche ist deutlich konzentrierter: weniger aber dafür größere Hochhäuser.
@@ -49,7 +50,7 @@ Hier ist das Highlight sicher die über den Hang zur Grone hängende Terrasse. D
   src="./model-2.jpg"
   alt="Entwurf 2"
   caption="Entwurf 2"
-  class="_efTrigger-inview-50px _effect-addclass-show"
+  class="_efTrigger-inview-50px _effect-addclass-show ai-image"
 >}}
 
 In diesem Entwurf ist die Hochhausbebauung auf den Norden des Gebiets konzentriert. Zusätzlich existieren zwei ansteigende, ca. 300 Meter lange Gebäude an den Rändern im Westen und Osten.
@@ -58,7 +59,7 @@ In diesem Entwurf ist die Hochhausbebauung auf den Norden des Gebiets konzentrie
   src="./model-3.jpg"
   alt="Entwurf 3"
   caption="Entwurf 3"
-  class="_efTrigger-inview-50px _effect-addclass-show"
+  class="_efTrigger-inview-50px _effect-addclass-show ai-image"
 >}}
 
 Auch dieser Entwurf sieht einen deutlich höheren Grad der Konzentration der Wohnbauten vor. Dafür ist das Straßenraster schon relativ nah am tatsächlich umgesetzten.

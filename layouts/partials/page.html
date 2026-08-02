@@ -22,6 +22,10 @@
       {{- if not .Params.metaPage -}}
         <div class="featured">
           {{- $previewNames := false -}}
+          {{- $isAi := false -}}
+          {{- with .Params.cover_is_ai -}}
+            {{- $isAi = . -}}
+          {{- end -}}
           {{- with .Params.cover -}}
             {{- if reflect.IsSlice . -}}
               {{- $previewNames = . -}}
@@ -36,6 +40,11 @@
             {{- with $.Resources.GetMatch $img -}}
               {{- $originalImage := . -}}
               <div class="featured-image">
+                {{- if and $isAi $class -}}
+                  {{- $class = printf "%s ai-image" $class -}}
+                {{- else -}}
+                  {{- $class = "ai-image" -}}
+                {{- end -}}
                 {{- $previewImage := (.Fit $fit).Process "webp" -}}
                 <img class="{{printf "post-featured img-%d" $i}} {{ $class }}" src="{{ $previewImage.RelPermalink }}"  data-image-name="{{ $img }}" data-full-src="{{ $originalImage.RelPermalink }}" data-full-width="{{ $originalImage.Width }}" data-full-height="{{ $originalImage.Height }}" />
               </div>

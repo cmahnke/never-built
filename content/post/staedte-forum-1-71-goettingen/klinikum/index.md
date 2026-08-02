@@ -11,11 +11,13 @@ outputs:
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
   cover: model.jpg
+  cover_is_ai: true
   geojson:
     coordinates:
     - 9.943691
     - 51.550553
   featured: true
+  featured_is_ai: true
   year: 1971
 resources:
 - src: "page066.jxl"

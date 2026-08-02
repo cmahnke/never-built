@@ -12,7 +12,9 @@ params:
   iiifContext: http://iiif.io/api/image/2/context.json
   type: frame
   featured: true
+  featured_is_ai: true
   cover: north.jpg
+  cover_is_ai: true
   year: 1994
 resources:
 - src: "front.jxl"
@@ -38,7 +40,7 @@ Im Nordbereich sind die Abweichungen am auffälligsten:
   src="./medical-center.jpg"
   alt="Klinikum"
   caption="Klinikum"
-  class="_efTrigger-inview-50px _effect-addclass-show"
+  class="_efTrigger-inview-50px _effect-addclass-show ai-image"
 >}}
 
 * Um das Zentralgebäude des Klinikums stehen im Entwurf (nördlich, östlich, westlich) zusätzlich Gebäude
@@ -49,7 +51,7 @@ Im Nordbereich sind die Abweichungen am auffälligsten:
   src="./central.jpg"
   alt="Zentralcampus"
   caption="Zentralcampus"
-  class="_efTrigger-inview-50px _effect-addclass-show"
+  class="_efTrigger-inview-50px _effect-addclass-show ai-image"
 >}}
 
 Auf dem Zentralcampus fällt besonders der südliche Bereich auf:

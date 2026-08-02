@@ -12,6 +12,10 @@
           {{- $preview := slice -}}
           {{- $link := .RelPermalink -}}
           {{- $title := .Title -}}
+          {{- $isAi := false -}}
+          {{- with .Params.featured_is_ai -}}
+            {{- $isAi = . -}}
+          {{- end -}}
           {{- with .Params.cover -}}
             {{- if reflect.IsSlice . -}}
               {{- $preview = . -}}
@@ -23,8 +27,12 @@
               {{- with $page.Resources.Get . -}}
                 {{- $originalImage := . -}}
                 {{- with .Resize $previewSize -}}
-                  <a href="{{ $link }}" title="{{ $title }}">
-                    <img class="featured-entry-image" src="{{ (.Process "webp").RelPermalink }}" alt="{{ i18n "post-preview" }}" data-full-src="{{ $originalImage.RelPermalink }}" data-full-width="{{ $originalImage.Width }}" data-full-height="{{ $originalImage.Height }}" />
+                  <a href="{{ $link }}" title="{{ $title }}" class="featured-image">
+                    {{- $class := "featured-entry-image" -}}
+                    {{- if $isAi -}}
+                      {{- $class = printf "%s ai-image" $class -}}
+                    {{- end -}}
+                    <img class="{{ $class }}" src="{{ (.Process "webp").RelPermalink }}" alt="{{ i18n "post-preview" }}" data-full-src="{{ $originalImage.RelPermalink }}" data-full-width="{{ $originalImage.Width }}" data-full-height="{{ $originalImage.Height }}" />
                   </a>
                 {{- end -}}
               {{- else -}}

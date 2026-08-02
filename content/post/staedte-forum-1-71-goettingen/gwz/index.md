@@ -13,6 +13,8 @@ params:
     - "model.jpg"
     - "blueprint.jpg"
   preview: preview
+  featured_is_ai: true
+  cover_is_ai: true
   geojson:
     coordinates:
     - 9.935313

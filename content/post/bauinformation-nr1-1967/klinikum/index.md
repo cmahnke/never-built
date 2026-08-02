@@ -12,6 +12,7 @@ params:
   iiifContext: http://iiif.io/api/image/2/context.json
   cover: model.jpg
   preview: preview
+  featured_is_ai: true
   geojson:
     coordinates:
     - 9.943691
@@ -42,7 +43,7 @@ Das Modell zeigt einen zentralen Turm mit einem breiten Sockel an dessen Stelle 
   src="./model-front.jpg"
   alt="Eingangsbereich"
   caption="Eingangsbereich"
-  class="_efTrigger-inview-50px _effect-addclass-show"
+  class="_efTrigger-inview-50px _effect-addclass-show ai-image"
 >}}
 
 # Plan
@@ -53,7 +54,7 @@ Im Plan ist Norden oben.
   src="./overview.jpg"
   alt="Übersichtsplan"
   caption="Übersichtsplan"
-  class="_efTrigger-inview-50px _effect-addclass-show"
+  class="_efTrigger-inview-50px _effect-addclass-showai-image"
 >}}
 
 # Heutige Situation

@@ -10,6 +10,7 @@ outputs:
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
   cover: model-planned.jpg
+  cover_is_ai: true
   geojson:
     coordinates:
     - 9.9276414
@@ -43,5 +44,5 @@ Aus dem Modell des damaligen Zustandes kann man die geplanten Änderungen und da
   src="./model-current.jpg"
   alt="Modell des Zustandes Anfang der 70er Jahre"
   caption="Modell des Zustandes Anfang der 70er Jahre"
-  class="_efTrigger-inview-50px _effect-addclass-show"
+  class="_efTrigger-inview-50px _effect-addclass-show ai-image"
 >}}
