@@ -43,7 +43,7 @@ const marker = {
   src: "/images/marker.svg"
 };
 
-if (new UAParser().getOS() == "iOS") {
+if (new UAParser().getOS() === "iOS") {
   canvasContextAttributes = {};
 }
 
@@ -179,7 +179,7 @@ if (debug) {
   console.log(style);
 }
 
-const sourceName = getSouceName(style);
+const sourceName = getSourceName(style);
 
 style.light = {
   anchor: "viewport",

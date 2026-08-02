@@ -291,6 +291,6 @@ export function buildDefaultStyle(source: string): StyleSpecification {
   } as StyleSpecification;
 }
 
-export function getSouceName (style: StyleSpecification): string {
+export function getSourceName (style: StyleSpecification): string {
   return Object.keys(style.sources)[0];
 }
