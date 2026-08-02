@@ -5,7 +5,7 @@ import { center, points } from "@turf/turf";
 import { loadOrParse, absUrl } from "./base-map";
 import { TreeLayer } from "./layers/tree-layer";
 import { ArchitectureModelBWLayer } from "./layers/architecture-model-bw-layer";
-import { updateStyle, setupDefaultStyle, defaultSprites, getSouceName } from "./styles";
+import { updateStyle, setupDefaultStyle, defaultSprites, getSourceName } from "./styles";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { NavigationControl, FullscreenControl, AttributionControl } from "maplibre-gl";
 import chroma from "chroma-js";
