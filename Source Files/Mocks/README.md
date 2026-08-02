@@ -25,7 +25,7 @@ Never built Göttingen Mocks
   - amenity=parking_space
   - barrier=wall
   - check color in shader
-
+- iOS Shading
 ## Preview
 
 https://never-built.goettingen.xyz/future/index.html

@@ -14,7 +14,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 import type { LngLatLike, RasterDEMSourceSpecification, StyleSpecification } from "maplibre-gl";
 
-const debug = false;
+const debug = true;
 const tileSource = "Blauer-Turm"; //"Klinikum", "Gemeindezentrum-Grone";
 const metaJson = `/map/${tileSource}/metadata.json`;
 const styleJson = "/map-styles/style.json";
@@ -32,7 +32,7 @@ const font = "Roboto Mono Variable";
 const fontPath = "/css/fonts/{font-family}.css";
 const background = "#eee";
 const attribution = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>';
-const buildingToggleText = "Show only never-built buildings";
+let canvasContextAttributes = { antialias: true };
 const marker = {
   anchor: [0.5, 1],
   anchorXUnits: "fraction",
@@ -68,9 +68,12 @@ i18next.use(LanguageDetector).init({
 // architecture model" look consistent even when the BW post-process layer
 // is faded out (e.g. in the overhead/flat view — see applyTweenValue).
 
-const BUILDING_COLOR_DEBUG: maplibregl.DataDrivenPropertyValueSpecification<string> = ["case", ["has", "color"], ["get", "color"], "#aaa"];
-const BUILDING_COLOR_GREYSCALE = "#c9c9c9";
-const buildingFillColor = debug ? BUILDING_COLOR_DEBUG : BUILDING_COLOR_GREYSCALE;
+
+//TODO: Check is this is needed before remofing the shader when looked from above
+//const BUILDING_COLOR_DEBUG: maplibregl.DataDrivenPropertyValueSpecification<string> = ["case", ["has", "color"], ["get", "color"], "#aaa"];
+//const BUILDING_COLOR_GREYSCALE = "#c9c9c9";
+//const buildingFillColor = debug ? BUILDING_COLOR_DEBUG : BUILDING_COLOR_GREYSCALE;
+const buildingFillColor = ["case", ["has", "color"], ["get", "color"], "#aaa"];
 
 const CAMERA_FOCAL_LENGTH_MM = 50; // use 0 to use default
 const CAMERA_SENSOR_HEIGHT_MM = 24; // standard full-frame sensor height
@@ -213,7 +216,7 @@ const map = new maplibregl.Map({
   calculateTileZoomFunction: (requestedZoom) => {
     return Math.min(requestedZoom, 15);
   },
-  canvasContextAttributes: { antialias: true }
+  canvasContextAttributes: canvasContextAttributes
 });
 
 if (CAMERA_FOCAL_LENGTH_MM != 0) {
