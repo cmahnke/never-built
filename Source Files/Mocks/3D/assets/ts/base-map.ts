@@ -61,7 +61,7 @@ export function loadOrParse(str: string | object): object | Promise<object | voi
   try {
     // BUG (preserved from original): `json` is never defined/passed to this function.
     // This will throw a ReferenceError at runtime if this branch is reached.
-    obj = JSON.parse((globalThis as any).json);
+    obj = JSON.parse(str);
   } catch (e) {
     obj = fetch(str)
       .then((response) => response.json())

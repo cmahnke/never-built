@@ -16,6 +16,14 @@ export default [
     }
   },
   {
+    files: ["*.config.{js,mjs,ts}"],
+    languageOptions: {
+      globals: {
+        ...globals.node
+      }
+    }
+  },
+  {
     ignores: ["dist/", ".eslintrc.mjs", "vite.config.js", "postcss.config.js"]
   }
 ];

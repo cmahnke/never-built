@@ -294,3 +294,87 @@ export function buildDefaultStyle(source: string): StyleSpecification {
 export function getSourceName (style: StyleSpecification): string {
   return Object.keys(style.sources)[0];
 }
+
+/** Collects every distinct font-family name referenced in `text-font`
+ * arrays across all symbol layers of a style. */
+export function collectFontFamilies(style: StyleSpecification): string[] {
+  const families = new Set<string>();
+  style.layers.forEach((layer) => {
+    if (layer.type === 'symbol' && layer.layout && 'text-font' in layer.layout) {
+      const textFont = (layer.layout)['text-font'];
+      if (Array.isArray(textFont)) {
+        textFont.forEach((f) => {
+          if (typeof f === 'string') families.add(f);
+        });
+      }
+    }
+  });
+  return Array.from(families);
+}
+
+/** ===============
+ *   Font handling
+ *  =============== */
+
+/**
+ * Converts a CSS font-family name into a URL-safe, filename-style slug:
+ * lowercase, spaces replaced with hyphens. E.g. "Roboto Mono Variable"
+ * becomes "roboto-mono-variable".
+ */
+export function fontFamilyToSlug(fontFamily: string): string {
+  return fontFamily.trim().toLowerCase().replace(/\s+/g, '-');
+}
+
+/**
+ * Injects a <link rel="stylesheet"> for a given font-family's CSS template
+ * (containing @font-face rules), if not already present.
+ */
+export function loadFontCss(fontFamily: string, template: string): Promise<void> {
+  const slug = fontFamilyToSlug(fontFamily);
+  const href = absUrl(template.replace('{font-family}', slug));
+  const existing = document.querySelector(`link[data-font-family="${CSS.escape(fontFamily)}"]`);
+  if (existing) {
+    return Promise.resolve();
+  }
+  return new Promise((resolve, reject) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.dataset.fontFamily = fontFamily;
+    link.onload = () => resolve();
+    link.onerror = () =>
+      reject(new Error(`Could not load font CSS for "${fontFamily}" from ${href}`));
+    document.head.appendChild(link);
+  });
+}
+
+/**
+ * Ensures every font-family referenced by the style's symbol layers is
+ * loaded via CSS (@font-face) and preloaded via the Font Loading API,
+ * BEFORE the map is created — mirroring the pattern from MapLibre's own
+ * web-font example (`document.fonts.load("24px 'Font Name'")`).
+ */
+export async function preloadStyleFonts(
+  style: StyleSpecification,
+  fontCssTemplate: string
+): Promise<void> {
+  const families = collectFontFamilies(style);
+  if (families.length === 0) return;
+
+  await Promise.all(
+    families.map(async (family) => {
+      try {
+        await loadFontCss(family, fontCssTemplate);
+        if ('fonts' in document) {
+          await document.fonts.load(`24px '${family}'`);
+        }
+      } catch (err) {
+        console.warn(`Could not preload web font "${family}":`, err);
+      }
+    })
+  );
+
+  if ('fonts' in document) {
+    await document.fonts.ready;
+  }
+}
