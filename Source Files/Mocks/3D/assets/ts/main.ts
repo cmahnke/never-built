@@ -7,6 +7,7 @@ import type { LngLatLike } from "maplibre-gl";
 import type { CameraPositionConfig } from "./3d-map";
 import type { TileMetadata } from "./@types/tile-metadata.d.ts";
 import { center as turfCenter, points } from "@turf/turf";
+import { UAParser } from "ua-parser-js";
 
 declare global {
   interface Window {
@@ -14,7 +15,7 @@ declare global {
   }
 }
 
-const debug = true;
+let debug = true;
 const elementId = "map";
 
 const tileSource = "Blauer-Turm";
@@ -51,6 +52,11 @@ if (metaObj && typeof metaObj.bounds === "string") {
 }
 
 let map: maplibregl.Map;
+
+const uap = new UAParser();
+if (uap.getDevice().is("mobile")) {
+  debug = false;
+}
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", async () => {

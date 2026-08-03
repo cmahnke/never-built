@@ -1,8 +1,8 @@
+// assets/ts/base-map.ts
 
+type Lang = "de" | "en";
 
-type Lang = 'de' | 'en';
-
-export interface ToolTipStrings {
+interface ToolTipStrings {
   zoomIn: string;
   zoomOut: string;
   fullscreen: string;
@@ -13,30 +13,29 @@ export interface ToolTipStrings {
 
 export const toolTips: Record<Lang, ToolTipStrings> = {
   de: {
-    zoomIn: 'Vergrößern',
-    zoomOut: 'Verkleinern',
-    fullscreen: 'Vollbildansicht',
-    rotate: 'Rotation zurücksetzen',
-    rotateLeft: '90° nach links drehen',
-    rotateRight: '90° nach rechst drehen',
+    zoomIn: "Vergrößern",
+    zoomOut: "Verkleinern",
+    fullscreen: "Vollbildansicht",
+    rotate: "Rotation zurücksetzen",
+    rotateLeft: "90° nach links drehen",
+    rotateRight: "90° nach rechst drehen"
   },
   en: {
-    zoomIn: 'Zoom in',
-    zoomOut: 'Zoom out',
-    fullscreen: 'Toggle full-screen',
-    rotate: 'Reset rotation',
-    rotateLeft: 'Rotate 90° left',
-    rotateRight: 'Rotate 90° right',
-  },
+    zoomIn: "Zoom in",
+    zoomOut: "Zoom out",
+    fullscreen: "Toggle full-screen",
+    rotate: "Reset rotation",
+    rotateLeft: "Rotate 90° left",
+    rotateRight: "Rotate 90° right"
+  }
 };
 
-export const defaultVectorSource =
-  'https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf';
+export const defaultVectorSource = "https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf";
 
 export const defaultPadding: [number, number, number, number] = [50, 50, 50, 50];
 
 export function getLang(): string {
-  let lang = 'en';
+  let lang = "en";
   if (document.documentElement.lang !== undefined) {
     /* TODO: Check for lang locale combinations here: "de-de" instead of "de" will currently break this. */
     lang = document.documentElement.lang;
@@ -44,33 +43,13 @@ export function getLang(): string {
   return lang;
 }
 
-export function bboxExtent(bbox: string | (string | number)[]): Extent {
-  let bboxArr: (string | number)[];
-  if (typeof bbox === 'string') {
-    bboxArr = bbox.split(',');
-  } else {
-    bboxArr = bbox;
-  }
-  const stringBbox: string[] = bboxArr.flat().map((e) => e.toString());
-  // NOTE: fromLonLat expects numeric Coordinate; original code passed strings here.
-  const lowerLeft = fromLonLat([
-    Number(stringBbox[0]),
-    Number(stringBbox[1]),
-  ] as Coordinate);
-  const upperRight = fromLonLat([
-    Number(stringBbox[2]),
-    Number(stringBbox[3]),
-  ] as Coordinate);
-  return lowerLeft.concat(upperRight);
-}
-
 export function absUrl(url: string): string {
-  if (url.startsWith('http') || url.startsWith('//')) {
+  if (url.startsWith("http") || url.startsWith("//")) {
     return url;
   } else {
-    let base = window.location.protocol + '//' + window.location.hostname;
-    if (window.location.port !== '') {
-      base += ':' + window.location.port;
+    let base = window.location.protocol + "//" + window.location.hostname;
+    if (window.location.port !== "") {
+      base += ":" + window.location.port;
     }
     return base + url;
   }
@@ -78,26 +57,27 @@ export function absUrl(url: string): string {
 
 export function loadOrParse(str: string | object): object | Promise<object | void> {
   let obj: object | Promise<object | void>;
-  if (typeof str === 'object') {
+  if (typeof str === "object") {
     return str;
   }
   try {
     // BUG (preserved from original): `json` is never defined/passed to this function.
     // This will throw a ReferenceError at runtime if this branch is reached.
-    obj = JSON.parse((globalThis as any).json);
+    obj = JSON.parse(str);
   } catch (e) {
     obj = fetch(str)
       .then((response) => response.json())
       .catch(function (body) {
-        console.log(`Could not read JSON from ${str}` + body);
+        console.log(`Could not read JSON from ${str}` + body, e);
       })
       .catch(function () {
-        console.log(`Could not read data from URL ${str}`);
+        console.log(`Could not read data from URL ${str}`, e);
       });
   }
   return obj;
 }
 
+/*
 export function loadGeoJSON(url: string): void {
   fetch(url)
     .then(function (response) {
@@ -108,19 +88,20 @@ export function loadGeoJSON(url: string): void {
 
           // See https://gis.stackexchange.com/questions/373285/geojson-doesnt-render-on-map-in-openlayers-project
           const parser = new GeoJSON({
-            dataProjection: 'EPSG:4326',
-            featureProjection: 'EPSG:3857',
+            dataProjection: "EPSG:4326",
+            featureProjection: "EPSG:3857"
           });
 
           const vectorSource = new VectorSource({
-            features: parser.readFeatures(geojson),
+            features: parser.readFeatures(geojson)
           });
         })
         .catch(function (body) {
-          console.log('Could not read GeoJSON. ' + body);
+          console.log("Could not read GeoJSON. " + body);
         });
     })
     .catch(function () {
-      console.log('Could not read data from URL.');
+      console.log("Could not read data from URL.");
     });
 }
+*/

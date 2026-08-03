@@ -102,7 +102,7 @@ export async function initMap(
     canvasContextAttributes: { antialias: true }
   };
 
-  if (new UAParser().getOS() == "iOS") {
+  if (new UAParser().getOS().is("iOS")) {
     mapOptions.canvasContextAttributes.antialias = false;
   }
 

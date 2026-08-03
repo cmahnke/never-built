@@ -6,14 +6,12 @@ Never built Göttingen Mocks
 ## TODO
 
 - Fix transition to view from above
-  - Remove shader when viewed from above
-  - Let buildings and trees shrink
-  - Reset focal length
-  - Show street names from above
-- Wrap in a single function
-- Fix linting errors
+  - Currently no known issues
+- Cleanup and integration
+  - Fix linting / `tsc` errors
+  - Add Hugo wrapper template
+- Add a checkbox below the existing one to highlight buildings by MARKER_TAG
 - Check if tile seperation is still needed
-- Remove Open Layers
 - `osm_tool`
   - Allow multiple input files for patching
   - Avoid problems with ID order if IDs get prefixed
@@ -21,11 +19,18 @@ Never built Göttingen Mocks
   - Check if intersection also applies to bordering / shared points
   - Also try to get deletions from osm file
   - check "need at least two points for linestring"
+- `generate-3d-map.sh`
+  - convert to python
+  - generate combined maps based on year
 - Rendering
   - amenity=parking_space
   - barrier=wall
-  - check color in shader
-- iOS Shading
+- Improve iOS Shading, the effect is barely visible
+- Testing (`3d-map.ts`)
+  - Highlighting
+    - check color in shader
+  - Disabled mode / no cam position
+
 ## Preview
 
 https://never-built.goettingen.xyz/future/index.html
