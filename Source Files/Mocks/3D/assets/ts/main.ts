@@ -3,7 +3,9 @@
 import { loadOrParse } from "./base-map";
 import { initMap } from "./3d-map";
 import * as maplibregl from "maplibre-gl";
+import type { LngLatLike } from "maplibre-gl";
 import type { CameraPositionConfig } from "./3d-map";
+import type { TileMetadata } from "./@types/tile-metadata.d.ts";
 import { center as turfCenter, points } from "@turf/turf";
 
 declare global {
@@ -12,7 +14,7 @@ declare global {
   }
 }
 
-const debug = false;
+const debug = true;
 const elementId = "map";
 
 const tileSource = "Blauer-Turm";
@@ -32,9 +34,9 @@ const initialPos: CameraPositionConfig = {
   roll: 0
 };
 
-const metaObj = await loadOrParse(metaJson);
+const metaObj = (await loadOrParse(metaJson)) as TileMetadata;
 let centerObj: LngLatLike;
-if (metaObj?.bounds) {
+if (metaObj && typeof metaObj.bounds === "string") {
   const bboxObj = metaObj.bounds.split(",").slice(0, 4).map(Number);
   const c = turfCenter(
     points([
@@ -51,8 +53,8 @@ if (metaObj?.bounds) {
 let map: maplibregl.Map;
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    map = initMap(
+  document.addEventListener("DOMContentLoaded", async () => {
+    map = await initMap(
       elementId,
       undefined,
       tilesUrl,
@@ -74,9 +76,12 @@ if (document.readyState === "loading") {
       initialPos,
       topoRasterTiles
     );
+    if (debug) {
+      window.map = map;
+    }
   });
 } else {
-  map = initMap(
+  map = await initMap(
     elementId,
     undefined,
     tilesUrl,
@@ -98,8 +103,7 @@ if (document.readyState === "loading") {
     initialPos,
     topoRasterTiles
   );
-}
-
-if (debug) {
-  (window as Window).map = map;
+  if (debug) {
+    window.map = map;
+  }
 }

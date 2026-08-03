@@ -1,3 +1,6 @@
+// assets/ts/base-map.ts
+import type { GeoJSON } from "geojson";
+
 type Lang = "de" | "en";
 
 interface ToolTipStrings {
@@ -75,6 +78,7 @@ export function loadOrParse(str: string | object): object | Promise<object | voi
   return obj;
 }
 
+/*
 export function loadGeoJSON(url: string): void {
   fetch(url)
     .then(function (response) {
@@ -101,3 +105,4 @@ export function loadGeoJSON(url: string): void {
       console.log("Could not read data from URL.");
     });
 }
+*/

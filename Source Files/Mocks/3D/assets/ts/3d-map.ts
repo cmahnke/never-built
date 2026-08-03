@@ -13,6 +13,8 @@ import chroma from "chroma-js";
 import i18next from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { UAParser } from "ua-parser-js";
+import type { GeoJSON } from "geojson";
+import type { MapOptions } from "maplibre-gl";
 
 import type { LngLatLike, RasterDEMSourceSpecification, StyleSpecification } from "maplibre-gl";
 
@@ -22,6 +24,13 @@ export interface CameraPositionConfig {
   bearing: number;
   pitch: number;
   roll: number;
+}
+
+type BBoxInput = number[] | number[][] | string;
+interface MarkerOptions {
+  src: string;
+  scale?: number;
+  anchor?: [number, number];
 }
 
 export type FeatureTagValue = string | number | boolean | null;
@@ -58,7 +67,7 @@ const BASE_TERRAIN_EXAGGERATION = 1;
 
 export async function initMap(
   container: string | HTMLElement,
-  geojson?: string | FeatureCollection,
+  geojson?: string | GeoJSON.FeatureCollection,
   source?: string,
   styleJson?: string | StyleSpecification,
   bbox?: string | BBoxInput,
@@ -79,7 +88,7 @@ export async function initMap(
   topoRasterTiles?: string
 ): Promise<maplibregl.Map> {
   const zoom = 17;
-  const maxPitch = 75;
+  const maxPitch = disabled ? 0 : 75;
 
   // Background
   const fog = "#dcdbdf";
@@ -88,12 +97,13 @@ export async function initMap(
 
   const hasTerrain = topoRasterTiles !== undefined;
 
-  let mapOptions = {
+  let mapOptions: MapOptions = {
+    container: container,
     canvasContextAttributes: { antialias: true }
   };
 
-  if (new UAParser().getOS() === "iOS") {
-    mapOptions = { antialias: false };
+  if (new UAParser().getOS() == "iOS") {
+    mapOptions.canvasContextAttributes.antialias = false;
   }
 
   if (initialPos !== undefined) {
@@ -155,12 +165,12 @@ export async function initMap(
     centerObj = [(w + e) / 2, (s + n) / 2];
   }
 
-  if (initialPos === undefined) {
+  if (initialPos === undefined || disabled) {
     initialPos = {
-      cameraLngLat: centerObj,
-      cameraAlt: 100,
-      bearing: -10,
-      pitch: 75,
+      cameraLngLat: initialPos?.cameraLngLat || centerObj,
+      cameraAlt: initialPos?.cameraAlt || 500,
+      bearing: 0,
+      pitch: 0,
       roll: 0
     };
   }
@@ -189,7 +199,7 @@ export async function initMap(
   if (BUILDING_LAYER_NAME !== undefined && BUILDING_LAYER_NAME != "") {
     style.layers.forEach((layer) => {
       if (layer["source-layer"] === "building") {
-        layer["source-layer"] = "projektemacher-building";
+        layer["source-layer"] = BUILDING_LAYER_NAME;
       }
     });
   }
@@ -247,6 +257,9 @@ export async function initMap(
     zoom,
     minZoom,
     maxPitch: maxPitch,
+    dragRotate: !disabled,
+    touchPitch: !disabled,
+    pitchWithRotate: !disabled,
     attributionControl: false,
     calculateTileZoomFunction: (requestedZoom) => {
       return Math.min(requestedZoom, 15);
@@ -317,13 +330,45 @@ export async function initMap(
 
     map.getContainer().appendChild(debugEl);
 
+    function getCurrentCameraPosition(m: maplibregl.Map): CameraPositionConfig {
+      const transform = (m as any).transform;
+      const pitch = m.getPitch();
+      let altitude = 0;
+
+      if (transform && transform.cameraToCenterDistance !== undefined && transform.worldSize !== undefined) {
+        const pitchInRadians = pitch * (Math.PI / 180);
+        const altitudeWithoutScaling = Math.cos(pitchInRadians) * transform.cameraToCenterDistance;
+        const earthCircAtLat = 2 * Math.PI * 6378137 * Math.abs(Math.cos(m.getCenter().lat * (Math.PI / 180)));
+        const verticalScaleConstant = transform.worldSize / earthCircAtLat;
+        altitude = altitudeWithoutScaling / verticalScaleConstant;
+      } else if ((m as any).getFreeCameraOptions) {
+        const camera = (m as any).getFreeCameraOptions();
+        if (camera && camera.position) {
+          altitude = camera.position.toAltitude();
+        }
+      }
+
+      // @ts-ignore
+      const roll = typeof m.getRoll === "function" ? m.getRoll() : 0;
+
+      return {
+        cameraLngLat: [m.getCenter().lng, m.getCenter().lat],
+        cameraAlt: altitude,
+        pitch,
+        bearing: m.getBearing(),
+        roll
+      };
+    }
+
     const updateDebugOverlay = (): void => {
       const c = map.getCenter();
+      const camPos = getCurrentCameraPosition(map);
       debugEl.textContent =
         `zoom:    ${map.getZoom().toFixed(2)}\n` +
         `pitch:   ${map.getPitch().toFixed(1)}\n` +
         `bearing: ${map.getBearing().toFixed(1)}\n` +
-        `center:  ${c.lng.toFixed(5)}, ${c.lat.toFixed(5)}`;
+        `center:  ${c.lng.toFixed(5)}, ${c.lat.toFixed(5)}\n` +
+        `camPos: ${JSON.stringify(camPos)}`;
     };
 
     updateDebugOverlay();
@@ -669,7 +714,6 @@ export async function initMap(
     treeLayer.debug = debug;
     treeLayer.terrainExaggeration = BASE_TERRAIN_EXAGGERATION;
     treeLayer.minzoom = 13;
-    treeLayer.enableSanityTriangle = true;
     treeLayer.addTo(map);
 
     map.addLayer(architectureModelBWLayer);
@@ -741,7 +785,7 @@ export async function initMap(
   return map;
 }
 
-export function highlight(map: MapLibreMap) {
+export function highlight(map: maplibregl.Map) {
   setLayerColorByTag(map, BUILDING_LAYER_NAME, MARKER_TAG, HIGHLIGHT_COLOR);
 }
 

@@ -14,7 +14,8 @@
     "typeRoots": [],
     "target": "es2022",
     "skipLibCheck": true,
-    "lib": ["dom", "es2022"]
+    "lib": ["dom", "es2022"],
+    "typeRoots": ["node_modules/@types", "3D/assets/ts/@types"]
   },
   "include": ["3D/assets/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts", "dist/**/*"]

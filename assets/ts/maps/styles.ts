@@ -4,7 +4,13 @@ import type {
   StyleSpecification,
   VectorSourceSpecification,
   BackgroundLayerSpecification,
+  FillLayerSpecification,
+  LineLayerSpecification,
+  CircleLayerSpecification,
+  LayerSpecification,
 } from 'maplibre-gl';
+
+import { absUrl } from './base-map';
 
 export const defaultSprites = "/map-styles/sprite";
 export const defaultFonts = "/css/fonts/{font-family}.css";

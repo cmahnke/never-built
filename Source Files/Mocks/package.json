@@ -32,6 +32,8 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@fontsource-utils/scss": "^0.2.4",
+    "@types/chroma-js": "^3.1.2",
+    "@types/geojson": "^7946.0.16",
     "@types/node": "^26.1.2",
     "@types/three": "^0.185.3",
     "eslint": "^10.8.0",

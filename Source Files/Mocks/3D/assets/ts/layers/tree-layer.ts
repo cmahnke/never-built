@@ -10,7 +10,7 @@ import type {
   FilterSpecification
 } from "maplibre-gl";
 import { MercatorCoordinate } from "maplibre-gl";
-
+import type { Geometry } from "geojson";
 // ─── Geo helpers ────────────────────────────────────────────────────────────
 
 const EARTH_RADIUS_METERS = 6371000;
