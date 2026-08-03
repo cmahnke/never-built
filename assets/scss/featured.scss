@@ -18,6 +18,10 @@ $scale-factor: 1.05 !default;
     .featured-entry-image {
       max-width: 99%;
     }
+
+    .featured-image:has(.ai-image):after {
+      margin-right: calc(.9% + .4rem);
+    }
   }
 
   .glide__arrow {
