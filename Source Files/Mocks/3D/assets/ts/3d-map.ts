@@ -14,9 +14,8 @@ import i18next from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { UAParser } from "ua-parser-js";
 import type { GeoJSON } from "geojson";
-import type { MapOptions } from "maplibre-gl";
 
-import type { LngLatLike, RasterDEMSourceSpecification, StyleSpecification } from "maplibre-gl";
+import type { MapOptions, LngLatLike, RasterDEMSourceSpecification, StyleSpecification } from "maplibre-gl";
 
 export interface CameraPositionConfig {
   cameraLngLat: LngLatLike;
@@ -131,9 +130,9 @@ export async function initMap(
 
   let centerObj: LngLatLike;
 
-  let geojsonObj: any;
+  let geojsonObj: GeoJSON;
   if (geojson !== undefined) {
-    geojsonObj = typeof geojson === "string" ? await loadOrParse(geojson as string) : geojson;
+    geojsonObj = typeof geojson === "string" ? ((await loadOrParse(geojson as string)) as GeoJSON) : (geojson as GeoJSON);
   }
 
   if (centerPoint !== undefined) {

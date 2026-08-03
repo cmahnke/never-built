@@ -2,6 +2,7 @@
 
 import type { Map as MapLibreMap, ExpressionSpecification } from "maplibre-gl";
 import type { FeatureTag, FeatureTagValue } from "./3d-map";
+import type { AllPaintProperties } from "@maplibre/maplibre-gl-style-spec";
 
 export interface SetLayerColorOptions {
   readonly paintProperty?: string;
@@ -100,7 +101,7 @@ function resolveOriginalColor(
   paintProperty: string,
   fallbackColor: string | undefined
 ): StyleColorValue {
-  const currentValue: unknown = map.getPaintProperty(layerName, paintProperty);
+  const currentValue: unknown = map.getPaintProperty(layerName, paintProperty as keyof AllPaintProperties);
 
   if (isStyleColorValue(currentValue)) {
     return currentValue;
@@ -167,7 +168,7 @@ export function setLayerColorByTag(
 
   const expression = buildCaseExpression(nextRules, original);
 
-  map.setPaintProperty(layerName, paintProperty, expression);
+  map.setPaintProperty(layerName, paintProperty as keyof AllPaintProperties, expression);
 
   layerStore.set(paintProperty, {
     original,
@@ -195,7 +196,7 @@ export function clearLayerColorByTag(map: MapLibreMap, layerName: string, paintP
       return;
     }
 
-    map.setPaintProperty(layerName, paintProperty, entry.original);
+    map.setPaintProperty(layerName, paintProperty as keyof AllPaintProperties, entry.original);
 
     layerStore.delete(paintProperty);
 
@@ -209,7 +210,7 @@ export function clearLayerColorByTag(map: MapLibreMap, layerName: string, paintP
   const entries = Array.from(layerStore.entries());
 
   for (const [property, entry] of entries) {
-    map.setPaintProperty(layerName, property, entry.original);
+    map.setPaintProperty(layerName, property as keyof AllPaintProperties, entry.original);
     layerStore.delete(property);
   }
 

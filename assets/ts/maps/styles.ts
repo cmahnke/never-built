@@ -9,6 +9,7 @@ import type {
   CircleLayerSpecification,
   LayerSpecification,
 } from 'maplibre-gl';
+//import type { StyleSpecification } from "@maplibre/maplibre-gl-style-spec";
 
 import { absUrl } from './base-map';
 
@@ -56,6 +57,11 @@ interface StyleMetadata {
   [key: string]: unknown;
 }
 
+export interface ExtendedStyle extends StyleSpecification {
+  "ol:webfonts"?: string;
+  [key: string]: unknown;
+}
+
 interface Style {
   sources: Record<string, StyleSource>;
   layers: StyleLayer[];
@@ -66,6 +72,7 @@ interface Style {
   sprite?: string | null;
   "ol:webfonts"?: string;
   [key: string]: unknown;
+  version: number;
 }
 
 export function updateStyle(
@@ -167,6 +174,13 @@ export function updateStyle(
   };
 
   style.sources[sourceKey] = source;
+
+  /*
+  if (!("version" in style)) {
+    style.version =8;
+  }
+  */
+
   return style;
 }
 

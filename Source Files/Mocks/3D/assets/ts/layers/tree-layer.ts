@@ -10,6 +10,7 @@ import type {
   FilterSpecification
 } from "maplibre-gl";
 import { MercatorCoordinate } from "maplibre-gl";
+import { GeoJSON } from "geojson";
 // ─── Geo helpers ────────────────────────────────────────────────────────────
 
 const EARTH_RADIUS_METERS = 6371000;
@@ -478,11 +479,11 @@ export class TreeLayer implements CustomLayerInterface {
 
         if (geomType === "Point") {
           if (this.treeCache.has(key)) continue;
-          const [lng, lat] = f.geometry.coordinates as [number, number];
+          const [lng, lat] = (f.geometry as GeoJSON.Point).coordinates as [number, number];
           this.treeCache.set(key, { lng, lat, heightMeters: this.resolveHeightMeters(f.properties) });
           addedThisCall++;
         } else if (geomType === "MultiPoint") {
-          const coordsArr = f.geometry.coordinates as Array<[number, number]>;
+          const coordsArr = (f.geometry as GeoJSON.MultiPoint).coordinates as Array<[number, number]>;
           for (let i = 0; i < coordsArr.length; i++) {
             if (addedThisCall >= perCallBudget) break;
             const subKey = `${key}:${i}`;
@@ -494,12 +495,12 @@ export class TreeLayer implements CustomLayerInterface {
         } else if (geomType === "LineString") {
           addedThisCall += this.addRowTrees(
             key,
-            f.geometry.coordinates as Array<[number, number]>,
+            (f.geometry as GeoJSON.LineString).coordinates as Array<[number, number]>,
             f.properties,
             perCallBudget - addedThisCall
           );
         } else if (geomType === "MultiLineString") {
-          const lines = f.geometry.coordinates as Array<Array<[number, number]>>;
+          const lines = (f.geometry as GeoJSON.MultiLineString).coordinates as Array<Array<[number, number]>>;
           for (let li = 0; li < lines.length; li++) {
             if (addedThisCall >= perCallBudget) break;
             addedThisCall += this.addRowTrees(`${key}:${li}`, lines[li], f.properties, perCallBudget - addedThisCall);

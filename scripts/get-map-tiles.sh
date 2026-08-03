@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-#STYLE_URL=https://github.com/openmaptiles/maptiler-basic-gl-style/archive/refs/tags/v1.10.tar.gz
 STYLE_URL=https://github.com/openmaptiles/maptiler-toner-gl-style/archive/refs/tags/v1.0.tar.gz
 STYLE_DIR=./static/map-styles
 TILES_DIR=./static/map
