@@ -3,6 +3,7 @@
 import * as maplibregl from "maplibre-gl";
 import { center as turfCenter, points } from "@turf/turf";
 import { loadOrParse, absUrl } from "./base-map";
+import { setLayerColorByTag } from "./maplibregl-util";
 import { TreeLayer } from "./layers/tree-layer";
 import { ArchitectureModelBWLayer } from "./layers/architecture-model-bw-layer";
 import { updateStyle, setupDefaultStyle, defaultSprites, getSourceName } from "./styles";
@@ -23,6 +24,12 @@ export interface CameraPositionConfig {
   roll: number;
 }
 
+export type FeatureTagValue = string | number | boolean | null;
+export interface FeatureTag {
+  name: string;
+  value: FeatureTagValue;
+}
+
 const translations = {
   en: {
     map: {
@@ -37,7 +44,17 @@ const translations = {
 };
 
 /* Defaults */
-const buildingLayerName = "projektemacher-building";
+export const BUILDING_LAYER_NAME = "projektemacher-building";
+export const MARKER_TAG: FeatureTag = { name: "meta", value: "never-built" };
+const HIGHLIGHT_COLOR = "#ff00ff";
+// Camera settings
+const CAMERA_FOCAL_LENGTH_MM = 50;
+const CAMERA_SENSOR_HEIGHT_MM = 24;
+// Overhead / map mode
+const OVERHEAD_THRESHOLD = 5;
+const TRANSITION_MS = 600;
+// Terrain
+const BASE_TERRAIN_EXAGGERATION = 1;
 
 export async function initMap(
   container: string | HTMLElement,
@@ -69,12 +86,14 @@ export async function initMap(
   const sky = "#87ceeb";
   const blend = 0.5;
 
+  const hasTerrain = topoRasterTiles !== undefined;
+
   let mapOptions = {
     canvasContextAttributes: { antialias: true }
   };
 
   if (new UAParser().getOS() === "iOS") {
-    mapOptions = {};
+    mapOptions = { antialias: false };
   }
 
   if (initialPos !== undefined) {
@@ -90,29 +109,28 @@ export async function initMap(
 
   const buildingFillColor = ["case", ["has", "color"], ["get", "color"], "#aaa"];
 
-  const CAMERA_FOCAL_LENGTH_MM = 50;
-  const CAMERA_SENSOR_HEIGHT_MM = 24;
-
   function focalLengthToVerticalFovDeg(focalLengthMm: number, sensorHeightMm = CAMERA_SENSOR_HEIGHT_MM): number {
     const fovRad = 2 * Math.atan(sensorHeightMm / (2 * focalLengthMm));
     return (fovRad * 180) / Math.PI;
   }
 
   const CAMERA_VERTICAL_FOV_DEG = focalLengthToVerticalFovDeg(CAMERA_FOCAL_LENGTH_MM);
+  const DEFAULT_VERTICAL_FOV_DEG = 36.86989764584402; // MapLibre default FOV
 
   const skyColors = chroma.scale([fog, sky]).mode("lab").colors(6);
 
   let centerObj: LngLatLike;
 
+  let geojsonObj: any;
+  if (geojson !== undefined) {
+    geojsonObj = typeof geojson === "string" ? await loadOrParse(geojson as string) : geojson;
+  }
+
   if (centerPoint !== undefined) {
     centerObj = (await loadOrParse(centerPoint as string)) as LngLatLike;
-  } else if (geojsonObj !== undefined && geojsonObj.features.length !== 0) {
+  } else if (geojsonObj !== undefined && geojsonObj.features?.length !== 0) {
     centerObj = turfCenter(geojsonObj as any).geometry.coordinates as [number, number];
-  } else if (bboxObj !== undefined && bboxObj.length !== 0) {
-    const [[w, s], [e, n]] = bboxObj;
-    centerObj = [(w + e) / 2, (s + n) / 2];
   } else {
-    console.warn("Can't create center from features or bbox");
     centerObj = [0, 0];
   }
 
@@ -130,6 +148,11 @@ export async function initMap(
     }
   } else {
     throw new Error("No BBox URL!");
+  }
+
+  if (centerObj[0] === 0 && centerObj[1] === 0 && bboxObj.length !== 0) {
+    const [[w, s], [e, n]] = bboxObj;
+    centerObj = [(w + e) / 2, (s + n) / 2];
   }
 
   if (initialPos === undefined) {
@@ -163,7 +186,7 @@ export async function initMap(
     style = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }
 
-  if (buildingLayerName !== undefined && buildingLayerName != "") {
+  if (BUILDING_LAYER_NAME !== undefined && BUILDING_LAYER_NAME != "") {
     style.layers.forEach((layer) => {
       if (layer["source-layer"] === "building") {
         layer["source-layer"] = "projektemacher-building";
@@ -310,7 +333,7 @@ export async function initMap(
   const treeLayer = new TreeLayer();
 
   const BASE_BUILDING_FILTER: maplibregl.FilterSpecification = ["!=", ["get", "hide_3d"], true];
-  const NEVER_BUILT_FILTER: maplibregl.FilterSpecification = ["==", ["get", "meta"], "never-built"];
+  const NEVER_BUILT_FILTER: maplibregl.FilterSpecification = ["==", ["get", MARKER_TAG.name], MARKER_TAG.value];
 
   function applyBuildingFilter(m: maplibregl.Map, onlyNeverBuilt: boolean): void {
     const filter: maplibregl.FilterSpecification = onlyNeverBuilt
@@ -324,7 +347,9 @@ export async function initMap(
       m.setFilter("building-outline", filter);
     }
 
-    treeLayer.setOpacity(onlyNeverBuilt ? 0 : 1);
+    const treeOpacity = onlyNeverBuilt ? 0 : tween.value;
+    treeLayer.setOpacity(treeOpacity);
+    m.triggerRepaint();
   }
 
   const neverBuiltControlEl = document.createElement("div");
@@ -359,9 +384,6 @@ export async function initMap(
     }
   }
 
-  const OVERHEAD_THRESHOLD = 5;
-  const TRANSITION_MS = 600;
-
   const tween = {
     value: 1,
     target: 1,
@@ -370,27 +392,59 @@ export async function initMap(
     raf: 0
   };
 
-  const BASE_TERRAIN_EXAGGERATION = 1;
+  const labelLayerIds: { id: string; type: string }[] = [];
 
   function easeCubic(t: number): number {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
   function applyTweenValue(m: maplibregl.Map, v: number): void {
+    // v goes from 1 (side-view / 3D) to 0 (top-down / flat)
+
+    // 1. Fade out 3D buildings (leave building-outline visible for top-down view)
     if (m.getLayer("3d-buildings")) {
       m.setPaintProperty("3d-buildings", "fill-extrusion-opacity", v);
     }
 
-    treeLayer.setOpacity(v);
-    architectureModelBWLayer.opacity = v;
+    // Combine tween value with the never-built checkbox state for trees
+    const treeOpacity = neverBuiltCheckbox?.checked ? 0 : v;
+    treeLayer.setOpacity(treeOpacity);
+
+    // 2. Phase out the architecture-model-bw-layer shader layer
+    architectureModelBWLayer.opacity = v <= 0.01 ? 0 : v;
+
+    // Toggle visibility to ensure the layer is completely disabled at top-down view
+    if (architectureModelBWLayer.id && m.getLayer(architectureModelBWLayer.id)) {
+      m.setLayoutProperty(architectureModelBWLayer.id, "visibility", v <= 0.01 ? "none" : "visible");
+    }
+
+    // 3. Fade in street names (labels)
+    const labelOpacity = 1 - v;
+    for (const { id, type } of labelLayerIds) {
+      if (m.getLayer(id)) {
+        if (type === "symbol") {
+          m.setPaintProperty(id, "text-opacity", labelOpacity);
+          m.setPaintProperty(id, "icon-opacity", labelOpacity);
+        } else {
+          m.setPaintProperty(id, "opacity", labelOpacity);
+        }
+      }
+    }
+
+    // 4. Reset focal length to default (MapLibre default is ~36.87 degrees)
+    const currentFov = CAMERA_VERTICAL_FOV_DEG + (DEFAULT_VERTICAL_FOV_DEG - CAMERA_VERTICAL_FOV_DEG) * (1 - v);
+    m.setVerticalFieldOfView(currentFov);
+
     m.triggerRepaint();
   }
 
   function onTweenComplete(m: maplibregl.Map, flat: boolean): void {
-    if (m.getLayer("hills")) {
-      m.setLayoutProperty("hills", "visibility", flat ? "none" : "visible");
+    if (hasTerrain) {
+      if (m.getLayer("hills")) {
+        m.setLayoutProperty("hills", "visibility", flat ? "none" : "visible");
+      }
+      setTerrainFlattened(m, flat);
     }
-    setTerrainFlattened(m, flat);
   }
 
   function startTween(m: maplibregl.Map, target: number): void {
@@ -406,7 +460,7 @@ export async function initMap(
     tween.startVal = tween.value;
     tween.startTime = performance.now();
 
-    if (m.getLayer("hills")) {
+    if (hasTerrain && m.getLayer("hills")) {
       m.setLayoutProperty("hills", "visibility", "visible");
     }
 
@@ -517,12 +571,14 @@ export async function initMap(
   }
 
   function prewarmFlatTerrainTile(map: maplibregl.Map): void {
-    if (!map.getSource("terrainSource")) return;
+    if (!hasTerrain || !map.getSource("terrainSource")) return;
     const estimate = Math.round(map.getCameraTargetElevation() / FLAT_EXAGGERATION);
     void getFlatTileBuffer(estimate);
   }
 
   function setTerrainFlattened(map: maplibregl.Map, flattened: boolean): void {
+    if (!hasTerrain) return;
+
     const wasClamped = map.getCenterClampedToGround();
     map.setCenterClampedToGround(false);
 
@@ -550,7 +606,7 @@ export async function initMap(
   }
 
   map.on("load", () => {
-    if (topoRasterTiles !== undefined) {
+    if (hasTerrain) {
       map.addSource("terrainSource", terrainSourceDef);
       map.addSource("hillshadeSource", terrainSourceDef);
 
@@ -580,7 +636,7 @@ export async function initMap(
     map.addLayer({
       id: "3d-buildings",
       source: sourceName,
-      "source-layer": buildingLayerName,
+      "source-layer": BUILDING_LAYER_NAME,
       type: "fill-extrusion",
       minzoom: 13,
       filter: BASE_BUILDING_FILTER,
@@ -597,7 +653,7 @@ export async function initMap(
       id: "building-outline",
       type: "line",
       source: sourceName,
-      "source-layer": buildingLayerName,
+      "source-layer": BUILDING_LAYER_NAME,
       minzoom: 13,
       filter: BASE_BUILDING_FILTER,
       paint: { "line-color": "#333", "line-width": 0.6, "line-opacity": 0.8 }
@@ -624,6 +680,13 @@ export async function initMap(
     architectureModelBWLayer.shadowTone = [0.03, 0.03, 0.05];
     architectureModelBWLayer.antialias = true;
     map.triggerRepaint();
+
+    // Populate label IDs for street names fading logic
+    style.layers.forEach((layer) => {
+      if (layer.id.includes("label")) {
+        labelLayerIds.push({ id: layer.id, type: layer.type });
+      }
+    });
 
     const startFlat = isOverhead(map);
     tween.value = startFlat ? 0 : 1;
@@ -676,6 +739,10 @@ export async function initMap(
   }
 
   return map;
+}
+
+export function highlight(map: MapLibreMap) {
+  setLayerColorByTag(map, BUILDING_LAYER_NAME, MARKER_TAG, HIGHLIGHT_COLOR);
 }
 
 export default initMap;

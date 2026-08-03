@@ -4,6 +4,14 @@ import type { CustomLayerInterface, Map as MapLibreMap } from "maplibre-gl";
 
 type GL = WebGLRenderingContext | WebGL2RenderingContext;
 
+// Add pure red and pure blue to the highlight list (normalized 0.0 to 1.0)
+/*
+bwLayer.highlightColors = [
+  [1.0, 0.0, 0.0],
+  [0.0, 0.0, 1.0]
+];
+*/
+
 const VERTEX_SRC = /* glsl */ `
   attribute vec2 a_position;
   varying vec2 v_uv;
@@ -14,7 +22,7 @@ const VERTEX_SRC = /* glsl */ `
 `;
 
 const FRAGMENT_SRC = /* glsl */ `
-  precision mediump float;
+  precision highp float;
 
   uniform sampler2D u_scene;
   uniform vec2  u_resolution;
@@ -33,6 +41,12 @@ const FRAGMENT_SRC = /* glsl */ `
   uniform vec3  u_paperTone;
   uniform vec3  u_shadowTone;
 
+  // ── Highlighting Uniforms ──
+  const int MAX_HIGHLIGHT_COLORS = 8;
+  uniform vec3 u_highlightColors[MAX_HIGHLIGHT_COLORS];
+  uniform int u_highlightCount;
+  uniform float u_highlightThreshold;
+
   varying vec2 v_uv;
 
   const vec3 LUMA = vec3(0.299, 0.587, 0.114);
@@ -46,11 +60,6 @@ const FRAGMENT_SRC = /* glsl */ `
   }
 
   // ── FXAA (edge-directed anti-aliasing) ─────────────────────────────────
-  // Standard NVIDIA-style FXAA "lite": detects the direction of highest
-  // local contrast and blends along it. Cheap (5–9 taps), no extra
-  // render targets needed, works great as a pre-pass before B/W tone
-  // mapping and edge-darkening, which would otherwise amplify jaggies
-  // coming from vector-rendered building/road geometry.
   vec3 fxaa(sampler2D tex, vec2 uv, vec2 texel) {
     vec3 rgbNW = texture2D(tex, uv + vec2(-1.0, -1.0) * texel).rgb;
     vec3 rgbNE = texture2D(tex, uv + vec2( 1.0, -1.0) * texel).rgb;
@@ -92,18 +101,14 @@ const FRAGMENT_SRC = /* glsl */ `
     return (lumaB < lumaMin || lumaB > lumaMax) ? rgbA : rgbB;
   }
 
-  // Cheap weighted box blur, radius in texels. Used only for the
-  // fake tilt-shift effect (radius scales with distance from the
-  // horizontal center band, like a miniature/macro photo).
   vec3 blurredColor(vec2 uv, vec2 texel, float radius) {
-    if (radius < 0.001) {
-      return u_antialias > 0.5 ? fxaa(u_scene, uv, texel) : texture2D(u_scene, uv).rgb;
-    }
     vec3 sum = vec3(0.0);
     float total = 0.0;
-    for (int x = -2; x <= 2; x++) {
-      for (int y = -2; y <= 2; y++) {
-        vec2 o = vec2(float(x), float(y));
+
+    // FIX 3: Start loops at 0 to avoid iOS ANGLE compiler bugs with negative indices
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 5; j++) {
+        vec2 o = vec2(float(i - 2), float(j - 2));
         float w = max(1.0 - length(o) / 3.0, 0.0);
         sum += texture2D(u_scene, uv + o * texel * radius).rgb * w;
         total += w;
@@ -116,19 +121,29 @@ const FRAGMENT_SRC = /* glsl */ `
     vec2 texel = 1.0 / u_resolution;
     vec2 centered = v_uv - 0.5;
 
-    // ── Fake tilt-shift (sharp band across the middle, blurred top/bottom) ──
     float bandDist = abs(centered.y) * 2.0;
     float blurRadius = u_blurStrength * bandDist * 4.0;
-    vec3 color = blurredColor(v_uv, texel, blurRadius);
 
-    // ── Grayscale ──
+    vec3 blurred = blurredColor(v_uv, texel, blurRadius);
+    vec3 sharp = u_antialias > 0.5 ? fxaa(u_scene, v_uv, texel) : texture2D(u_scene, v_uv).rgb;
+    vec3 color = mix(sharp, blurred, smoothstep(0.0, 0.01, blurRadius));
+
+    // ── Highlight Detection (Branchless for iOS performance) ──
+    float isHighlighted = 0.0;
+    for (int i = 0; i < MAX_HIGHLIGHT_COLORS; i++) {
+        // Mask out inactive colors to avoid matching uninitialized memory
+        float active = step(float(i) + 0.5, float(u_highlightCount));
+        float dist = distance(color.rgb, u_highlightColors[i]);
+        float match = step(dist, u_highlightThreshold) * active;
+        isHighlighted = max(isHighlighted, match);
+    }
+
+    // ── Grayscale & Contrast ──
     float lum = dot(color, LUMA);
-
-    // ── Contrast (S-curve around mid-grey) + brightness ──
     float c = (lum - 0.5) * u_contrast + 0.5 + u_brightness;
     c = clamp(c, 0.0, 1.0);
 
-    // ── Sobel edge detection → darken silhouette / cut-lines ──
+    // ── Sobel edge detection ──
     float tl = luma(v_uv + texel * vec2(-1.0,  1.0));
     float t  = luma(v_uv + texel * vec2( 0.0,  1.0));
     float tr = luma(v_uv + texel * vec2( 1.0,  1.0));
@@ -143,20 +158,21 @@ const FRAGMENT_SRC = /* glsl */ `
     float edge = clamp(sqrt(gx * gx + gy * gy), 0.0, 1.0);
 
     c = mix(c, c * (1.0 - u_edgeStrength), edge);
-
-    // ── Tone-map toward "matte plaster" palette instead of pure 0..1 grey ──
     vec3 toned = mix(u_shadowTone, u_paperTone, c);
+
+    // Mix toned grayscale with original color if highlighted
+    vec3 finalColor = mix(toned, color, isHighlighted);
 
     // ── Film grain ──
     vec2 grainUv = floor(v_uv * u_resolution / u_grainSize);
-    toned += (rand(grainUv) - 0.5) * u_grainAmount;
+    finalColor += (rand(grainUv) - 0.5) * u_grainAmount;
 
     // ── Vignette ──
     float dist = length(centered);
     float vig = smoothstep(u_vignetteInner, u_vignetteOuter, dist);
-    toned *= (1.0 - vig * u_vignetteStrength);
+    finalColor *= (1.0 - vig * u_vignetteStrength);
 
-    gl_FragColor = vec4(clamp(toned, 0.0, 1.0), 1.0);
+    gl_FragColor = vec4(clamp(finalColor, 0.0, 1.0), 1.0);
   }
 `;
 
@@ -209,6 +225,11 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
   paperTone: [number, number, number] = [0.98, 0.97, 0.94];
   shadowTone: [number, number, number] = [0.05, 0.05, 0.06];
 
+  // ── Highlighting parameters ────────────────────────────────────────────
+  // Colors must be normalized 0.0 - 1.0 (e.g., [1.0, 0.0, 0.0] for pure red)
+  highlightColors: [number, number, number][] = [];
+  highlightThreshold: number = 0.15; // Tolerance for color matching (0.0 - 1.0)
+
   private gl!: GL;
   private program!: WebGLProgram;
   private quadBuffer!: WebGLBuffer;
@@ -218,6 +239,31 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
   private texHeight = 0;
   private uniforms: Record<string, WebGLUniformLocation | null> = {};
   private startTime = performance.now();
+
+  addHighlightColor(color: string): this {
+    let hex = color.replace(/^#/, "").trim();
+
+    // Handle 3-digit hex (e.g., "F00" -> "FF0000")
+    if (hex.length === 3) {
+      hex = hex
+        .split("")
+        .map((c) => c + c)
+        .join("");
+    }
+
+    // Parse and normalize 6-digit hex to 0.0 - 1.0 range
+    if (hex.length === 6 && /^[0-9A-Fa-f]{6}$/.test(hex)) {
+      const r = parseInt(hex.substring(0, 2), 16) / 255;
+      const g = parseInt(hex.substring(2, 4), 16) / 255;
+      const b = parseInt(hex.substring(4, 6), 16) / 255;
+
+      this.highlightColors.push([r, g, b]);
+    } else {
+      console.warn(`[ArchitectureModelBWLayer] Invalid color format: "${color}". Expected hex (e.g., "#FF0000" or "F00").`);
+    }
+
+    return this;
+  }
 
   onAdd(_map: MapLibreMap, gl: GL): void {
     this.gl = gl;
@@ -250,7 +296,10 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
       "u_blurStrength",
       "u_antialias",
       "u_paperTone",
-      "u_shadowTone"
+      "u_shadowTone",
+      "u_highlightCount",
+      "u_highlightThreshold",
+      "u_highlightColors"
     ];
     for (const name of names) {
       this.uniforms[name] = gl.getUniformLocation(this.program, name);
@@ -269,19 +318,23 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
     const width = gl.drawingBufferWidth;
     const height = gl.drawingBufferHeight;
 
-    // ── Grab whatever has been rendered so far into a texture ───────────
+    if (width <= 0 || height <= 0) return;
+
     gl.bindTexture(gl.TEXTURE_2D, this.sceneTexture);
+
     if (width !== this.texWidth || height !== this.texHeight) {
-      gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, width, height, 0);
+      const isWebGL2 = typeof WebGL2RenderingContext !== "undefined" && gl instanceof WebGL2RenderingContext;
+      const internalFormat = isWebGL2 ? (gl as WebGL2RenderingContext).RGBA8 : gl.RGBA;
+      gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
       this.texWidth = width;
       this.texHeight = height;
-    } else {
-      gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
     }
 
-    // ── Save state we're about to touch ──────────────────────────────────
-    const prevDepthTest = gl.getParameter(gl.DEPTH_TEST);
-    const prevBlend = gl.getParameter(gl.BLEND);
+    gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
+
+    const prevDepthTest = gl.getParameter(gl.DEPTH_TEST) as boolean;
+    const prevBlend = gl.getParameter(gl.BLEND) as boolean;
     gl.disable(gl.DEPTH_TEST);
     gl.disable(gl.BLEND);
     gl.depthMask(false);
@@ -308,12 +361,28 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
     gl.uniform3f(this.uniforms.u_paperTone, ...this.paperTone);
     gl.uniform3f(this.uniforms.u_shadowTone, ...this.shadowTone);
 
+    // ── Highlighting Uniforms ──
+    const maxColors = 8;
+    const flatColors = new Float32Array(maxColors * 3);
+    const count = Math.min(this.highlightColors.length, maxColors);
+
+    for (let i = 0; i < count; i++) {
+      flatColors[i * 3] = this.highlightColors[i][0];
+      flatColors[i * 3 + 1] = this.highlightColors[i][1];
+      flatColors[i * 3 + 2] = this.highlightColors[i][2];
+    }
+
+    if (this.uniforms.u_highlightColors) {
+      gl.uniform3fv(this.uniforms.u_highlightColors, flatColors);
+    }
+    gl.uniform1i(this.uniforms.u_highlightCount, count);
+    gl.uniform1f(this.uniforms.u_highlightThreshold, this.highlightThreshold);
+
     gl.bindBuffer(gl.ARRAY_BUFFER, this.quadBuffer);
     gl.enableVertexAttribArray(this.posLoc);
     gl.vertexAttribPointer(this.posLoc, 2, gl.FLOAT, false, 0, 0);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-    // ── Restore state ─────────────────────────────────────────────────
     gl.depthMask(true);
     if (prevDepthTest) gl.enable(gl.DEPTH_TEST);
     if (prevBlend) gl.enable(gl.BLEND);

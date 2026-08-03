@@ -6,6 +6,12 @@ import * as maplibregl from "maplibre-gl";
 import type { CameraPositionConfig } from "./3d-map";
 import { center as turfCenter, points } from "@turf/turf";
 
+declare global {
+  interface Window {
+    map: maplibregl.Map;
+  }
+}
+
 const debug = false;
 const elementId = "map";
 
@@ -95,5 +101,5 @@ if (document.readyState === "loading") {
 }
 
 if (debug) {
-  (window as any).map = map;
+  (window as Window).map = map;
 }
