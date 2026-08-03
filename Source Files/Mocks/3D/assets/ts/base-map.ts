@@ -1,5 +1,4 @@
 // assets/ts/base-map.ts
-import type { GeoJSON } from "geojson";
 
 type Lang = "de" | "en";
 

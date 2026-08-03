@@ -1,7 +1,7 @@
 // assets/ts/3d-map.ts
 
 import * as maplibregl from "maplibre-gl";
-import { center as turfCenter, points } from "@turf/turf";
+import { center as turfCenter } from "@turf/turf";
 import { loadOrParse, absUrl } from "./base-map";
 import { setLayerColorByTag } from "./maplibregl-util";
 import { TreeLayer } from "./layers/tree-layer";
@@ -348,7 +348,7 @@ export async function initMap(
         }
       }
 
-      // @ts-ignore
+      // @ts-expect-error
       const roll = typeof m.getRoll === "function" ? m.getRoll() : 0;
 
       return {
@@ -699,7 +699,7 @@ export async function initMap(
       type: "line",
       source: sourceName,
       "source-layer": BUILDING_LAYER_NAME,
-      minzoom: 13,
+      minzoom: 14,
       filter: BASE_BUILDING_FILTER,
       paint: { "line-color": "#333", "line-width": 0.6, "line-opacity": 0.8 }
     });

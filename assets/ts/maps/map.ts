@@ -25,6 +25,8 @@ import type {
 import { bbox as turfBbox, center as turfCenter } from '@turf/turf';
 import type { Feature, FeatureCollection } from 'geojson';
 import { updateStyle, setupDefaultStyle, buildDefaultStyle, collectFontFamilies, fontFamilyToSlug, loadFontCss, preloadStyleFonts } from './styles';
+import { toolTips } from "./base-map";
+import type { ToolTipStrings } from "./base-map";
 
 setWorkerUrl('/js/maplibre-gl/maplibre-gl-worker.mjs');
 
@@ -81,33 +83,6 @@ interface MaplibreMapWithLegacyShim extends Map {
 
 type Lang = 'de' | 'en';
 
-interface ToolTipStrings {
-  zoomIn: string;
-  zoomOut: string;
-  fullscreen: string;
-  rotate: string;
-  rotateLeft: string;
-  rotateRight: string;
-}
-
-export const toolTips: Record<Lang, ToolTipStrings> = {
-  de: {
-    zoomIn: 'Vergrößern',
-    zoomOut: 'Verkleinern',
-    fullscreen: 'Vollbildansicht',
-    rotate: 'Rotation zurücksetzen',
-    rotateLeft: '90° nach links drehen',
-    rotateRight: '90° nach rechst drehen',
-  },
-  en: {
-    zoomIn: 'Zoom in',
-    zoomOut: 'Zoom out',
-    fullscreen: 'Toggle full-screen',
-    rotate: 'Reset rotation',
-    rotateLeft: 'Rotate 90° left',
-    rotateRight: 'Rotate 90° right',
-  },
-};
 
 export function getLang(): Lang {
   let lang = 'en';
