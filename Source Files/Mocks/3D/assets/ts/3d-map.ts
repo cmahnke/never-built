@@ -272,6 +272,7 @@ export async function projektemacher3DMap(
     ...mapOptions
   });
 
+  // @ts-expect-error This will report an error since TS handles `const` like a type decleration
   if (CAMERA_FOCAL_LENGTH_MM != 0) {
     map.setVerticalFieldOfView(CAMERA_VERTICAL_FOV_DEG);
     if (debug) {
@@ -353,7 +354,6 @@ export async function projektemacher3DMap(
         }
       }
 
-      // @ts-expect-error
       const roll = typeof m.getRoll === "function" ? m.getRoll() : 0;
 
       return {

@@ -74,7 +74,7 @@ $fullscreen-color: var(--base07);
 @import "term";
 @import "pagefind";
 @import "images";
-@import "maps/projektemacher"
+@import "maps/projektemacher";
 
 :where(:focus-visible) {
     outline: .1875rem dashed #000;
