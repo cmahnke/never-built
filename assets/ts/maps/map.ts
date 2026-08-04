@@ -563,6 +563,27 @@ export async function projektemacherMap(
     styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }
 
+  // TODO: Fix building outline here
+  styleObj.layers.forEach((layer: StyleLayer, index: number) => {
+    if (layer.id === "building_pattern") {
+      styleObj.layers[index] = {
+        ...layer,
+        paint: {
+          ...layer.paint,
+          "fill-outline-color": {
+            base: 1,
+            stops: [
+              [14, "rgba(0, 0, 0, 0)"],   // Disabled at zoom 14
+              [15, "rgba(0, 0, 0, 1)"] // Shown above zoom 14
+            ]
+          }
+        }
+      }
+    }
+  });
+
+  console.log(styleObj);
+
   // Preload every web font referenced by the style's symbol layers BEFORE
   // creating the map, so text renders correctly from the first frame
   // instead of relying on MapLibre's per-glyph local-render fallback.
