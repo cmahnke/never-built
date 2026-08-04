@@ -1,7 +1,7 @@
 // assets/ts/main.ts
 
 import { loadOrParse } from "./base-map";
-import { initMap } from "./3d-map";
+import { projektemacher3DMap } from "./3d-map";
 import * as maplibregl from "maplibre-gl";
 import type { LngLatLike } from "maplibre-gl";
 import type { CameraPositionConfig } from "./3d-map";
@@ -61,7 +61,7 @@ if (uap.getDevice().is("mobile")) {
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", async () => {
-    map = await initMap(
+    map = await projektemacher3DMap(
       elementId,
       undefined,
       tilesUrl,
@@ -88,7 +88,7 @@ if (document.readyState === "loading") {
     }
   });
 } else {
-  map = await initMap(
+  map = await projektemacher3DMap(
     elementId,
     undefined,
     tilesUrl,

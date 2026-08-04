@@ -67,7 +67,7 @@ const TRANSITION_MS = 600;
 // Terrain
 const BASE_TERRAIN_EXAGGERATION = 1;
 
-export async function initMap(
+export async function projektemacher3DMap(
   container: string | HTMLElement,
   geojson?: string | GeoJSON.FeatureCollection,
   source?: string,
@@ -891,4 +891,4 @@ export function highlight(map: maplibregl.Map) {
   }
 }
 
-export default initMap;
+export default projektemacher3DMap;

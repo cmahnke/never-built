@@ -147,10 +147,32 @@
   box-sizing: border-box;
 
   .maplibregl-ctrl-attrib-inner {
-    margin-right: calc(1.375em + (.3ex  * 2));
-    height: 1.375em;
+    margin-right: calc(1.375rem + (.3ex  * 2));
+    text-align: end;
+    height: 1.375rem;
     align-content: center;
     padding-left: .2rem;
+    min-height: 1.375rem;
+
+    @media (max-width: 67.5em) {
+      font-size: .8rem;
+    }
+
+    @media (max-width: 55em) {
+      font-size: .6rem;
+    }
+
+    @media (max-width: 28em) {
+      font-size: .4rem;
+    }
+
+    a {
+      color: #000;
+
+      &:link {
+        text-decoration: none;
+      }
+    }
   }
 
   &.maplibregl-compact,
@@ -218,8 +240,8 @@
       bottom: 0;
       left: 0;
       right: 0;
+      color: #000;
     }
-
   }
 
   button.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon {
