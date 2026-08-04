@@ -3,7 +3,7 @@ import {setupBook} from './scrollify';
 import Glide from '@glidejs/glide'
 import {imageViewer} from './image-viewer';
 import {detect} from 'detect-browser';
-//import { projektemacherMap } from '../ts/maps/projektemacher-map';
+import { projektemacherMap } from '../ts/maps/map';
 
 const defaultMapFont = "Roboto Mono Variable";
 const animatedLinkColor = ["black", "#000", "#000000", "rgb(0, 0, 0)"]
@@ -97,7 +97,6 @@ function isCurrentPage(url) {
   }
 }
 
-/*
 window.projektemacherMap = async function(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font) {
   var bgElem;
   if (typeof elem === "string") {
@@ -122,4 +121,3 @@ window.projektemacherMap = async function(elem, geojson, source, style, bbox, ce
 
   return map
 }
-*/

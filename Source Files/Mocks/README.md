@@ -25,6 +25,7 @@ Never built Göttingen Mocks
   - amenity=parking_space
   - barrier=wall
 - Improve iOS Shading, the effect is barely visible
+- Improve performance
 - Testing (`3d-map.ts`)
   - Disabled mode / no cam position
 

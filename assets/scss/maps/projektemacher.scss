@@ -10,14 +10,6 @@
   font-family: var(--text-font);
 }
 
-.ol-viewport {
-  border-radius: 1em;
-
-  @media (max-width: 30em) {
-    border-radius: unset;
-  }
-}
-
 .maplibregl-popup {
   /*min-width: unset; */
   padding: unset;
@@ -29,8 +21,7 @@
   }
 }
 
-.maplibregl-popup-content,
-.ol-popup {
+.maplibregl-popup-content {
   padding: 2rem .6rem 1rem;
   position: absolute;
   min-width: 250px;
@@ -116,8 +107,7 @@
   }
 }
 
-.maplibregl-popup-close-button,
-.ol-popup-closer {
+.maplibregl-popup-close-button {
   text-decoration: none;
   position: absolute;
   top: 2px;
