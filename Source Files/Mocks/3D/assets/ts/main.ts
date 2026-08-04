@@ -32,7 +32,8 @@ const initialPos: CameraPositionConfig = {
   cameraAlt: 100,
   bearing: -10,
   pitch: 75,
-  roll: 0
+  roll: 0,
+  zoom: 17
 };
 
 const metaObj = (await loadOrParse(metaJson)) as TileMetadata;

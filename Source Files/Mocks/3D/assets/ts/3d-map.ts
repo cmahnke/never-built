@@ -23,6 +23,7 @@ export interface CameraPositionConfig {
   bearing: number;
   pitch: number;
   roll: number;
+  zoom?: number;
 }
 
 type BBoxInput = number[] | number[][] | string;
@@ -88,7 +89,7 @@ export async function initMap(
   initialPos?: CameraPositionConfig,
   topoRasterTiles?: string
 ): Promise<maplibregl.Map> {
-  const zoom = 17;
+  let zoom: number = initialZoom;
   const maxPitch = disabled ? 0 : 75;
 
   // Background
@@ -109,6 +110,9 @@ export async function initMap(
 
   if (initialPos !== undefined) {
     mapOptions = { ...mapOptions, pitch: initialPos.pitch, bearing: initialPos.bearing };
+    if ("zoom" in initialPos) {
+      zoom = initialPos.zoom;
+    }
   }
 
   i18next.use(LanguageDetector).init({
