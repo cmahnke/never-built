@@ -1,8 +1,11 @@
 // assets/ts/base-map.ts
 
-type Lang = "de" | "en";
+import i18next from "i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
 
-interface ToolTipStrings {
+export type Lang = "de" | "en";
+
+export interface ToolTipStrings {
   zoomIn: string;
   zoomOut: string;
   fullscreen: string;
@@ -11,28 +14,60 @@ interface ToolTipStrings {
   rotateRight: string;
 }
 
-export const toolTips: Record<Lang, ToolTipStrings> = {
-  de: {
-    zoomIn: "Vergrößern",
-    zoomOut: "Verkleinern",
-    fullscreen: "Vollbildansicht",
-    rotate: "Rotation zurücksetzen",
-    rotateLeft: "90° nach links drehen",
-    rotateRight: "90° nach rechst drehen"
-  },
+export const translations = {
   en: {
-    zoomIn: "Zoom in",
-    zoomOut: "Zoom out",
-    fullscreen: "Toggle full-screen",
-    rotate: "Reset rotation",
-    rotateLeft: "Rotate 90° left",
-    rotateRight: "Rotate 90° right"
+    tooltips: {
+      zoomIn: "Zoom in",
+      zoomOut: "Zoom out",
+      fullscreenEnter: "Toggle full-screen",
+      fullscreenExit: "Toggle full-screen",
+      toggleAttribution: "Toggle attribution",
+      rotate: "Reset rotation",
+      rotateLeft: "Rotate 90° left",
+      rotateRight: "Rotate 90° right",
+      closePopup: "Popup schließen",
+      resetBearing: "Zum Drehen der Karte ziehen, zum Zurücksetzen auf Norden anklicken"
+    }
+  },
+  de: {
+    tooltips: {
+      zoomIn: "Vergrößern",
+      zoomOut: "Verkleinern",
+      fullscreenEnter: "Vollbildansicht",
+      fullscreenExit: "Vollbildansicht",
+      toggleAttribution: "Quellenangabe ein-/ausblenden",
+      rotate: "Rotation zurücksetzen",
+      rotateLeft: "90° nach links drehen",
+      rotateRight: "90° nach rechst drehen",
+      closePopup: "Close popup",
+      resetBearing: "Drag to rotate map, click to reset north"
+    }
   }
 };
 
 export const defaultVectorSource = "https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf";
 
 export const defaultPadding: [number, number, number, number] = [50, 50, 50, 50];
+
+export function getMaplibreGLLocale(): Record<string, string> {
+  i18next.use(LanguageDetector).init({
+    debug: false,
+    fallbackLng: "en",
+    resources: translations,
+    supportedLngs: ["en", "de"]
+  });
+
+  return {
+    'AttributionControl.ToggleAttribution': i18next.t("tooltips:toggleAttribution"),
+    'FullscreenControl.Enter': i18next.t("tooltips:fullscreenEnter"),
+    'FullscreenControl.Exit': i18next.t("tooltips:fullscreenExit"),
+    'NavigationControl.ZoomIn': i18next.t("tooltips:fullscreenExit"),
+    'NavigationControl.ZoomOut': i18next.t("tooltips:fullscreenExit"),
+    'Popup.Close': i18next.t("tooltips:closePopup"),
+    'NavigationControl.ResetBearing': i18next.t("tooltips:resetBearing"),
+  }
+
+}
 
 export function getLang(): string {
   let lang = "en";

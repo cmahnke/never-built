@@ -94,6 +94,11 @@
   {{- $background = "undefined" -}}
 {{- end -}}
 
+{{- $initalPos := .initalPos -}}
+{{- if or (eq $initalPos nil) (eq $initalPos false) -}}
+  {{- $initalPos = "undefined" -}}
+{{- end -}}
+
 {{- $debug := .debug -}}
 {{- if eq $debug nil -}}
   {{- $debug = false -}}
@@ -111,10 +116,9 @@
 {{- if $download -}}
   <div class="share map-share"><a href="{{ $geojson }}" title="{{ i18n "download-geojson" }}" download>{{ i18n "download-geojson" }}</a></div>
 {{- end -}}
-
 <script type="text/javascript">
   //window.addEventListener('DOMContentLoaded', (event) => {
-    var {{ $var | safeJS }} = window.projektemacherMap(
+    var {{ $var | safeJS }} = window.projektemacher3DMap(
       {{ partial "js/type.html" $id | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $geojson | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $source | htmlUnescape | safeJS }},
@@ -130,7 +134,15 @@
       {{ partial "js/type.html" $background | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $debug | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $marker | htmlUnescape | safeJS}});
-      /*{{ if $marker }}, {{ $marker | safeJS}} {{ end }});*/
+      {{/* These are possible by the fuction, but handled by a wrapper
+      {{ partial "js/type.html" $font | htmlUnescape | safeJS}});
+      {{ partial "js/type.html" $attribution | htmlUnescape | safeJS}});
+      {{ partial "js/type.html" $fontPath | htmlUnescape | safeJS}});
+      */}}
+      {{ partial "js/type.html" $initalPos | htmlUnescape | safeJS}});
+      {{/*
+      {{ partial "js/type.html" $topoRasterTiles | htmlUnescape | safeJS}});
+      */}}
     {{ $var | safeJS }}.then(map => {map.updateSize()});
   //});
 </script>

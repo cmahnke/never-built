@@ -25,11 +25,10 @@ import type {
 import { bbox as turfBbox, center as turfCenter } from '@turf/turf';
 import type { Feature, FeatureCollection } from 'geojson';
 import { updateStyle, setupDefaultStyle, buildDefaultStyle, collectFontFamilies, fontFamilyToSlug, loadFontCss, preloadStyleFonts } from './styles';
-import { toolTips } from "./base-map";
+import { getMaplibreGLLocale } from "./base-map";
 import { absUrl, bboxToBounds, loadOrParse } from "./map-utils";
 
 import type { ToolTipStrings } from "./base-map";
-
 
 setWorkerUrl('/js/maplibre-gl/maplibre-gl-worker.mjs');
 
@@ -84,9 +83,6 @@ interface MaplibreMapWithLegacyShim extends Map {
  * base-map: language, tooltips, helpers
  * ========================================================================= */
 
-type Lang = 'de' | 'en';
-
-
 export function getLang(): Lang {
   let lang = 'en';
   if (document.documentElement.lang !== undefined) {
@@ -121,8 +117,6 @@ class MousePositionControl implements IControl {
     this.map = undefined;
   }
 }
-
-
 
 /* =========================================================================
  * Marker / route styling helpers — with SVG detection + rasterization
@@ -560,6 +554,7 @@ export async function projektemacherMap(
     maxBounds: bboxObj ? (bboxObj as LngLatBoundsLike) : undefined,
     attributionControl: false,
     interactive: !disabled,
+    locale: getMaplibreGLLocale()
   });
 
   if (!disabled) {

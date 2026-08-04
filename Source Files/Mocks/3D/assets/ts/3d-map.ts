@@ -11,6 +11,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { NavigationControl, FullscreenControl, AttributionControl } from "maplibre-gl";
 import chroma from "chroma-js";
 import i18next from "i18next";
+import { getMaplibreGLLocale } from "./base-map";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { UAParser } from "ua-parser-js";
 import type { GeoJSON } from "geojson";
@@ -53,6 +54,11 @@ const translations = {
     }
   }
 };
+
+interface MaplibreMapWithLegacyShim extends Map {
+  /** @deprecated Use resize() instead. Kept for legacy call-site compatibility. */
+  updateSize?: () => void;
+}
 
 /* Defaults */
 export const BUILDING_LAYER_NAME = "projektemacher-building";
@@ -266,6 +272,7 @@ export async function projektemacher3DMap(
     touchPitch: !disabled,
     pitchWithRotate: !disabled,
     attributionControl: false,
+    locale: getMaplibreGLLocale(),
     calculateTileZoomFunction: (requestedZoom) => {
       return Math.min(requestedZoom, 15);
     },
@@ -867,6 +874,8 @@ export async function projektemacher3DMap(
     );
     map.jumpTo(camPos);
   }
+
+  (map as MaplibreMapWithLegacyShim).updateSize = () => map.resize();
 
   return map;
 }
