@@ -41,12 +41,14 @@ export interface FeatureTag {
 const translations = {
   en: {
     map: {
-      hideBuildings: "Show only never-built buildings"
+      hideBuildings: "Show only never-built buildings",
+      highlightBuildings: "Highlight never-built buildings"
     }
   },
   de: {
     map: {
-      hideBuildings: "Nur nicht gebaute Gebäude zeigen"
+      hideBuildings: "Nur nicht gebaute Gebäude zeigen",
+      highlightBuildings: "Nicht gebaute Gebäude hervorheben"
     }
   }
 };
@@ -116,7 +118,7 @@ export async function initMap(
     supportedLngs: ["en", "de"]
   });
 
-  const buildingFillColor = ["case", ["has", "color"], ["get", "color"], "#aaa"];
+  const buildingFillColor: any = ["case", ["has", "color"], ["get", "color"], "#aaa"];
 
   function focalLengthToVerticalFovDeg(focalLengthMm: number, sensorHeightMm = CAMERA_SENSOR_HEIGHT_MM): number {
     const fovRad = 2 * Math.atan(sensorHeightMm / (2 * focalLengthMm));
@@ -387,6 +389,9 @@ export async function initMap(
     if (m.getLayer("3d-buildings")) {
       m.setFilter("3d-buildings", filter);
     }
+    if (m.getLayer("building-fill")) {
+      m.setFilter("building-fill", filter);
+    }
     if (m.getLayer("building-outline")) {
       m.setFilter("building-outline", filter);
     }
@@ -396,8 +401,40 @@ export async function initMap(
     m.triggerRepaint();
   }
 
+  function applyHighlight(m: maplibregl.Map, enabled: boolean): void {
+    if (m.getLayer("3d-buildings")) {
+      const color = enabled
+        ? [
+            "case",
+            ["==", ["get", MARKER_TAG.name], MARKER_TAG.value],
+            HIGHLIGHT_COLOR,
+            ["case", ["has", "color"], ["get", "color"], "#aaa"]
+          ]
+        : buildingFillColor;
+      m.setPaintProperty("3d-buildings", "fill-extrusion-color", color as any);
+    }
+
+    // In top-down view, the fill only applies to highlighted buildings.
+    // Non-highlighted buildings remain transparent (no fill, only outlines).
+    if (m.getLayer("building-fill")) {
+      const fillColor = enabled
+        ? ["case", ["==", ["get", MARKER_TAG.name], MARKER_TAG.value], HIGHLIGHT_COLOR, "rgba(0, 0, 0, 0)"]
+        : "rgba(0, 0, 0, 0)";
+      m.setPaintProperty("building-fill", "fill-color", fillColor as any);
+    }
+
+    if (m.getLayer("building-outline")) {
+      const outlineColor = enabled ? ["case", ["==", ["get", MARKER_TAG.name], MARKER_TAG.value], HIGHLIGHT_COLOR, "#333"] : "#333";
+      m.setPaintProperty("building-outline", "line-color", outlineColor as any);
+    }
+    m.triggerRepaint();
+  }
+
   const neverBuiltControlEl = document.createElement("div");
   neverBuiltControlEl.id = "never-built-toggle";
+  neverBuiltControlEl.style.display = "flex";
+  neverBuiltControlEl.style.flexDirection = "column";
+  neverBuiltControlEl.style.gap = "4px";
 
   const neverBuiltCheckbox = document.createElement("input");
   neverBuiltCheckbox.type = "checkbox";
@@ -409,12 +446,38 @@ export async function initMap(
   neverBuiltLabel.textContent = i18next.t("map:hideBuildings");
   neverBuiltLabel.style.cursor = "pointer";
 
-  neverBuiltControlEl.appendChild(neverBuiltCheckbox);
-  neverBuiltControlEl.appendChild(neverBuiltLabel);
+  const row1 = document.createElement("div");
+  row1.style.display = "flex";
+  row1.style.alignItems = "center";
+  row1.appendChild(neverBuiltCheckbox);
+  row1.appendChild(neverBuiltLabel);
+
+  const highlightCheckbox = document.createElement("input");
+  highlightCheckbox.type = "checkbox";
+  highlightCheckbox.id = "highlight-checkbox";
+  highlightCheckbox.style.cursor = "pointer";
+
+  const highlightLabel = document.createElement("label");
+  highlightLabel.htmlFor = "highlight-checkbox";
+  highlightLabel.textContent = i18next.t("map:highlightBuildings");
+  highlightLabel.style.cursor = "pointer";
+
+  const row2 = document.createElement("div");
+  row2.style.display = "flex";
+  row2.style.alignItems = "center";
+  row2.appendChild(highlightCheckbox);
+  row2.appendChild(highlightLabel);
+
+  neverBuiltControlEl.appendChild(row1);
+  neverBuiltControlEl.appendChild(row2);
   map.getContainer().appendChild(neverBuiltControlEl);
 
   neverBuiltCheckbox.addEventListener("change", () => {
     applyBuildingFilter(map, neverBuiltCheckbox.checked);
+  });
+
+  highlightCheckbox.addEventListener("change", () => {
+    applyHighlight(map, highlightCheckbox.checked);
   });
 
   const architectureModelBWLayer = new ArchitectureModelBWLayer();
@@ -448,6 +511,10 @@ export async function initMap(
     // 1. Fade out 3D buildings (leave building-outline visible for top-down view)
     if (m.getLayer("3d-buildings")) {
       m.setPaintProperty("3d-buildings", "fill-extrusion-opacity", v);
+    }
+    // Fade in building fill for top-down view
+    if (m.getLayer("building-fill")) {
+      m.setPaintProperty("building-fill", "fill-opacity", 1 - v);
     }
 
     // Combine tween value with the never-built checkbox state for trees
@@ -537,7 +604,8 @@ export async function initMap(
   }
 
   function updateNeverBuiltControlVisibility(m: maplibregl.Map): void {
-    neverBuiltControlEl.style.display = isOverhead(m) ? "none" : "flex";
+    // Keep control visible from above for highlight functionality
+    neverBuiltControlEl.style.display = "flex";
   }
 
   const FLAT_SOURCE_ID = "terrainSourceFlat";
@@ -678,6 +746,19 @@ export async function initMap(
     });
 
     map.addLayer({
+      id: "building-fill",
+      type: "fill",
+      source: sourceName,
+      "source-layer": BUILDING_LAYER_NAME,
+      minzoom: 13,
+      filter: BASE_BUILDING_FILTER,
+      paint: {
+        "fill-color": "rgba(0, 0, 0, 0)",
+        "fill-opacity": 0 // hidden in 3D view, fades in on top-down
+      }
+    });
+
+    map.addLayer({
       id: "3d-buildings",
       source: sourceName,
       "source-layer": BUILDING_LAYER_NAME,
@@ -704,6 +785,7 @@ export async function initMap(
     });
 
     applyBuildingFilter(map, neverBuiltCheckbox.checked);
+    applyHighlight(map, highlightCheckbox.checked);
 
     treeLayer.source = sourceName;
     treeLayer.sourceLayers = ["tree", "tree_row"];
@@ -722,6 +804,7 @@ export async function initMap(
     architectureModelBWLayer.paperTone = [1, 1, 1];
     architectureModelBWLayer.shadowTone = [0.03, 0.03, 0.05];
     architectureModelBWLayer.antialias = true;
+    architectureModelBWLayer.addHighlightColor(HIGHLIGHT_COLOR);
     map.triggerRepaint();
 
     // Populate label IDs for street names fading logic
@@ -786,6 +869,22 @@ export async function initMap(
 
 export function highlight(map: maplibregl.Map) {
   setLayerColorByTag(map, BUILDING_LAYER_NAME, MARKER_TAG, HIGHLIGHT_COLOR);
+  if (map.getLayer("building-outline")) {
+    map.setPaintProperty("building-outline", "line-color", [
+      "case",
+      ["==", ["get", MARKER_TAG.name], MARKER_TAG.value],
+      HIGHLIGHT_COLOR,
+      "#333"
+    ] as any);
+  }
+  if (map.getLayer("building-fill")) {
+    map.setPaintProperty("building-fill", "fill-color", [
+      "case",
+      ["==", ["get", MARKER_TAG.name], MARKER_TAG.value],
+      HIGHLIGHT_COLOR,
+      "rgba(0, 0, 0, 0)"
+    ] as any);
+  }
 }
 
 export default initMap;

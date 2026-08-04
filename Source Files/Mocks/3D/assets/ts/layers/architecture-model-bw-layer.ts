@@ -228,7 +228,7 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
   // ── Highlighting parameters ────────────────────────────────────────────
   // Colors must be normalized 0.0 - 1.0 (e.g., [1.0, 0.0, 0.0] for pure red)
   highlightColors: [number, number, number][] = [];
-  highlightThreshold: number = 0.15; // Tolerance for color matching (0.0 - 1.0)
+  highlightThreshold: number = 0.6; // Tolerance for color matching (0.0 - 1.0)
 
   private gl!: GL;
   private program!: WebGLProgram;

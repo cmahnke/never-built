@@ -10,7 +10,6 @@ Never built Göttingen Mocks
 - Cleanup and integration
   - Fix linting / `tsc` errors
   - Add Hugo wrapper template
-- Add a checkbox below the existing one to highlight buildings by MARKER_TAG
 - Check if tile seperation is still needed
 - `osm_tool`
   - Allow multiple input files for patching
@@ -27,8 +26,6 @@ Never built Göttingen Mocks
   - barrier=wall
 - Improve iOS Shading, the effect is barely visible
 - Testing (`3d-map.ts`)
-  - Highlighting
-    - check color in shader
   - Disabled mode / no cam position
 
 ## Preview
