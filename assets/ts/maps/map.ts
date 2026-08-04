@@ -607,7 +607,7 @@ export async function projektemacherMap(
     map.addControl(new NavigationControl({}), 'top-left');
     map.addControl(new FullscreenControl(), 'top-right');
   }
-  const attributionControl = new AttributionControl({ compact: true, customAttribution: attribution })
+  const attributionControl = new AttributionControl(/* { compact: true, customAttribution: attribution }*/);
   //attributionControl.onAdd(map).open = false;
 
   map.addControl(attributionControl);

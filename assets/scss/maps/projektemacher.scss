@@ -172,12 +172,28 @@
       &:link {
         text-decoration: none;
       }
+
+      &:after {
+        background: unset;
+      }
+
+      &:hover {
+        background: unset;
+
+      }
     }
   }
+
+  /*
+  &.maplibregl-compact.maplibregl-compact-show {
+    transform: translateY(-2px);
+  }
+  */
 
   &.maplibregl-compact,
   &.maplibregl-compact-show {
     margin: .6rem;
+    padding-bottom: .8rem
   }
 
   &.maplibregl-compact-show .maplibregl-ctrl-attrib-button {
