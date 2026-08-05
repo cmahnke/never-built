@@ -141,18 +141,23 @@ def validate_and_extract_tiles(processing_results: List[Dict[str, Any]]) -> List
             )
 
     # 2. Extract tiles, check for overlaps, and attach tile_dir
-    seen_tiles = set()
+    seen_tiles: Dict[Tuple, str] = {}  # Maps tile_key -> file path
     output_tiles = []
 
     for result in processing_results:
         tile_dir = result.get("tile_dir")
+        current_path = result.get("path")
+
         for tile in result.get("tile_levels", []):
             if tile[0] >= BUILDING_LEVEL:
                 tile_key = tuple(tile)
                 if tile_key in seen_tiles:
-                    raise RuntimeError(f"Tile overlap detected: {tile_key} appears in multiple processing results.")
+                    raise RuntimeError(
+                        f"Tile overlap detected for tile {tile_key} between "
+                        f"'{seen_tiles[tile_key]}' and '{current_path}'."
+                    )
 
-                seen_tiles.add(tile_key)
+                seen_tiles[tile_key] = current_path
                 output_tiles.append({
                     "tile": tile,
                     "tile_dir": tile_dir

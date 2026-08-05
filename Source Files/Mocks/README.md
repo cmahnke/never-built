@@ -12,12 +12,11 @@ Never built Göttingen Mocks
   - Add Hugo wrapper template
   - Allow GeoJSON and clustering in overhead mode
 - `osm_tool.py`
-  - Allow multiple input files for patching
   - Avoid problems with ID order if IDs get prefixed
-  - Trees don't get removed during masking
   - Check if intersection also applies to bordering / shared points
-  - Also try to get deletions from osm file
+  - Also try to get deletions / modifications from osm file
   - check "need at least two points for linestring"
+  - Split ways intersecting closed ways
 - `generate-3d-map.py`
   - make calls to `osm_tool.py` native
   - generate combined maps based on year
@@ -30,6 +29,10 @@ Never built Göttingen Mocks
 - Improve performance
 - Testing (`3d-map.ts`)
   - Disabled mode / no cam position
+
+## Tile debugger
+
+https://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html
 
 ## Preview
 
