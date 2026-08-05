@@ -11,7 +11,6 @@ Never built Göttingen Mocks
   - Fix linting / `tsc` errors
   - Add Hugo wrapper template
   - Allow GeoJSON and clustering in overhead mode
-- Check if tile seperation is still needed
 - `osm_tool.py`
   - Allow multiple input files for patching
   - Avoid problems with ID order if IDs get prefixed
@@ -19,9 +18,11 @@ Never built Göttingen Mocks
   - Check if intersection also applies to bordering / shared points
   - Also try to get deletions from osm file
   - check "need at least two points for linestring"
-- `generate-3d-map.sh`
-  - convert to python - started, native calls to `osm_tool.py` missing
+- `generate-3d-map.py`
+  - make calls to `osm_tool.py` native
   - generate combined maps based on year
+    - add `year` param to `validate_and_extract_tiles`
+  - add tile seperation
 - Rendering
   - amenity=parking_space
   - barrier=wall

@@ -508,12 +508,21 @@ class _RelationMemberExclusionResolver(osmium.SimpleHandler):
 
 def deg_to_tile_num(lat_deg: float, lon_deg: float, zoom: int) -> Tuple[int, int]:
     """Converts geographic coordinates to tile numbers."""
+    lat_deg = max(-85.05112877980659, min(85.05112877980659, lat_deg))
+    lon_deg = max(-180.0, min(180.0, lon_deg))
+
     lat_rad = math.radians(lat_deg)
     n = 2.0 ** zoom
+
+    # Standard OSM slippy map formulas
     xtile = int((lon_deg + 180.0) / 360.0 * n)
     ytile = int((1.0 - math.asinh(math.tan(lat_rad)) / math.pi) / 2.0 * n)
-    return (xtile, ytile)
 
+    max_tile = int(n) - 1
+    xtile = max(0, min(max_tile, xtile))
+    ytile = max(0, min(max_tile, ytile))
+
+    return (xtile, ytile)
 
 # --- Commands ---
 
@@ -674,58 +683,118 @@ def bbox_tiles_osm(args: argparse.Namespace) -> None:
     bbox_handler = BoundingBoxHandler()
     bbox_handler.apply_file(input_file, locations=True)
 
+    # Input is OSM XML, output is GeoJSON, no reprojection needed
+    # def lon_lat_to_web_mercator(lon: float, lat: float) -> tuple[float, float]:
+    #     r = 6378137.0  # Earth radius in meters (WGS 84 semi-major axis)
+    #     x = r * math.radians(lon)
+    #     y = r * math.log(math.tan(math.pi / 4.0 + math.radians(lat) / 2.0))
+    #     return x, y
+    #
+    # min_x, min_y = lon_lat_to_web_mercator(bbox_handler.min_lon, bbox_handler.min_lat)
+    # max_x, max_y = lon_lat_to_web_mercator(bbox_handler.max_lon, bbox_handler.max_lat)
+
     min_lon, min_lat = bbox_handler.min_lon, bbox_handler.min_lat
     max_lon, max_lat = bbox_handler.max_lon, bbox_handler.max_lat
 
-    if min_lon > max_lon:
+    # ROBUST EMPTY CHECK: Latitudes do not wrap around the globe.
+    # If min_lat > max_lat, the handler was never updated (e.g., empty file).
+    if min_lat > max_lat:
         logger.error("No nodes found in input file. Cannot calculate bounding box.")
         sys.exit(1)
 
     logger.info(f"Bounding box found: [{min_lon}, {min_lat}, {max_lon}, {max_lat}]")
 
+    # Detect antimeridian crossing (180°/-180° line)
+    # Handles both "smart" handlers (min=170, max=-170) and "naive" handlers (min=-170, max=170)
+    crosses_antimeridian = (max_lon - min_lon) > 180 or min_lon > max_lon
+
+    if crosses_antimeridian:
+        logger.warning("Bounding box crosses the antimeridian. Splitting geometry and tile ranges.")
+        if min_lon > max_lon:
+            lon_pos_min, lon_neg_max = min_lon, max_lon
+        else:
+            lon_pos_min, lon_neg_max = max_lon, min_lon
+
     logger.info(f"--- Step 2: Calculating tiles up to zoom level {max_zoom} ---")
     tiles = []
+
     for zoom in range(max_zoom + 1):
-        top_left_x, top_left_y = deg_to_tile_num(max_lat, min_lon, zoom)
-        bottom_right_x, bottom_right_y = deg_to_tile_num(min_lat, max_lon, zoom)
+        # Y bounds are the same regardless of antimeridian crossing
+        _, top_left_y = deg_to_tile_num(max_lat, 0, zoom)
+        _, bottom_right_y = deg_to_tile_num(min_lat, 0, zoom)
+
+        if crosses_antimeridian:
+            # Two separate X ranges
+            x1_start, _ = deg_to_tile_num(0, lon_pos_min, zoom)
+            x1_end, _ = deg_to_tile_num(0, 180.0, zoom)
+
+            x2_start, _ = deg_to_tile_num(0, -180.0, zoom)
+            x2_end, _ = deg_to_tile_num(0, lon_neg_max, zoom)
+
+            x_ranges = [
+                range(x1_start, x1_end + 1),
+                range(x2_start, x2_end + 1)
+            ]
+        else:
+            # Single X range
+            top_left_x, _ = deg_to_tile_num(0, min_lon, zoom)
+            bottom_right_x, _ = deg_to_tile_num(0, max_lon, zoom)
+            x_ranges = [range(top_left_x, bottom_right_x + 1)]
 
         for y in range(top_left_y, bottom_right_y + 1):
-            if top_left_x > bottom_right_x:
-                # Bbox crosses the antimeridian, so we have two ranges for x
-                for x in range(top_left_x, 2 ** zoom):
-                    tiles.append([zoom, x, y])
-                for x in range(0, bottom_right_x + 1):
-                    tiles.append([zoom, x, y])
-            else:
-                for x in range(top_left_x, bottom_right_x + 1):
+            for x_range in x_ranges:
+                for x in x_range:
                     tiles.append([zoom, x, y])
 
     logger.info(f"Found {len(tiles)} tiles.")
 
     logger.info(f"--- Step 3: Writing GeoJSON to {output_file} ---")
+
+    if crosses_antimeridian:
+        geometry = {
+            "type": "MultiPolygon",
+            "coordinates": [
+                [[
+                    [lon_pos_min, min_lat], [180.0, min_lat],
+                    [180.0, max_lat], [lon_pos_min, max_lat],
+                    [lon_pos_min, min_lat]
+                ]],
+                [[
+                    [-180.0, min_lat], [lon_neg_max, min_lat],
+                    [lon_neg_max, max_lat], [-180.0, max_lat],
+                    [-180.0, min_lat]
+                ]]
+            ]
+        }
+    else:
+        geometry = {
+            "type": "Polygon",
+            "coordinates": [[
+                [min_lon, min_lat], [max_lon, min_lat],
+                [max_lon, max_lat], [min_lon, max_lat],
+                [min_lon, min_lat]
+            ]]
+        }
+
     geojson = {
         "type": "FeatureCollection",
         "features": [{
             "type": "Feature",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[
-                    [min_lon, min_lat], [max_lon, min_lat],
-                    [max_lon, max_lat], [min_lon, max_lat],
-                    [min_lon, min_lat]
-                ]]
-            },
+            "geometry": geometry,
             "properties": {
                 "tiles": tiles
             }
         }]
     }
 
-    with open(output_file, 'w') if output_file != '-' else sys.stdout as f:
-        json.dump(geojson, f, indent=2)
+    # Safe file writing (avoids closing sys.stdout)
+    if output_file == '-':
+        json.dump(geojson, sys.stdout, indent=2)
+    else:
+        with open(output_file, 'w') as f:
+            json.dump(geojson, f, indent=2)
 
     logger.info("--- GeoJSON file created successfully. ---")
-
 
 def geojson_to_poly(geojson_input: Union[dict, str]) -> Optional[str]:
     """

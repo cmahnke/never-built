@@ -16,7 +16,7 @@ done
 
 # Get map
 ./scripts/get-map-tiles.sh
-./scripts/generate-3d-map.sh
+python ./scripts/generate-3d-map.py --debug
 
 python ./scripts/extract-images.py -d
 

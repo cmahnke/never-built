@@ -253,7 +253,7 @@ async function ensureMarkerImage(map: Map, id: string, marker: MarkerOptions): P
   }
 }
 
-async function addRouteAndMarkerLayers(
+export async function addRouteAndMarkerLayers(
   map: Map,
   sourceId: string,
   marker: MarkerOptions | undefined
@@ -308,7 +308,7 @@ async function addRouteAndMarkerLayers(
   } as CircleLayerSpecification);
 }
 
-function addClusterLayers(map: Map, sourceId: string): void {
+export function addClusterLayers(map: Map, sourceId: string): void {
   map.addLayer({
     id: `${sourceId}-clusters`,
     type: 'circle',
@@ -516,7 +516,7 @@ export async function projektemacherMap(
     styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }
 
-  // TODO: Fix building outline here
+  // Fix building outline here
   styleObj.layers.forEach((layer: StyleLayer, index: number) => {
     if (layer.id === "building_pattern") {
       styleObj.layers[index] = {
@@ -580,6 +580,7 @@ export async function projektemacherMap(
 
   await new Promise<void>((resolve) => map.once('load', () => resolve()));
 
+  // TODO: Extract into it's own exported function
   if (geojsonObj !== undefined) {
     const sourceId = 'geojson-source';
     map.addSource(sourceId, {

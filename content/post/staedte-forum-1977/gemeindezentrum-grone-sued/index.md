@@ -15,6 +15,7 @@ params:
     - 9.8997267
     - 51.5274551
   year: 1977
+  3d: true
 resources:
 - src: "page139.jxl"
   name: preview

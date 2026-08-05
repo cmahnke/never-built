@@ -18,7 +18,7 @@ declare global {
 let debug = true;
 const elementId = "map";
 
-const tileSource = "Blauer-Turm";
+const tileSource = "never-built"; // "Blauer-Turm"
 const topoRasterTiles = "/map/tiles/{z}/{x}/{y}.png";
 const styleJson = "/map-styles/style.json";
 const tilesUrl = `/map/${tileSource}/{z}/{x}/{y}.pbf`;

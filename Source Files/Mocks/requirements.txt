@@ -5,3 +5,5 @@ pyproj
 geopandas
 shapely
 huggingface_hub
+# https://github.com/smellman/mbutil
+smellman-mbutil
