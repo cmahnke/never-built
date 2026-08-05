@@ -79,16 +79,8 @@ interface MaplibreMapWithLegacyShim extends Map {
 }
 
 /* =========================================================================
- * base-map: language, tooltips, helpers
+ * base-map: tooltips, helpers
  * ========================================================================= */
-
-export function getLang(): Lang {
-  let lang = 'en';
-  if (document.documentElement.lang !== undefined) {
-    lang = document.documentElement.lang;
-  }
-  return (lang in toolTips ? lang : 'en') as Lang;
-}
 
 class MousePositionControl implements IControl {
   private container?: HTMLDivElement;
@@ -404,8 +396,9 @@ export async function addGeoJSONLayersAndInteractions({
   marker?: MarkerOptions;
   disabled: boolean;
   popup: boolean;
-}): Promise<LngLatBoundsLike | undefined> {
+}): Promise<string[]> {
   const sourceId = 'geojson-source';
+  const layerIds: string[] = [];
 
   map.addSource(sourceId, {
     type: 'geojson',
@@ -415,10 +408,13 @@ export async function addGeoJSONLayersAndInteractions({
   } as GeoJSONSourceSpecification);
 
   if (cluster) {
+    layerIds.push(`${sourceId}-clusters`, `${sourceId}-cluster-count`, `${sourceId}-unclustered`);
     addClusterLayers(map, sourceId);
   } else if (marker !== undefined) {
+    layerIds.push(`${sourceId}-outline`, `${sourceId}-line`, `${sourceId}-points`);
     await addRouteAndMarkerLayers(map, sourceId, marker);
   } else {
+    layerIds.push(`${sourceId}-points`);
     map.addLayer({
       id: `${sourceId}-points`,
       type: 'circle',
@@ -469,15 +465,7 @@ export async function addGeoJSONLayersAndInteractions({
     });
   }
 
-  if (geojson.features.length) {
-    const box = turfBbox(geojson as GeoJSON) as [number, number, number, number];
-    return [
-      [box[0], box[1]],
-      [box[2], box[3]],
-    ] as LngLatBoundsLike;
-  }
-
-  return undefined;
+  return layerIds;
 }
 
 /* =========================================================================
@@ -674,7 +662,8 @@ export async function projektemacherMap(
   await new Promise<void>((resolve) => map.once('load', () => resolve()));
 
   if (geojsonObj !== undefined) {
-    const geojsonBounds = await addGeoJSONLayersAndInteractions({
+    // Add layers and get their names
+    const geojsonLayerNames = await addGeoJSONLayersAndInteractions({
       map,
       geojson: geojsonObj,
       cluster,
@@ -683,7 +672,16 @@ export async function projektemacherMap(
       popup,
     });
 
-    if (geojsonBounds) {
+    if (debug) {
+      console.log('Created GeoJSON Layers:', geojsonLayerNames);
+    }
+
+    if (geojsonObj.features.length) {
+      const box = turfBbox(geojsonObj as GeoJSON) as [number, number, number, number];
+      const geojsonBounds: LngLatBoundsLike = [
+        [box[0], box[1]],
+        [box[2], box[3]],
+      ];
       map.fitBounds(geojsonBounds, { padding: defaultPadding });
     }
   }

@@ -235,6 +235,9 @@ def merge_and_copy_tiles(
 def extract_mbtiles_to_xyz(mbtiles_file: Path, output_dir: Path, decompress: bool = False):
     output_dir.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(mbtiles_file)
+    metadata = dict(conn.execute('select name, value from metadata;').fetchall())
+    json.dump(metadata, open(os.path.join(output_dir, 'metadata.json'), 'w'), indent=4)
+
     cursor = conn.cursor()
     logger.debug(f"Extracting {str(mbtiles_file)} to {str(output_dir)}")
 
@@ -449,6 +452,9 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
         shutil.rmtree(tmp_dir, ignore_errors=True)
     else:
         logger.debug(f"Keeping temporary directory: {tmp_dir}")
+
+    if not (MASTER_TILE_DIR / "metadata.json").is_file():
+        shutil.copy((MASTER_TILE_DIR / "metadata.json"), post_tiles)
 
     geojson_path = post_tiles / outline_file_name
     geoMeta = GeoJSONProcessor(geojson_path)

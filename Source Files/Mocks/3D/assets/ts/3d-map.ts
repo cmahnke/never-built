@@ -148,6 +148,7 @@ export async function projektemacher3DMap(
   if (geojson !== undefined) {
     geojsonObj = typeof geojson === "string" ? ((await loadOrParse(geojson as string)) as GeoJSON) : (geojson as GeoJSON);
   }
+  let geojsonLayerNames;
 
   if (centerPoint !== undefined) {
     centerObj = (await loadOrParse(centerPoint as string)) as LngLatLike;
@@ -834,6 +835,34 @@ export async function projektemacher3DMap(
     applyTweenValue(map, tween.value);
     onTweenComplete(map, startFlat);
     updateNeverBuiltControlVisibility(map);
+
+    /* TODO: Fix this
+    if (geojsonObj !== undefined) {
+      // Add layers and get their names
+      geojsonLayerNames = await addGeoJSONLayersAndInteractions({
+        map,
+        geojson: geojsonObj,
+        cluster,
+        marker,
+        disabled,
+        popup,
+      });
+
+      if (debug) {
+        console.log('Created GeoJSON Layers:', geojsonLayerNames);
+      }
+
+      // TODO: only apply this in overhead mode
+      if (geojsonObj.features.length) {
+        const box = turfBbox(geojsonObj as GeoJSON) as [number, number, number, number];
+        const geojsonBounds: LngLatBoundsLike = [
+          [box[0], box[1]],
+          [box[2], box[3]],
+        ];
+        map.fitBounds(geojsonBounds, { padding: defaultPadding });
+      }
+    }
+    */
 
     map.once("idle", () => {
       revealMapWhenReady(map);
