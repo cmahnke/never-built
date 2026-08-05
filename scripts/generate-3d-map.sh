@@ -67,7 +67,8 @@ do
       echo "DEBUG: Keeping masked file: $TMP_DIR/$FILE_BASE_NAME-masked.osm"
       python scripts/osm_tool.py patch -i $PBF -p "$TMP_DIR/$PATCH_FILE_NAME" -o "$MAP_FILE" --dump-masked-base "$TMP_DIR/$FILE_BASE_NAME-masked.osm" -v -f
     fi
-
+  else
+    echo "$MAP_FILE already exists, build might fail!"
   fi
 
   if ! test -r "$MAP_FILE"; then

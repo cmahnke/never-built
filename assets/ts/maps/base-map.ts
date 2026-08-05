@@ -25,8 +25,12 @@ export const translations = {
       rotate: "Reset rotation",
       rotateLeft: "Rotate 90° left",
       rotateRight: "Rotate 90° right",
-      closePopup: "Popup schließen",
-      resetBearing: "Zum Drehen der Karte ziehen, zum Zurücksetzen auf Norden anklicken"
+      closePopup: "Close popup",
+      resetBearing: "Drag to rotate map, click to reset north"
+    },
+    "3d": {
+      hideBuildings: "Show only never-built buildings",
+      highlightBuildings: "Highlight never-built buildings"
     }
   },
   de: {
@@ -34,13 +38,17 @@ export const translations = {
       zoomIn: "Vergrößern",
       zoomOut: "Verkleinern",
       fullscreenEnter: "Vollbildansicht",
-      fullscreenExit: "Vollbildansicht",
+      fullscreenExit: "Vollbildansicht verlasssen",
       toggleAttribution: "Quellenangabe ein-/ausblenden",
       rotate: "Rotation zurücksetzen",
       rotateLeft: "90° nach links drehen",
       rotateRight: "90° nach rechst drehen",
-      closePopup: "Close popup",
-      resetBearing: "Drag to rotate map, click to reset north"
+      closePopup: "Popup schließen",
+      resetBearing: "Zum Drehen der Karte ziehen, zum Zurücksetzen auf Norden anklicken"
+    },
+    "3d": {
+      hideBuildings: "Nur nicht gebaute Gebäude zeigen",
+      highlightBuildings: "Nicht gebaute Gebäude hervorheben"
     }
   }
 };
@@ -61,8 +69,8 @@ export function getMaplibreGLLocale(): Record<string, string> {
     'AttributionControl.ToggleAttribution': i18next.t("tooltips:toggleAttribution"),
     'FullscreenControl.Enter': i18next.t("tooltips:fullscreenEnter"),
     'FullscreenControl.Exit': i18next.t("tooltips:fullscreenExit"),
-    'NavigationControl.ZoomIn': i18next.t("tooltips:fullscreenExit"),
-    'NavigationControl.ZoomOut': i18next.t("tooltips:fullscreenExit"),
+    'NavigationControl.ZoomIn': i18next.t("tooltips:zoomIn"),
+    'NavigationControl.ZoomOut': i18next.t("tooltips:zoomOut"),
     'Popup.Close': i18next.t("tooltips:closePopup"),
     'NavigationControl.ResetBearing': i18next.t("tooltips:resetBearing"),
   }

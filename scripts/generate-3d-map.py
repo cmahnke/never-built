@@ -12,6 +12,7 @@ from json import dumps
 import tarfile
 import io
 from mbutil import mbtiles_to_disk
+from typing import List, Tuple, Union
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -36,6 +37,7 @@ TILES_DIR = (SCRIPT_DIR / "../static/map/").resolve()
 CONTENT_DIR = (SCRIPT_DIR / "../content/").resolve()
 COVERAGE = "goettingen"
 MAX_ZOOM = 16
+BUILDING_LEVEL = 13
 TILE_COMPRESSION = "none"
 PLANETILER_OPTS = [
     "--fetch-wikidata",
@@ -59,6 +61,36 @@ try:
 except Exception as e:
     print(f"Failed to initialize Docker client, is the daemon running?: {e}", file=sys.stderr)
     sys.exit(1)
+
+class GeoJSONProcessor:
+    def __init__(self, path: Union[str, Path]):
+        self.path = Path(path)
+        with open(self.path, "r", encoding="utf-8") as f:
+            self._data = json.load(f)
+
+        self._feature = self._data["features"][0]
+
+    @property
+    def bbox(self) -> Tuple[float, float, float, float]:
+        """Extracts (min_lon, min_lat, max_lon, max_lat) from Feature[0].geometry.coordinates."""
+        coordinates = self._feature["geometry"]["coordinates"]
+
+        # Flatten ring coordinates to extract longitudes and latitudes
+        lons = [pt[0] for ring in coordinates for pt in ring]
+        lats = [pt[1] for ring in coordinates for pt in ring]
+
+        return (min(lons), min(lats), max(lons), max(lats))
+
+    @property
+    def tiles(self) -> List[List[int]]:
+        """Returns tiles from Feature[0].properties with zoom level >= 13."""
+        raw_tiles = self._feature.get("properties", {}).get("tiles", [])
+        return [tile for tile in raw_tiles if tile[0] >= BUILDING_LEVEL]
+
+    def paths(self):
+        raw_tiles = self._feature.get("properties", {}).get("tiles", [])
+        for tile in raw_tiles:
+            print("/".join(map(str, tile)))
 
 def get_bbox() -> str:
     """Reads bounds from TILES_DIR/metadata.json and formats as comma-separated string."""
@@ -117,6 +149,7 @@ def run_cmd(cmd, check=True):
     return subprocess.run(cmd, check=check)
 
 def main():
+    processing_results = []
     if not CONTENT_DIR.exists():
         print("Content directory not found.", file=sys.stderr)
         sys.exit(1)
@@ -143,7 +176,9 @@ def main():
         title = post.getParam('title')
         path = post.path
         year = post.getParam('year')
-        if post.getParam('3d'):
+        display3D = post.getParam('3d')
+
+        if display3D:
             print(f"Read metadata for {path} (title: {title}), year {year}")
         else:
             print(f"Read metadata for {path} - not configured for 3D!!")
@@ -284,12 +319,11 @@ def main():
         print(f"Relevant tiles in {post_tiles}/ (not filtered by min zoom level - usually 13)")
 
         geojson_path = post_tiles / outline_file_name
-        if geojson_path.is_file():
-            with open(geojson_path, "r") as f:
-                data = json.load(f)
-                for feature in data.get("features", []):
-                    for tile in feature.get("properties", {}).get("tiles", []):
-                        print("/".join(map(str, tile)))
+        geoMeta = GeoJSONProcessor(geojson_path)
+
+        if display3D:
+            result = {"path": path, "year": year, "bbox": geoMeta.bbox, "tile_levels": geoMeta.tiles, "input": osm_patch, "tile_dir": post_tiles}
+            results.append(result)
 
         print(f"Done processing {osm_patch}")
 

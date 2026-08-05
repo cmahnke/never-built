@@ -11,7 +11,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { NavigationControl, FullscreenControl, AttributionControl } from "maplibre-gl";
 import chroma from "chroma-js";
 import i18next from "i18next";
-import { getMaplibreGLLocale } from "./base-map";
+import { getMaplibreGLLocale, translations } from "./base-map";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { UAParser } from "ua-parser-js";
 import type { GeoJSON } from "geojson";
@@ -39,21 +39,6 @@ export interface FeatureTag {
   name: string;
   value: FeatureTagValue;
 }
-
-const translations = {
-  en: {
-    map: {
-      hideBuildings: "Show only never-built buildings",
-      highlightBuildings: "Highlight never-built buildings"
-    }
-  },
-  de: {
-    map: {
-      hideBuildings: "Nur nicht gebaute Gebäude zeigen",
-      highlightBuildings: "Nicht gebaute Gebäude hervorheben"
-    }
-  }
-};
 
 interface MaplibreMapWithLegacyShim extends Map {
   /** @deprecated Use resize() instead. Kept for legacy call-site compatibility. */
@@ -121,12 +106,14 @@ export async function projektemacher3DMap(
     }
   }
 
-  i18next.use(LanguageDetector).init({
-    debug: false,
-    fallbackLng: "en",
-    resources: translations,
-    supportedLngs: ["en", "de"]
-  });
+  if(!i18next.isInitialized) {
+    i18next.use(LanguageDetector).init({
+      debug: false,
+      fallbackLng: "en",
+      resources: translations,
+      supportedLngs: ["en", "de"]
+    });
+  }
 
   const buildingFillColor: any = ["case", ["has", "color"], ["get", "color"], "#aaa"];
 
@@ -454,7 +441,7 @@ export async function projektemacher3DMap(
 
   const neverBuiltLabel = document.createElement("label");
   neverBuiltLabel.htmlFor = "never-built-checkbox";
-  neverBuiltLabel.textContent = i18next.t("map:hideBuildings");
+  neverBuiltLabel.textContent = i18next.t("3d:hideBuildings");
   neverBuiltLabel.style.cursor = "pointer";
 
   const row1 = document.createElement("div");
@@ -470,7 +457,7 @@ export async function projektemacher3DMap(
 
   const highlightLabel = document.createElement("label");
   highlightLabel.htmlFor = "highlight-checkbox";
-  highlightLabel.textContent = i18next.t("map:highlightBuildings");
+  highlightLabel.textContent = i18next.t("3d:highlightBuildings");
   highlightLabel.style.cursor = "pointer";
 
   const row2 = document.createElement("div");
@@ -875,7 +862,7 @@ export async function projektemacher3DMap(
     map.jumpTo(camPos);
   }
 
-  (map as MaplibreMapWithLegacyShim).updateSize = () => map.resize();
+  //(map as MaplibreMapWithLegacyShim).updateSize = () => map.resize();
 
   return map;
 }

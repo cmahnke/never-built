@@ -198,6 +198,7 @@
 
   &.maplibregl-compact-show .maplibregl-ctrl-attrib-button {
     background-color: white;
+    pointer-events: auto;
   }
 
   &.maplibregl-compact {

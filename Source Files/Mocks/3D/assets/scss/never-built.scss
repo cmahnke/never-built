@@ -1,3 +1,5 @@
+$map-font: 'Roboto Mono Variable';
+
 #never-built-toggle {
   position: absolute;
   top: 8px;
@@ -52,8 +54,13 @@
 .map-3d {
   opacity: 0;
   transition: opacity 500ms ease;
-}
+  font-family: $map-font, courier;
 
-.map-3d.map-3d-visible {
-  opacity: 1;
+  &.map-3d-visible {
+    opacity: 1;
+  }
+
+  .maplibregl-ctrl-attrib.maplibregl-compact {
+    border-radius: unset;
+  }
 }

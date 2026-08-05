@@ -241,19 +241,6 @@ export class TreeLayer implements CustomLayerInterface {
       .makeTranslation(this.originMercator.x, this.originMercator.y, this.originMercator.z)
       .scale(new THREE.Vector3(scale, -scale, scale));
 
-    if (this.debug) {
-      console.log("[TreeLayer] onAdd complete. origin:", {
-        originLng: this.originLng,
-        originLat: this.originLat,
-        originMercator: {
-          x: this.originMercator.x,
-          y: this.originMercator.y,
-          z: this.originMercator.z
-        },
-        scale
-      });
-    }
-
     this.addKeepAliveLayers(map);
 
     map.on("sourcedata", this.onSourceData);
