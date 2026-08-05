@@ -1,3 +1,5 @@
+// assets/ts/maps/map.ts
+
 import maplibregl, {
   Map,
   Popup,
@@ -388,6 +390,98 @@ function showPopup(
 }
 
 /* =========================================================================
+ * GeoJSON Handling (extracted to avoid side effects)
+ * ========================================================================= */
+
+export async function addGeoJSONLayersAndInteractions({
+  map,
+  geojson,
+  cluster,
+  marker,
+  disabled,
+  popup,
+}: {
+  map: Map;
+  geojson: FeatureCollection;
+  cluster?: boolean;
+  marker?: MarkerOptions;
+  disabled: boolean;
+  popup: boolean;
+}): Promise<LngLatBoundsLike | undefined> {
+  const sourceId = 'geojson-source';
+
+  map.addSource(sourceId, {
+    type: 'geojson',
+    data: geojson,
+    cluster: !!cluster,
+    clusterRadius: 25,
+  } as GeoJSONSourceSpecification);
+
+  if (cluster) {
+    addClusterLayers(map, sourceId);
+  } else if (marker !== undefined) {
+    await addRouteAndMarkerLayers(map, sourceId, marker);
+  } else {
+    map.addLayer({
+      id: `${sourceId}-points`,
+      type: 'circle',
+      source: sourceId,
+      paint: { 'circle-color': 'rgba(51, 153, 204, 0.7)', 'circle-radius': 6 },
+    } as CircleLayerSpecification);
+  }
+
+  if (!disabled && popup) {
+    const clickableLayers = cluster
+      ? [`${sourceId}-clusters`, `${sourceId}-unclustered`]
+      : [`${sourceId}-points`];
+
+    map.on('click', clickableLayers, async (e) => {
+      const bufferedBox: [[number, number], [number, number]] = [
+        [e.point.x - popupHitTolerance, e.point.y - popupHitTolerance],
+        [e.point.x + popupHitTolerance, e.point.y + popupHitTolerance],
+      ];
+      const features = map.queryRenderedFeatures(bufferedBox, { layers: clickableLayers });
+      if (features.length === 0) return;
+
+      const clusterFeature = features.find(
+        (f) => f.properties?.cluster && f.properties?.cluster_id !== undefined
+      );
+      if (clusterFeature) {
+        const src = map.getSource(sourceId) as GeoJSONSource;
+        const clusterId = clusterFeature.properties!.cluster_id as number;
+        const zoom = await src.getClusterExpansionZoom(clusterId);
+        map.easeTo({ center: (clusterFeature.geometry as any).coordinates, zoom });
+        return;
+      }
+
+      const merged = mergeFeatureProperties(features);
+      const lngLat = (features[0].geometry as any).coordinates as LngLatLike;
+
+      map.easeTo({ center: lngLat, duration: 300 });
+
+      showPopup(map, lngLat, merged.name, merged.popupContent);
+    });
+
+    map.on('mouseenter', clickableLayers, () => {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', clickableLayers, () => {
+      map.getCanvas().style.cursor = '';
+    });
+  }
+
+  if (geojson.features.length) {
+    const box = turfBbox(geojson as any) as [number, number, number, number];
+    return [
+      [box[0], box[1]],
+      [box[2], box[3]],
+    ] as LngLatBoundsLike;
+  }
+
+  return undefined;
+}
+
+/* =========================================================================
  * Core map setup
  * ========================================================================= */
 
@@ -516,7 +610,7 @@ export async function projektemacherMap(
     styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }
 
-  // Fix building outline here
+  // This fixes building outlines
   styleObj.layers.forEach((layer: StyleLayer, index: number) => {
     if (layer.id === "building_pattern") {
       styleObj.layers[index] = {
@@ -580,78 +674,18 @@ export async function projektemacherMap(
 
   await new Promise<void>((resolve) => map.once('load', () => resolve()));
 
-  // TODO: Extract into it's own exported function
   if (geojsonObj !== undefined) {
-    const sourceId = 'geojson-source';
-    map.addSource(sourceId, {
-      type: 'geojson',
-      data: geojsonObj,
-      cluster: !!cluster,
-      clusterRadius: 25,
-    } as GeoJSONSourceSpecification);
+    const geojsonBounds = await addGeoJSONLayersAndInteractions({
+      map,
+      geojson: geojsonObj,
+      cluster,
+      marker,
+      disabled,
+      popup,
+    });
 
-    if (cluster) {
-      addClusterLayers(map, sourceId);
-    } else if (marker !== undefined) {
-      await addRouteAndMarkerLayers(map, sourceId, marker);
-    } else {
-      map.addLayer({
-        id: `${sourceId}-points`,
-        type: 'circle',
-        source: sourceId,
-        paint: { 'circle-color': 'rgba(51, 153, 204, 0.7)', 'circle-radius': 6 },
-      } as CircleLayerSpecification);
-    }
-
-    if (!disabled && popup) {
-      const clickableLayers = cluster
-        ? [`${sourceId}-clusters`, `${sourceId}-unclustered`]
-        : [`${sourceId}-points`];
-
-        map.on('click', clickableLayers, async (e) => {
-          const bufferedBox: [[number, number], [number, number]] = [
-            [e.point.x - popupHitTolerance, e.point.y - popupHitTolerance],
-            [e.point.x + popupHitTolerance, e.point.y + popupHitTolerance],
-          ];
-          const features = map.queryRenderedFeatures(bufferedBox, { layers: clickableLayers });
-          if (features.length === 0) return;
-
-          const clusterFeature = features.find(
-            (f) => f.properties?.cluster && f.properties?.cluster_id !== undefined
-          );
-          if (clusterFeature) {
-            const src = map.getSource(sourceId) as GeoJSONSource;
-            const clusterId = clusterFeature.properties!.cluster_id as number;
-            const zoom = await src.getClusterExpansionZoom(clusterId);
-            map.easeTo({ center: (clusterFeature.geometry as any).coordinates, zoom });
-            return;
-          }
-
-          const merged = mergeFeatureProperties(features);
-          const lngLat = (features[0].geometry as any).coordinates as LngLatLike;
-
-          map.easeTo({ center: lngLat, duration: 300 });
-
-          showPopup(map, lngLat, merged.name, merged.popupContent);
-        });
-
-      map.on('mouseenter', clickableLayers, () => {
-        map.getCanvas().style.cursor = 'pointer';
-      });
-      map.on('mouseleave', clickableLayers, () => {
-        map.getCanvas().style.cursor = '';
-      });
-    }
-
-    if (geojsonObj.features.length) {
-      const box = turfBbox(geojsonObj as any) as [number, number, number, number];
-      map.fitBounds(
-        [
-          [box[0], box[1]],
-          [box[2], box[3]],
-        ],
-        { padding: defaultPadding }
-      );
+    if (geojsonBounds) {
+      map.fitBounds(geojsonBounds, { padding: defaultPadding });
     }
   }
 

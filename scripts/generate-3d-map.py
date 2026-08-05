@@ -53,16 +53,17 @@ MASTER_PBF = TILES_DIR / f"{COVERAGE}.osm.pbf"
 # ---------------------------------------------------------
 parser = argparse.ArgumentParser(description="Process OSM patches and generate map tiles.")
 parser.add_argument("-d", "--debug", action="store_true", help="Enable debug logging and behavior.")
+parser.add_argument("-c", "--compact", action="store_true", help="Compact generated output by symlinking unmodified tiles to the master directory.")
 args = parser.parse_args()
 
 DEBUG = args.debug
+COMPACT = args.compact
 
 # Configure logging format and level
 log_level = logging.DEBUG if DEBUG else logging.INFO
 logging.basicConfig(
     level=log_level,
     format='%(asctime)s [%(levelname)s] %(message)s',
-    #format='%(asctime)s [%(name)s:%(levelname)s] %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger("generate-3d-map")
@@ -70,7 +71,6 @@ logger = logging.getLogger("generate-3d-map")
 logging.getLogger("docker").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger("requests").setLevel(logging.WARNING)
-#logging.getLogger("mbutil.util").setLevel(logging.WARNING)
 
 if DEBUG:
     logger.debug("Debug mode enabled")
@@ -112,27 +112,55 @@ class GeoJSONProcessor:
         return (min(lons), min(lats), max(lons), max(lats))
 
     @property
+    def all_tiles(self) -> List[List[int]]:
+        return self._feature.get("properties", {}).get("tiles", [])
+
+    @property
     def tiles(self) -> List[List[int]]:
-        raw_tiles = self._feature.get("properties", {}).get("tiles", [])
-        return [tile for tile in raw_tiles if tile[0] >= BUILDING_LEVEL]
+        return [tile for tile in self.all_tiles if tile[0] >= BUILDING_LEVEL]
 
     def paths(self, level=BUILDING_LEVEL):
-        raw_tiles = self._feature.get("properties", {}).get("tiles", [])
-        tiles = [tile for tile in raw_tiles if tile[0] >= level]
+        tiles = [tile for tile in self.all_tiles if tile[0] >= level]
         for tile in tiles:
             logger.debug(f"Tile path: {'/'.join(map(str, tile))}")
 
+def compact_generated_tiles(generated_dir: Path, master_dir: Path, valid_tiles: List[List[int]]):
+    """
+    Checks the generated tiles. If they are in valid_tiles, keep them.
+    If not, remove them and create a relative symlink from the equivalent
+    tile in master_dir to the position in the generated directory.
+    """
+    valid_set = {tuple(t) for t in valid_tiles}
+
+    for root, _, files in os.walk(generated_dir):
+        root_path = Path(root)
+        for file in files:
+            if file.endswith((".json", ".osm", ".geojson")):
+                continue
+
+            file_path = root_path / file
+
+            try:
+                # Assuming standard structure {z}/{x}/{y}.pbf
+                y = int(file_path.stem)
+                x = int(file_path.parent.name)
+                z = int(file_path.parent.parent.name)
+            except ValueError:
+                continue
+
+            if (z, x, y) not in valid_set:
+                file_path.unlink()
+                master_file = master_dir / str(z) / str(x) / file
+
+                if master_file.exists():
+                    rel_target = os.path.relpath(master_file, root_path)
+                    file_path.symlink_to(rel_target)
+
 def validate_and_extract_tiles(processing_results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """
-    Checks processing_results for bounding box and tile overlaps.
-    Returns a list of dicts containing the tile tuple/list and its tile_dir.
-    Raises RuntimeError if any overlaps are found.
-    """
     # 1. Check for bounding box overlaps
     for r1, r2 in combinations(processing_results, 2):
         b1, b2 = r1["bbox"], r2["bbox"]
 
-        # Bbox format: (min_lon, min_lat, max_lon, max_lat)
         if (b1[0] < b2[2] and b1[2] > b2[0] and
             b1[1] < b2[3] and b1[3] > b2[1]):
             raise RuntimeError(
@@ -141,7 +169,7 @@ def validate_and_extract_tiles(processing_results: List[Dict[str, Any]]) -> List
             )
 
     # 2. Extract tiles, check for overlaps, and attach tile_dir
-    seen_tiles: Dict[Tuple, str] = {}  # Maps tile_key -> file path
+    seen_tiles: Dict[Tuple, str] = {}
     output_tiles = []
 
     for result in processing_results:
@@ -170,10 +198,6 @@ def merge_and_copy_tiles(
     master_tile_dir: Path,
     dest_dir: Path
 ) -> Path:
-    """
-    Copies all master tiles, then unconditionally overwrites/adds
-    with all tiles from extracted_tiles.
-    """
     if not master_tile_dir.exists():
         raise FileNotFoundError(f"Master tile directory not found: {master_tile_dir}")
     shutil.copytree(master_tile_dir, dest_dir, dirs_exist_ok=True)
@@ -182,48 +206,47 @@ def merge_and_copy_tiles(
         tile_dir = Path(item["tile_dir"])
         z, x, y = item["tile"]
 
-        # Check for common map tile extensions
         for ext in [".pbf", "", ".mvt"]:
             patch_file = tile_dir / str(z) / str(x) / f"{y}{ext}"
             logger.debug(f"Checking file {str(patch_file)}")
-            if patch_file.is_file():
+            if patch_file.is_file() or patch_file.is_symlink():
                 dest_file = dest_dir / str(z) / str(x) / f"{y}{ext}"
                 dest_file.parent.mkdir(parents=True, exist_ok=True)
 
-                logger.debug(f"Copy file {patch_file} to {dest_file}")
-                shutil.copy2(patch_file, dest_file)
+                logger.debug(f"Copy/Link file {patch_file} to {dest_file}")
+
+                # Resolve destination appropriately if the source is a symlink
+                if patch_file.is_symlink():
+                    if dest_file.exists():
+                        dest_file.unlink()
+                    shutil.copy2(patch_file, dest_file, follow_symlinks=False)
+                else:
+                    shutil.copy2(patch_file, dest_file)
 
                 for other_ext in [".pbf", "", ".mvt"]:
                     if other_ext != ext:
                         stale_file = dest_dir / str(z) / str(x) / f"{y}{other_ext}"
-                        if stale_file.exists():
+                        if stale_file.exists() or stale_file.is_symlink():
                             stale_file.unlink()
                 break
 
     return dest_dir
 
 def extract_mbtiles_to_xyz(mbtiles_file: Path, output_dir: Path, decompress: bool = False):
-    """
-    Extracts an MBTiles database directly into a standard XYZ directory structure ({z}/{x}/{y}.pbf).
-    Converts internal TMS coordinates to standard XYZ coordinates.
-    """
     output_dir.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(mbtiles_file)
     cursor = conn.cursor()
     logger.debug(f"Extracting {str(mbtiles_file)} to {str(output_dir)}")
 
-    # Query all tiles from database
     cursor.execute("SELECT zoom_level, tile_column, tile_row, tile_data FROM tiles")
 
     for zoom, x, tms_y, data in cursor:
-        # Flip TMS y-coordinate to XYZ format
         xyz_y = (1 << zoom) - 1 - tms_y
 
         tile_dir = output_dir / str(zoom) / str(x)
         tile_dir.mkdir(parents=True, exist_ok=True)
         tile_path = tile_dir / f"{xyz_y}.pbf"
 
-        # Handle gzip decompression if required by viewer/server setup
         if decompress and data[:2] == b'\x1f\x8b':
             data = gzip.decompress(data)
         logger.debug(f"Writing tile to {str(tile_path)}")
@@ -274,10 +297,8 @@ def run_cmd(cmd, check=True):
     return subprocess.run(cmd, check=check)
 
 def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
-    """Processes a single OSM patch file and returns the result metadata if 3D is enabled."""
     content = load_content(osm_patch)
     post = content.posts[0]
-    metadata = post.getMetadata()
     title = post.getParam('title')
     path = post.path
     year = post.getParam('year')
@@ -389,7 +410,7 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
             command=command,
             volumes={str(current_pwd): {'bind': str(current_pwd), 'mode': 'rw'}},
             working_dir=str(current_pwd),
-            tty=False,  # Keep False to ensure predictable line-buffered stream chunks
+            tty=False,
             remove=True,
             stream=True
         )
@@ -431,6 +452,10 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
 
     geojson_path = post_tiles / outline_file_name
     geoMeta = GeoJSONProcessor(geojson_path)
+
+    if COMPACT:
+        logger.info(f"Compacting output directory by symlinking against MASTER_TILE_DIR: {MASTER_TILE_DIR}")
+        compact_generated_tiles(post_tiles, MASTER_TILE_DIR, geoMeta.all_tiles)
 
     logger.info(f"Relevant tiles in {post_tiles}/ (not filtered by min zoom level - usually {BUILDING_LEVEL})")
     geoMeta.paths()

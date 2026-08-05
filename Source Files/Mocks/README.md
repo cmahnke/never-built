@@ -11,6 +11,7 @@ Never built Göttingen Mocks
   - Fix linting / `tsc` errors
   - Add Hugo wrapper template
   - Allow GeoJSON and clustering in overhead mode
+    - Function available in `/assets/ts/maps/map.ts`
 - `osm_tool.py`
   - Avoid problems with ID order if IDs get prefixed
   - Check if intersection also applies to bordering / shared points
@@ -22,6 +23,7 @@ Never built Göttingen Mocks
   - generate combined maps based on year
     - add `year` param to `validate_and_extract_tiles`
   - add tile seperation
+    - compacting using symlinks already implemented
 - Rendering
   - amenity=parking_space
   - barrier=wall
