@@ -11,21 +11,18 @@ import maplibregl, {
   LngLatBoundsLike,
   GeoJSONSource,
   setWorkerUrl,
+  LayerSpecification,
 } from 'maplibre-gl';
 import type {
   PopupOptions,
   StyleSpecification,
-  LayerSpecification,
-  VectorSourceSpecification,
   GeoJSONSourceSpecification,
-  FillLayerSpecification,
   LineLayerSpecification,
   CircleLayerSpecification,
   SymbolLayerSpecification,
-  BackgroundLayerSpecification,
 } from 'maplibre-gl';
 import { bbox as turfBbox, center as turfCenter } from '@turf/turf';
-import type { Feature, FeatureCollection } from 'geojson';
+import type { Feature, FeatureCollection, GeoJSON, Point } from 'geojson';
 import { updateStyle, setupDefaultStyle, buildDefaultStyle, collectFontFamilies, fontFamilyToSlug, loadFontCss, preloadStyleFonts } from './styles';
 import { getMaplibreGLLocale } from "./base-map";
 import { absUrl, bboxToBounds, loadOrParse } from "./map-utils";
@@ -358,7 +355,7 @@ export function addClusterLayers(map: Map, sourceId: string): void {
  * showing the topmost feature.
  */
 function mergeFeatureProperties(
-  features: Array<{ properties?: Record<string, any> | null }>
+  features: Array<{ properties?: Record<string, unknown> | null }>
 ): { name?: string; popupContent?: string } {
   const names: string[] = [];
   let popupContent = '';
@@ -369,7 +366,7 @@ function mergeFeatureProperties(
       names.push(String(props.name));
     }
     if (props.popupContent !== undefined && props.popupContent !== null) {
-      popupContent += props.popupContent;
+      popupContent += String(props.popupContent);
     }
   });
 
@@ -443,19 +440,21 @@ export async function addGeoJSONLayersAndInteractions({
       const features = map.queryRenderedFeatures(bufferedBox, { layers: clickableLayers });
       if (features.length === 0) return;
 
-      const clusterFeature = features.find(
-        (f) => f.properties?.cluster && f.properties?.cluster_id !== undefined
-      );
+      const clusterFeature = features.find((f) => {
+        const props = f.properties as Record<string, unknown> | null | undefined;
+        return props?.cluster && props?.cluster_id !== undefined;
+      });
       if (clusterFeature) {
         const src = map.getSource(sourceId) as GeoJSONSource;
-        const clusterId = clusterFeature.properties!.cluster_id as number;
+        const props = clusterFeature.properties as Record<string, unknown>;
+        const clusterId = props.cluster_id as number;
         const zoom = await src.getClusterExpansionZoom(clusterId);
-        map.easeTo({ center: (clusterFeature.geometry as any).coordinates, zoom });
+        map.easeTo({ center: (clusterFeature.geometry as Point).coordinates, zoom });
         return;
       }
 
       const merged = mergeFeatureProperties(features);
-      const lngLat = (features[0].geometry as any).coordinates as LngLatLike;
+      const lngLat = (features[0].geometry as Point).coordinates as LngLatLike;
 
       map.easeTo({ center: lngLat, duration: 300 });
 
@@ -471,7 +470,7 @@ export async function addGeoJSONLayersAndInteractions({
   }
 
   if (geojson.features.length) {
-    const box = turfBbox(geojson as any) as [number, number, number, number];
+    const box = turfBbox(geojson as GeoJSON) as [number, number, number, number];
     return [
       [box[0], box[1]],
       [box[2], box[3]],
@@ -563,7 +562,7 @@ export async function projektemacherMap(
   if (center !== undefined) {
     centerObj = (await loadOrParse(center as string)) as LngLatLike;
   } else if (geojsonObj !== undefined && geojsonObj.features.length !== 0) {
-    centerObj = turfCenter(geojsonObj as any).geometry.coordinates as [number, number];
+    centerObj = turfCenter(geojsonObj as GeoJSON).geometry.coordinates as [number, number];
   } else if (bboxObj !== undefined && bboxObj.length !== 0) {
     const [[w, s], [e, n]] = bboxObj;
     centerObj = [(w + e) / 2, (s + n) / 2];
@@ -611,12 +610,12 @@ export async function projektemacherMap(
   }
 
   // This fixes building outlines
-  styleObj.layers.forEach((layer: StyleLayer, index: number) => {
+  styleObj.layers.forEach((layer: LayerSpecification, index: number) => {
     if (layer.id === "building_pattern") {
       styleObj.layers[index] = {
         ...layer,
         paint: {
-          ...layer.paint,
+          ...(layer.paint as Record<string, unknown>),
           "fill-outline-color": {
             base: 1,
             stops: [
@@ -625,7 +624,7 @@ export async function projektemacherMap(
             ]
           }
         }
-      }
+      } as LayerSpecification;
     }
   });
 
@@ -635,7 +634,7 @@ export async function projektemacherMap(
   // creating the map, so text renders correctly from the first frame
   // instead of relying on MapLibre's per-glyph local-render fallback.
   const resolvedFontPath =
-    ((styleObj.metadata as any)?.['projektemacher:fontPath'] as string | undefined) ?? fontPath;
+    ((styleObj.metadata as Record<string, unknown> | undefined)?.['projektemacher:fontPath'] as string | undefined) ?? fontPath;
   await preloadStyleFonts(styleObj, resolvedFontPath);
 
   const map = new Map({

@@ -12,6 +12,7 @@ import { NavigationControl, FullscreenControl, AttributionControl } from "maplib
 import chroma from "chroma-js";
 import i18next from "i18next";
 import { getMaplibreGLLocale, translations } from "./base-map";
+import { addGeoJSONLayersAndInteractions } from "./map";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { UAParser } from "ua-parser-js";
 import type { GeoJSON } from "geojson";
@@ -43,6 +44,20 @@ export interface FeatureTag {
 interface MaplibreMapWithLegacyShim extends Map {
   /** @deprecated Use resize() instead. Kept for legacy call-site compatibility. */
   updateSize?: () => void;
+}
+
+interface FreeCameraOptionsShim {
+  position?: {
+    toAltitude(): number;
+  };
+}
+
+interface MaplibreMapInternal extends maplibregl.Map {
+  transform?: {
+    cameraToCenterDistance?: number;
+    worldSize?: number;
+  };
+  getFreeCameraOptions?: () => FreeCameraOptionsShim;
 }
 
 /* Defaults */
@@ -115,7 +130,7 @@ export async function projektemacher3DMap(
     });
   }
 
-  const buildingFillColor: any = ["case", ["has", "color"], ["get", "color"], "#aaa"];
+  const buildingFillColor: maplibregl.ExpressionSpecification = ["case", ["has", "color"], ["get", "color"], "#aaa"];
 
   function focalLengthToVerticalFovDeg(focalLengthMm: number, sensorHeightMm = CAMERA_SENSOR_HEIGHT_MM): number {
     const fovRad = 2 * Math.atan(sensorHeightMm / (2 * focalLengthMm));
@@ -137,7 +152,7 @@ export async function projektemacher3DMap(
   if (centerPoint !== undefined) {
     centerObj = (await loadOrParse(centerPoint as string)) as LngLatLike;
   } else if (geojsonObj !== undefined && geojsonObj.features?.length !== 0) {
-    centerObj = turfCenter(geojsonObj as any).geometry.coordinates as [number, number];
+    centerObj = turfCenter(geojsonObj as GeoJSON.FeatureCollection).geometry.coordinates as [number, number];
   } else {
     centerObj = [0, 0];
   }
@@ -331,7 +346,8 @@ export async function projektemacher3DMap(
     map.getContainer().appendChild(debugEl);
 
     function getCurrentCameraPosition(m: maplibregl.Map): CameraPositionConfig {
-      const transform = (m as any).transform;
+      const mapInternal = m as unknown as MaplibreMapInternal;
+      const transform = mapInternal.transform;
       const pitch = m.getPitch();
       let altitude = 0;
 
@@ -341,8 +357,8 @@ export async function projektemacher3DMap(
         const earthCircAtLat = 2 * Math.PI * 6378137 * Math.abs(Math.cos(m.getCenter().lat * (Math.PI / 180)));
         const verticalScaleConstant = transform.worldSize / earthCircAtLat;
         altitude = altitudeWithoutScaling / verticalScaleConstant;
-      } else if ((m as any).getFreeCameraOptions) {
-        const camera = (m as any).getFreeCameraOptions();
+      } else if (mapInternal.getFreeCameraOptions) {
+        const camera = mapInternal.getFreeCameraOptions();
         if (camera && camera.position) {
           altitude = camera.position.toAltitude();
         }
@@ -409,7 +425,7 @@ export async function projektemacher3DMap(
             ["case", ["has", "color"], ["get", "color"], "#aaa"]
           ]
         : buildingFillColor;
-      m.setPaintProperty("3d-buildings", "fill-extrusion-color", color as any);
+      m.setPaintProperty("3d-buildings", "fill-extrusion-color", color as maplibregl.ColorSpecification);
     }
 
     // In top-down view, the fill only applies to highlighted buildings.
@@ -418,12 +434,12 @@ export async function projektemacher3DMap(
       const fillColor = enabled
         ? ["case", ["==", ["get", MARKER_TAG.name], MARKER_TAG.value], HIGHLIGHT_COLOR, "rgba(0, 0, 0, 0)"]
         : "rgba(0, 0, 0, 0)";
-      m.setPaintProperty("building-fill", "fill-color", fillColor as any);
+      m.setPaintProperty("building-fill", "fill-color", fillColor as maplibregl.ColorSpecification);
     }
 
     if (m.getLayer("building-outline")) {
       const outlineColor = enabled ? ["case", ["==", ["get", MARKER_TAG.name], MARKER_TAG.value], HIGHLIGHT_COLOR, "#333"] : "#333";
-      m.setPaintProperty("building-outline", "line-color", outlineColor as any);
+      m.setPaintProperty("building-outline", "line-color", outlineColor as maplibregl.ColorSpecification);
     }
     m.triggerRepaint();
   }
@@ -862,7 +878,7 @@ export async function projektemacher3DMap(
     map.jumpTo(camPos);
   }
 
-  //(map as MaplibreMapWithLegacyShim).updateSize = () => map.resize();
+  (map as MaplibreMapWithLegacyShim).updateSize = () => map.resize();
 
   return map;
 }
@@ -875,7 +891,7 @@ export function highlight(map: maplibregl.Map) {
       ["==", ["get", MARKER_TAG.name], MARKER_TAG.value],
       HIGHLIGHT_COLOR,
       "#333"
-    ] as any);
+    ] as maplibregl.ExpressionSpecification);
   }
   if (map.getLayer("building-fill")) {
     map.setPaintProperty("building-fill", "fill-color", [
@@ -883,7 +899,7 @@ export function highlight(map: maplibregl.Map) {
       ["==", ["get", MARKER_TAG.name], MARKER_TAG.value],
       HIGHLIGHT_COLOR,
       "rgba(0, 0, 0, 0)"
-    ] as any);
+    ] as maplibregl.ExpressionSpecification);
   }
 }
 

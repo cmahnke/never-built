@@ -1,7 +1,7 @@
 // assets/ts/maplibregl-util.ts
 
 import type { Map as MapLibreMap, ExpressionSpecification } from "maplibre-gl";
-import type { FeatureTag, FeatureTagValue } from "./3d-map";
+import type { FeatureTag } from "./3d-map";
 import type { AllPaintProperties } from "@maplibre/maplibre-gl-style-spec";
 
 export interface SetLayerColorOptions {
