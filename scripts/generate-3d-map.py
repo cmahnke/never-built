@@ -14,6 +14,7 @@ import tarfile
 import io
 import sqlite3
 import gzip
+import atexit
 from typing import List, Tuple, Union, Dict, Any
 from itertools import combinations
 
@@ -54,10 +55,18 @@ MASTER_PBF = TILES_DIR / f"{COVERAGE}.osm.pbf"
 parser = argparse.ArgumentParser(description="Process OSM patches and generate map tiles.")
 parser.add_argument("-d", "--debug", action="store_true", help="Enable debug logging and behavior.")
 parser.add_argument("-c", "--compact", action="store_true", help="Compact generated output by symlinking unmodified tiles to the master directory.")
+parser.add_argument(
+    "-m", "--merge",
+    choices=["none", "tile"],
+    default="none",
+    type=str,
+    help="Merge strategy: 'none' or 'tile' (default: 'none')",
+)
 args = parser.parse_args()
 
 DEBUG = args.debug
 COMPACT = args.compact
+MERGE = args.merge
 
 # Configure logging format and level
 log_level = logging.DEBUG if DEBUG else logging.INFO
@@ -355,13 +364,14 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
                     pass
 
         patch_file_name = f"{file_base_name}-patch.osm"
+        patch_file_path = (tmp_dir / patch_file_name)
         outline_file_name = f"{file_base_name}-meta.geojson"
         logger.info(f"Writing patch to {tmp_dir / patch_file_name}")
 
-        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(tmp_dir / patch_file_name), "--tag", "meta=never-built", "-f", "-v", "--full"])
-        run_cmd([sys.executable, "scripts/osm_tool.py", "tile-info", "-v", "-i", str(tmp_dir / patch_file_name), "-o", str(tmp_dir / outline_file_name)])
+        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(patch_file_path), "--tag", "meta=never-built", "-f", "-v", "--full"])
+        run_cmd([sys.executable, "scripts/osm_tool.py", "tile-info", "-v", "-i", str(patch_file_path), "-o", str(tmp_dir / outline_file_name)])
 
-        patch_cmd_list = [sys.executable, "scripts/osm_tool.py", "patch", "-i", str(MASTER_PBF), "-p", str(tmp_dir / patch_file_name), "-o", str(map_file), "-v", "-f"]
+        patch_cmd_list = [sys.executable, "scripts/osm_tool.py", "patch", "-i", str(MASTER_PBF), "-p", str(patch_file_path), "-o", str(map_file), "-v", "-f"]
 
         if DEBUG:
             logger.debug(f"Keeping masked file: {tmp_dir / f'{file_base_name}-masked.osm'}")
@@ -449,7 +459,7 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
     shutil.move(str(tmp_dir / outline_file_name), str(post_tiles / outline_file_name))
 
     if not DEBUG:
-        shutil.rmtree(tmp_dir, ignore_errors=True)
+        atexit.register(shutil.rmtree, path=tmp_dir, ignore_errors=True)
     else:
         logger.debug(f"Keeping temporary directory: {tmp_dir}")
 
@@ -474,11 +484,18 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
             "bbox": geoMeta.bbox,
             "tile_levels": geoMeta.tiles,
             "input": osm_patch,
-            "tile_dir": post_tiles
+            "tile_dir": post_tiles,
+            "patch": patch_file_path
         }
 
     logger.info(f"Done processing {osm_patch}")
     return result
+
+def tile_merge(processing_results):
+    all_changes = validate_and_extract_tiles(processing_results)
+    merge_and_copy_tiles(all_changes, MASTER_TILE_DIR, COMPLETE_MAP_DIR)
+    shutil.copy((MASTER_TILE_DIR / "metadata.json"), COMPLETE_MAP_DIR)
+
 
 def main():
     processing_results = []
@@ -510,9 +527,8 @@ def main():
             logger.error(f"Processing of {osm_patch} failed: {e}")
 
     logger.info(f"Finishing, creating map with all changes into {COMPLETE_MAP_DIR} (based on {MASTER_TILE_DIR})")
-    all_changes = validate_and_extract_tiles(processing_results)
-    merge_and_copy_tiles(all_changes, MASTER_TILE_DIR, COMPLETE_MAP_DIR)
-    shutil.copy((MASTER_TILE_DIR / "metadata.json"), COMPLETE_MAP_DIR)
+    if MERGE is "tiles":
+        tile_merge(processing_results)
     logger.info("Map generation complete.")
 
 if __name__ == "__main__":
