@@ -819,7 +819,7 @@ export async function projektemacher3DMap(
       }
     });
 
-/*
+    // TODO: Check why the outline from the style won't work
     map.addLayer({
       id: "building-outline",
       type: "line",
@@ -829,7 +829,7 @@ export async function projektemacher3DMap(
       filter: BASE_BUILDING_FILTER,
       paint: { "line-color": "#333", "line-width": 0.6, "line-opacity": 0.8 }
     });
-*/
+
     applyBuildingFilter(map, neverBuiltCheckbox.checked);
     applyHighlight(map, highlightCheckbox.checked);
 
