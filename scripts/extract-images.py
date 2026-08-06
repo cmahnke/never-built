@@ -59,7 +59,6 @@ def gitignore(dir, file, gitignore_file = ".gitignore"):
                 return
     with open(gitignore_path, 'a') as gif:
         gif.write(ignore_line)
-    #if debug:
     cprint(f"Wrote '{ignore_line}' to {gitignore_path}", "yellow")
 
 def postprocess(image, processors, debug_str=""):
@@ -79,6 +78,7 @@ def postprocess(image, processors, debug_str=""):
             if debug:
                 sys.exit(1)
             else:
+                global model
                 model = None
                 break
 
@@ -88,31 +88,61 @@ def extract(meta, dir):
     global model
 
     def wrt(image, name, dir):
-        with open(name, 'w') as f:
-            image.save(f)
-            cprint(f"Saved {name}", "green")
-            gitignore(dir, name, gitignore_file)
+        if str(name).lower().endswith('.jxl'):
+            import pyvips
+            if image.mode not in ('RGB', 'RGBA', 'L'):
+                image = image.convert('RGB')
+            # Marshal PIL buffer to pyvips for JXL export
+            vips_img = pyvips.Image.new_from_memory(image.tobytes(), image.width, image.height, len(image.getbands()), 'uchar')
+            vips_img.jxlsave(name)
+            cprint(f"Saved {name} via pyvips", "green")
+        else:
+            with open(name, 'w') as f:
+                image.save(f)
+                cprint(f"Saved {name}", "green")
+
+        gitignore(dir, name, gitignore_file)
 
     for image_meta in meta:
         image_file = os.path.join(dir, image_meta["image"])
-        if str(image_file).endswith('.jxl'):
-            from jxlpy import JXLImagePlugin
 
         if not os.path.isfile(image_file):
             cprint(f"File {image_file} not found, skipping!", "red")
             continue
-        im = Image.open(image_file)
+
+        # Load via pyvips for jxl, PIL for everything else
+        if str(image_file).lower().endswith('.jxl'):
+            import pyvips
+            vips_img = pyvips.Image.new_from_file(image_file)
+            bands = vips_img.bands
+            if bands == 1:
+                mode = 'L'
+            elif bands == 3:
+                mode = 'RGB'
+            elif bands == 4:
+                mode = 'RGBA'
+            else:
+                vips_img = vips_img.colourspace('srgb')
+                mode = 'RGB'
+
+            # Marshal pyvips buffer back to PIL
+            mem = vips_img.write_to_memory()
+            im = Image.frombuffer(mode, (vips_img.width, vips_img.height), mem, "raw", mode, 0, 1)
+        else:
+            im = Image.open(image_file)
+
         if not "size" in image_meta:
             cprint(f"Missing size for {image_file}: \"size\": [{im.width}, {im.height}],", "yellow")
         else:
             if image_meta["size"][0] != im.width:
-                cprint(f"Width is wrong for {image_file}: got {image_meta["size"][0]}, expected {im.width}", "red")
+                cprint(f"Width is wrong for {image_file}: got {image_meta['size'][0]}, expected {im.width}", "red")
             if image_meta["size"][1] != im.height:
-                cprint(f"Height is wrong for {image_file}: got {image_meta["size"][1]}, expected {im.height}", "red")
+                cprint(f"Height is wrong for {image_file}: got {image_meta['size'][1]}, expected {im.height}", "red")
+
         if "areas" in image_meta:
             i = 1
             for area in image_meta["areas"]:
-                name = os.path.join(dir, f"{area["name"]}{default_image_ext}")
+                name = os.path.join(dir, f"{area['name']}{default_image_ext}")
                 left = area['position']['x']
                 top = area['position']['y']
                 right = area['size']['x'] + area['position']['x']
@@ -133,7 +163,7 @@ def extract(meta, dir):
                 name = image_meta["name"]
             else:
                 name = pathlib.Path(image_file).stem + default_image_ext
-            wrt(a, name, dir)
+            wrt(im, name, dir)
 
 def smoothen(im, params=None):
     if im.mode == "RGBA":
@@ -160,7 +190,7 @@ def contrast(im, params=None):
     if im.mode == "RGBA":
         im = im.convert('RGB')
     image = np.asarray(im)
-    enhanced = output = clahe_contrast(rgb_img=image)
+    enhanced = clahe_contrast(rgb_img=image)
     return Image.fromarray(enhanced)
 
 def clahe_contrast(bgr_img=None, rgb_img=None):
@@ -184,17 +214,13 @@ def clahe_contrast(bgr_img=None, rgb_img=None):
         raise ValueError("No valid input image")
 
     l_channel, a, b = cv2.split(lab)
-
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     cl = clahe.apply(l_channel)
-
     limg = cv2.merge((cl,a,b))
-
     enhanced_img = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
 
     return Image.fromarray(enhanced_img)
 
-# See https://stackoverflow.com/q/57030125
 def auto_brightness(im, params=None, minimum_brightness = 0.66):
     if isinstance(im, Image.Image):
         image = np.asarray(im)
@@ -237,13 +263,11 @@ def normalize(im, params=None):
     normalized = cv2.normalize(cvAr, None, beta=0, alpha=255, norm_type=cv2.NORM_MINMAX)
     return Image.fromarray(cv2.cvtColor(normalized, cv2.COLOR_GRAY2RGB))
 
-# See https://www.kaggle.com/code/djokester/image-super-resolution-upscaling-with-real-esrgan
 def enhance_ai(img, params=None, factor=4, smoothen=False, weights="RealESRGAN_x{factor}plus.pth"):
     start = time.time()
     global model
     from huggingface_hub import hf_hub_download
     def cached_download_stub(config_file_url, cache_dir="", force_filename=""):
-        #from RealESRGAN.model import HF_MODELS
         from py_real_esrgan.model import HF_MODELS
         import re
         scale = re.sub(r'http.*_x(\d).pth', '\\1', config_file_url)
@@ -254,10 +278,9 @@ def enhance_ai(img, params=None, factor=4, smoothen=False, weights="RealESRGAN_x
         return hf_hub_download(repo, filename, cache_dir=cache_dir, force_filename=force_filename)
 
     import torch
-
     from torchvision.transforms.functional import rgb_to_grayscale
-
     import types, sys
+
     functional_tensor_mod = types.ModuleType('functional_tensor')
     functional_tensor_mod.rgb_to_grayscale = rgb_to_grayscale
 
@@ -274,8 +297,6 @@ def enhance_ai(img, params=None, factor=4, smoothen=False, weights="RealESRGAN_x
 
     if torch.cuda.is_available():
         device = torch.device('cuda')
-    #elif torch.mps.is_available():
-    #    device = torch.device('mps')
     else:
         device = torch.device('cpu')
 
@@ -292,11 +313,12 @@ def enhance_ai(img, params=None, factor=4, smoothen=False, weights="RealESRGAN_x
         output_image = output_image.filter(ImageFilter.SMOOTH)
     width, height = output_image.size
     output_image = output_image.resize((int((1/factor)*width), (int((1/factor)*height))), Image.LANCZOS)
+
     if debug:
         cprint(f"Scaled from {width}x{height} to {output_image.size[0]}x{output_image.size[1]}", "yellow")
-    end = time.time()
-    if debug:
+        end = time.time()
         cprint(f"Processing took {(end-start) * 10**3}ms", "yellow")
+
     return output_image
 
 def remove_halftone_grid_wavelet(img, params=None, wavelet='bior1.3', level=10, threshold=30):
@@ -304,17 +326,14 @@ def remove_halftone_grid_wavelet(img, params=None, wavelet='bior1.3', level=10, 
         img = img.convert('L')
     img = np.asarray(img)
 
-    coeffs = pywt.wavedec2(img, wavelet, level=level) # Decompose the image
-
-    # Threshold the high-frequency coefficients (detail coefficients)
+    coeffs = pywt.wavedec2(img, wavelet, level=level)
     thresholded_coeffs = tuple(
         [pywt.threshold(c, value=threshold, mode='soft') if i > 0 else c for i, c in enumerate(level_coeffs)]
         for level_coeffs in coeffs
     )
 
-    img_filtered = pywt.waverec2(thresholded_coeffs, wavelet) # Reconstruct the image
-
-    img_filtered = np.abs(img_filtered).astype(np.uint8) # Convert and return
+    img_filtered = pywt.waverec2(thresholded_coeffs, wavelet)
+    img_filtered = np.abs(img_filtered).astype(np.uint8)
     return Image.fromarray(img_filtered.astype('uint8'))
 
 def preview(image, params=None, size=default_preview_size):
@@ -322,12 +341,10 @@ def preview(image, params=None, size=default_preview_size):
     return image
 
 def dehalftone(image, params=None, resize=None):
-
     def generate_grid(m, n):
         x = np.arange(-m/2, m/2) / m
         y = np.arange(-n/2, n/2) / n
         z = np.zeros((m, n))
-        mask = np.zeros((m, n))
         for i in range(m-1):
             for j in range(n-1):
                 z[i][j] = x[i] ** 2 + y[j] ** 2
@@ -337,7 +354,6 @@ def dehalftone(image, params=None, resize=None):
         z = generate_grid(m, n)
         mask = a * np.exp(-np.pi*z / b**2)
         return mask
-
 
     if image.mode in ("RGBA", "RGB"):
         image = image.convert('L')
@@ -356,7 +372,6 @@ def dehalftone(image, params=None, resize=None):
     F = np.fft.fftshift(F)
 
     mask = generate_mask(w, h)
-
     product = np.multiply(F.T, mask)
 
     ifft_product = np.fft.ifft2(product)
@@ -366,12 +381,7 @@ def dehalftone(image, params=None, resize=None):
     if(debug):
         cprint("Removed halftone grid", "green")
     output = normalized.astype('uint8')
-#    if brightness:
-#        print(output.shape)
-#        rgb = cv2.cvtColor(output, cv2.COLOR_GRAY2RGB)
-#        cprint(f"Adjusting contras / brightness {rgb.shape}", "yellow")
-#
-#        output = clahe_contrast(rgb_img=rgb)
+
     return Image.fromarray(output.astype('uint8'))
 
 def main():
@@ -380,15 +390,17 @@ def main():
     parser = argparse.ArgumentParser(description='Extract images')
     parser.add_argument('--dir', type=pathlib.Path, help='directory to process')
     parser.add_argument('--meta', type=pathlib.Path, help='File containing coordinates')
-    parser.add_argument('--debug', '-d', help='Print information about JXL bindings', default=False, action='store_true')
+    parser.add_argument('--debug', '-d', help='Print information about module bindings', default=False, action='store_true')
 
     args = parser.parse_args()
 
-
     if args.debug:
         debug = True
-        import jxlpy
-        print("jxlpy: {}, libjxl: {}, pillow: {}".format(jxlpy.__version__, jxlpy._jxl_version, Image.__version__))
+        try:
+            import pyvips
+            print(f"pyvips version: {pyvips.__version__}, pillow: {Image.__version__}")
+        except ImportError:
+            print(f"pyvips not installed, pillow: {Image.__version__}")
 
     if debug:
         import warnings
@@ -405,7 +417,6 @@ def main():
 
     for dir in metas:
         meta = read_dir(dir)
-        #print(dir, meta)
         cprint(f"Processing {str(dir)}", "green")
         extract(meta, dir)
 

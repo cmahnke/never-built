@@ -26,12 +26,12 @@ export const translations = {
       rotateLeft: "Rotate 90° left",
       rotateRight: "Rotate 90° right",
       closePopup: "Close popup",
-      resetBearing: "Drag to rotate map, click to reset north"
+      resetBearing: "Drag to rotate map, click to reset north",
     },
     "3d": {
       hideBuildings: "Show only never-built buildings",
-      highlightBuildings: "Highlight never-built buildings"
-    }
+      highlightBuildings: "Highlight never-built buildings",
+    },
   },
   de: {
     tooltips: {
@@ -44,37 +44,42 @@ export const translations = {
       rotateLeft: "90° nach links drehen",
       rotateRight: "90° nach rechst drehen",
       closePopup: "Popup schließen",
-      resetBearing: "Zum Drehen der Karte ziehen, zum Zurücksetzen auf Norden anklicken"
+      resetBearing:
+        "Zum Drehen der Karte ziehen, zum Zurücksetzen auf Norden anklicken",
     },
     "3d": {
       hideBuildings: "Nur nicht gebaute Gebäude zeigen",
-      highlightBuildings: "Nicht gebaute Gebäude hervorheben"
-    }
-  }
+      highlightBuildings: "Nicht gebaute Gebäude hervorheben",
+    },
+  },
 };
 
-export const defaultVectorSource = "https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf";
+export const defaultVectorSource =
+  "https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf";
 
-export const defaultPadding: [number, number, number, number] = [50, 50, 50, 50];
+export const defaultPadding: [number, number, number, number] = [
+  50, 50, 50, 50,
+];
 
 export function getMaplibreGLLocale(): Record<string, string> {
   i18next.use(LanguageDetector).init({
     debug: false,
     fallbackLng: "en",
     resources: translations,
-    supportedLngs: ["en", "de"]
+    supportedLngs: ["en", "de"],
   });
 
   return {
-    'AttributionControl.ToggleAttribution': i18next.t("tooltips:toggleAttribution"),
-    'FullscreenControl.Enter': i18next.t("tooltips:fullscreenEnter"),
-    'FullscreenControl.Exit': i18next.t("tooltips:fullscreenExit"),
-    'NavigationControl.ZoomIn': i18next.t("tooltips:zoomIn"),
-    'NavigationControl.ZoomOut': i18next.t("tooltips:zoomOut"),
-    'Popup.Close': i18next.t("tooltips:closePopup"),
-    'NavigationControl.ResetBearing': i18next.t("tooltips:resetBearing"),
-  }
-
+    "AttributionControl.ToggleAttribution": i18next.t(
+      "tooltips:toggleAttribution",
+    ),
+    "FullscreenControl.Enter": i18next.t("tooltips:fullscreenEnter"),
+    "FullscreenControl.Exit": i18next.t("tooltips:fullscreenExit"),
+    "NavigationControl.ZoomIn": i18next.t("tooltips:zoomIn"),
+    "NavigationControl.ZoomOut": i18next.t("tooltips:zoomOut"),
+    "Popup.Close": i18next.t("tooltips:closePopup"),
+    "NavigationControl.ResetBearing": i18next.t("tooltips:resetBearing"),
+  };
 }
 
 export function getLang(): string {
@@ -96,28 +101,6 @@ export function absUrl(url: string): string {
     }
     return base + url;
   }
-}
-
-export function loadOrParse(str: string | object): object | Promise<object | void> {
-  let obj: object | Promise<object | void>;
-  if (typeof str === "object") {
-    return str;
-  }
-  try {
-    // BUG (preserved from original): `json` is never defined/passed to this function.
-    // This will throw a ReferenceError at runtime if this branch is reached.
-    obj = JSON.parse(str);
-  } catch (e) {
-    obj = fetch(str)
-      .then((response) => response.json())
-      .catch(function (body) {
-        console.log(`Could not read JSON from ${str}` + body, e);
-      })
-      .catch(function () {
-        console.log(`Could not read data from URL ${str}`, e);
-      });
-  }
-  return obj;
 }
 
 /*

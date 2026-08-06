@@ -1,6 +1,6 @@
 // assets/ts/main.ts
 
-import { loadOrParse } from "./base-map";
+import { loadOrParse } from "./map-utils";
 import { projektemacher3DMap } from "./3d-map";
 import * as maplibregl from "maplibre-gl";
 import type { LngLatLike } from "maplibre-gl";
@@ -8,6 +8,8 @@ import type { CameraPositionConfig } from "./3d-map";
 import type { TileMetadata } from "./@types/tile-metadata.d.ts";
 import { center as turfCenter, points } from "@turf/turf";
 import { UAParser } from "ua-parser-js";
+
+//setWorkerUrl('/node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs');
 
 declare global {
   interface Window {
@@ -19,7 +21,6 @@ let debug = false;
 const elementId = "map";
 // This sets the map to show
 const tileSource = "never-built"; // "Blauer-Turm"
-
 
 const topoRasterTiles = "/map/tiles/{z}/{x}/{y}.png";
 const styleJson = "/map-styles/style.json";

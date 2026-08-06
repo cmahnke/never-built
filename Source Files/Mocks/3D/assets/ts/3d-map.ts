@@ -1,23 +1,25 @@
 // assets/ts/3d-map.ts
 
 import * as maplibregl from "maplibre-gl";
-import { center as turfCenter } from "@turf/turf";
-import { loadOrParse, absUrl } from "./base-map";
-import { setLayerColorByTag } from "./maplibregl-util";
+import { center as turfCenter, bbox as turfBbox } from "@turf/turf";
+import { absUrl } from "./base-map";
+import { loadOrParse } from "./map-utils";
+import { setLayerColorByTag, addGeoJSONLayersAndInteractions } from "./maplibregl-util";
 import { TreeLayer } from "./layers/tree-layer";
 import { ArchitectureModelBWLayer } from "./layers/architecture-model-bw-layer";
-import { updateStyle, setupDefaultStyle, defaultSprites, getSourceName } from "./styles";
+import { setupDefaultStyle, defaultSprites, getSourceName } from "./styles";
+import { updateStyle } from "./never-built-styles";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { NavigationControl, FullscreenControl, AttributionControl } from "maplibre-gl";
+import { Map as MapLibreMap, NavigationControl, FullscreenControl, AttributionControl } from "maplibre-gl";
 import chroma from "chroma-js";
 import i18next from "i18next";
 import { getMaplibreGLLocale, translations } from "./base-map";
-import { addGeoJSONLayersAndInteractions } from "./map";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { UAParser } from "ua-parser-js";
 import type { GeoJSON } from "geojson";
+import type { FeatureTag } from "./maplibregl-util";
 
-import type { MapOptions, LngLatLike, RasterDEMSourceSpecification, StyleSpecification } from "maplibre-gl";
+import type { MapOptions, LngLatLike, RasterDEMSourceSpecification, StyleSpecification, LngLatBoundsLike } from "maplibre-gl";
 
 export interface CameraPositionConfig {
   cameraLngLat: LngLatLike;
@@ -35,13 +37,7 @@ interface MarkerOptions {
   anchor?: [number, number];
 }
 
-export type FeatureTagValue = string | number | boolean | null;
-export interface FeatureTag {
-  name: string;
-  value: FeatureTagValue;
-}
-
-interface MaplibreMapWithLegacyShim extends Map {
+interface MaplibreMapWithLegacyShim extends MapLibreMap {
   /** @deprecated Use resize() instead. Kept for legacy call-site compatibility. */
   updateSize?: () => void;
 }
@@ -52,12 +48,16 @@ interface FreeCameraOptionsShim {
   };
 }
 
-interface MaplibreMapInternal extends maplibregl.Map {
+interface MaplibreMapInternal extends MapLibreMap {
   transform?: {
     cameraToCenterDistance?: number;
     worldSize?: number;
   };
   getFreeCameraOptions?: () => FreeCameraOptionsShim;
+}
+
+interface MapOptionsInternal extends MapOptions {
+  calculateTileZoomFunction?: (zoom: number) => number;
 }
 
 /* Defaults */
@@ -72,6 +72,8 @@ const OVERHEAD_THRESHOLD = 5;
 const TRANSITION_MS = 600;
 // Terrain
 const BASE_TERRAIN_EXAGGERATION = 1;
+
+export const defaultPadding = 50;
 
 export async function projektemacher3DMap(
   container: string | HTMLElement,
@@ -94,7 +96,7 @@ export async function projektemacher3DMap(
   fontPath = "/css/fonts/{font-family}.css",
   initialPos?: CameraPositionConfig,
   topoRasterTiles?: string
-): Promise<maplibregl.Map> {
+): Promise<MapLibreMap> {
   let zoom: number = initialZoom;
   const maxPitch = disabled ? 0 : 75;
 
@@ -105,7 +107,7 @@ export async function projektemacher3DMap(
 
   const hasTerrain = topoRasterTiles !== undefined;
 
-  let mapOptions: MapOptions = {
+  let mapOptions: MapOptionsInternal = {
     container: container,
     canvasContextAttributes: { antialias: true }
   };
@@ -121,7 +123,7 @@ export async function projektemacher3DMap(
     }
   }
 
-  if(!i18next.isInitialized) {
+  if (!i18next.isInitialized) {
     i18next.use(LanguageDetector).init({
       debug: false,
       fallbackLng: "en",
@@ -148,7 +150,7 @@ export async function projektemacher3DMap(
   if (geojson !== undefined) {
     geojsonObj = typeof geojson === "string" ? ((await loadOrParse(geojson as string)) as GeoJSON) : (geojson as GeoJSON);
   }
-  let geojsonLayerNames;
+  let geojsonLayerNames: string[] = [];
 
   if (centerPoint !== undefined) {
     centerObj = (await loadOrParse(centerPoint as string)) as LngLatLike;
@@ -210,6 +212,7 @@ export async function projektemacher3DMap(
     style = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }
 
+  // @ts-expect-error This will report an error since TS handles `const` like a type decleration
   if (BUILDING_LAYER_NAME !== undefined && BUILDING_LAYER_NAME != "") {
     style.layers.forEach((layer) => {
       if (layer["source-layer"] === "building") {
@@ -263,11 +266,11 @@ export async function projektemacher3DMap(
     blueFactor: 0.4
   };
 
-  const map = new maplibregl.Map({
+  const map = new MapLibreMap({
     container: container,
     style,
     center: centerObj,
-    maxBounds: bboxObj,
+    maxBounds: bboxObj ? (bboxObj as LngLatBoundsLike) : undefined,
     zoom,
     minZoom,
     maxPitch: maxPitch,
@@ -276,7 +279,7 @@ export async function projektemacher3DMap(
     pitchWithRotate: !disabled,
     attributionControl: false,
     locale: getMaplibreGLLocale(),
-    calculateTileZoomFunction: (requestedZoom) => {
+    calculateTileZoomFunction: (requestedZoom: number): number => {
       return Math.min(requestedZoom, 15);
     },
     ...mapOptions
@@ -293,7 +296,7 @@ export async function projektemacher3DMap(
   const mapContainerEl = map.getContainer();
   const loadingEl = document.getElementById("map-loading");
 
-  function revealMapWhenReady(m: maplibregl.Map): void {
+  function revealMapWhenReady(m: MapLibreMap): void {
     const POLL_INTERVAL_MS = 100;
     const MAX_WAIT_MS = 8000;
     const startTime = performance.now();
@@ -346,7 +349,7 @@ export async function projektemacher3DMap(
 
     map.getContainer().appendChild(debugEl);
 
-    function getCurrentCameraPosition(m: maplibregl.Map): CameraPositionConfig {
+    function getCurrentCameraPosition(m: MapLibreMap): CameraPositionConfig {
       const mapInternal = m as unknown as MaplibreMapInternal;
       const transform = mapInternal.transform;
       const pitch = m.getPitch();
@@ -396,7 +399,7 @@ export async function projektemacher3DMap(
   const BASE_BUILDING_FILTER: maplibregl.FilterSpecification = ["!=", ["get", "hide_3d"], true];
   const NEVER_BUILT_FILTER: maplibregl.FilterSpecification = ["==", ["get", MARKER_TAG.name], MARKER_TAG.value];
 
-  function applyBuildingFilter(m: maplibregl.Map, onlyNeverBuilt: boolean): void {
+  function applyBuildingFilter(m: MapLibreMap, onlyNeverBuilt: boolean): void {
     const filter: maplibregl.FilterSpecification = onlyNeverBuilt
       ? ["all", BASE_BUILDING_FILTER, NEVER_BUILT_FILTER]
       : BASE_BUILDING_FILTER;
@@ -416,7 +419,7 @@ export async function projektemacher3DMap(
     m.triggerRepaint();
   }
 
-  function applyHighlight(m: maplibregl.Map, enabled: boolean): void {
+  function applyHighlight(m: MapLibreMap, enabled: boolean): void {
     if (m.getLayer("3d-buildings")) {
       const color = enabled
         ? [
@@ -520,7 +523,7 @@ export async function projektemacher3DMap(
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
-  function applyTweenValue(m: maplibregl.Map, v: number): void {
+  function applyTweenValue(m: MapLibreMap, v: number): void {
     // v goes from 1 (side-view / 3D) to 0 (top-down / flat)
 
     // 1. Fade out 3D buildings (leave building-outline visible for top-down view)
@@ -561,10 +564,37 @@ export async function projektemacher3DMap(
     const currentFov = CAMERA_VERTICAL_FOV_DEG + (DEFAULT_VERTICAL_FOV_DEG - CAMERA_VERTICAL_FOV_DEG) * (1 - v);
     m.setVerticalFieldOfView(currentFov);
 
+    // 5. Fade GeoJSON layers (only visible in view from above)
+    const geojsonOpacity = 1 - v;
+    for (const layerId of geojsonLayerNames) {
+      if (m.getLayer(layerId)) {
+        const layer = m.getLayer(layerId);
+        if (!layer) continue;
+        try {
+          if (layer.type === "symbol") {
+            m.setPaintProperty(layerId, "text-opacity", geojsonOpacity);
+            m.setPaintProperty(layerId, "icon-opacity", geojsonOpacity);
+          } else if (layer.type === "circle") {
+            m.setPaintProperty(layerId, "circle-opacity", geojsonOpacity);
+          } else if (layer.type === "line") {
+            m.setPaintProperty(layerId, "line-opacity", geojsonOpacity);
+          } else if (layer.type === "fill") {
+            m.setPaintProperty(layerId, "fill-opacity", geojsonOpacity);
+          } else if (layer.type === "fill-extrusion") {
+            m.setPaintProperty(layerId, "fill-extrusion-opacity", geojsonOpacity);
+          } else {
+            m.setPaintProperty(layerId, "opacity", geojsonOpacity);
+          }
+        } catch (e) {
+          console.warn(`Property '${layer.type}' doesn't exist for the layer ${layerId}`, e);
+        }
+      }
+    }
+
     m.triggerRepaint();
   }
 
-  function onTweenComplete(m: maplibregl.Map, flat: boolean): void {
+  function onTweenComplete(m: MapLibreMap, flat: boolean): void {
     if (hasTerrain) {
       if (m.getLayer("hills")) {
         m.setLayoutProperty("hills", "visibility", flat ? "none" : "visible");
@@ -573,7 +603,7 @@ export async function projektemacher3DMap(
     }
   }
 
-  function startTween(m: maplibregl.Map, target: number): void {
+  function startTween(m: MapLibreMap, target: number): void {
     if (tween.target === target) return;
 
     if (target === 0) {
@@ -610,15 +640,15 @@ export async function projektemacher3DMap(
     tween.raf = requestAnimationFrame(tick);
   }
 
-  function isOverhead(m: maplibregl.Map): boolean {
+  function isOverhead(m: MapLibreMap): boolean {
     return m.getPitch() < OVERHEAD_THRESHOLD;
   }
 
-  function sync3DVisibility(m: maplibregl.Map): void {
+  function sync3DVisibility(m: MapLibreMap): void {
     startTween(m, isOverhead(m) ? 0 : 1);
   }
 
-  function updateNeverBuiltControlVisibility(m: maplibregl.Map): void {
+  function updateNeverBuiltControlVisibility(m: MapLibreMap): void {
     // Keep control visible from above for highlight functionality
     neverBuiltControlEl.style.display = "flex";
   }
@@ -678,7 +708,7 @@ export async function projektemacher3DMap(
     return { data: buffer };
   });
 
-  function setFlatTerrainSource(map: maplibregl.Map, elevationMeters: number): void {
+  function setFlatTerrainSource(map: MapLibreMap, elevationMeters: number): void {
     if (map.getSource(FLAT_SOURCE_ID)) {
       map.removeSource(FLAT_SOURCE_ID);
     }
@@ -697,13 +727,13 @@ export async function projektemacher3DMap(
     });
   }
 
-  function prewarmFlatTerrainTile(map: maplibregl.Map): void {
+  function prewarmFlatTerrainTile(map: MapLibreMap): void {
     if (!hasTerrain || !map.getSource("terrainSource")) return;
     const estimate = Math.round(map.getCameraTargetElevation() / FLAT_EXAGGERATION);
     void getFlatTileBuffer(estimate);
   }
 
-  function setTerrainFlattened(map: maplibregl.Map, flattened: boolean): void {
+  function setTerrainFlattened(map: MapLibreMap, flattened: boolean): void {
     if (!hasTerrain) return;
 
     const wasClamped = map.getCenterClampedToGround();
@@ -789,6 +819,7 @@ export async function projektemacher3DMap(
       }
     });
 
+/*
     map.addLayer({
       id: "building-outline",
       type: "line",
@@ -798,7 +829,7 @@ export async function projektemacher3DMap(
       filter: BASE_BUILDING_FILTER,
       paint: { "line-color": "#333", "line-width": 0.6, "line-opacity": 0.8 }
     });
-
+*/
     applyBuildingFilter(map, neverBuiltCheckbox.checked);
     applyHighlight(map, highlightCheckbox.checked);
 
@@ -836,33 +867,43 @@ export async function projektemacher3DMap(
     onTweenComplete(map, startFlat);
     updateNeverBuiltControlVisibility(map);
 
-    /* TODO: Fix this
     if (geojsonObj !== undefined) {
-      // Add layers and get their names
-      geojsonLayerNames = await addGeoJSONLayersAndInteractions({
+      // Add layers asynchronously but initiate in current scope to not break the sync load handler logic
+      addGeoJSONLayersAndInteractions({
         map,
         geojson: geojsonObj,
         cluster,
         marker,
         disabled,
-        popup,
+        popup
+      }).then((names) => {
+        if (Array.isArray(names)) {
+          geojsonLayerNames = names;
+        } else if (typeof names === "string") {
+          geojsonLayerNames = [names];
+        } else if (names && typeof names === "object") {
+          geojsonLayerNames = Object.values(names).flat() as string[];
+        }
+
+        if (debug) {
+          console.log("Created GeoJSON Layers:", geojsonLayerNames);
+        }
+
+        // Apply current tween value to newly added layers to keep them in sync
+        applyTweenValue(map, tween.value);
+
+        // Make sure fit to bounds is only done initially
+        const featureCollection = geojsonObj as GeoJSON.FeatureCollection;
+        if (featureCollection.features?.length) {
+          const box = turfBbox(featureCollection) as [number, number, number, number];
+          const geojsonBounds: LngLatBoundsLike = [
+            [box[0], box[1]],
+            [box[2], box[3]]
+          ];
+          map.fitBounds(geojsonBounds, { padding: defaultPadding });
+        }
       });
-
-      if (debug) {
-        console.log('Created GeoJSON Layers:', geojsonLayerNames);
-      }
-
-      // TODO: only apply this in overhead mode
-      if (geojsonObj.features.length) {
-        const box = turfBbox(geojsonObj as GeoJSON) as [number, number, number, number];
-        const geojsonBounds: LngLatBoundsLike = [
-          [box[0], box[1]],
-          [box[2], box[3]],
-        ];
-        map.fitBounds(geojsonBounds, { padding: defaultPadding });
-      }
     }
-    */
 
     map.once("idle", () => {
       revealMapWhenReady(map);
@@ -912,7 +953,7 @@ export async function projektemacher3DMap(
   return map;
 }
 
-export function highlight(map: maplibregl.Map) {
+export function highlight(map: MapLibreMap) {
   setLayerColorByTag(map, BUILDING_LAYER_NAME, MARKER_TAG, HIGHLIGHT_COLOR);
   if (map.getLayer("building-outline")) {
     map.setPaintProperty("building-outline", "line-color", [

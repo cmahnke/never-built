@@ -1,8 +1,18 @@
+import type { LngLatBoundsLike } from "maplibre-gl";
+import type { TileMetadata } from "./@types/tile-metadata.d.ts";
 
-export function bboxToBounds(bbox: string | (string | number)[]): LngLatBoundsLike {
+export interface MarkerOptions {
+  src: string;
+  scale?: number;
+  anchor?: [number, number];
+}
+
+export function bboxToBounds(
+  bbox: string | (string | number)[],
+): LngLatBoundsLike {
   let arr: (string | number)[];
-  if (typeof bbox === 'string') {
-    arr = bbox.split(',');
+  if (typeof bbox === "string") {
+    arr = bbox.split(",");
   } else {
     arr = bbox.flat();
   }
@@ -14,31 +24,51 @@ export function bboxToBounds(bbox: string | (string | number)[]): LngLatBoundsLi
 }
 
 export function absUrl(url: string): string {
-  if (url.startsWith('http') || url.startsWith('//')) {
+  if (url.startsWith("http") || url.startsWith("//")) {
     return url;
   }
-  let base = window.location.protocol + '//' + window.location.hostname;
-  if (window.location.port !== '') {
-    base += ':' + window.location.port;
+  let base = window.location.protocol + "//" + window.location.hostname;
+  if (window.location.port !== "") {
+    base += ":" + window.location.port;
   }
   return base + url;
 }
 
-export function loadOrParse<T = unknown>(str: T | string): T | Promise<T | void> {
-  if (typeof str === 'object') {
-    return str as T;
+export async function loadOrParse(
+  str: object | string | null,
+): Promise<unknown> {
+  if (typeof str === "object" && str !== null) {
+    return str;
   }
+
   try {
-    // BUG (preserved from original): `json` was never actually passed in.
-    return JSON.parse((globalThis as any).json) as T;
+    return JSON.parse(str as string) as unknown;
   } catch {
-    return fetch(str as string)
-      .then((response) => response.json() as Promise<T>)
-      .catch((body) => {
-        console.log(`Could not read JSON from ${str}` + body);
-      })
-      .catch(() => {
-        console.log(`Could not read data from URL ${str}`);
-      });
+    try {
+      const response = await fetch(str as string);
+      return (await response.json()) as unknown;
+    } catch (err: unknown) {
+      console.log(
+        `Could not read JSON or fetch data from ${str}:`,
+        String(err),
+      );
+      return undefined;
+    }
   }
+}
+
+export async function getMapMetadata(
+  url: string,
+): Promise<TileMetadata> {
+  const metadataFile = "metadata.json";
+  if (url.includes("{")) {
+    url = url.substring(0, url.indexOf("{"));
+  }
+  if (!url.endsWith(metadataFile) && !url.endsWith("/")) {
+    url += "/" + metadataFile;
+  } else if (!url.endsWith(metadataFile)) {
+    url += metadataFile;
+  }
+  url = absUrl(url);
+  return loadOrParse(url) as Promise<TileMetadata>;
 }

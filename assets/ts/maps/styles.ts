@@ -8,75 +8,23 @@ import type {
   LineLayerSpecification,
   CircleLayerSpecification,
   LayerSpecification,
-} from 'maplibre-gl';
+} from "maplibre-gl";
 //import type { StyleSpecification } from "@maplibre/maplibre-gl-style-spec";
 
-import { absUrl } from './base-map';
+import { absUrl } from "./base-map";
 
 export const defaultSprites = "/map-styles/sprite";
 export const defaultFonts = "/css/fonts/{font-family}.css";
 export const defaultAttribution =
   '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>';
 
-interface StyleSource {
-  tiles?: string[];
-  url?: string;
-  minzoom?: number;
-  maxzoom?: number;
-  bounds?: number[];
-  attribution?: string;
-  [key: string]: unknown;
-}
-
-interface LayerPaint {
-  "background-color"?: string;
-  [key: string]: unknown;
-}
-
-/**
- * A single zoom→font-name stop pair, e.g. `[12, "Noto Sans Regular"]`.
- * Using a concrete tuple type instead of `unknown[]` lets us avoid any
- * `Array.isArray()` narrowing-to-`any[]` tricks later on.
- */
-type ZoomFontStop = [number, string];
-
-interface LayerLayout {
-  "text-font"?: string[] | { stops?: ZoomFontStop[] };
-  [key: string]: unknown;
-}
-
-interface StyleLayer {
-  type?: string;
-  paint?: LayerPaint;
-  layout?: LayerLayout;
-  [key: string]: unknown;
-}
-
-interface StyleMetadata {
-  "ol:webfonts"?: string;
-  [key: string]: unknown;
-}
-
 export interface ExtendedStyle extends StyleSpecification {
   "ol:webfonts"?: string;
   [key: string]: unknown;
 }
 
-interface Style {
-  sources: Record<string, StyleSource>;
-  layers: StyleLayer[];
-  metadata?: StyleMetadata;
-  center?: [number, number] | number[];
-  zoom?: number;
-  glyphs?: string;
-  sprite?: string | null;
-  "ol:webfonts"?: string;
-  [key: string]: unknown;
-  version: number;
-}
-
 export function updateStyle(
-  style: Style,
+  style: StyleSpecification,
   url: string,
   initialzoom?: number,
   minzoom?: number,
@@ -87,10 +35,12 @@ export function updateStyle(
   sprites?: string,
   fontPath?: string,
   font?: string,
-  attribution?: string
-): Style {
+  attribution?: string,
+): ExtendedStyle {
   const sourceKey = Object.keys(style.sources)[0];
-  const source = style.sources[sourceKey];
+  const source: VectorSourceSpecification = style.sources[
+    sourceKey
+  ] as VectorSourceSpecification;
 
   source.tiles = [url];
   if ("url" in source) {
@@ -99,8 +49,9 @@ export function updateStyle(
 
   if (minzoom !== undefined) source.minzoom = minzoom;
   if (maxzoom !== undefined) source.maxzoom = maxzoom;
-  if (bounds !== undefined) {
-    source.bounds = bounds.flat().map((e: number) => Number(e));
+  const flattened = bounds.flat().map((e: number) => Number(e));
+  if (flattened.length === 4) {
+    source.bounds = flattened as [number, number, number, number];
   }
 
   // Defensive: only ever write a real string into `attribution`, and strip
@@ -112,7 +63,7 @@ export function updateStyle(
       console.warn(
         `updateStyle(): "attribution" must be a string, got ${typeof attribution} ` +
           `(${JSON.stringify(attribution)}). Falling back to default attribution. ` +
-          `Check the call site — arguments may be shifted/mismatched.`
+          `Check the call site — arguments may be shifted/mismatched.`,
       );
       source.attribution = defaultAttribution;
     } else {
@@ -128,7 +79,7 @@ export function updateStyle(
   }
 
   if (background !== undefined) {
-    style.layers.forEach((layer: StyleLayer) => {
+    style.layers.forEach((layer: LayerSpecification) => {
       if (layer.type === "background") {
         layer.paint = { ...layer.paint, "background-color": background };
       }
@@ -144,7 +95,7 @@ export function updateStyle(
   }
 
   if (style.metadata) {
-    const metadata: StyleMetadata = style.metadata;
+    const metadata = style.metadata as Record<string, unknown>;
     Object.keys(metadata).forEach((key: string) => {
       if (key.startsWith("mapbox") || key.startsWith("openmaptiles")) {
         delete metadata[key];
@@ -153,14 +104,22 @@ export function updateStyle(
   }
 
   if (font !== undefined) {
-    style.layers.forEach((layer: StyleLayer) => {
-      if (layer.type === "symbol" && layer.layout && "text-font" in layer.layout) {
+    style.layers.forEach((layer: LayerSpecification) => {
+      if (
+        layer.type === "symbol" &&
+        layer.layout &&
+        "text-font" in layer.layout
+      ) {
         const textFont = layer.layout["text-font"];
         if (Array.isArray(textFont)) {
           textFont[0] = font;
-        } else if (textFont && typeof textFont === "object" && "stops" in textFont) {
-          const stops: ZoomFontStop[] = textFont.stops ?? [];
-          stops.forEach((stop: ZoomFontStop) => {
+        } else if (
+          textFont &&
+          typeof textFont === "object" &&
+          "stops" in textFont
+        ) {
+          const stops = textFont.stops ?? [];
+          stops.forEach((stop) => {
             stop[1] = [font];
           });
         }
@@ -169,17 +128,11 @@ export function updateStyle(
   }
 
   style.metadata = {
-    ...(style.metadata ?? {}),
+    ...((style.metadata as Record<string, unknown> | null | undefined) ?? {}),
     "projektemacher:fontPath": fontPath ?? defaultFonts,
   };
 
   style.sources[sourceKey] = source;
-
-  /*
-  if (!("version" in style)) {
-    style.version =8;
-  }
-  */
 
   return style;
 }
@@ -201,7 +154,7 @@ export function setupDefaultStyle(
   maxzoom?: number,
   bounds?: number[][],
   center?: LngLatLike,
-  background?: string
+  background?: string,
 ): StyleSpecification {
   const style: StyleSpecification = buildDefaultStyle(source);
   const src = style.sources.vector_layer_ as ExtendedVectorSource;
@@ -209,8 +162,10 @@ export function setupDefaultStyle(
   src.tiles = [source];
   if (minzoom !== undefined) src.minzoom = minzoom;
   if (maxzoom !== undefined) src.maxzoom = maxzoom;
-  if (bounds !== undefined) {
-    src.bounds = bounds.flat().map((e: number) => Number(e));
+
+  const flattened = bounds.flat().map((e: number) => Number(e));
+  if (flattened.length === 4) {
+    src.bounds = flattened as [number, number, number, number];
   }
   if (background !== undefined) {
     const bgLayer = style.layers[0] as BackgroundLayerSpecification;
@@ -230,75 +185,88 @@ export function setupDefaultStyle(
   return style;
 }
 
-
 type LayerColorTuple = [string, number, number, number];
 
 export const defaultStyleLayers: LayerColorTuple[] = [
-  ['water', 6, 204, 204],
-  ['water_name', 2, 44, 91],
-  ['waterway', 35, 117, 224],
-  ['landcover', 83, 224, 51],
-  ['landuse', 229, 180, 4],
-  ['park', 132, 234, 91],
-  ['boundary', 197, 69, 211],
-  ['aeroway', 81, 174, 181],
-  ['transportation', 242, 182, 72],
-  ['transportation_name', 188, 107, 56],
-  ['building', 43, 43, 43],
-  ['housenumber', 40, 40, 40],
-  ['place', 242, 14, 147],
-  ['mountain_peak', 98, 237, 247],
-  ['poi', 59, 181, 10],
+  ["water", 6, 204, 204],
+  ["water_name", 2, 44, 91],
+  ["waterway", 35, 117, 224],
+  ["landcover", 83, 224, 51],
+  ["landuse", 229, 180, 4],
+  ["park", 132, 234, 91],
+  ["boundary", 197, 69, 211],
+  ["aeroway", 81, 174, 181],
+  ["transportation", 242, 182, 72],
+  ["transportation_name", 188, 107, 56],
+  ["building", 43, 43, 43],
+  ["housenumber", 40, 40, 40],
+  ["place", 242, 14, 147],
+  ["mountain_peak", 98, 237, 247],
+  ["poi", 59, 181, 10],
 ];
 
 export function buildDefaultStyle(source: string): StyleSpecification {
   const backgroundLayer: BackgroundLayerSpecification = {
-    id: 'background',
-    type: 'background',
-    paint: { 'background-color': 'rgb(250,250,250)' },
+    id: "background",
+    type: "background",
+    paint: { "background-color": "rgb(250,250,250)" },
   };
 
-  const fillLayers: FillLayerSpecification[] = defaultStyleLayers.map(([id, r, g, b]) => ({
-    id: `vector_layer__${id}_polygon`,
-    type: 'fill',
-    source: 'vector_layer_',
-    'source-layer': id,
-    filter: ['==', ['geometry-type'], 'Polygon'],
-    paint: {
-      'fill-color': `rgba(${r}, ${g}, ${b}, 0.3)`,
-      'fill-antialias': true,
-      'fill-outline-color': `rgba(${r}, ${g}, ${b}, 0.3)`,
-    },
-  }));
+  const fillLayers: FillLayerSpecification[] = defaultStyleLayers.map(
+    ([id, r, g, b]) => ({
+      id: `vector_layer__${id}_polygon`,
+      type: "fill",
+      source: "vector_layer_",
+      "source-layer": id,
+      filter: ["==", ["geometry-type"], "Polygon"],
+      paint: {
+        "fill-color": `rgba(${r}, ${g}, ${b}, 0.3)`,
+        "fill-antialias": true,
+        "fill-outline-color": `rgba(${r}, ${g}, ${b}, 0.3)`,
+      },
+    }),
+  );
 
-  const lineLayers: LineLayerSpecification[] = defaultStyleLayers.map(([id, r, g, b]) => ({
-    id: `vector_layer__${id}_line`,
-    type: 'line',
-    source: 'vector_layer_',
-    'source-layer': id,
-    filter: ['==', ['geometry-type'], 'LineString'],
-    layout: { 'line-join': 'round', 'line-cap': 'round' },
-    paint: { 'line-color': `rgba(${r}, ${g}, ${b}, 0.6)` },
-  }));
+  const lineLayers: LineLayerSpecification[] = defaultStyleLayers.map(
+    ([id, r, g, b]) => ({
+      id: `vector_layer__${id}_line`,
+      type: "line",
+      source: "vector_layer_",
+      "source-layer": id,
+      filter: ["==", ["geometry-type"], "LineString"],
+      layout: { "line-join": "round", "line-cap": "round" },
+      paint: { "line-color": `rgba(${r}, ${g}, ${b}, 0.6)` },
+    }),
+  );
 
-  const circleLayers: CircleLayerSpecification[] = defaultStyleLayers.map(([id, r, g, b]) => ({
-    id: `vector_layer__${id}_circle`,
-    type: 'circle',
-    source: 'vector_layer_',
-    'source-layer': id,
-    filter: ['==', ['geometry-type'], 'Point'],
-    paint: { 'circle-color': `rgba(${r}, ${g}, ${b}, 0.8)`, 'circle-radius': 2 },
-  }));
+  const circleLayers: CircleLayerSpecification[] = defaultStyleLayers.map(
+    ([id, r, g, b]) => ({
+      id: `vector_layer__${id}_circle`,
+      type: "circle",
+      source: "vector_layer_",
+      "source-layer": id,
+      filter: ["==", ["geometry-type"], "Point"],
+      paint: {
+        "circle-color": `rgba(${r}, ${g}, ${b}, 0.8)`,
+        "circle-radius": 2,
+      },
+    }),
+  );
 
   const vectorSource: VectorSourceSpecification = {
-    type: 'vector',
+    type: "vector",
     tiles: [source],
     minzoom: 0,
     maxzoom: 14,
-    attribution: '&copy; OpenStreetMap contributors and Natural Earth',
+    attribution: "&copy; OpenStreetMap contributors and Natural Earth",
   };
 
-  const layers: LayerSpecification[] = [backgroundLayer, ...fillLayers, ...lineLayers, ...circleLayers];
+  const layers: LayerSpecification[] = [
+    backgroundLayer,
+    ...fillLayers,
+    ...lineLayers,
+    ...circleLayers,
+  ];
 
   // NOTE: no `glyphs` key set at all — the default style has no symbol/text
   // layers, and custom styles that DO have text layers rely on local
@@ -311,7 +279,7 @@ export function buildDefaultStyle(source: string): StyleSpecification {
   } as StyleSpecification;
 }
 
-export function getSourceName (style: StyleSpecification): string {
+export function getSourceName(style: StyleSpecification): string {
   return Object.keys(style.sources)[0];
 }
 
@@ -320,11 +288,15 @@ export function getSourceName (style: StyleSpecification): string {
 export function collectFontFamilies(style: StyleSpecification): string[] {
   const families = new Set<string>();
   style.layers.forEach((layer) => {
-    if (layer.type === 'symbol' && layer.layout && 'text-font' in layer.layout) {
-      const textFont = (layer.layout)['text-font'];
+    if (
+      layer.type === "symbol" &&
+      layer.layout &&
+      "text-font" in layer.layout
+    ) {
+      const textFont = layer.layout["text-font"];
       if (Array.isArray(textFont)) {
         textFont.forEach((f) => {
-          if (typeof f === 'string') families.add(f);
+          if (typeof f === "string") families.add(f);
         });
       }
     }
@@ -342,28 +314,35 @@ export function collectFontFamilies(style: StyleSpecification): string[] {
  * becomes "roboto-mono-variable".
  */
 export function fontFamilyToSlug(fontFamily: string): string {
-  return fontFamily.trim().toLowerCase().replace(/\s+/g, '-');
+  return fontFamily.trim().toLowerCase().replace(/\s+/g, "-");
 }
 
 /**
  * Injects a <link rel="stylesheet"> for a given font-family's CSS template
  * (containing @font-face rules), if not already present.
  */
-export function loadFontCss(fontFamily: string, template: string): Promise<void> {
+export function loadFontCss(
+  fontFamily: string,
+  template: string,
+): Promise<void> {
   const slug = fontFamilyToSlug(fontFamily);
-  const href = absUrl(template.replace('{font-family}', slug));
-  const existing = document.querySelector(`link[data-font-family="${CSS.escape(fontFamily)}"]`);
+  const href = absUrl(template.replace("{font-family}", slug));
+  const existing = document.querySelector(
+    `link[data-font-family="${CSS.escape(fontFamily)}"]`,
+  );
   if (existing) {
     return Promise.resolve();
   }
   return new Promise((resolve, reject) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
     link.href = href;
     link.dataset.fontFamily = fontFamily;
     link.onload = () => resolve();
     link.onerror = () =>
-      reject(new Error(`Could not load font CSS for "${fontFamily}" from ${href}`));
+      reject(
+        new Error(`Could not load font CSS for "${fontFamily}" from ${href}`),
+      );
     document.head.appendChild(link);
   });
 }
@@ -376,7 +355,7 @@ export function loadFontCss(fontFamily: string, template: string): Promise<void>
  */
 export async function preloadStyleFonts(
   style: StyleSpecification,
-  fontCssTemplate: string
+  fontCssTemplate: string,
 ): Promise<void> {
   const families = collectFontFamilies(style);
   if (families.length === 0) return;
@@ -385,16 +364,16 @@ export async function preloadStyleFonts(
     families.map(async (family) => {
       try {
         await loadFontCss(family, fontCssTemplate);
-        if ('fonts' in document) {
+        if ("fonts" in document) {
           await document.fonts.load(`24px '${family}'`);
         }
       } catch (err) {
         console.warn(`Could not preload web font "${family}":`, err);
       }
-    })
+    }),
   );
 
-  if ('fonts' in document) {
+  if ("fonts" in document) {
     await document.fonts.ready;
   }
 }

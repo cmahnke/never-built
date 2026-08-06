@@ -40,6 +40,7 @@ const FRAGMENT_SRC = /* glsl */ `
   uniform float u_antialias;
   uniform vec3  u_paperTone;
   uniform vec3  u_shadowTone;
+  uniform float u_opacity;
 
   // ── Highlighting Uniforms ──
   const int MAX_HIGHLIGHT_COLORS = 8;
@@ -172,11 +173,21 @@ const FRAGMENT_SRC = /* glsl */ `
     float vig = smoothstep(u_vignetteInner, u_vignetteOuter, dist);
     finalColor *= (1.0 - vig * u_vignetteStrength);
 
-    gl_FragColor = vec4(clamp(finalColor, 0.0, 1.0), 1.0);
+    // Apply opacity to the alpha channel
+    gl_FragColor = vec4(clamp(finalColor, 0.0, 1.0), u_opacity);
   }
 `;
 
 function compileShader(gl: GL, type: number, src: string): WebGLShader {
+  // iOS WebGL 1.0 often fails to compile fragment shaders with 'highp float'.
+  // We dynamically check for support and fallback to 'mediump' if necessary.
+  if (type === gl.FRAGMENT_SHADER) {
+    const highp = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
+    if (!highp || highp.precision === 0) {
+      src = src.replace(/precision\s+highp\s+float;/g, "precision mediump float;");
+    }
+  }
+
   const shader = gl.createShader(type)!;
   gl.shaderSource(shader, src);
   gl.compileShader(shader);
@@ -222,6 +233,8 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
   vignetteOuter = 0.78;
   edgeStrength = 0.35;
   blurStrength = 0.0; // 0 = off, try 0.6–1.2 for a tilt-shift model look
+  opacity = 1.0; // Layer opacity (0.0 to 1.0)
+  disableBlend = false; // If true, forces blending off (useful for specific pipeline needs)
   paperTone: [number, number, number] = [0.98, 0.97, 0.94];
   shadowTone: [number, number, number] = [0.05, 0.05, 0.06];
 
@@ -297,6 +310,7 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
       "u_antialias",
       "u_paperTone",
       "u_shadowTone",
+      "u_opacity",
       "u_highlightCount",
       "u_highlightThreshold",
       "u_highlightColors"
@@ -333,10 +347,27 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
 
     gl.copyTexSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
 
+    // Save previous WebGL state
     const prevDepthTest = gl.getParameter(gl.DEPTH_TEST) as boolean;
     const prevBlend = gl.getParameter(gl.BLEND) as boolean;
+
+    // Use nullish coalescing (??) to provide safe defaults.
+    // iOS Safari WebGL 1 contexts sometimes return null or throw errors for specific blend parameters.
+    const prevBlendSrcRgb = (gl.getParameter(gl.BLEND_SRC_RGB) as number) ?? gl.ONE;
+    const prevBlendDstRgb = (gl.getParameter(gl.BLEND_DST_RGB) as number) ?? gl.ZERO;
+    const prevBlendSrcAlpha = (gl.getParameter(gl.BLEND_SRC_ALPHA) as number) ?? gl.ONE;
+    const prevBlendDstAlpha = (gl.getParameter(gl.BLEND_DST_ALPHA) as number) ?? gl.ZERO;
+
     gl.disable(gl.DEPTH_TEST);
-    gl.disable(gl.BLEND);
+
+    // Conditionally enable or disable blending based on the disableBlend property
+    if (this.disableBlend) {
+      gl.disable(gl.BLEND);
+    } else {
+      // Enable blending so opacity visually fades the layer against the map background
+      gl.enable(gl.BLEND);
+      gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    }
     gl.depthMask(false);
 
     gl.useProgram(this.program);
@@ -360,6 +391,7 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
     gl.uniform1f(this.uniforms.u_antialias, this.antialias ? 1.0 : 0.0);
     gl.uniform3f(this.uniforms.u_paperTone, ...this.paperTone);
     gl.uniform3f(this.uniforms.u_shadowTone, ...this.shadowTone);
+    gl.uniform1f(this.uniforms.u_opacity, this.opacity);
 
     // ── Highlighting Uniforms ──
     const maxColors = 8;
@@ -383,8 +415,15 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
     gl.vertexAttribPointer(this.posLoc, 2, gl.FLOAT, false, 0, 0);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
+    // Restore previous WebGL state
     gl.depthMask(true);
     if (prevDepthTest) gl.enable(gl.DEPTH_TEST);
-    if (prevBlend) gl.enable(gl.BLEND);
+
+    if (prevBlend) {
+      gl.enable(gl.BLEND);
+      gl.blendFuncSeparate(prevBlendSrcRgb, prevBlendDstRgb, prevBlendSrcAlpha, prevBlendDstAlpha);
+    } else {
+      gl.disable(gl.BLEND);
+    }
   }
 }

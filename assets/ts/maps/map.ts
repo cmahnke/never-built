@@ -1,48 +1,32 @@
 // assets/ts/maps/map.ts
 
-import maplibregl, {
-  Map,
-  Popup,
+import {
+  Map as MapLibreMap,
   NavigationControl,
   FullscreenControl,
   AttributionControl,
   IControl,
   LngLatLike,
   LngLatBoundsLike,
-  GeoJSONSource,
-  setWorkerUrl,
-  LayerSpecification,
-} from 'maplibre-gl';
-import type {
-  PopupOptions,
-  StyleSpecification,
-  GeoJSONSourceSpecification,
-  LineLayerSpecification,
-  CircleLayerSpecification,
-  SymbolLayerSpecification,
-} from 'maplibre-gl';
-import { bbox as turfBbox, center as turfCenter } from '@turf/turf';
-import type { Feature, FeatureCollection, GeoJSON, Point } from 'geojson';
-import { updateStyle, setupDefaultStyle, buildDefaultStyle, collectFontFamilies, fontFamilyToSlug, loadFontCss, preloadStyleFonts } from './styles';
+  setWorkerUrl
+} from "maplibre-gl";
+import { bbox as turfBbox, center as turfCenter } from "@turf/turf";
+import { setupDefaultStyle, preloadStyleFonts } from "./styles";
+import { updateStyle } from "./never-built-styles";
 import { getMaplibreGLLocale } from "./base-map";
-import { absUrl, bboxToBounds, loadOrParse } from "./map-utils";
+import { absUrl, loadOrParse, getMapMetadata } from "./map-utils";
+import { addGeoJSONLayersAndInteractions } from "./maplibregl-util";
+import type { StyleSpecification, MapMouseEvent } from "maplibre-gl";
+import type { FeatureCollection, GeoJSON } from "geojson";
+import type { MarkerOptions } from "./map-utils";
 
-import type { ToolTipStrings } from "./base-map";
-
-setWorkerUrl('/js/maplibre-gl/maplibre-gl-worker.mjs');
+setWorkerUrl("/js/maplibre-gl/maplibre-gl-worker.mjs");
 
 /* =========================================================================
  * Shared defaults
  * ========================================================================= */
 
-const defaultSprites = '/map-styles/sprite';
-
-const popupOptions: PopupOptions = { anchor: 'bottom-left', maxWidth: 'none' };
-
-/** Pixel tolerance around a click point when looking for overlapping point
- * features to merge into a single popup — mirrors the original OpenLayers
- * setup's `markerOptions.hitTolerance`. */
-const popupHitTolerance = 8;
+const defaultSprites = "/map-styles/sprite";
 
 /**
  * CSS template used to dynamically load @font-face rules per font-family
@@ -52,7 +36,7 @@ const popupHitTolerance = 8;
  * replicate the loading behavior ourselves via <link> tags + the Font
  * Loading API.
  */
-const defaultFontsCssTemplate = '/css/fonts/{font-family}.css';
+const defaultFontsCssTemplate = "/css/fonts/{font-family}.css";
 
 const defaultAttribution =
   '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>';
@@ -60,20 +44,20 @@ const defaultAttribution =
 /** Fallback font-family used by the window.projektemacherMap wrapper when
  * no explicit `font` is given. Restored to match the original project
  * default. */
-const defaultMapFont = 'Roboto Mono Variable';
+const defaultMapFont = "Roboto Mono Variable";
 
 export const defaultVectorSource =
-  'https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf';
+  "https://static.projektemacher.org/maps/central-europe/tiles/{z}/{x}/{y}.pbf";
 
 export const defaultPadding = 50;
 
-const SUPPORTED_RASTER_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp'];
+const debug = false;
 
 /**
  * Extends MapLibre's Map type with a legacy OpenLayers-style method for
  * backwards compatibility with external code that hasn't been migrated yet.
  */
-interface MaplibreMapWithLegacyShim extends Map {
+interface MaplibreMapWithLegacyShim extends MapLibreMap {
   /** @deprecated Use resize() instead. Kept for legacy call-site compatibility. */
   updateSize?: () => void;
 }
@@ -84,409 +68,36 @@ interface MaplibreMapWithLegacyShim extends Map {
 
 class MousePositionControl implements IControl {
   private container?: HTMLDivElement;
-  private map?: Map;
-  private onMouseMove = (e: maplibregl.MapMouseEvent) => {
+  private map?: MapLibreMap;
+  private onMouseMove = (e: MapMouseEvent) => {
     if (this.container) {
       const { lng, lat } = e.lngLat;
       this.container.textContent = `${lng.toFixed(5)}, ${lat.toFixed(5)}`;
     }
   };
 
-  onAdd(map: Map): HTMLElement {
+  onAdd(map: MapLibreMap): HTMLElement {
     this.map = map;
-    this.container = document.createElement('div');
-    this.container.className = 'maplibregl-ctrl maplibregl-ctrl-group mouse-position';
-    this.container.style.padding = '0 6px';
-    this.container.style.fontSize = '11px';
-    map.on('mousemove', this.onMouseMove);
+    this.container = document.createElement("div");
+    this.container.className =
+      "maplibregl-ctrl maplibregl-ctrl-group mouse-position";
+    this.container.style.padding = "0 6px";
+    this.container.style.fontSize = "11px";
+    map.on("mousemove", this.onMouseMove);
     return this.container;
   }
 
   onRemove(): void {
-    this.map?.off('mousemove', this.onMouseMove);
+    this.map?.off("mousemove", this.onMouseMove);
     this.container?.parentNode?.removeChild(this.container);
     this.map = undefined;
   }
 }
 
 /* =========================================================================
- * Marker / route styling helpers — with SVG detection + rasterization
- * ========================================================================= */
-
-interface MarkerOptions {
-  src: string;
-  scale?: number;
-  anchor?: [number, number];
-}
-
-/**
- * Determines an SVG's intrinsic size from its width/height attributes or
- * viewBox, falling back to a reasonable default if none is specified.
- */
-function getSvgIntrinsicSize(svgText: string, fallback = 64): { width: number; height: number } {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(svgText, 'image/svg+xml');
-  const svgEl = doc.documentElement;
-
-  const widthAttr = svgEl.getAttribute('width');
-  const heightAttr = svgEl.getAttribute('height');
-  const width = widthAttr ? parseFloat(widthAttr) : NaN;
-  const height = heightAttr ? parseFloat(heightAttr) : NaN;
-  if (!Number.isNaN(width) && !Number.isNaN(height) && width > 0 && height > 0) {
-    return { width, height };
-  }
-
-  const viewBox = svgEl.getAttribute('viewBox');
-  if (viewBox) {
-    const parts = viewBox.trim().split(/[\s,]+/).map(Number);
-    if (parts.length === 4 && parts[2] > 0 && parts[3] > 0) {
-      return { width: parts[2], height: parts[3] };
-    }
-  }
-
-  return { width: fallback, height: fallback };
-}
-
-/**
- * Rasterizes an SVG at its own intrinsic size (times devicePixelRatio for
- * crispness on HiDPI screens), instead of a fixed arbitrary size — so the
- * displayed marker matches the size the SVG was actually designed for.
- */
-async function svgUrlToImageData(
-  svgUrl: string,
-  scale = 1
-): Promise<{ imageData: ImageData; cssWidth: number; cssHeight: number }> {
-  const response = await fetch(svgUrl);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch SVG "${svgUrl}": ${response.status} ${response.statusText}`);
-  }
-  const svgText = await response.text();
-  const { width: intrinsicWidth, height: intrinsicHeight } = getSvgIntrinsicSize(svgText);
-
-  const cssWidth = intrinsicWidth * scale;
-  const cssHeight = intrinsicHeight * scale;
-  const dpr = window.devicePixelRatio || 1;
-  const rasterWidth = Math.round(cssWidth * dpr);
-  const rasterHeight = Math.round(cssHeight * dpr);
-
-  const blob = new Blob([svgText], { type: 'image/svg+xml' });
-  const objectUrl = URL.createObjectURL(blob);
-
-  try {
-    const img = new Image();
-    await new Promise<void>((resolve, reject) => {
-      img.onload = () => resolve();
-      img.onerror = () => reject(new Error(`Could not rasterize SVG "${svgUrl}"`));
-      img.src = objectUrl;
-    });
-
-    const canvas = document.createElement('canvas');
-    canvas.width = rasterWidth;
-    canvas.height = rasterHeight;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      throw new Error('2D canvas context not available for SVG rasterization.');
-    }
-    ctx.clearRect(0, 0, rasterWidth, rasterHeight);
-    ctx.drawImage(img, 0, 0, rasterWidth, rasterHeight);
-    return {
-      imageData: ctx.getImageData(0, 0, rasterWidth, rasterHeight),
-      cssWidth,
-      cssHeight,
-    };
-  } finally {
-    URL.revokeObjectURL(objectUrl);
-  }
-}
-
-async function ensureMarkerImage(map: Map, id: string, marker: MarkerOptions): Promise<boolean> {
-  if (map.hasImage(id)) return true;
-  const src = absUrl(marker.src);
-  const isSvg = src.toLowerCase().endsWith('.svg');
-  const isSupportedRaster = SUPPORTED_RASTER_EXTENSIONS.some((ext) =>
-    src.toLowerCase().endsWith(ext)
-  );
-  const scale = marker.scale ?? 1;
-
-  try {
-    if (isSvg) {
-      const { imageData, cssWidth } = await svgUrlToImageData(src, scale);
-      const pixelRatio = imageData.width / cssWidth; // = devicePixelRatio, by construction
-      if (!map.hasImage(id)) {
-        map.addImage(id, imageData, { pixelRatio });
-      }
-      return true;
-    }
-
-    if (!isSupportedRaster) {
-      console.warn(
-        `Marker image "${src}" has an unrecognized extension. Only PNG/JPEG/WebP are ` +
-          `supported by loadImage(); SVGs are rasterized automatically. Attempting to load ` +
-          `anyway, but this may fail.`
-      );
-    }
-
-    const image = await map.loadImage(src);
-    if (!image || !image.data) {
-      console.warn(`Marker image "${src}" could not be decoded (loadImage() returned no data).`);
-      return false;
-    }
-    // Preserve the raster image's natural pixel size as its CSS display
-    // size when scale is 1 (matching the original OL Icon default
-    // behavior), scaling proportionally otherwise.
-    if (!map.hasImage(id)) {
-      map.addImage(id, image.data, { pixelRatio: 1 / scale });
-    }
-    return true;
-  } catch (err) {
-    console.warn(`Could not load marker image "${src}":`, err);
-    return false;
-  }
-}
-
-export async function addRouteAndMarkerLayers(
-  map: Map,
-  sourceId: string,
-  marker: MarkerOptions | undefined
-): Promise<void> {
-  map.addLayer({
-    id: `${sourceId}-outline`,
-    type: 'line',
-    source: sourceId,
-    filter: ['==', ['geometry-type'], 'LineString'],
-    paint: {
-      'line-color': 'rgba(0,0,0,1)',
-      'line-width': ['interpolate', ['exponential', 1.5], ['zoom'], 0, 5, 20, 28],
-    },
-  } as LineLayerSpecification);
-
-  map.addLayer({
-    id: `${sourceId}-line`,
-    type: 'line',
-    source: sourceId,
-    filter: ['==', ['geometry-type'], 'LineString'],
-    paint: {
-      'line-color': 'rgba(255,255,255,1)',
-      'line-width': ['interpolate', ['exponential', 1.5], ['zoom'], 0, 1, 20, 24],
-    },
-  } as LineLayerSpecification);
-
-  if (marker !== undefined) {
-    const iconId = `${sourceId}-icon`;
-    const loaded = await ensureMarkerImage(map, iconId, marker);
-    if (loaded && map.hasImage(iconId)) {
-      map.addLayer({
-        id: `${sourceId}-points`,
-        type: 'symbol',
-        source: sourceId,
-        filter: ['==', ['geometry-type'], 'Point'],
-        layout: {
-          'icon-image': iconId,
-          'icon-allow-overlap': true,
-        },
-      } as SymbolLayerSpecification);
-      return;
-    }
-    console.warn(`Falling back to circle markers for points (icon "${iconId}" unavailable).`);
-  }
-
-  map.addLayer({
-    id: `${sourceId}-points`,
-    type: 'circle',
-    source: sourceId,
-    filter: ['==', ['geometry-type'], 'Point'],
-    paint: { 'circle-color': 'rgba(51, 153, 204, 0.7)', 'circle-radius': 6 },
-  } as CircleLayerSpecification);
-}
-
-export function addClusterLayers(map: Map, sourceId: string): void {
-  map.addLayer({
-    id: `${sourceId}-clusters`,
-    type: 'circle',
-    source: sourceId,
-    filter: ['has', 'point_count'],
-    paint: {
-      'circle-color': 'rgba(51, 153, 204, 0.7)',
-      'circle-radius': ['step', ['get', 'point_count'], 15, 10, 20, 50, 25],
-      'circle-stroke-color': 'rgba(255,255,255,0.7)',
-      'circle-stroke-width': 2,
-    },
-  } as CircleLayerSpecification);
-
-  map.addLayer({
-    id: `${sourceId}-cluster-count`,
-    type: 'symbol',
-    source: sourceId,
-    filter: ['has', 'point_count'],
-    layout: {
-      'text-field': ['get', 'point_count_abbreviated'],
-      'text-size': 12,
-    },
-    paint: { 'text-color': '#fff' },
-  } as SymbolLayerSpecification);
-
-  map.addLayer({
-    id: `${sourceId}-unclustered`,
-    type: 'circle',
-    source: sourceId,
-    filter: ['!', ['has', 'point_count']],
-    paint: {
-      'circle-color': 'rgba(51, 153, 204, 0.7)',
-      'circle-radius': 8,
-      'circle-stroke-color': 'rgba(255,255,255,0.7)',
-      'circle-stroke-width': 1.25,
-    },
-  } as CircleLayerSpecification);
-}
-
-/**
- * Merges the `name` and `popupContent` properties of multiple overlapping
- * point features into a single combined popup payload — restores the
- * original OpenLayers behavior (`mergeFeatures()`), which combined
- * multiple markers at the same point into one popup instead of only
- * showing the topmost feature.
- */
-function mergeFeatureProperties(
-  features: Array<{ properties?: Record<string, unknown> | null }>
-): { name?: string; popupContent?: string } {
-  const names: string[] = [];
-  let popupContent = '';
-
-  features.forEach((feature) => {
-    const props = feature.properties ?? {};
-    if (props.name !== undefined && props.name !== null && props.name !== '') {
-      names.push(String(props.name));
-    }
-    if (props.popupContent !== undefined && props.popupContent !== null) {
-      popupContent += String(props.popupContent);
-    }
-  });
-
-  return {
-    name: names.length > 0 ? names.join(', ') : undefined,
-    popupContent: popupContent || undefined,
-  };
-}
-
-function showPopup(
-  map: Map,
-  lngLat: LngLatLike,
-  name: string | undefined,
-  popupContent: string | undefined
-): void {
-  const html = `<h1>${name ?? ''}</h1>${popupContent ?? ''}`;
-  new Popup(popupOptions).setLngLat(lngLat).setHTML(html).addTo(map);
-}
-
-/* =========================================================================
- * GeoJSON Handling (extracted to avoid side effects)
- * ========================================================================= */
-
-export async function addGeoJSONLayersAndInteractions({
-  map,
-  geojson,
-  cluster,
-  marker,
-  disabled,
-  popup,
-}: {
-  map: Map;
-  geojson: FeatureCollection;
-  cluster?: boolean;
-  marker?: MarkerOptions;
-  disabled: boolean;
-  popup: boolean;
-}): Promise<string[]> {
-  const sourceId = 'geojson-source';
-  const layerIds: string[] = [];
-
-  map.addSource(sourceId, {
-    type: 'geojson',
-    data: geojson,
-    cluster: !!cluster,
-    clusterRadius: 25,
-  } as GeoJSONSourceSpecification);
-
-  if (cluster) {
-    layerIds.push(`${sourceId}-clusters`, `${sourceId}-cluster-count`, `${sourceId}-unclustered`);
-    addClusterLayers(map, sourceId);
-  } else if (marker !== undefined) {
-    layerIds.push(`${sourceId}-outline`, `${sourceId}-line`, `${sourceId}-points`);
-    await addRouteAndMarkerLayers(map, sourceId, marker);
-  } else {
-    layerIds.push(`${sourceId}-points`);
-    map.addLayer({
-      id: `${sourceId}-points`,
-      type: 'circle',
-      source: sourceId,
-      paint: { 'circle-color': 'rgba(51, 153, 204, 0.7)', 'circle-radius': 6 },
-    } as CircleLayerSpecification);
-  }
-
-  if (!disabled && popup) {
-    const clickableLayers = cluster
-      ? [`${sourceId}-clusters`, `${sourceId}-unclustered`]
-      : [`${sourceId}-points`];
-
-    map.on('click', clickableLayers, async (e) => {
-      const bufferedBox: [[number, number], [number, number]] = [
-        [e.point.x - popupHitTolerance, e.point.y - popupHitTolerance],
-        [e.point.x + popupHitTolerance, e.point.y + popupHitTolerance],
-      ];
-      const features = map.queryRenderedFeatures(bufferedBox, { layers: clickableLayers });
-      if (features.length === 0) return;
-
-      const clusterFeature = features.find((f) => {
-        const props = f.properties as Record<string, unknown> | null | undefined;
-        return props?.cluster && props?.cluster_id !== undefined;
-      });
-      if (clusterFeature) {
-        const src = map.getSource(sourceId) as GeoJSONSource;
-        const props = clusterFeature.properties as Record<string, unknown>;
-        const clusterId = props.cluster_id as number;
-        const zoom = await src.getClusterExpansionZoom(clusterId);
-        map.easeTo({ center: (clusterFeature.geometry as Point).coordinates, zoom });
-        return;
-      }
-
-      const merged = mergeFeatureProperties(features);
-      const lngLat = (features[0].geometry as Point).coordinates as LngLatLike;
-
-      map.easeTo({ center: lngLat, duration: 300 });
-
-      showPopup(map, lngLat, merged.name, merged.popupContent);
-    });
-
-    map.on('mouseenter', clickableLayers, () => {
-      map.getCanvas().style.cursor = 'pointer';
-    });
-    map.on('mouseleave', clickableLayers, () => {
-      map.getCanvas().style.cursor = '';
-    });
-  }
-
-  return layerIds;
-}
-
-/* =========================================================================
  * Core map setup
  * ========================================================================= */
 
-export async function getMapMetadata(
-  url: string
-): Promise<{ bounds: number[] | number[][]; [k: string]: unknown }> {
-  const metadataFile = 'metadata.json';
-  if (url.includes('{')) {
-    url = url.substring(0, url.indexOf('{'));
-  }
-  if (!url.endsWith(metadataFile) && !url.endsWith('/')) {
-    url += '/' + metadataFile;
-  } else if (!url.endsWith(metadataFile)) {
-    url += metadataFile;
-  }
-  url = absUrl(url);
-  return loadOrParse(url) as Promise<{ bounds: number[] | number[][]; [k: string]: unknown }>;
-}
 
 type BBoxInput = number[] | number[][] | string;
 
@@ -508,29 +119,30 @@ export async function projektemacherMap(
   marker?: MarkerOptions,
   font?: string,
   attribution?: string,
-  fontPath: string = defaultFontsCssTemplate
-): Promise<Map> {
+  fontPath: string = defaultFontsCssTemplate,
+): Promise<MapLibreMap> {
   // Defensive runtime checks — positional-argument mix-ups are easy with
   // this many parameters.
-  if (attribution !== undefined && typeof attribution !== 'string') {
+  if (attribution !== undefined && typeof attribution !== "string") {
     console.error(
       `projektemacherMap(): "attribution" argument must be a string, received ` +
         `${typeof attribution} (${JSON.stringify(attribution)}). Check the call site — ` +
-        `arguments may be shifted/mismatched. Ignoring this value.`
+        `arguments may be shifted/mismatched. Ignoring this value.`,
     );
     attribution = defaultAttribution;
   }
-  if (font !== undefined && typeof font !== 'string') {
+  if (font !== undefined && typeof font !== "string") {
     console.error(
       `projektemacherMap(): "font" argument must be a string, received ${typeof font}. ` +
-        `Check the call site. Ignoring this value.`
+        `Check the call site. Ignoring this value.`,
     );
     font = undefined;
   }
 
   source = absUrl(source as string);
 
-  const geojsonObj = (await loadOrParse(geojson as string)) as FeatureCollection | undefined;
+  const geojsonObj = (await loadOrParse(geojson as string)) as
+    FeatureCollection | undefined;
 
   let bboxObj: number[][] | undefined;
   if (bbox !== undefined) {
@@ -550,7 +162,10 @@ export async function projektemacherMap(
   if (center !== undefined) {
     centerObj = (await loadOrParse(center as string)) as LngLatLike;
   } else if (geojsonObj !== undefined && geojsonObj.features.length !== 0) {
-    centerObj = turfCenter(geojsonObj as GeoJSON).geometry.coordinates as [number, number];
+    centerObj = turfCenter(geojsonObj as GeoJSON).geometry.coordinates as [
+      number,
+      number,
+    ];
   } else if (bboxObj !== undefined && bboxObj.length !== 0) {
     const [[w, s], [e, n]] = bboxObj;
     centerObj = [(w + e) / 2, (s + n) / 2];
@@ -567,7 +182,9 @@ export async function projektemacherMap(
     ];
   }
   if (cluster !== undefined && cluster !== false && marker !== undefined) {
-    console.warn('Clustering combined with custom point markers is only partially supported.');
+    console.warn(
+      "Clustering combined with custom point markers is only partially supported.",
+    );
   }
 
   if (disabled === undefined) disabled = false;
@@ -591,41 +208,33 @@ export async function projektemacherMap(
       absUrl(defaultSprites),
       fontPath,
       font,
-      attribution
+      attribution,
     );
   } else {
-    styleObj = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
+    styleObj = setupDefaultStyle(
+      source,
+      initialZoom,
+      minZoom,
+      maxZoom,
+      bboxObj,
+      centerObj,
+      background,
+    );
   }
 
-  // This fixes building outlines
-  styleObj.layers.forEach((layer: LayerSpecification, index: number) => {
-    if (layer.id === "building_pattern") {
-      styleObj.layers[index] = {
-        ...layer,
-        paint: {
-          ...(layer.paint as Record<string, unknown>),
-          "fill-outline-color": {
-            base: 1,
-            stops: [
-              [14, "rgba(0, 0, 0, 0)"],   // Disabled at zoom 14
-              [15, "rgba(0, 0, 0, 1)"] // Shown above zoom 14
-            ]
-          }
-        }
-      } as LayerSpecification;
-    }
-  });
-
-  console.log(styleObj);
-
+  if (debug) {
+    console.log(styleObj);
+  }
   // Preload every web font referenced by the style's symbol layers BEFORE
   // creating the map, so text renders correctly from the first frame
   // instead of relying on MapLibre's per-glyph local-render fallback.
   const resolvedFontPath =
-    ((styleObj.metadata as Record<string, unknown> | undefined)?.['projektemacher:fontPath'] as string | undefined) ?? fontPath;
+    ((styleObj.metadata as Record<string, unknown> | undefined)?.[
+      "projektemacher:fontPath"
+    ] as string | undefined) ?? fontPath;
   await preloadStyleFonts(styleObj, resolvedFontPath);
 
-  const map = new Map({
+  const map = new MapLibreMap({
     container: elem,
     style: styleObj,
     center: centerObj,
@@ -635,31 +244,32 @@ export async function projektemacherMap(
     maxBounds: bboxObj ? (bboxObj as LngLatBoundsLike) : undefined,
     attributionControl: false,
     interactive: !disabled,
-    locale: getMaplibreGLLocale()
+    locale: getMaplibreGLLocale(),
   });
 
   if (!disabled) {
-    map.addControl(new NavigationControl({}), 'top-left');
-    map.addControl(new FullscreenControl(), 'top-right');
+    map.addControl(new NavigationControl({}), "top-left");
+    map.addControl(new FullscreenControl(), "top-right");
   }
-  const attributionControl = new AttributionControl(/* { compact: true, customAttribution: attribution }*/);
+  const attributionControl = new AttributionControl(
+    /* { compact: true, customAttribution: attribution }*/
+  );
   //attributionControl.onAdd(map).open = false;
 
   map.addControl(attributionControl);
 
-
   if (debug) {
     console.log(
       `Adding map on ${elem}, from '${source}', style ${style}: options cluster '${cluster}', marker '${JSON.stringify(
-        marker
-      )}', bbox '${bbox}', center '${center}', initialZoom '${initialZoom}', min zoom '${minZoom}', max zoom '${maxZoom}', popup '${popup}', disabled '${disabled}' - debug '${debug}', fontPath '${resolvedFontPath}'`
+        marker,
+      )}', bbox '${bbox}', center '${center}', initialZoom '${initialZoom}', min zoom '${minZoom}', max zoom '${maxZoom}', popup '${popup}', disabled '${disabled}' - debug '${debug}', fontPath '${resolvedFontPath}'`,
     );
-    console.log('Active style', styleObj);
-    map.addControl(new MousePositionControl(), 'bottom-left');
+    console.log("Active style", styleObj);
+    map.addControl(new MousePositionControl(), "bottom-left");
     map.showTileBoundaries = true;
   }
 
-  await new Promise<void>((resolve) => map.once('load', () => resolve()));
+  await new Promise<void>((resolve) => map.once("load", () => resolve()));
 
   if (geojsonObj !== undefined) {
     // Add layers and get their names
@@ -673,11 +283,16 @@ export async function projektemacherMap(
     });
 
     if (debug) {
-      console.log('Created GeoJSON Layers:', geojsonLayerNames);
+      console.log("Created GeoJSON Layers:", geojsonLayerNames);
     }
 
     if (geojsonObj.features.length) {
-      const box = turfBbox(geojsonObj as GeoJSON) as [number, number, number, number];
+      const box = turfBbox(geojsonObj as GeoJSON) as [
+        number,
+        number,
+        number,
+        number,
+      ];
       const geojsonBounds: LngLatBoundsLike = [
         [box[0], box[1]],
         [box[2], box[3]],
@@ -720,10 +335,10 @@ declare global {
       background?: string,
       debug?: boolean,
       marker?: string | MarkerOptions,
-      font?: string
-    ) => Promise<Map>;
+      font?: string,
+    ) => Promise<MapLibreMap>;
     projektemacher: {
-      maps: Record<string, Map>;
+      maps: Map<string | HTMLElement, MapLibreMap>;
     };
   }
 }
@@ -744,10 +359,10 @@ window.projektemacherMap = async function (
   background?: string,
   debug?: boolean,
   marker?: string | MarkerOptions,
-  font?: string
-): Promise<Map> {
+  font?: string,
+): Promise<MapLibreMap> {
   let bgElem: HTMLElement | null = null;
-  if (typeof elem === 'string') {
+  if (typeof elem === "string") {
     bgElem = document.getElementById(elem);
   }
   if (font === undefined) {
@@ -756,11 +371,14 @@ window.projektemacherMap = async function (
 
   let markerObj: MarkerOptions | undefined;
   if (marker !== undefined) {
-    markerObj = typeof marker === 'object' ? marker : (JSON.parse(marker) as MarkerOptions);
+    markerObj =
+      typeof marker === "object"
+        ? marker
+        : (JSON.parse(marker) as MarkerOptions);
   }
 
   background = bgElem
-    ? window.getComputedStyle(bgElem).getPropertyValue('--page-background')
+    ? window.getComputedStyle(bgElem).getPropertyValue("--page-background")
     : background;
 
   const map = await projektemacherMap(
@@ -779,16 +397,19 @@ window.projektemacherMap = async function (
     background,
     debug,
     markerObj,
-    font
+    font,
   );
 
-  if (!('projektemacher' in window)) {
-    window.projektemacher = { maps: {} };
+  if (!window.projektemacher) {
+    window.projektemacher = {
+      maps: new Map<string | HTMLElement, MapLibreMap>(),
+    };
   }
-  if (!('maps' in window.projektemacher)) {
-    window.projektemacher.maps = {};
+  if (!window.projektemacher.maps) {
+    window.projektemacher.maps = new Map<string | HTMLElement, MapLibreMap>();
   }
-  window.projektemacher.maps[elem as string] = map;
+
+  window.projektemacher.maps.set(elem, map);
 
   return map;
 };

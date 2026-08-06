@@ -55,8 +55,13 @@ Never Build Göttingen
   * Top: 66 - 6.4453125
   * Bottom: 114 - 11.1328125
 
-
 # More on map data
 * https://github.com/ngageoint/hootenanny/blob/master/docs/user/CommandLineExamples.asciidoc#conflate-only-buildings
 * https://github.com/tordanik/OSM2World
 * https://wiki.openstreetmap.org/wiki/OSM2World
+
+# Content
+
+* Check "Wettbewerbe Aktuell"
+  * * 8/85 for SUB Göttingen
+  * [Structural Aspects of German Architectural Competitions: Wettbewerbe Aktuell 1971 - 2001](https://livrepository.liverpool.ac.uk/3174138/1/539568.pdf)

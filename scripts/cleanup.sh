@@ -7,5 +7,6 @@ find content -name '*-boxed.jpg' -print -exec rm {} \;
 find content/post/ -name "page[[:digit:]]*-[[:digit:]]*" -print -exec rm {} \;
 find content -name manifest-enriched.json -exec rm {} \;
 rm -rf ./models ./weights
+find content/post/ -name "*.svg" -exec rm {} \;
 
 #./scripts/cleanup-generated.sh
