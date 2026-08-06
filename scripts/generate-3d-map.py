@@ -358,7 +358,7 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
         outline_file_name = f"{file_base_name}-meta.geojson"
         logger.info(f"Writing patch to {tmp_dir / patch_file_name}")
 
-        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(tmp_dir / patch_file_name), "--tag", "meta=never-built", "-f", "-v"])
+        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(tmp_dir / patch_file_name), "--tag", "meta=never-built", "-f", "-v", "--full"])
         run_cmd([sys.executable, "scripts/osm_tool.py", "tile-info", "-v", "-i", str(tmp_dir / patch_file_name), "-o", str(tmp_dir / outline_file_name)])
 
         patch_cmd_list = [sys.executable, "scripts/osm_tool.py", "patch", "-i", str(MASTER_PBF), "-p", str(tmp_dir / patch_file_name), "-o", str(map_file), "-v", "-f"]

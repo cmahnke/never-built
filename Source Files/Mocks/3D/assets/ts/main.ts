@@ -15,10 +15,12 @@ declare global {
   }
 }
 
-let debug = true;
+let debug = false;
 const elementId = "map";
-
+// This sets the map to show
 const tileSource = "never-built"; // "Blauer-Turm"
+
+
 const topoRasterTiles = "/map/tiles/{z}/{x}/{y}.png";
 const styleJson = "/map-styles/style.json";
 const tilesUrl = `/map/${tileSource}/{z}/{x}/{y}.pbf`;
@@ -36,6 +38,7 @@ const initialPos: CameraPositionConfig = {
   zoom: 17
 };
 
+//TODO: Try to get rid of this
 const metaObj = (await loadOrParse(metaJson)) as TileMetadata;
 let centerObj: LngLatLike;
 if (metaObj && typeof metaObj.bounds === "string") {

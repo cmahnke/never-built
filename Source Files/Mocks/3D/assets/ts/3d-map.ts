@@ -101,7 +101,7 @@ export async function projektemacher3DMap(
   // Background
   const fog = "#dcdbdf";
   const sky = "#87ceeb";
-  const blend = 0.5;
+  const blend = 0.2;
 
   const hasTerrain = topoRasterTiles !== undefined;
 

@@ -967,6 +967,10 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
     Standalone nodes (e.g. tagged POIs like trees) inside the patch mask
     are also excluded, UNLESS they are vertices of kept ways or members
     of kept relations (to prevent breaking geometries).
+
+    Modifications and deletions from the patch file are also applied:
+    - Modified objects in the patch overwrite the corresponding base objects.
+    - Deleted objects are removed from the base file and not written to the output.
     """
 
     class IntersectionHandler(osmium.SimpleHandler):
@@ -1059,7 +1063,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                 self.discarded_tagged_count += 1
             logger.debug(
                 f"{kind.capitalize()} {obj.id} will be excluded from base file "
-                f"(replaced by patch)" + (f", {key!r}={val!r}" if val else "")
+                f"(replaced by patch or masked)" + (f", {key!r}={val!r}" if val else "")
             )
 
         def node(self, n):
@@ -1089,6 +1093,24 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
     logger.info("Generating mask and applying it to the input file.")
 
     normalized_patch_files = []
+    temp_filtered_files = []
+    filtered_patch_buffers = []
+
+    patch_node_ids: Set[int] = set()
+    patch_way_ids: Set[int] = set()
+    patch_relation_ids: Set[int] = set()
+
+    def _is_deleted(obj):
+        if getattr(obj, 'deleted', False): return True
+        if getattr(obj, 'action', None) == 'delete': return True
+        if obj.tags.get('action') == 'delete': return True
+        return False
+
+    class PatchScanner(osmium.SimpleHandler):
+        def node(self, n): patch_node_ids.add(n.id)
+        def way(self, w): patch_way_ids.add(w.id)
+        def relation(self, r): patch_relation_ids.add(r.id)
+
     try:
         for pf in patch_files:
             temp = tempfile.NamedTemporaryFile(mode='w+t', delete=False, suffix=".pbf")
@@ -1099,13 +1121,38 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             )
             normalized_patch_files.append(temp.name)
 
+            scanner = PatchScanner()
+            scanner.apply_file(temp.name, locations=False)
+
+        # Filter out deleted objects from patch files before merging
+        for norm_path in normalized_patch_files:
+            temp_filt = tempfile.NamedTemporaryFile(mode='w+t', delete=False, suffix=".pbf")
+            temp_filt.close()
+            temp_filtered_files.append(temp_filt.name)
+
+            class FilterWriter(osmium.SimpleHandler):
+                def __init__(self, writer):
+                    super().__init__()
+                    self.writer = writer
+                def node(self, n):
+                    if not _is_deleted(n): self.writer.add_node(n)
+                def way(self, w):
+                    if not _is_deleted(w): self.writer.add_way(w)
+                def relation(self, r):
+                    if not _is_deleted(r): self.writer.add_relation(r)
+
+            with osmium.SimpleWriter(temp_filt.name, overwrite=True) as writer:
+                fw = FilterWriter(writer)
+                fw.apply_file(norm_path, locations=False)
+
+            with open(temp_filt.name, 'rb') as f:
+                filtered_patch_buffers.append(f.read())
+
         wkbfab = osmium.geom.WKBFactory()
         polygons = []
-        patch_buffers = []
-        for temp_name in normalized_patch_files:
+        for temp_name in temp_filtered_files:
             with open(temp_name, 'rb') as f:
                 patch_buffer = f.read()
-                patch_buffers.append(patch_buffer)
                 patch_pbf = osmium.io.FileBuffer(patch_buffer, "pbf")
                 try:
                     for o in osmium.FileProcessor(patch_pbf).with_areas():
@@ -1139,6 +1186,10 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         excluded_way_ids: Set[int] = set(i['id'] for i in results_ways)
         candidate_node_ids: Set[int] = set(i['id'] for i in candidate_node_dicts)
 
+        # Add patch IDs to exclusions so that modifications overwrite base objects
+        # and deletions remove base objects.
+        excluded_way_ids |= patch_way_ids
+
         # Any relation that references an excluded way -- directly, or via a
         # chain of nested relations -- is excluded too.
         excluded_relation_ids: Set[int] = set()
@@ -1149,10 +1200,12 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                 break
             excluded_relation_ids |= resolver.newly_excluded_relation_ids
 
+        excluded_relation_ids |= patch_relation_ids
+
         if excluded_relation_ids:
             logger.info(
                 f"Also excluding {len(excluded_relation_ids)} relation(s) that "
-                f"(directly or transitively) reference an excluded way."
+                f"(directly or transitively) reference an excluded way, or are explicitly in the patch."
             )
             logger.debug(f"Excluded relation IDs: {sorted(excluded_relation_ids)}")
 
@@ -1189,6 +1242,11 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                 )
         else:
             excluded_node_ids = set()
+
+        # Add patch nodes to exclusions. If a node is explicitly in the patch file,
+        # it represents a creation, modification, or deletion, and MUST take precedence
+        # over the base file's version (even if it's a vertex of a kept way).
+        excluded_node_ids |= patch_node_ids
 
         with tempfile.NamedTemporaryFile(mode='w+t', delete=True, suffix=".pbf") as masked_base_temp:
             masked_base_path = masked_base_temp.name
@@ -1295,7 +1353,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             with open(masked_base_path, 'rb') as f:
                 with osmium.SimpleWriter(output_file, overwrite=overwrite) as writer:
                     reader = osmium.MergeInputReader()
-                    for pb in patch_buffers:
+                    for pb in filtered_patch_buffers:
                         reader.add_buffer(pb, "pbf")
                     reader.add_buffer(f.read(), "pbf")
                     reader.apply(writer)
@@ -1303,6 +1361,11 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
 
     finally:
         for pf in normalized_patch_files:
+            try:
+                os.unlink(pf)
+            except OSError:
+                pass
+        for pf in temp_filtered_files:
             try:
                 os.unlink(pf)
             except OSError:
