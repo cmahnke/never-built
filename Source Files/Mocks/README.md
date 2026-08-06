@@ -16,6 +16,7 @@ Never built Göttingen Mocks
   - Avoid problems with ID order if IDs get prefixed
   - Check if intersection also applies to bordering / shared points
   - Also try to get deletions / modifications from osm file
+     - Implemented for filter file creation
   - check "need at least two points for linestring"
   - Split ways intersecting closed ways
 - `generate-3d-map.py`

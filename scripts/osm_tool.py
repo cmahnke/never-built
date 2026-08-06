@@ -276,11 +276,12 @@ class DependencyCollector(osmium.SimpleHandler):
     --no-expand-relations skips resolving their nested members.
     """
 
-    def __init__(self, tag_key: Optional[str], tag_value: Optional[str], include_actions: Optional[str]):
+    def __init__(self, tag_key: Optional[str], tag_value: Optional[str], include_actions: Optional[str], full: bool = False):
         super().__init__()
         self.tag_key = tag_key
         self.tag_value = tag_value
         self.include_actions = include_actions.split(',') if include_actions else []
+        self.full = full
 
         self.node_ids: Set[int] = set()
         self.way_ids: Set[int] = set()
@@ -296,6 +297,14 @@ class DependencyCollector(osmium.SimpleHandler):
         self.matched_relation_names: Dict[int, Optional[str]] = {}
 
     def is_match(self, elem: osmium.osm.OSMObject) -> bool:
+        if self.full:
+            if elem.id < 0:
+                return True
+            if getattr(elem, 'action', None) in ('modify', 'delete'):
+                return True
+            if elem.tags.get('action') in ('modify', 'delete'):
+                return True
+
         if self.tag_key and elem.tags.get(self.tag_key) == self.tag_value:
             return True
         if self.include_actions and elem.tags.get('action') in self.include_actions:
@@ -588,8 +597,8 @@ def filter_osm(args: argparse.Namespace) -> None:
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
-    if not (args.tag_key and args.tag_value) and not args.include_actions:
-        logger.error("You must specify either a tag/value combination or actions to include.")
+    if not (args.tag_key and args.tag_value) and not args.include_actions and not args.full:
+        logger.error("You must specify either a tag/value combination, actions to include, or --full.")
         sys.exit(1)
 
     extra_tags = parse_tag_argument(args.tag)
@@ -616,7 +625,7 @@ def filter_osm(args: argparse.Namespace) -> None:
         os.remove(output_file)
 
     logger.info("--- Pass 1: Collecting matching objects and their direct dependencies ---")
-    dep_collector = DependencyCollector(args.tag_key, args.tag_value, args.include_actions)
+    dep_collector = DependencyCollector(args.tag_key, args.tag_value, args.include_actions, args.full)
     for input_file in input_files:
         dep_collector.apply_file(input_file, locations=True, idx='flex_mem')
 
@@ -1365,6 +1374,8 @@ def main() -> None:
     filter_parser.add_argument('--tag', help="Comma-separated list of tag=value pairs to add to each object that "
                                               "directly matches the filter criteria (not to its pulled-in "
                                               "dependencies), e.g. --tag tag1=value1,tag2=value2")
+    filter_parser.add_argument('--full', action='store_true',
+                                help="Include all modifications, deletions and all items with a negative id in the output.")
     filter_parser.add_argument('-f', '--force', action='store_true', help="Overwrite output file if it exists.")
     filter_parser.add_argument('-v', '--verbose', action='store_true', help="Enable verbose (DEBUG) logging.")
 
