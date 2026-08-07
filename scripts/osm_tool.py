@@ -16,7 +16,7 @@ from shapely.geometry import Polygon, Point
 from shapely.ops import unary_union
 
 # --- Logger Setup ---
-logger = logging.getLogger("osm_filter")
+logger = logging.getLogger("osm_tool")
 
 # --- ID Flipping / Collision Handling ---
 
@@ -1023,7 +1023,9 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                         closed_way_polygon = Polygon(shapely_line)
 
                         for target_poly in self.target_polygons:
-                            if target_poly is not None and closed_way_polygon.intersects(target_poly):
+                            #if target_poly is not None and closed_way_polygon.intersects(target_poly):
+                            # using intersects() will also be true is one ore more vertices are shared, but interiors don't
+                            if target_poly is not None and closed_way_polygon.overlaps(target_poly):
                                 name = w.tags.get('name')
                                 logger.debug(
                                     f"Way {w.id} intersects patch polygon, will be excluded from base file"

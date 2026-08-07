@@ -415,7 +415,7 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
             key = patchArgs[i].lstrip("-").replace("-", "_")
             val = patchArgs[i + 1]
             kwargs[key] = val
-        patch_args = Namespace(subcommand="patch", input=str(MASTER_PBF), output=str(map_file), verbose=1, force=True, **kwargs)
+        #patch_args = Namespace(subcommand="patch", input=str(MASTER_PBF), output=str(map_file), verbose=1, force=True, **kwargs)
 
         if DEBUG:
             logger.debug(f"Keeping masked file: {tmp_dir / f'{file_base_name}-masked.osm'}")
@@ -546,6 +546,7 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
 
 def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
     patch_file_path, file_base_name, tmp_dir = prepare_osm_patch(osm_patch, docker_client)
+    logger.debug(f"Patch created for {file_base_name}")
     if DEBUG:
         result = execute_osm_patch_processing(patch_file_path, file_base_name, tmp_dir, docker_client, False)
     else:
