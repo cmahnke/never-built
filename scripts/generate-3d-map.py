@@ -6,6 +6,7 @@ import subprocess
 import shutil
 import json
 import argparse
+from argparse import Namespace
 import logging
 from pathlib import Path
 import docker
@@ -378,13 +379,17 @@ def prepare_osm_patch(osm_patch: Path, docker_client) -> tuple[Path, Path]:
         outline_file_name = f"{file_base_name}-meta.geojson"
         logger.info(f"Writing patch to {tmp_dir / patch_file_name}")
 
-        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(patch_file_path), "--tag", "meta=never-built", "-f", "-v", "--full"])
+        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(patch_file_path), "--tag", "meta=never-built", "-f", "--full"])
         run_cmd([sys.executable, "scripts/osm_tool.py", "tile-info", "-v", "-i", str(patch_file_path), "-o", str(tmp_dir / outline_file_name)])
+
+        filter_args = Namespace(subcommand="filter", patch=str(osm_patch), output=str(patch_file_path), tag="meta=never-built", force=True, verbose=1, full=True)
+        #filter_osm(filter_args)
+
+        tile_info_args = Namespace(subcommand="tile-info", input=str(patch_file_path), output=str(tmp_dir / outline_file_name), verbose=1)
+        #bbox_tiles_osm(tile_info_args)
 
     else:
         logger.error(f"{map_file} already exists, build might fail!")
-    #if not patch_file_path.is_file():
-    #    raise RuntimeError(f"Can't find patch file {str(patch_file_path)}")
 
     return patch_file_path, file_base_name, tmp_dir
 
@@ -395,10 +400,7 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
     else:
         patches = patch_file_path
     patch_file_name = f"{file_base_name}{PATCH_SUFFIX}"
-    patchArgs = [arg for path in patches for arg in ("-p", str(path))]
-
-    #post_dir = find_index_dir(patch_file_path[0])
-    #file_base_name = patch_file_path[0].stem.replace("-patch", "")
+    patchArgs = [arg for path in patches for arg in ("--patch", str(path))]
 
     output_file = tmp_dir / "output.mbtiles"
     map_file = TILES_DIR / f"{file_base_name}.osm.pbf"
@@ -407,6 +409,13 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
 
     if not map_file.is_file():
         patch_cmd_list = [sys.executable, "scripts/osm_tool.py", "patch", "-i", str(MASTER_PBF), *patchArgs, "-o", str(map_file), "-v", "-f"]
+
+        kwargs = {}
+        for i in range(0, len(patchArgs), 2):
+            key = patchArgs[i].lstrip("-").replace("-", "_")
+            val = patchArgs[i + 1]
+            kwargs[key] = val
+        patch_args = Namespace(subcommand="patch", input=str(MASTER_PBF), output=str(map_file), verbose=1, force=True, **kwargs)
 
         if DEBUG:
             logger.debug(f"Keeping masked file: {tmp_dir / f'{file_base_name}-masked.osm'}")
@@ -503,8 +512,6 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
 
     if not (post_tiles / "metadata.json").is_file():
         shutil.copy((MASTER_TILE_DIR / "metadata.json"), post_tiles)
-
-
 
 
     #logger.info(f"Relevant tiles in {post_tiles}/ (not filtered by min zoom level - usually {BUILDING_LEVEL})")
@@ -632,6 +639,7 @@ def main():
     if args.year:
         try:
             processing_results = filter_results_by_year(processing_results, args.year)
+            global COMPLETE_MAP_DIR
             COMPLETE_MAP_DIR = (SCRIPT_DIR / ".." / MAP_BASE_DIR / f"{COMPLETE_MAP_NAME}-{args.year}").resolve()
             logger.info(f"Filtered down to {len(processing_results)} result(s) matching year criteria '{args.year}'")
         except ValueError as e:
