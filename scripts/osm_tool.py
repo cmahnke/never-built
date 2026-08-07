@@ -233,14 +233,16 @@ def parse_tag_argument(tag_str: Optional[str]) -> Dict[str, str]:
         if not entry:
             continue
         if '=' not in entry:
-            logger.error(f"Invalid --tag entry {entry!r}; expected format key=value.")
-            sys.exit(1)
+            msg = f"Invalid --tag entry {entry!r}; expected format key=value."
+            logger.error(msg)
+            raise RuntimeError(msg)
         key, value = entry.split('=', 1)
         key = key.strip()
         value = value.strip()
         if not key:
-            logger.error(f"Invalid --tag entry {entry!r}; tag key must not be empty.")
-            sys.exit(1)
+            msg = f"Invalid --tag entry {entry!r}; tag key must not be empty."
+            logger.error(msg)
+            raise RuntimeError(msg)
         tags[key] = value
 
     return tags
@@ -254,7 +256,7 @@ class DependencyCollector(osmium.SimpleHandler):
     *direct* dependencies (nodes for matched ways; member refs for matched
     relations). Nested relation expansion and way->node resolution for
     relation-referenced ways are handled by separate passes afterwards
-    (see RelationExpander / WayNodeResolver and filter_osm()) -- unless
+    (see RelationExpander / WayNodeResolver and filter_cmd()) -- unless
     those passes are skipped via --no-expand-relations, in which case only
     what this pass collects is written.
 
@@ -265,13 +267,13 @@ class DependencyCollector(osmium.SimpleHandler):
       - matched_node_ids / matched_way_ids / matched_relation_ids: only the
         objects that *directly* matched the filter criteria themselves, as
         opposed to being pulled in solely as a dependency. Used to scope
-        --tag additions (see filter_osm()) to just the matched objects,
+        --tag additions (see filter_cmd()) to just the matched objects,
         so e.g. tagging a matched way doesn't also tag every one of its
         vertex nodes.
 
     Also records, for each *matched* relation, its raw member list
     (matched_relation_members) and its 'name' tag if any
-    (matched_relation_names). This is used by filter_osm() to warn about
+    (matched_relation_names). This is used by filter_cmd() to warn about
     relations that will likely end up incomplete in the output when
     --no-expand-relations skips resolving their nested members.
     """
@@ -581,7 +583,7 @@ def _log_relations_with_unexpanded_members(dep_collector: DependencyCollector) -
         )
 
 
-def filter_osm(args: argparse.Namespace) -> None:
+def filter_cmd(args: argparse.Namespace) -> None:
     """
     Core logic for the 'filter' subcommand. Reads an OSM file, filters
     objects based on tags or actions, and writes the result including all
@@ -598,8 +600,9 @@ def filter_osm(args: argparse.Namespace) -> None:
     logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
     if not (args.tag_key and args.tag_value) and not args.include_actions and not args.full:
-        logger.error("You must specify either a tag/value combination, actions to include, or --full.")
-        sys.exit(1)
+        msg = "You must specify either a tag/value combination, actions to include, or --full."
+        logger.error(msg)
+        raise RuntimeError(msg)
 
     extra_tags = parse_tag_argument(args.tag)
 
@@ -615,8 +618,9 @@ def filter_osm(args: argparse.Namespace) -> None:
 
     for input_file in input_files:
         if not os.path.exists(input_file):
-            logger.error(f"Input file not found: {input_file}")
-            sys.exit(1)
+            msg = f"Input file not found: {input_file}"
+            logger.error(msg)
+            raise RuntimeError(msg)
 
     if os.path.exists(output_file):
         if not args.force:
@@ -684,7 +688,7 @@ def filter_osm(args: argparse.Namespace) -> None:
     logger.info("--- Filtering complete. ---")
 
 
-def bbox_tiles_osm(args: argparse.Namespace) -> None:
+def tile_info_cmd(args: argparse.Namespace) -> None:
     """
     Core logic for the 'tile-info' subcommand. Calculates the bounding box
     of nodes in an OSM file and finds all intersecting slippy map tiles up
@@ -698,8 +702,9 @@ def bbox_tiles_osm(args: argparse.Namespace) -> None:
     max_zoom = args.max_zoom
 
     if not os.path.exists(input_file):
-        logger.error(f"Input file not found: {input_file}")
-        sys.exit(1)
+        msg = f"Input file not found: {input_file}"
+        logger.error(msg)
+        raise RuntimeError(msg)
 
     logger.info(f"--- Step 1: Calculating bounding box from {input_file} ---")
     bbox_handler = BoundingBoxHandler()
@@ -711,8 +716,9 @@ def bbox_tiles_osm(args: argparse.Namespace) -> None:
     # ROBUST EMPTY CHECK: Latitudes do not wrap around the globe.
     # If min_lat > max_lat, the handler was never updated (e.g., empty file).
     if min_lat > max_lat:
-        logger.error("No nodes found in input file. Cannot calculate bounding box.")
-        sys.exit(1)
+        msg = "No nodes found in input file. Cannot calculate bounding box."
+        logger.error(msg)
+        raise RuntimeError(msg)
 
     logger.info(f"Bounding box found: [{min_lon}, {min_lat}, {max_lon}, {max_lat}]")
 
@@ -1165,9 +1171,9 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                         polygons.append(wkb)
                 except RuntimeError as e:
                     if "two points" in str(e):
-                        logger.error("Input file contains deleted nodes!", exc_info=True)
+                        logger.error(f"Input file ({temp_name}) contains deleted nodes!", exc_info=True)
                     else:
-                        logger.error("IDs are not in order, this can currently happen if IDs will be dublicated by sign flipping and get prefixed", exc_info=True)
+                        logger.error(f"IDs in input file ({temp_name}) are not in order, this can currently happen if IDs will be dublicated by sign flipping and get prefixed", exc_info=True)
                     raise e
 
         polygons = [item for item in polygons if item is not None]
@@ -1388,8 +1394,9 @@ def ways_to_polygons(args: argparse.Namespace) -> None:
     fmt = args.format
 
     if not os.path.exists(input_file):
-        logger.error(f"Input file not found: {input_file}")
-        sys.exit(1)
+        msg = f"Input file not found: {input_file}"
+        logger.error(msg)
+        raise RuntimeError(msg)
 
     geojson = osm_file_to_geojson(input_file)
 
@@ -1399,8 +1406,9 @@ def ways_to_polygons(args: argparse.Namespace) -> None:
     elif fmt == 'poly':
         poly = geojson_to_poly(geojson)
         if poly is None:
-            logger.error("Failed to convert GeoJSON to .poly format.")
-            sys.exit(1)
+            msg = "Failed to convert GeoJSON to .poly format."
+            logger.error(msg)
+            raise RuntimeError(msg)
         with open(output_file, 'w') if output_file != '-' else sys.stdout as f:
             f.write(poly)
 
@@ -1487,16 +1495,19 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    if args.command == 'filter':
-        filter_osm(args)
-    elif args.command == 'tile-info':
-        bbox_tiles_osm(args)
-    elif args.command == 'patch':
-        patch_cmd(args)
-    elif args.command == 'ways-to-polygons':
-        ways_to_polygons(args)
-    else:
-        parser.print_help()
+    try:
+        if args.command == 'filter':
+            filter_cmd(args)
+        elif args.command == 'tile-info':
+            tile_info_cmd(args)
+        elif args.command == 'patch':
+            patch_cmd(args)
+        elif args.command == 'ways-to-polygons':
+            ways_to_polygons(args)
+        else:
+            parser.print_help()
+    except RuntimeError as e:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

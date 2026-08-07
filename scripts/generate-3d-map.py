@@ -61,7 +61,7 @@ for p in import_paths:
     if p not in sys.path:
         sys.path.append(p)
 
-from osm_tool import patch_cmd, bbox_tiles_osm, filter_osm
+from osm_tool import patch_cmd, tile_info_cmd, filter_cmd
 from PyHugo import Content, Config, Post
 
 # Initialize Docker client
@@ -379,14 +379,14 @@ def prepare_osm_patch(osm_patch: Path, docker_client) -> tuple[Path, Path]:
         outline_file_name = f"{file_base_name}-meta.geojson"
         logger.info(f"Writing patch to {tmp_dir / patch_file_name}")
 
-        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(patch_file_path), "--tag", "meta=never-built", "-f", "--full"])
+        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(patch_file_path), "--tag", "meta=never-built", "-f", "--full", "--include-actions", "modify,create,delete"])
         run_cmd([sys.executable, "scripts/osm_tool.py", "tile-info", "-v", "-i", str(patch_file_path), "-o", str(tmp_dir / outline_file_name)])
 
-        filter_args = Namespace(subcommand="filter", patch=str(osm_patch), output=str(patch_file_path), tag="meta=never-built", force=True, verbose=1, full=True)
-        #filter_osm(filter_args)
+        filter_args = Namespace(subcommand="filter", patch=str(osm_patch), output=str(patch_file_path), tag="meta=never-built", force=True, verbose=1, full=True, include_actions="modify,create,delete")
+        #filter_cmd(filter_args)
 
-        tile_info_args = Namespace(subcommand="tile-info", input=str(patch_file_path), output=str(tmp_dir / outline_file_name), verbose=1)
-        #bbox_tiles_osm(tile_info_args)
+        tile_info_args = Namespace(subcommand="tile-info", input=str(patch_file_path), output=str(tmp_dir / outline_file_name), verbose=1, max_zoom=16)
+        #tile_info_cmd(tile_info_args)
 
     else:
         logger.error(f"{map_file} already exists, build might fail!")

@@ -58,7 +58,7 @@ do
     PATCH_FILE_NAME="$FILE_BASE_NAME-patch.osm"
     OUTLINE_FILE_NAME="$FILE_BASE_NAME-meta.geojson"
     echo "Writing patch to $TMP_DIR/$PATCH_FILE_NAME"
-    python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o "$TMP_DIR/$PATCH_FILE_NAME" --tag meta=never-built -f -v
+    python scripts/osm_tool.py filter -v -p "$OSM_PATCH" -o "$TMP_DIR/$PATCH_FILE_NAME" --tag meta=never-built -f --full --include-actions modify,create,delete
     python scripts/osm_tool.py tile-info -v -i "$TMP_DIR/$PATCH_FILE_NAME" -o "$TMP_DIR/$OUTLINE_FILE_NAME"
 
     if [ "$DEBUG" = false ]; then
