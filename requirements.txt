@@ -28,3 +28,5 @@ geopandas
 # https://github.com/smellman/mbutil
 smellman-mbutil
 pyvips
+docker
+python-frontmatter

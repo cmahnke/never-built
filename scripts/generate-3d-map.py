@@ -41,6 +41,9 @@ COMPLETE_MAP_NAME = "never-built"
 MASTER_TILE_NAME = "tiles"
 CONTENT_PATH = "./content"
 
+# Other fle stuff
+PATCH_SUFFIX = "-patch.osm"
+
 # Convert directories to Path objects
 SCRIPT_DIR = Path(__file__).resolve().parent
 TILES_DIR = (SCRIPT_DIR / ".." / MAP_BASE_DIR).resolve()
@@ -57,10 +60,10 @@ parser.add_argument("-d", "--debug", action="store_true", help="Enable debug log
 parser.add_argument("-c", "--compact", action="store_true", help="Compact generated output by symlinking unmodified tiles to the master directory.")
 parser.add_argument(
     "-m", "--merge",
-    choices=["none", "tile"],
-    default="none",
+    choices=["none", "tile", "patch"],
+    default="tile",
     type=str,
-    help="Merge strategy: 'none' or 'tile' (default: 'none')",
+    help="Merge strategy: 'none' or 'tile' (default: 'tile')",
 )
 args = parser.parse_args()
 
@@ -308,7 +311,7 @@ def run_cmd(cmd, check=True):
     logger.debug(f"RUN: {' '.join(str(c) for c in cmd)}")
     return subprocess.run(cmd, check=check)
 
-def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
+def prepare_osm_patch(osm_patch: Path, docker_client) -> tuple[Path, Path]:
     content = load_content(osm_patch)
     post = content.posts[0]
     title = post.getParam('title')
@@ -338,7 +341,10 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
 
     logger.info(f"Processing {osm_patch} (dir '{post_dir}', file '{file_name}', '{file_base_name}') saving to '{map_file}', tiles will go to {post_tiles}")
 
-    if not map_file.is_file():
+    patch_file_name = f"{file_base_name}{PATCH_SUFFIX}"
+    patch_file_path = tmp_dir / patch_file_name
+
+    if not map_file.is_file() or not patch_file_path.is_file():
         tmp_dir.mkdir(parents=True, exist_ok=True)
         TILES_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -363,15 +369,39 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
                 except OSError:
                     pass
 
-        patch_file_name = f"{file_base_name}-patch.osm"
-        patch_file_path = (tmp_dir / patch_file_name)
+
         outline_file_name = f"{file_base_name}-meta.geojson"
         logger.info(f"Writing patch to {tmp_dir / patch_file_name}")
 
         run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(patch_file_path), "--tag", "meta=never-built", "-f", "-v", "--full"])
         run_cmd([sys.executable, "scripts/osm_tool.py", "tile-info", "-v", "-i", str(patch_file_path), "-o", str(tmp_dir / outline_file_name)])
 
-        patch_cmd_list = [sys.executable, "scripts/osm_tool.py", "patch", "-i", str(MASTER_PBF), "-p", str(patch_file_path), "-o", str(map_file), "-v", "-f"]
+    else:
+        logger.error(f"{map_file} already exists, build might fail!")
+    #if not patch_file_path.is_file():
+    #    raise RuntimeError(f"Can't find patch file {str(patch_file_path)}")
+
+    return patch_file_path, file_base_name, tmp_dir
+
+
+def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_name, tmp_dir: Path, docker_client, cleanup = True) -> dict | None:
+    if isinstance(patch_file_path, Path):
+        patches= [patch_file_path]
+    else:
+        patches = patch_file_path
+    patch_file_name = f"{file_base_name}{PATCH_SUFFIX}"
+    patchArgs = [arg for path in patches for arg in ("-p", str(path))]
+
+    #post_dir = find_index_dir(patch_file_path[0])
+    #file_base_name = patch_file_path[0].stem.replace("-patch", "")
+
+    output_file = tmp_dir / "output.mbtiles"
+    map_file = TILES_DIR / f"{file_base_name}.osm.pbf"
+    post_tiles = TILES_DIR / file_base_name
+    outline_file_name = f"{file_base_name}-meta.geojson"
+
+    if not map_file.is_file():
+        patch_cmd_list = [sys.executable, "scripts/osm_tool.py", "patch", "-i", str(MASTER_PBF), *patchArgs, "-o", str(map_file), "-v", "-f"]
 
         if DEBUG:
             logger.debug(f"Keeping masked file: {tmp_dir / f'{file_base_name}-masked.osm'}")
@@ -393,7 +423,7 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
             sys.exit(1)
 
     cmd_planetiler = "java -Xmx4g -jar /opt/planetiler/planetiler-dist-0.*-SNAPSHOT-with-deps.jar"
-    output_file = tmp_dir / "output.mbtiles"
+
     bbox = get_bbox()
     logger.info(f"Using {map_file}, using BBox {bbox}")
 
@@ -455,15 +485,18 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
         decompress=False
     )
 
-    shutil.move(str(tmp_dir / patch_file_name), str(post_tiles / patch_file_name))
-    shutil.move(str(tmp_dir / outline_file_name), str(post_tiles / outline_file_name))
+    for p in patches:
+        shutil.copy(str(p), str(post_tiles))
 
-    if not DEBUG:
+    if isinstance(patch_file_path, Path):
+        shutil.copy(str(tmp_dir / outline_file_name), str(post_tiles / outline_file_name))
+
+    if cleanup:
         atexit.register(shutil.rmtree, path=tmp_dir, ignore_errors=True)
     else:
         logger.debug(f"Keeping temporary directory: {tmp_dir}")
 
-    if not (MASTER_TILE_DIR / "metadata.json").is_file():
+    if not (post_tiles / "metadata.json").is_file():
         shutil.copy((MASTER_TILE_DIR / "metadata.json"), post_tiles)
 
     geojson_path = post_tiles / outline_file_name
@@ -473,29 +506,54 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
         logger.info(f"Compacting output directory by symlinking against MASTER_TILE_DIR: {MASTER_TILE_DIR}")
         compact_generated_tiles(post_tiles, MASTER_TILE_DIR, geoMeta.all_tiles)
 
-    logger.info(f"Relevant tiles in {post_tiles}/ (not filtered by min zoom level - usually {BUILDING_LEVEL})")
-    geoMeta.paths()
+    #logger.info(f"Relevant tiles in {post_tiles}/ (not filtered by min zoom level - usually {BUILDING_LEVEL})")
+    #geoMeta.paths()
 
     result = None
-    if display3D:
-        result = {
-            "path": path,
-            "year": year,
-            "bbox": geoMeta.bbox,
-            "tile_levels": geoMeta.tiles,
-            "input": osm_patch,
-            "tile_dir": post_tiles,
-            "patch": patch_file_path
-        }
+    if isinstance(patch_file_path, Path):
+        content = load_content(patch_file_path)
+        post = content.posts[0]
+        display3D = post.getParam('3d')
 
-    logger.info(f"Done processing {osm_patch}")
+        if display3D:
+            result = {
+                "path": post.path,
+                "year": post.getParam('year'),
+                "bbox": geoMeta.bbox,
+                "tile_levels": geoMeta.tiles,
+                "tile_dir": post_tiles,
+                "patch": patch_file_path
+            }
+
+    logger.info(f"Done processing {', '.join(map(str, patches))}")
     return result
+
+
+def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
+    patch_file_path, file_base_name, tmp_dir = prepare_osm_patch(osm_patch, docker_client)
+    if DEBUG:
+        result = execute_osm_patch_processing(patch_file_path, file_base_name, tmp_dir, docker_client, False)
+    else:
+        result = execute_osm_patch_processing(patch_file_path, file_base_name, tmp_dir, docker_client, True)
+    if result is not None:
+        result["input"] = osm_patch
+    return result
+
+def patch_merge(processing_results, docker_client):
+    dir_name = COMPLETE_MAP_DIR.name
+    tmp_dir = (COMPLETE_MAP_DIR / ".." / f"{dir_name}-tmp").resolve()
+    if not DEBUG:
+        atexit.register(shutil.rmtree, path=tmp_dir, ignore_errors=True)
+    patches = []
+    for result in processing_results:
+        patches.append(result["patch"])
+
+    execute_osm_patch_processing(patches, dir_name, tmp_dir, docker_client, cleanup = True)
 
 def tile_merge(processing_results):
     all_changes = validate_and_extract_tiles(processing_results)
     merge_and_copy_tiles(all_changes, MASTER_TILE_DIR, COMPLETE_MAP_DIR)
     shutil.copy((MASTER_TILE_DIR / "metadata.json"), COMPLETE_MAP_DIR)
-
 
 def main():
     processing_results = []
@@ -527,8 +585,10 @@ def main():
             logger.error(f"Processing of {osm_patch} failed: {e}")
 
     logger.info(f"Finishing, creating map with all changes into {COMPLETE_MAP_DIR} (based on {MASTER_TILE_DIR})")
-    if MERGE is "tiles":
+    if MERGE == "tile":
         tile_merge(processing_results)
+    elif MERGE == "patch":
+        patch_merge(processing_results, client)
     logger.info("Map generation complete.")
 
 if __name__ == "__main__":
