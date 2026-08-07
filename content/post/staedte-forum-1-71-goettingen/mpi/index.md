@@ -16,7 +16,7 @@ params:
     - 9.9633186
     - 51.5605084
   year: 1971
-  #3d: true
+  3d: true
 resources:
 - src: "page072.jxl"
   name: preview

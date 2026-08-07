@@ -16,7 +16,7 @@ done
 
 # Get map
 ./scripts/get-map-tiles.sh
-python ./scripts/generate-3d-map.py
+python ./scripts/generate-3d-map.py --merge patch
 
 python ./scripts/extract-images.py -d
 

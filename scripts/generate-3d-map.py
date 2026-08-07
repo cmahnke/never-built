@@ -52,43 +52,9 @@ MASTER_TILE_DIR = (SCRIPT_DIR / ".." / MAP_BASE_DIR / MASTER_TILE_NAME).resolve(
 COMPLETE_MAP_DIR = (SCRIPT_DIR / ".." / MAP_BASE_DIR / COMPLETE_MAP_NAME).resolve()
 MASTER_PBF = TILES_DIR / f"{COVERAGE}.osm.pbf"
 
-# ---------------------------------------------------------
-# Argument Parsing & Logging Setup
-# ---------------------------------------------------------
-parser = argparse.ArgumentParser(description="Process OSM patches and generate map tiles.")
-parser.add_argument("-d", "--debug", action="store_true", help="Enable debug logging and behavior.")
-parser.add_argument("-c", "--compact", action="store_true", help="Compact generated output by symlinking unmodified tiles to the master directory.")
-parser.add_argument(
-    "-m", "--merge",
-    choices=["none", "tile", "patch"],
-    default="tile",
-    type=str,
-    help="Merge strategy: 'none' or 'tile' (default: 'tile')",
-)
-args = parser.parse_args()
-
-DEBUG = args.debug
-COMPACT = args.compact
-MERGE = args.merge
-
-# Configure logging format and level
-log_level = logging.DEBUG if DEBUG else logging.INFO
-logging.basicConfig(
-    level=log_level,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-)
 logger = logging.getLogger("generate-3d-map")
-
-logging.getLogger("docker").setLevel(logging.WARNING)
-logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("requests").setLevel(logging.WARNING)
-
-if DEBUG:
-    logger.debug("Debug mode enabled")
-
 import_paths = [str((SCRIPT_DIR / "../themes/projektemacher-base/scripts/").resolve()), str(SCRIPT_DIR)]
-logger.debug(f"Import paths: {', '.join(import_paths)}")
+logger.info(f"Import paths: {', '.join(import_paths)}")
 
 for p in import_paths:
     if p not in sys.path:
@@ -135,6 +101,45 @@ class GeoJSONProcessor:
         tiles = [tile for tile in self.all_tiles if tile[0] >= level]
         for tile in tiles:
             logger.debug(f"Tile path: {'/'.join(map(str, tile))}")
+
+def parse_year_arg(year_str: str) -> tuple[int, int]:
+    """Parses a 4-digit year or year range 'YYYY-YYYY' into a (min_year, max_year) tuple."""
+    if "-" in year_str:
+        parts = year_str.split("-")
+        if len(parts) != 2 or not (parts[0].isdigit() and parts[1].isdigit()):
+            raise ValueError(f"Invalid year range format: '{year_str}'. Expected YYYY-YYYY.")
+        start, end = int(parts[0]), int(parts[1])
+        return (min(start, end), max(start, end))
+    elif year_str.isdigit() and len(year_str) == 4:
+        y = int(year_str)
+        return (y, y)
+    else:
+        raise ValueError(f"Invalid year format: '{year_str}'. Expected 4-digit year or range YYYY-YYYY.")
+
+def filter_results_by_year(results: List[Dict[str, Any]], year_arg: str) -> List[Dict[str, Any]]:
+    """Filters processing results matching a single year or overlapping a year range."""
+    target_min, target_max = parse_year_arg(year_arg)
+    filtered = []
+
+    for r in results:
+        res_year = r.get("year")
+        if res_year is None:
+            continue
+
+        try:
+            # Result year can be int, string, or range string
+            if isinstance(res_year, int):
+                r_min = r_max = res_year
+            else:
+                r_min, r_max = parse_year_arg(str(res_year))
+
+            # Check range overlap: max(start1, start2) <= min(end1, end2)
+            if max(target_min, r_min) <= min(target_max, r_max):
+                filtered.append(r)
+        except ValueError as e:
+            logger.warning(f"Skipping entry {r.get('path')} due to invalid year format: {e}")
+
+    return filtered
 
 def compact_generated_tiles(generated_dir: Path, master_dir: Path, valid_tiles: List[List[int]]):
     """
@@ -499,18 +504,21 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
     if not (post_tiles / "metadata.json").is_file():
         shutil.copy((MASTER_TILE_DIR / "metadata.json"), post_tiles)
 
-    geojson_path = post_tiles / outline_file_name
-    geoMeta = GeoJSONProcessor(geojson_path)
 
-    if COMPACT:
-        logger.info(f"Compacting output directory by symlinking against MASTER_TILE_DIR: {MASTER_TILE_DIR}")
-        compact_generated_tiles(post_tiles, MASTER_TILE_DIR, geoMeta.all_tiles)
+
 
     #logger.info(f"Relevant tiles in {post_tiles}/ (not filtered by min zoom level - usually {BUILDING_LEVEL})")
     #geoMeta.paths()
 
     result = None
     if isinstance(patch_file_path, Path):
+        geojson_path = post_tiles / outline_file_name
+        geoMeta = GeoJSONProcessor(geojson_path)
+
+        if COMPACT:
+            logger.info(f"Compacting output directory by symlinking against MASTER_TILE_DIR: {MASTER_TILE_DIR}")
+            compact_generated_tiles(post_tiles, MASTER_TILE_DIR, geoMeta.all_tiles)
+
         content = load_content(patch_file_path)
         post = content.posts[0]
         display3D = post.getParam('3d')
@@ -542,6 +550,7 @@ def process_osm_patch(osm_patch: Path, docker_client) -> dict | None:
 def patch_merge(processing_results, docker_client):
     dir_name = COMPLETE_MAP_DIR.name
     tmp_dir = (COMPLETE_MAP_DIR / ".." / f"{dir_name}-tmp").resolve()
+    tmp_dir.mkdir(parents=True, exist_ok=True)
     if not DEBUG:
         atexit.register(shutil.rmtree, path=tmp_dir, ignore_errors=True)
     patches = []
@@ -556,6 +565,41 @@ def tile_merge(processing_results):
     shutil.copy((MASTER_TILE_DIR / "metadata.json"), COMPLETE_MAP_DIR)
 
 def main():
+    parser = argparse.ArgumentParser(description="Process OSM patches and generate map tiles.")
+    parser.add_argument("-d", "--debug", action="store_true", help="Enable debug logging and behavior.")
+    parser.add_argument("-c", "--compact", action="store_true", help="Compact generated output by symlinking unmodified tiles to the master directory.")
+    parser.add_argument(
+        "-m", "--merge",
+        choices=["none", "tile", "patch"],
+        default="tile",
+        type=str,
+        help="Merge strategy: 'none' or 'tile' (default: 'tile')",
+    )
+    parser.add_argument(
+        "-y", "--year",
+        type=str,
+        default=None,
+        help="Filter results by a single 4-digit year (e.g. 1950) or a range (e.g. 1950-1980) before merging.",
+    )
+    args = parser.parse_args()
+
+    global DEBUG, COMPACT
+    DEBUG = args.debug
+    COMPACT = args.compact
+    MERGE = args.merge
+
+    # Configure logging format and level based on parsed arguments
+    log_level = logging.DEBUG if DEBUG else logging.INFO
+    logging.basicConfig(
+        level=log_level,
+        format='%(asctime)s [%(levelname)s] %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        force=True
+    )
+
+    if DEBUG:
+        logger.debug("Debug mode enabled")
+
     processing_results = []
 
     if not CONTENT_DIR.exists():
@@ -584,12 +628,23 @@ def main():
         except (RuntimeError, subprocess.CalledProcessError) as e:
             logger.error(f"Processing of {osm_patch} failed: {e}")
 
+    # Filter results by year prior to merging if requested
+    if args.year:
+        try:
+            processing_results = filter_results_by_year(processing_results, args.year)
+            COMPLETE_MAP_DIR = (SCRIPT_DIR / ".." / MAP_BASE_DIR / f"{COMPLETE_MAP_NAME}-{args.year}").resolve()
+            logger.info(f"Filtered down to {len(processing_results)} result(s) matching year criteria '{args.year}'")
+        except ValueError as e:
+            logger.error(f"Failed to filter by year: {e}")
+            sys.exit(1)
+
     logger.info(f"Finishing, creating map with all changes into {COMPLETE_MAP_DIR} (based on {MASTER_TILE_DIR})")
     if MERGE == "tile":
         tile_merge(processing_results)
     elif MERGE == "patch":
         patch_merge(processing_results, client)
     logger.info("Map generation complete.")
+
 
 if __name__ == "__main__":
     main()

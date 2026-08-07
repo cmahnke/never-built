@@ -10,19 +10,15 @@ Never built Göttingen Mocks
 - Cleanup and integration
   - Fix linting / `tsc` errors
   - Add Hugo wrapper template
-  - Allow GeoJSON and clustering in overhead mode
-    - Function available in `/assets/ts/maps/map.ts`
 - `osm_tool.py`
   - Avoid problems with ID order if IDs get prefixed
   - Check if intersection also applies to bordering / shared points
   - Also try to get deletions / modifications from osm file
-     - Implemented for filter file creation
-  - check "need at least two points for linestring"
+    - Implemented for filter file creation
+  - check "need at least two points for linestring" - probably related to deletions
   - Split ways intersecting closed ways
 - `generate-3d-map.py`
   - make calls to `osm_tool.py` native
-  - generate combined maps based on year
-    - add `year` param to `validate_and_extract_tiles`
   - add tile seperation
     - compacting using symlinks already implemented
 - Rendering
@@ -30,8 +26,13 @@ Never built Göttingen Mocks
   - barrier=wall
 - Improve iOS Shading, the effect is barely visible
 - Improve performance
-- Testing (`3d-map.ts`)
-  - Disabled mode / no cam position
+- Testing
+  - `3d-map.ts`
+    - Disabled mode / no cam position
+    - GeoJSON and clustering in overhead mode
+  - `generate-3d-map.py`
+    - generate combined maps based on year (`year` param)
+
 
 ## Tile debugger
 
