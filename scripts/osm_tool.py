@@ -10,6 +10,8 @@ import tempfile
 import geopandas
 import osmium
 import shapely
+import xml.etree.ElementTree as ET
+import xml.sax.saxutils as saxutils
 
 from typing import Set, List, Optional, Any, Tuple, Dict, Union
 from shapely.geometry import Polygon, Point
@@ -26,14 +28,6 @@ ID_OFFSET_FALLBACK = 10 ** 15
 
 
 class CollisionChecker(osmium.SimpleHandler):
-    """
-    Pass 0: Scans a file and records which positive and (absolute-valued)
-    negative IDs exist, per object type. Node/way/relation ID spaces are
-    independent namespaces in OSM, so each is tracked separately.
-
-    Used to detect whether flipping negative IDs via abs() would collide
-    with an already-existing positive ID of the same type.
-    """
     def __init__(self):
         super().__init__()
         self.pos_ids = {'node': set(), 'way': set(), 'relation': set()}
@@ -45,49 +39,29 @@ class CollisionChecker(osmium.SimpleHandler):
         else:
             self.neg_ids[kind].add(abs(obj_id))
 
-    def node(self, n):
-        self._record('node', n.id)
-
-    def way(self, w):
-        self._record('way', w.id)
-
-    def relation(self, r):
-        self._record('relation', r.id)
+    def node(self, n): self._record('node', n.id)
+    def way(self, w): self._record('way', w.id)
+    def relation(self, r): self._record('relation', r.id)
 
     def find_collisions(self) -> Dict[str, Set[int]]:
-        """Returns {kind: overlapping_ids} for any type where a collision would occur."""
         collisions = {}
         for kind in ('node', 'way', 'relation'):
             overlap = self.pos_ids[kind] & self.neg_ids[kind]
-            if overlap:
-                collisions[kind] = overlap
+            if overlap: collisions[kind] = overlap
         return collisions
 
 
 class _ExternalPositiveIdScanner(osmium.SimpleHandler):
-    """
-    Lightweight scan of a *second* file's existing positive IDs only.
-    Used to check whether normalizing one file's negative IDs (e.g. a
-    JOSM patch) would collide with another file's namespace (e.g. the
-    base file it's about to be merged into), without needing to track
-    that second file's own negative IDs (which normalize_ids_to_positive
-    is not responsible for and does not touch).
-    """
     def __init__(self):
         super().__init__()
         self.pos_ids = {'node': set(), 'way': set(), 'relation': set()}
 
     def node(self, n):
-        if n.id >= 0:
-            self.pos_ids['node'].add(n.id)
-
+        if n.id >= 0: self.pos_ids['node'].add(n.id)
     def way(self, w):
-        if w.id >= 0:
-            self.pos_ids['way'].add(w.id)
-
+        if w.id >= 0: self.pos_ids['way'].add(w.id)
     def relation(self, r):
-        if r.id >= 0:
-            self.pos_ids['relation'].add(r.id)
+        if r.id >= 0: self.pos_ids['relation'].add(r.id)
 
 
 class IDChanger(osmium.SimpleHandler):
@@ -101,52 +75,27 @@ class IDChanger(osmium.SimpleHandler):
 
     def node(self, n):
         new_id = self._flip(n.id)
-        logger.debug(f"Node ID {n.id} -> {new_id}")
         self.writer.add_node(n.replace(id=new_id))
 
     def way(self, w):
         new_id = self._flip(w.id)
         new_node_refs = [self._flip(nr.ref) for nr in w.nodes]
-        logger.debug(f"Way ID {w.id} -> {new_id}")
         self.writer.add_way(w.replace(id=new_id, nodes=new_node_refs))
 
     def relation(self, r):
         new_id = self._flip(r.id)
         new_members = [(m.type, self._flip(m.ref), m.role) for m in r.members]
-        logger.debug(f"Relation ID {r.id} -> {new_id}")
         self.writer.add_relation(r.replace(id=new_id, members=new_members))
 
+
 def normalize_ids_to_positive(
-    input_path: str,
-    output_path: str,
-    on_collision: str = "offset",
+    input_path: str, output_path: str, on_collision: str = "offset",
     reference_paths: Optional[List[str]] = None,
 ) -> None:
-    """
-    Runs a cheap collision-check pass, then rewrites `input_path` to
-    `output_path` with all negative IDs flipped to positive.
-
-    on_collision:
-        'offset' (default) - if a plain abs()-flip would collide with an
-                              existing positive ID, transparently fall back
-                              to an offset-based scheme that can't collide.
-        'abort'             - raise an exception instead of falling back.
-
-    reference_paths:
-        Optional list of additional OSM file paths whose *existing positive
-        IDs* should also be treated as off-limits for the abs()-flip, even
-        though those files aren't being normalized themselves. Use this when
-        the normalized output will later be merged/combined with another
-        file (e.g. the base file in the `patch` subcommand) so that a
-        newly-flipped ID from `input_path` can't collide with an unrelated,
-        pre-existing object of the same type in that other file.
-    """
     checker = CollisionChecker()
     osmium.apply(input_path, checker)
     collisions = checker.find_collisions()
 
-    # Cross-file collision check: does abs()-flipping input_path's negative
-    # IDs collide with positive IDs that already exist in a reference file?
     external_collisions: Dict[str, Set[int]] = {}
     for ref_path in (reference_paths or []):
         ref_scanner = _ExternalPositiveIdScanner()
@@ -164,8 +113,7 @@ def normalize_ids_to_positive(
             logger.warning(
                 f"ID collision risk for {kind}s: abs()-flipping negative IDs "
                 f"would collide with {len(ids)} existing positive ID(s) "
-                f"within {input_path!r}: "
-                f"{sample}{' ...' if len(ids) > 20 else ''}"
+                f"within {input_path!r}: {sample}{' ...' if len(ids) > 20 else ''}"
             )
     if external_collisions:
         for kind, ids in external_collisions.items():
@@ -179,12 +127,7 @@ def normalize_ids_to_positive(
 
     if collisions or external_collisions:
         if on_collision == "abort":
-            raise RuntimeError(
-                "Aborting: flipping negative IDs would collide with existing "
-                "positive IDs (in the input file and/or a reference file). "
-                "Re-run with on_collision='offset' to auto-resolve, or clean "
-                "up the input file."
-            )
+            raise RuntimeError("Aborting: flipping negative IDs would collide with existing positive IDs.")
         elif on_collision == "offset":
             offset = ID_OFFSET_FALLBACK
             logger.warning(f"Falling back to offset-based renumbering (offset={offset}).")
@@ -195,11 +138,8 @@ def normalize_ids_to_positive(
         handler = IDChanger(writer, offset=offset)
         osmium.apply(input_path, handler)
 
-
 # --- Bounding Box ---
-
 class BoundingBoxHandler(osmium.SimpleHandler):
-    """Calculates the bounding box of all nodes in an OSM file."""
     def __init__(self):
         super().__init__()
         self.min_lon, self.min_lat = 180.0, 90.0
@@ -212,26 +152,13 @@ class BoundingBoxHandler(osmium.SimpleHandler):
             self.max_lon = max(self.max_lon, n.location.lon)
             self.max_lat = max(self.max_lat, n.location.lat)
 
-
 # --- Tag Parsing ---
-
-def parse_tag_argument(tag_str: Optional[str]) -> Dict[str, str]:
-    """
-    Parses a --tag argument string of the form 'key1=value1,key2=value2'
-    into a dict. Values may contain '=' characters (only the first '=' in
-    each comma-separated entry is treated as the key/value separator).
-
-    Returns an empty dict if tag_str is None/empty. Exits the process with
-    an error if any entry is malformed (missing '=' or an empty key).
-    """
+def parse_tag_arguments(tag_str: Optional[str]) -> Dict[str, str]:
     tags: Dict[str, str] = {}
-    if not tag_str:
-        return tags
-
+    if not tag_str: return tags
     for raw_entry in tag_str.split(','):
         entry = raw_entry.strip()
-        if not entry:
-            continue
+        if not entry: continue
         if '=' not in entry:
             msg = f"Invalid --tag entry {entry!r}; expected format key=value."
             logger.error(msg)
@@ -244,40 +171,157 @@ def parse_tag_argument(tag_str: Optional[str]) -> Dict[str, str]:
             logger.error(msg)
             raise RuntimeError(msg)
         tags[key] = value
-
     return tags
+
+def extract_actions_from_xml(filepath: str) -> Dict[str, Dict[int, str]]:
+    """
+    Fast pre-pass to extract 'action' attributes from JOSM XML or OsmChange files.
+    libosmium ignores the 'action' attribute during parsing, so we must extract it
+    separately to preserve JOSM semantics.
+    """
+    actions = {'node': {}, 'way': {}, 'relation': {}}
+    if not os.path.exists(filepath):
+        return actions
+
+    # Quick check if it's XML
+    try:
+        with open(filepath, 'rb') as f:
+            header = f.read(500)
+            if b'<osmChange' in header or b'<osm' in header or b'<?xml' in header:
+                pass
+            else:
+                return actions # Likely PBF or other binary
+    except Exception:
+        return actions
+
+    current_action = None
+    try:
+        for event, elem in ET.iterparse(filepath, events=('start', 'end')):
+            if event == 'start':
+                if elem.tag in ('modify', 'create', 'delete'):
+                    current_action = elem.tag
+                elif elem.tag in ('node', 'way', 'relation'):
+                    action = elem.get('action')
+                    if not action and current_action:
+                        action = current_action
+                    if action:
+                        try:
+                            actions[elem.tag][int(elem.get('id'))] = action
+                        except ValueError:
+                            pass
+            elif event == 'end':
+                if elem.tag in ('modify', 'create', 'delete'):
+                    current_action = None
+                elif elem.tag in ('node', 'way', 'relation'):
+                    elem.clear()
+    except ET.ParseError:
+        logger.debug(f"Could not parse {filepath} as XML for action extraction.")
+    except Exception as e:
+        logger.debug(f"Error extracting actions from {filepath}: {e}")
+
+    return actions
+
+
+class CustomXMLWriter:
+    """
+    Custom XML serializer that supports the JOSM-specific 'action' attribute.
+    libosmium's SimpleWriter cannot write 'action' attributes on elements,
+    so we use this when outputting to .osm/.xml formats.
+    """
+    def __init__(self, filepath: str):
+        if filepath == '-':
+            self.f = sys.stdout
+        else:
+            self.f = open(filepath, 'w', encoding='utf-8')
+        self.f.write("<?xml version='1.0' encoding='UTF-8'?>\n")
+        self.f.write("<osm version='0.6' generator='osm_tool'>\n")
+
+    def escape(self, text: str) -> str:
+        return saxutils.escape(str(text))
+
+    def write_obj(self, obj: osmium.osm.OSMObject, obj_type: str, action: Optional[str], extra_tags: Optional[Dict[str, str]] = None):
+        # Start with the required ID
+        attrs = [f"id='{obj.id}'"]
+
+        # 1. Action (The whole reason we are using this custom writer)
+        if action:
+            attrs.append(f"action='{action}'")
+
+        # 2. Visible: Standard OSM/JOSM XML omits visible="true".
+        # We only write it if the object is explicitly deleted/invisible.
+        if not getattr(obj, 'visible', True):
+            attrs.append("visible='false'")
+
+        # 3. Version: Omit if 0 or None. JOSM typically omits version for
+        # newly created local objects (negative IDs).
+        if getattr(obj, 'version', 0) and obj.version > 0:
+            attrs.append(f"version='{obj.version}'")
+
+        # 4. Changeset: Omit if 0 or None
+        if getattr(obj, 'changeset', 0) and obj.changeset > 0:
+            attrs.append(f"changeset='{obj.changeset}'")
+
+        # 5. Timestamp
+        if obj.timestamp:
+            try:
+                # pyosmium returns a datetime object
+                ts_str = obj.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ')
+            except Exception:
+                ts_str = str(obj.timestamp)
+            attrs.append(f"timestamp='{ts_str}'")
+
+        # 6. User info: Omit uid if 0/None, omit user if empty
+        if getattr(obj, 'uid', 0) and obj.uid > 0:
+            attrs.append(f"uid='{obj.uid}'")
+        if obj.user:
+            attrs.append(f"user='{self.escape(obj.user)}'")
+
+        # 7. Geometry (Nodes only)
+        if obj_type == 'node' and obj.location.valid():
+            attrs.append(f"lat='{obj.location.lat}'")
+            attrs.append(f"lon='{obj.location.lon}'")
+
+        attr_str = " ".join(attrs)
+
+        # Merge tags
+        tags = dict(obj.tags)
+        if extra_tags:
+            tags.update(extra_tags)
+
+        # Determine if we need to open/close tags or just self-close
+        has_children = False
+        if obj_type == 'node':
+            has_children = bool(tags)
+        elif obj_type == 'way':
+            has_children = bool(obj.nodes) or bool(tags)
+        elif obj_type == 'relation':
+            has_children = bool(obj.members) or bool(tags)
+
+        if has_children:
+            self.f.write(f"  <{obj_type} {attr_str}>\n")
+            if obj_type == 'way':
+                for nd in obj.nodes:
+                    self.f.write(f"    <nd ref='{nd.ref}'/>\n")
+            elif obj_type == 'relation':
+                for mem in obj.members:
+                    self.f.write(f"    <member type='{mem.type}' ref='{mem.ref}' role='{self.escape(mem.role)}'/>\n")
+
+            for k, v in tags.items():
+                self.f.write(f"    <tag k='{self.escape(k)}' v='{self.escape(v)}'/>\n")
+
+            self.f.write(f"  </{obj_type}>\n")
+        else:
+            self.f.write(f"  <{obj_type} {attr_str}/>\n")
+
+    def close(self):
+        self.f.write("</osm>\n")
+        if self.f is not sys.stdout:
+            self.f.close()
 
 
 # --- Filtering / Dependency Resolution ---
 
 class DependencyCollector(osmium.SimpleHandler):
-    """
-    Pass 1: Collects all objects that match the filter criteria, plus their
-    *direct* dependencies (nodes for matched ways; member refs for matched
-    relations). Nested relation expansion and way->node resolution for
-    relation-referenced ways are handled by separate passes afterwards
-    (see RelationExpander / WayNodeResolver and filter_cmd()) -- unless
-    those passes are skipped via --no-expand-relations, in which case only
-    what this pass collects is written.
-
-    Tracks two levels of ID sets per type:
-      - node_ids / way_ids / relation_ids: everything that needs to be
-        written to the output (matches + all their dependencies, subject
-        to the above).
-      - matched_node_ids / matched_way_ids / matched_relation_ids: only the
-        objects that *directly* matched the filter criteria themselves, as
-        opposed to being pulled in solely as a dependency. Used to scope
-        --tag additions (see filter_cmd()) to just the matched objects,
-        so e.g. tagging a matched way doesn't also tag every one of its
-        vertex nodes.
-
-    Also records, for each *matched* relation, its raw member list
-    (matched_relation_members) and its 'name' tag if any
-    (matched_relation_names). This is used by filter_cmd() to warn about
-    relations that will likely end up incomplete in the output when
-    --no-expand-relations skips resolving their nested members.
-    """
-
     def __init__(self, tag_key: Optional[str], tag_value: Optional[str], include_actions: Optional[str], full: bool = False):
         super().__init__()
         self.tag_key = tag_key
@@ -293,14 +337,20 @@ class DependencyCollector(osmium.SimpleHandler):
         self.matched_way_ids: Set[int] = set()
         self.matched_relation_ids: Set[int] = set()
 
-        # rel_id -> list of (member_type, member_ref, member_role)
+        # Track objects that explicitly match the --tag-key and --tag-value arguments
+        self.tag_matched_node_ids: Set[int] = set()
+        self.tag_matched_way_ids: Set[int] = set()
+        self.tag_matched_relation_ids: Set[int] = set()
+
         self.matched_relation_members: Dict[int, List[Tuple[str, int, str]]] = {}
-        # rel_id -> name tag (or None)
         self.matched_relation_names: Dict[int, Optional[str]] = {}
 
     def is_match(self, elem: osmium.osm.OSMObject) -> bool:
         if self.full:
             if elem.id < 0:
+                return True
+            # Check natively exposed deleted/visible properties
+            if getattr(elem, 'deleted', False) or not getattr(elem, 'visible', True):
                 return True
             if getattr(elem, 'action', None) in ('modify', 'delete'):
                 return True
@@ -316,17 +366,27 @@ class DependencyCollector(osmium.SimpleHandler):
             return True
         return False
 
+    def is_tag_match(self, elem: osmium.osm.OSMObject) -> bool:
+        # Check ONLY for explicit tag match to scope --tag argument updates
+        if self.tag_key and elem.tags.get(self.tag_key) == self.tag_value:
+            return True
+        return False
+
     def node(self, n: osmium.osm.Node) -> None:
         if self.is_match(n):
             logger.debug(f"Matching node found: {n.id}")
             self.node_ids.add(n.id)
             self.matched_node_ids.add(n.id)
+            if self.is_tag_match(n):
+                self.tag_matched_node_ids.add(n.id)
 
     def way(self, w: osmium.osm.Way) -> None:
         if self.is_match(w):
             logger.debug(f"Matching way found: {w.id}")
             self.way_ids.add(w.id)
             self.matched_way_ids.add(w.id)
+            if self.is_tag_match(w):
+                self.tag_matched_way_ids.add(w.id)
             for node in w.nodes:
                 self.node_ids.add(node.ref)
 
@@ -335,6 +395,8 @@ class DependencyCollector(osmium.SimpleHandler):
             logger.debug(f"Matching relation found: {r.id}")
             self.relation_ids.add(r.id)
             self.matched_relation_ids.add(r.id)
+            if self.is_tag_match(r):
+                self.tag_matched_relation_ids.add(r.id)
             self.matched_relation_members[r.id] = [
                 (member.type, member.ref, member.role) for member in r.members
             ]
@@ -347,15 +409,7 @@ class DependencyCollector(osmium.SimpleHandler):
                 elif member.type == 'r':
                     self.relation_ids.add(member.ref)
 
-
 class RelationExpander(osmium.SimpleHandler):
-    """
-    Given a set of relation IDs, finds those relations and collects the IDs
-    of their members. Intended to be called repeatedly (fixed-point
-    iteration) to fully resolve relations-of-relations, since a single pass
-    can't know in advance whether a newly-discovered relation itself
-    contains further relation members.
-    """
     def __init__(self, target_relation_ids: Set[int]):
         super().__init__()
         self.targets = target_relation_ids
@@ -366,20 +420,12 @@ class RelationExpander(osmium.SimpleHandler):
     def relation(self, r: osmium.osm.Relation) -> None:
         if r.id in self.targets:
             for member in r.members:
-                if member.type == 'n':
-                    self.node_ids.add(member.ref)
-                elif member.type == 'w':
-                    self.way_ids.add(member.ref)
-                elif member.type == 'r':
-                    self.relation_ids.add(member.ref)
+                if member.type == 'n': self.node_ids.add(member.ref)
+                elif member.type == 'w': self.way_ids.add(member.ref)
+                elif member.type == 'r': self.relation_ids.add(member.ref)
 
 
 class WayNodeResolver(osmium.SimpleHandler):
-    """
-    Given a set of way IDs, collects the node IDs referenced by those ways.
-    Needed because ways discovered only as relation members don't have
-    their node lists available at relation-processing time.
-    """
     def __init__(self, target_way_ids: Set[int]):
         super().__init__()
         self.way_ids = target_way_ids
@@ -392,112 +438,95 @@ class WayNodeResolver(osmium.SimpleHandler):
 
 
 class DataWriter(osmium.SimpleHandler):
-    """
-    Pass N: Writes all objects whose IDs were fully resolved by the
-    preceding dependency-collection passes.
-
-    If extra_tags is given, those tags are merged into (and override any
-    same-named existing tags on) objects that *directly matched* the filter
-    criteria (dep_collector.matched_*_ids) -- not onto objects that were
-    only pulled in as dependencies (e.g. a matched way's nodes).
-    """
-    def __init__(self, writer: osmium.io.Writer, deps: DependencyCollector, extra_tags: Optional[Dict[str, str]] = None):
+    def __init__(self, writer: Any, deps: DependencyCollector, extra_tags: Optional[Dict[str, str]] = None, actions_map: Optional[Dict] = None, use_custom_xml: bool = False):
         super().__init__()
         self.writer = writer
         self.deps = deps
         self.extra_tags = extra_tags or {}
+        self.actions_map = actions_map or {'node': {}, 'way': {}, 'relation': {}}
+        self.use_custom_xml = use_custom_xml
 
-    def _with_extra_tags(self, obj: osmium.osm.OSMObject, matched_ids: Set[int]):
-        if not self.extra_tags or obj.id not in matched_ids:
-            return obj
+    def _get_action(self, obj: osmium.osm.OSMObject, obj_type: str) -> Optional[str]:
+        # 1. Check extracted XML action
+        action = self.actions_map.get(obj_type, {}).get(obj.id)
+        if action:
+            return action
+
+        # 2. Fallback to object properties
+        if getattr(obj, 'deleted', False) or not getattr(obj, 'visible', True):
+            return 'delete'
+
+        # 3. If full mode, assign default actions
+        if self.deps.full:
+            if obj.id < 0:
+                return 'create'
+            return 'modify'
+
+        return None
+
+    def write_obj(self, obj: osmium.osm.OSMObject, obj_type: str, tag_matched_ids: Set[int], matched_ids: Set[int]):
+        is_tag_matched = obj.id in tag_matched_ids
+        is_matched = obj.id in matched_ids
+
         merged_tags = dict(obj.tags)
-        merged_tags.update(self.extra_tags)
-        logger.debug(f"Adding tags {self.extra_tags} to {obj.id}")
-        return obj.replace(tags=merged_tags)
+        tags_updated = False
+
+        # FIX: Only apply args given via --tag to objects strictly matching --tag-key and --tag-value
+        if self.extra_tags and is_tag_matched:
+            for k, v in self.extra_tags.items():
+                if merged_tags.get(k) != v:
+                    merged_tags[k] = v
+                    tags_updated = True
+
+        action = self._get_action(obj, obj_type) if self.use_custom_xml else None
+
+        if self.use_custom_xml:
+            self.writer.write_obj(obj, obj_type, action, merged_tags if tags_updated else None)
+        else:
+            if tags_updated:
+                new_obj = obj.replace(tags=merged_tags)
+                if obj_type == 'node': self.writer.add_node(new_obj)
+                elif obj_type == 'way': self.writer.add_way(new_obj)
+                elif obj_type == 'relation': self.writer.add_relation(new_obj)
+            else:
+                if obj_type == 'node': self.writer.add_node(obj)
+                elif obj_type == 'way': self.writer.add_way(obj)
+                elif obj_type == 'relation': self.writer.add_relation(obj)
 
     def node(self, n: osmium.osm.Node) -> None:
         if n.id in self.deps.node_ids:
-            self.writer.add_node(self._with_extra_tags(n, self.deps.matched_node_ids))
+            self.write_obj(n, 'node', self.deps.tag_matched_node_ids, self.deps.matched_node_ids)
 
     def way(self, w: osmium.osm.Way) -> None:
         if w.id in self.deps.way_ids:
-            self.writer.add_way(self._with_extra_tags(w, self.deps.matched_way_ids))
+            self.write_obj(w, 'way', self.deps.tag_matched_way_ids, self.deps.matched_way_ids)
 
     def relation(self, r: osmium.osm.Relation) -> None:
         if r.id in self.deps.relation_ids:
-            self.writer.add_relation(self._with_extra_tags(r, self.deps.matched_relation_ids))
-
+            self.write_obj(r, 'relation', self.deps.tag_matched_relation_ids, self.deps.matched_relation_ids)
 
 class _CopyAllHandler(osmium.SimpleHandler):
-    """
-    Forwards every node/way/relation it sees, unmodified, to the given
-    writer. Used to re-encode an existing OSM file into a different output
-    format/container (e.g. turning an internal PBF working file into an
-    XML .osm file for debugging), since osmium.SimpleWriter picks its
-    output format based on the target path's extension.
-    """
     def __init__(self, writer: osmium.io.Writer):
         super().__init__()
         self.writer = writer
 
-    def node(self, n: osmium.osm.Node) -> None:
-        self.writer.add_node(n)
-
-    def way(self, w: osmium.osm.Way) -> None:
-        self.writer.add_way(w)
-
-    def relation(self, r: osmium.osm.Relation) -> None:
-        self.writer.add_relation(r)
-
+    def node(self, n: osmium.osm.Node) -> None: self.writer.add_node(n)
+    def way(self, w: osmium.osm.Way) -> None: self.writer.add_way(w)
+    def relation(self, r: osmium.osm.Relation) -> None: self.writer.add_relation(r)
 
 class _WayIdCollector(osmium.SimpleHandler):
-    """
-    Collects the IDs of every way seen in a file. Used purely for
-    consistency-checking the masked base file produced in patch() --
-    comparing "all base ways minus explicitly excluded ones" against
-    "ways actually present in the masked file" can reveal ways that
-    silently disappeared for reasons other than deliberate exclusion
-    (e.g. an unsorted base file, or ways referencing nodes missing from
-    the base file).
-    """
     def __init__(self):
         super().__init__()
         self.way_ids: Set[int] = set()
-
-    def way(self, w: osmium.osm.Way) -> None:
-        self.way_ids.add(w.id)
-
+    def way(self, w: osmium.osm.Way) -> None: self.way_ids.add(w.id)
 
 class _RelationIdCollector(osmium.SimpleHandler):
-    """
-    Collects the IDs of every relation seen in a file. Used purely for
-    consistency-checking the masked base file produced in patch() (see
-    _WayIdCollector for the equivalent way-focused check).
-    """
     def __init__(self):
         super().__init__()
         self.relation_ids: Set[int] = set()
-
-    def relation(self, r: osmium.osm.Relation) -> None:
-        self.relation_ids.add(r.id)
-
+    def relation(self, r: osmium.osm.Relation) -> None: self.relation_ids.add(r.id)
 
 class _RelationMemberExclusionResolver(osmium.SimpleHandler):
-    """
-    Given a set of already-excluded way IDs and relation IDs, finds
-    relations that reference any of them as a member and collects those
-    relations' IDs. Intended to be called repeatedly (fixed-point
-    iteration, mirroring RelationExpander) so that a relation excluded
-    because it references an excluded way will itself cause any relation
-    containing *it* to be excluded too (nested relations).
-
-    This is needed so that excluding a way (because it geometrically
-    intersects the patch) also excludes any relation built on top of it
-    (e.g. a multipolygon) -- otherwise the relation would either be kept
-    with a now-dangling member, or (worse) cause BackReferenceWriter's own
-    dependency resolution to resurrect the excluded way when the relation
-    itself is kept and written.
-    """
     def __init__(self, excluded_way_ids: Set[int], excluded_relation_ids: Set[int]):
         super().__init__()
         self.excluded_way_ids = excluded_way_ids
@@ -505,8 +534,7 @@ class _RelationMemberExclusionResolver(osmium.SimpleHandler):
         self.newly_excluded_relation_ids: Set[int] = set()
 
     def relation(self, r: osmium.osm.Relation) -> None:
-        if r.id in self.excluded_relation_ids:
-            return
+        if r.id in self.excluded_relation_ids: return
         for member in r.members:
             if member.type == 'w' and member.ref in self.excluded_way_ids:
                 self.newly_excluded_relation_ids.add(r.id)
@@ -515,18 +543,15 @@ class _RelationMemberExclusionResolver(osmium.SimpleHandler):
                 self.newly_excluded_relation_ids.add(r.id)
                 return
 
-
 # --- Tile Math Functions ---
 
 def deg_to_tile_num(lat_deg: float, lon_deg: float, zoom: int) -> Tuple[int, int]:
-    """Converts geographic coordinates to tile numbers."""
     lat_deg = max(-85.05112877980659, min(85.05112877980659, lat_deg))
     lon_deg = max(-180.0, min(180.0, lon_deg))
 
     lat_rad = math.radians(lat_deg)
     n = 2.0 ** zoom
 
-    # Standard OSM slippy map formulas
     xtile = int((lon_deg + 180.0) / 360.0 * n)
     ytile = int((1.0 - math.asinh(math.tan(lat_rad)) / math.pi) / 2.0 * n)
 
@@ -539,15 +564,6 @@ def deg_to_tile_num(lat_deg: float, lon_deg: float, zoom: int) -> Tuple[int, int
 # --- Commands ---
 
 def _log_relations_with_unexpanded_members(dep_collector: DependencyCollector) -> None:
-    """
-    Used when --no-expand-relations is set. Nested relation members and
-    way-node dependencies are not resolved in that mode, so this inspects
-    every *directly matched* relation and warns about any whose member list
-    includes way or relation members -- those members' own dependencies
-    (a member way's nodes, a member relation's members) will NOT be present
-    in the output, likely leaving the relation (or the referenced objects)
-    incomplete/dangling.
-    """
     broken_count = 0
     for rel_id in sorted(dep_collector.matched_relation_ids):
         members = dep_collector.matched_relation_members.get(rel_id, [])
@@ -565,16 +581,6 @@ def _log_relations_with_unexpanded_members(dep_collector: DependencyCollector) -
             f"does not resolve {len(way_member_ids)} way member(s)' node lists "
             f"or {len(relation_member_ids)} nested relation member(s)."
         )
-        if way_member_ids:
-            logger.debug(
-                f"  Relation {rel_id}: way member(s) whose nodes won't be "
-                f"resolved: {sorted(way_member_ids)}"
-            )
-        if relation_member_ids:
-            logger.debug(
-                f"  Relation {rel_id}: nested relation member(s) that won't "
-                f"be expanded: {sorted(relation_member_ids)}"
-            )
 
     if broken_count:
         logger.warning(
@@ -584,18 +590,6 @@ def _log_relations_with_unexpanded_members(dep_collector: DependencyCollector) -
 
 
 def filter_cmd(args: argparse.Namespace) -> None:
-    """
-    Core logic for the 'filter' subcommand. Reads an OSM file, filters
-    objects based on tags or actions, and writes the result including all
-    dependencies (recursively for nested relations, and node refs for
-    ways discovered via relation membership) -- unless --no-expand-relations
-    is given, in which case only Pass 1's direct matches/dependencies are
-    written (legacy behavior; may produce ways/relations with dangling
-    references if they were only pulled in via relation membership).
-
-    If --tag is given, its key=value pairs are added to (and override any
-    same-named tags on) objects that directly matched the filter criteria.
-    """
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=log_level, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
@@ -604,15 +598,13 @@ def filter_cmd(args: argparse.Namespace) -> None:
         logger.error(msg)
         raise RuntimeError(msg)
 
-    extra_tags = parse_tag_argument(args.tag)
+    extra_tags = parse_tag_arguments(args.tag)
 
     raw_input_files = args.patch
     input_files = []
     for p in raw_input_files:
-        if isinstance(p, list):
-            input_files.extend(p)
-        else:
-            input_files.append(p)
+        if isinstance(p, list): input_files.extend(p)
+        else: input_files.append(p)
 
     output_file = args.output
 
@@ -627,6 +619,14 @@ def filter_cmd(args: argparse.Namespace) -> None:
             logger.warning(f"Output file '{output_file}' already exists. Use -f or --force to overwrite.")
             return
         os.remove(output_file)
+
+    # Extract actions from XML inputs to preserve JOSM semantics
+    actions_map = {'node': {}, 'way': {}, 'relation': {}}
+    for input_file in input_files:
+        if input_file == '-': continue
+        file_actions = extract_actions_from_xml(input_file)
+        for t in ('node', 'way', 'relation'):
+            actions_map[t].update(file_actions[t])
 
     logger.info("--- Pass 1: Collecting matching objects and their direct dependencies ---")
     dep_collector = DependencyCollector(args.tag_key, args.tag_value, args.include_actions, args.full)
@@ -676,17 +676,30 @@ def filter_cmd(args: argparse.Namespace) -> None:
         logger.warning("No matching objects found. Skipping file write.")
         return
 
+    # Determine if we need to use custom XML writer
+    is_xml_output = output_file != '-' and output_file.lower().endswith(('.osm', '.xml'))
+    use_custom_xml = is_xml_output
+
+    if not is_xml_output and args.full:
+        logger.warning("Output file is not .osm or .xml. The 'action' attribute cannot be preserved in PBF or other binary formats.")
+
     if extra_tags:
         logger.info(f"--- Pass 4: Writing selected objects to {output_file} (adding tags {extra_tags} to matched objects) ---")
     else:
         logger.info(f"--- Pass 4: Writing selected objects to {output_file} ---")
-    writer = osmium.SimpleWriter(output_file)
-    data_writer = DataWriter(writer, dep_collector, extra_tags=extra_tags)
+
+    if use_custom_xml:
+        logger.info("Using Custom XML Writer to preserve 'action' attributes.")
+        writer = CustomXMLWriter(output_file)
+    else:
+        writer = osmium.SimpleWriter(output_file, overwrite=True)
+
+    data_writer = DataWriter(writer, dep_collector, extra_tags=extra_tags, actions_map=actions_map, use_custom_xml=use_custom_xml)
     for input_file in input_files:
         data_writer.apply_file(input_file, locations=True, idx='flex_mem')
+
     writer.close()
     logger.info("--- Filtering complete. ---")
-
 
 def tile_info_cmd(args: argparse.Namespace) -> None:
     """
@@ -956,10 +969,11 @@ def patch_cmd(args: argparse.Namespace) -> None:
     output_file = args.output
     overwrite = args.force
     masked_base_output = args.dump_masked_base
-    patch(base_file, patch_files, output_file, overwrite, masked_base_output=masked_base_output)
+    clean = getattr(args, 'clean', False)
+    patch(base_file, patch_files, output_file, overwrite, masked_base_output=masked_base_output, clean=clean)
 
 
-def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Optional[str] = None) -> None:
+def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Optional[str] = None, clean: bool = False) -> None:
     """
     Reads a base OSM file and one or more patch OSM files, removes closed
     ways and standalone tagged nodes (point features like trees) in the
@@ -977,6 +991,11 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
     Modifications and deletions from the patch file are also applied:
     - Modified objects in the patch overwrite the corresponding base objects.
     - Deleted objects are removed from the base file and not written to the output.
+
+    If `clean` is True, deleted and modified objects from the patch files are
+    discarded entirely before applying (meaning the base file's versions are
+    kept, and only creations from the patch are merged). The original patch
+    files are never modified.
     """
 
     class IntersectionHandler(osmium.SimpleHandler):
@@ -1108,16 +1127,37 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
     patch_way_ids: Set[int] = set()
     patch_relation_ids: Set[int] = set()
 
-    def _is_deleted(obj):
+    # Extract actions from XML files (JOSM/OsmChange files contain action attributes that libosmium ignores)
+    patch_actions_map = {'node': {}, 'way': {}, 'relation': {}}
+    for pf in patch_files:
+        if pf == '-': continue
+        file_actions = extract_actions_from_xml(pf)
+        for t in ('node', 'way', 'relation'):
+            patch_actions_map[t].update(file_actions[t])
+
+    def _should_discard(obj, obj_type: str, clean_mode: bool) -> bool:
+        # Deleted checks
         if getattr(obj, 'deleted', False): return True
+        if not getattr(obj, 'visible', True): return True
         if getattr(obj, 'action', None) == 'delete': return True
         if obj.tags.get('action') == 'delete': return True
+        if patch_actions_map.get(obj_type, {}).get(obj.id) == 'delete': return True
+
+        # Modified checks (only if clean_mode is True)
+        if clean_mode:
+            if getattr(obj, 'action', None) == 'modify': return True
+            if obj.tags.get('action') == 'modify': return True
+            if patch_actions_map.get(obj_type, {}).get(obj.id) == 'modify': return True
+
         return False
 
     class PatchScanner(osmium.SimpleHandler):
-        def node(self, n): patch_node_ids.add(n.id)
-        def way(self, w): patch_way_ids.add(w.id)
-        def relation(self, r): patch_relation_ids.add(r.id)
+        def node(self, n):
+            if not _should_discard(n, 'node', clean): patch_node_ids.add(n.id)
+        def way(self, w):
+            if not _should_discard(w, 'way', clean): patch_way_ids.add(w.id)
+        def relation(self, r):
+            if not _should_discard(r, 'relation', clean): patch_relation_ids.add(r.id)
 
     try:
         for pf in patch_files:
@@ -1132,7 +1172,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             scanner = PatchScanner()
             scanner.apply_file(temp.name, locations=False)
 
-        # Filter out deleted objects from patch files before merging
+        # Filter out deleted/modified objects from patch files before merging
         for norm_path in normalized_patch_files:
             temp_filt = tempfile.NamedTemporaryFile(mode='w+t', delete=False, suffix=".pbf")
             temp_filt.close()
@@ -1143,11 +1183,11 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                     super().__init__()
                     self.writer = writer
                 def node(self, n):
-                    if not _is_deleted(n): self.writer.add_node(n)
+                    if not _should_discard(n, 'node', clean): self.writer.add_node(n)
                 def way(self, w):
-                    if not _is_deleted(w): self.writer.add_way(w)
+                    if not _should_discard(w, 'way', clean): self.writer.add_way(w)
                 def relation(self, r):
-                    if not _is_deleted(r): self.writer.add_relation(r)
+                    if not _should_discard(r, 'relation', clean): self.writer.add_relation(r)
 
             with osmium.SimpleWriter(temp_filt.name, overwrite=True) as writer:
                 fw = FilterWriter(writer)
@@ -1352,7 +1392,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                     copy_handler = _CopyAllHandler(dump_writer)
                     copy_handler.apply_file(masked_base_path, locations=False)
                 logger.info(
-                    f"Masked base file written to {masked_base_output} "
+                    f"Masked base file dumped to {masked_base_output} "
                     f"(format determined by file extension, kept for debugging via --dump-masked-base)."
                 )
 
@@ -1471,6 +1511,7 @@ def main() -> None:
                                     "removed, before the patch is merged in) to FILE, in the format "
                                     "implied by FILE's extension (e.g. '.osm' for XML, '.pbf' for PBF).")
     patch_parser.add_argument('-f', '--force', action='store_true', help="Overwrite output file if it exists.")
+    patch_parser.add_argument('--clean', action='store_true', help="Discard deleted and modified objects from the patch before applying it (does not modify the original patch file).")
     patch_parser.add_argument('-v', '--verbose', action='store_true', help="Enable verbose (DEBUG) logging.")
 
     # --- tile-info Subcommand Parser ---
