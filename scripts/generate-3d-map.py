@@ -54,6 +54,12 @@ COMPLETE_MAP_DIR = (SCRIPT_DIR / ".." / MAP_BASE_DIR / COMPLETE_MAP_NAME).resolv
 MASTER_PBF = TILES_DIR / f"{COVERAGE}.osm.pbf"
 
 logger = logging.getLogger("generate-3d-map")
+
+# Silence noisy internal loggers from the docker module and urllib3
+logging.getLogger("docker").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
+
 import_paths = [str((SCRIPT_DIR / "../themes/projektemacher-base/scripts/").resolve()), str(SCRIPT_DIR)]
 logger.info(f"Import paths: {', '.join(import_paths)}")
 
@@ -472,16 +478,15 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
             stream=True
         )
 
-        if DEBUG:
-            buffer = ""
-            for chunk in container_logs:
-                buffer += chunk.decode('utf-8', errors='replace')
-                while "\n" in buffer:
-                    line, buffer = buffer.split("\n", 1)
-                    if line.strip():
-                        logger.debug(f"Docker: {line.strip()}")
-            if buffer.strip():
-                logger.debug(f"Docker: {buffer.strip()}")
+        buffer = ""
+        for chunk in container_logs:
+            buffer += chunk.decode('utf-8', errors='replace')
+            while "\n" in buffer:
+                line, buffer = buffer.split("\n", 1)
+                if line.strip():
+                    logger.debug(f"Docker: {line.strip()}")
+        if buffer.strip():
+            logger.debug(f"Docker: {buffer.strip()}")
 
     except docker.errors.ContainerError as e:
         logger.error(f"Failed process Tiles, container exited with error: {e}")

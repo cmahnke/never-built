@@ -531,14 +531,30 @@ class _RelationIdCollector(osmium.SimpleHandler):
     def relation(self, r: osmium.osm.Relation) -> None: self.relation_ids.add(r.id)
 
 class _RelationMemberExclusionResolver(osmium.SimpleHandler):
-    def __init__(self, excluded_way_ids: Set[int], excluded_relation_ids: Set[int]):
+    def __init__(self, excluded_way_ids: Set[int], excluded_relation_ids: Set[int], protected_relation_ids: Optional[Set[int]] = None, patch_actions_map: Optional[Dict] = None, marker_tags: Optional[List[str]] = None):
         super().__init__()
         self.excluded_way_ids = excluded_way_ids
         self.excluded_relation_ids = excluded_relation_ids
         self.newly_excluded_relation_ids: Set[int] = set()
 
+        self.protected_relation_ids = protected_relation_ids or set()
+        self.patch_actions_map = patch_actions_map or {'node': {}, 'way': {}, 'relation': {}}
+        self.marker_tags = marker_tags or []
+
+    def is_protected(self, r):
+        if r.id in self.protected_relation_ids: return True
+        if getattr(r, 'action', None) in ('modify', 'create'): return True
+        if r.tags.get('action') in ('modify', 'create'): return True
+        if self.patch_actions_map.get('relation', {}).get(r.id) in ('modify', 'create'): return True
+        if self.marker_tags:
+            for tag in self.marker_tags:
+                if tag in r.tags:
+                    return True
+        return False
+
     def relation(self, r: osmium.osm.Relation) -> None:
         if r.id in self.excluded_relation_ids: return
+        if self.is_protected(r): return
         for member in r.members:
             if member.type == 'w' and member.ref in self.excluded_way_ids:
                 self.newly_excluded_relation_ids.add(r.id)
@@ -974,10 +990,14 @@ def patch_cmd(args: argparse.Namespace) -> None:
     overwrite = args.force
     masked_base_output = args.dump_masked_base
     clean = getattr(args, 'clean', False)
-    patch(base_file, patch_files, output_file, overwrite, masked_base_output=masked_base_output, clean=clean)
+
+    marker_tags_str = getattr(args, 'marker_tags', '')
+    marker_tags = [t.strip() for t in marker_tags_str.split(',') if t.strip()] if marker_tags_str else []
+
+    patch(base_file, patch_files, output_file, overwrite, masked_base_output=masked_base_output, clean=clean, marker_tags=marker_tags)
 
 
-def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Optional[str] = None, clean: bool = False) -> None:
+def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Optional[str] = None, clean: bool = False, marker_tags: Optional[List[str]] = None) -> None:
     """
     Reads a base OSM file and one or more patch OSM files, removes closed
     ways and standalone tagged nodes (point features like trees) in the
@@ -1008,7 +1028,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         patch's polygons. Also identifies standalone tagged nodes (e.g. trees)
         that fall inside the patch's polygons as candidates for exclusion.
         """
-        def __init__(self, target_polygons, mask_polygon):
+        def __init__(self, target_polygons, mask_polygon, protected_node_ids, protected_way_ids, protected_relation_ids, patch_actions_map, marker_tags):
             super().__init__()
             self.target_polygons = target_polygons
             self.mask_polygon = mask_polygon
@@ -1016,8 +1036,37 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             self.intersecting_ways = []
             self.candidate_intersecting_nodes = []
 
+            self.protected_node_ids = protected_node_ids or set()
+            self.protected_way_ids = protected_way_ids or set()
+            self.protected_relation_ids = protected_relation_ids or set()
+            self.patch_actions_map = patch_actions_map or {'node': {}, 'way': {}, 'relation': {}}
+            self.marker_tags = marker_tags or []
+
+        def is_protected(self, obj, obj_type):
+            # 1. Object is from patch file (modified/created)
+            if obj_type == 'node' and obj.id in self.protected_node_ids: return True
+            if obj_type == 'way' and obj.id in self.protected_way_ids: return True
+            if obj_type == 'relation' and obj.id in self.protected_relation_ids: return True
+
+            # 2. Object has action='modify' or 'create' natively
+            if getattr(obj, 'action', None) in ('modify', 'create'): return True
+            if obj.tags.get('action') in ('modify', 'create'): return True
+
+            # 3. Object has action='modify' or 'create' in patch_actions_map
+            if self.patch_actions_map.get(obj_type, {}).get(obj.id) in ('modify', 'create'): return True
+
+            # 4. Object has a marker tag
+            if self.marker_tags:
+                for tag in self.marker_tags:
+                    if tag in obj.tags:
+                        return True
+
+            return False
+
         def node(self, n):
             if not n.location.valid():
+                return
+            if self.is_protected(n, 'node'):
                 return
             # Only consider nodes that have tags (point features like trees)
             if len(n.tags) > 0:
@@ -1037,6 +1086,8 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                     logger.error(f"Could not check geometry for Node {n.id}: {e}")
 
         def way(self, w):
+            if self.is_protected(w, 'way'):
+                return
             if w.is_closed():
                 try:
                     wkb_line = self.wkbfactory.create_linestring(w)
@@ -1262,7 +1313,14 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         else:
             mask_polygon = shapely.geometry.Polygon()
 
-        handler = IntersectionHandler(polygons, mask_polygon)
+        handler = IntersectionHandler(
+            polygons, mask_polygon,
+            protected_node_ids=patch_node_ids,
+            protected_way_ids=patch_way_ids,
+            protected_relation_ids=patch_relation_ids,
+            patch_actions_map=patch_actions_map,
+            marker_tags=marker_tags
+        )
         handler.apply_file(current_base_file, locations=True, idx='flex_mem')
         results_ways = handler.intersecting_ways
         candidate_node_dicts = handler.candidate_intersecting_nodes
@@ -1274,7 +1332,12 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         # chain of nested relations -- is excluded too.
         excluded_relation_ids: Set[int] = set()
         while True:
-            resolver = _RelationMemberExclusionResolver(excluded_way_ids, excluded_relation_ids)
+            resolver = _RelationMemberExclusionResolver(
+                excluded_way_ids, excluded_relation_ids,
+                protected_relation_ids=patch_relation_ids,
+                patch_actions_map=patch_actions_map,
+                marker_tags=marker_tags
+            )
             resolver.apply_file(current_base_file, locations=False)
             if not resolver.newly_excluded_relation_ids:
                 break
@@ -1537,6 +1600,7 @@ def main() -> None:
                                     "(base file with intersecting closed ways and dependent relations "
                                     "removed, before the patch is merged in) to FILE, in the format "
                                     "implied by FILE's extension (e.g. '.osm' for XML, '.pbf' for PBF).")
+    patch_parser.add_argument('--marker-tags', default='marker', help="Comma-separated list of tag keys. Base objects with any of these tags will not be removed by the mask (default: 'marker').")
     patch_parser.add_argument('-f', '--force', action='store_true', help="Overwrite output file if it exists.")
     patch_parser.add_argument('--clean', action='store_true', help="Discard deleted and modified objects from the patch before applying it (does not modify the original patch file).")
     patch_parser.add_argument('-v', '--verbose', action='store_true', help="Enable verbose (DEBUG) logging.")

@@ -19,6 +19,7 @@ params:
   featured: true
   featured_is_ai: true
   year: 1971
+  3d: true
 resources:
 - src: "page066.jxl"
   name: preview
