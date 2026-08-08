@@ -12,6 +12,7 @@ import osmium
 import shapely
 import xml.etree.ElementTree as ET
 import xml.sax.saxutils as saxutils
+import shutil
 
 from typing import Set, List, Optional, Any, Tuple, Dict, Union
 from shapely.geometry import Polygon, Point
@@ -453,13 +454,16 @@ class DataWriter(osmium.SimpleHandler):
             return action
 
         # 2. Fallback to object properties
-        if getattr(obj, 'deleted', False) or not getattr(obj, 'visible', True):
+        if getattr(obj, 'deleted', False) or not getattr(obj, 'visible', True) or obj.tags.get('action') == 'delete':
+            return 'delete'
+        if getattr(obj, 'action', None) == 'delete':
             return 'delete'
 
         # 3. If full mode, assign default actions
+        # Handled like modified or deleted objects even if negative id
         if self.deps.full:
             if obj.id < 0:
-                return 'create'
+                return 'modify'
             return 'modify'
 
         return None
@@ -1152,12 +1156,9 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         return False
 
     class PatchScanner(osmium.SimpleHandler):
-        def node(self, n):
-            if not _should_discard(n, 'node', clean): patch_node_ids.add(n.id)
-        def way(self, w):
-            if not _should_discard(w, 'way', clean): patch_way_ids.add(w.id)
-        def relation(self, r):
-            if not _should_discard(r, 'relation', clean): patch_relation_ids.add(r.id)
+        def node(self, n): patch_node_ids.add(n.id)
+        def way(self, w): patch_way_ids.add(w.id)
+        def relation(self, r): patch_relation_ids.add(r.id)
 
     try:
         for pf in patch_files:
@@ -1196,6 +1197,41 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             with open(temp_filt.name, 'rb') as f:
                 filtered_patch_buffers.append(f.read())
 
+        # Apply modifications and deletions to base file if clean is False
+        temp_applied_base_path = None
+        if not clean:
+            logger.info("Applying modifications and deletions from patch to input file...")
+            with tempfile.NamedTemporaryFile(mode='w+b', delete=False, suffix=".pbf") as temp_base_masked:
+                temp_base_masked_path = temp_base_masked.name
+                class BasePatchIdFilter(osmium.SimpleHandler):
+                    def __init__(self, writer):
+                        super().__init__()
+                        self.writer = writer
+                    def node(self, n):
+                        if n.id not in patch_node_ids: self.writer.add_node(n)
+                    def way(self, w):
+                        if w.id not in patch_way_ids: self.writer.add_way(w)
+                    def relation(self, r):
+                        if r.id not in patch_relation_ids: self.writer.add_relation(r)
+
+                with osmium.SimpleWriter(temp_base_masked_path, overwrite=True) as writer:
+                    fw = BasePatchIdFilter(writer)
+                    fw.apply_file(base_file, locations=False)
+
+            with tempfile.NamedTemporaryFile(mode='w+b', delete=False, suffix=".pbf") as temp_applied_base:
+                temp_applied_base_path = temp_applied_base.name
+                with osmium.SimpleWriter(temp_applied_base_path, overwrite=True) as writer:
+                    reader = osmium.MergeInputReader()
+                    reader.add_file(temp_base_masked_path)
+                    for pb in filtered_patch_buffers:
+                        reader.add_buffer(pb, "pbf")
+                    reader.apply(writer)
+
+            os.unlink(temp_base_masked_path)
+            current_base_file = temp_applied_base_path
+        else:
+            current_base_file = base_file
+
         wkbfab = osmium.geom.WKBFactory()
         polygons = []
         for temp_name in temp_filtered_files:
@@ -1227,33 +1263,27 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             mask_polygon = shapely.geometry.Polygon()
 
         handler = IntersectionHandler(polygons, mask_polygon)
-        handler.apply_file(base_file, locations=True, idx='flex_mem')
+        handler.apply_file(current_base_file, locations=True, idx='flex_mem')
         results_ways = handler.intersecting_ways
         candidate_node_dicts = handler.candidate_intersecting_nodes
 
         excluded_way_ids: Set[int] = set(i['id'] for i in results_ways)
         candidate_node_ids: Set[int] = set(i['id'] for i in candidate_node_dicts)
 
-        # Add patch IDs to exclusions so that modifications overwrite base objects
-        # and deletions remove base objects.
-        excluded_way_ids |= patch_way_ids
-
         # Any relation that references an excluded way -- directly, or via a
         # chain of nested relations -- is excluded too.
         excluded_relation_ids: Set[int] = set()
         while True:
             resolver = _RelationMemberExclusionResolver(excluded_way_ids, excluded_relation_ids)
-            resolver.apply_file(base_file, locations=False)
+            resolver.apply_file(current_base_file, locations=False)
             if not resolver.newly_excluded_relation_ids:
                 break
             excluded_relation_ids |= resolver.newly_excluded_relation_ids
 
-        excluded_relation_ids |= patch_relation_ids
-
         if excluded_relation_ids:
             logger.info(
                 f"Also excluding {len(excluded_relation_ids)} relation(s) that "
-                f"(directly or transitively) reference an excluded way, or are explicitly in the patch."
+                f"(directly or transitively) reference an excluded way."
             )
             logger.debug(f"Excluded relation IDs: {sorted(excluded_relation_ids)}")
 
@@ -1279,7 +1309,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                                 self.kept_node_ids.add(m.ref)
 
             dep_collector = KeptObjectDependencyCollector(excluded_way_ids, excluded_relation_ids)
-            dep_collector.apply_file(base_file, locations=False)
+            dep_collector.apply_file(current_base_file, locations=False)
 
             excluded_node_ids = candidate_node_ids - dep_collector.kept_node_ids
             rescued_count = len(candidate_node_ids) - len(excluded_node_ids)
@@ -1291,12 +1321,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         else:
             excluded_node_ids = set()
 
-        # Add patch nodes to exclusions. If a node is explicitly in the patch file,
-        # it represents a creation, modification, or deletion, and MUST take precedence
-        # over the base file's version (even if it's a vertex of a kept way).
-        excluded_node_ids |= patch_node_ids
-
-        with tempfile.NamedTemporaryFile(mode='w+t', delete=True, suffix=".pbf") as masked_base_temp:
+        with tempfile.NamedTemporaryFile(mode='w+b', delete=True, suffix=".pbf") as masked_base_temp:
             masked_base_path = masked_base_temp.name
 
             excluding_filter = ExcludingIdFilter(
@@ -1304,8 +1329,8 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                 relation_ids=excluded_relation_ids,
                 node_ids=excluded_node_ids
             )
-            with osmium.BackReferenceWriter(masked_base_path, base_file, overwrite=True) as writer:
-                for o in osmium.FileProcessor(base_file).with_filter(excluding_filter):
+            with osmium.BackReferenceWriter(masked_base_path, current_base_file, overwrite=True) as writer:
+                for o in osmium.FileProcessor(current_base_file).with_filter(excluding_filter):
                     writer.add(o)
 
             logger.info(
@@ -1320,7 +1345,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             # --- Consistency check ---
             logger.info("Verifying masked base file consistency...")
             all_base_ways = _WayIdCollector()
-            all_base_ways.apply_file(base_file, locations=False)
+            all_base_ways.apply_file(current_base_file, locations=False)
 
             masked_ways = _WayIdCollector()
             masked_ways.apply_file(masked_base_path, locations=False)
@@ -1355,7 +1380,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                 )
 
             all_base_relations = _RelationIdCollector()
-            all_base_relations.apply_file(base_file, locations=False)
+            all_base_relations.apply_file(current_base_file, locations=False)
 
             masked_relations = _RelationIdCollector()
             masked_relations.apply_file(masked_base_path, locations=False)
@@ -1396,16 +1421,15 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                     f"(format determined by file extension, kept for debugging via --dump-masked-base)."
                 )
 
-            logger.info(f"Generated masked file. Applying patch. Overwrite: {overwrite}")
+            logger.info(f"Generated masked file. Writing output. Overwrite: {overwrite}")
 
-            with open(masked_base_path, 'rb') as f:
-                with osmium.SimpleWriter(output_file, overwrite=overwrite) as writer:
-                    reader = osmium.MergeInputReader()
-                    for pb in filtered_patch_buffers:
-                        reader.add_buffer(pb, "pbf")
-                    reader.add_buffer(f.read(), "pbf")
-                    reader.apply(writer)
-                    writer.close()
+            if os.path.exists(output_file) and not overwrite:
+                logger.warning(f"Output file '{output_file}' already exists. Use -f or --force to overwrite.")
+            else:
+                if os.path.exists(output_file):
+                    os.remove(output_file)
+                shutil.copy(masked_base_path, output_file)
+                logger.info(f"Done, {output_file} written")
 
     finally:
         for pf in normalized_patch_files:
@@ -1418,8 +1442,11 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
                 os.unlink(pf)
             except OSError:
                 pass
-
-    logger.info(f"Done, {output_file} written")
+        if not clean and temp_applied_base_path and os.path.exists(temp_applied_base_path):
+            try:
+                os.unlink(temp_applied_base_path)
+            except OSError:
+                pass
 
 
 def ways_to_polygons(args: argparse.Namespace) -> None:

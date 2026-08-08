@@ -408,7 +408,7 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
     outline_file_name = f"{file_base_name}-meta.geojson"
 
     if not map_file.is_file():
-        patch_cmd_list = [sys.executable, "scripts/osm_tool.py", "patch", "-i", str(MASTER_PBF), *patchArgs, "-o", str(map_file), "-v", "-f", "--clean"]
+        patch_cmd_list = [sys.executable, "scripts/osm_tool.py", "patch", "-i", str(MASTER_PBF), *patchArgs, "-o", str(map_file), "-v", "-f"]
 
         kwargs = {}
         for i in range(0, len(patchArgs), 2):
