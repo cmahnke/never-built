@@ -9,8 +9,8 @@
 {{- if eq $source nil -}}
   {{- $source = false -}}
 {{- end -}}
-{{- if and (not $source) site.Params.map site.Params.map.source -}}
-  {{- $source = site.Params.map.source -}}
+{{- if and (not $source) site.Params.map site.Params.map.source3d -}}
+  {{- $source = site.Params.map.source3d -}}
 {{- end -}}
 
 {{- $class := .class -}}
@@ -94,10 +94,22 @@
   {{- $background = "undefined" -}}
 {{- end -}}
 
-{{- $initalPos := .initalPos -}}
-{{- if or (eq $initalPos nil) (eq $initalPos false) -}}
-  {{- $initalPos = "undefined" -}}
+{{- $initialPos := .initialPos -}}
+{{- if or (eq $initialPos nil) (eq $initialPos false) -}}
+  {{- $initialPos = "undefined" -}}
 {{- end -}}
+
+{{- $topoRasterTiles := .topoRasterTiles -}}
+{{- if or (eq $topoRasterTiles nil) (eq $topoRasterTiles false) -}}
+  {{- $topoRasterTiles = false -}}
+{{- end -}}
+{{- if and (not $topoRasterTiles) site.Params.map site.Params.map.sourcetopo -}}
+  {{- $topoRasterTiles = site.Params.map.sourcetopo -}}
+{{- end -}}
+
+{{/*
+{{ errorf "==> %s, %s" $initialPos $topoRasterTiles }}
+*/}}
 
 {{- $debug := .debug -}}
 {{- if eq $debug nil -}}
@@ -107,10 +119,11 @@
 {{- $id := md5 $geojson -}}
 {{- $var := printf "_%s" $id -}}
 <div class="map-wrapper {{ $class }}">
-  <div class="map" id="{{ $id }}"></div>
-  <div id="{{ $id }}-popup" class="ol-popup">
-    <a href="#" id="{{ $id }}-popup-closer" class="ol-popup-closer"></a>
-    <div id="{{ $id }}-popup-content" class="ol-popup-content"></div>
+  <div class="map map-3d" id="{{ $id }}"></div>
+  <div id="map-loading">
+    <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <rect x="3" y="3" width="36" height="36" rx="2" stroke="#000" stroke-width="4" />
+    </svg>
   </div>
 </div>
 {{- if $download -}}
@@ -133,16 +146,15 @@
       {{ partial "js/type.html" $popup | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $background | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $debug | htmlUnescape | safeJS }},
-      {{ partial "js/type.html" $marker | htmlUnescape | safeJS}});
+      {{ partial "js/type.html" $marker | htmlUnescape | safeJS}},
       {{/* These are possible by the fuction, but handled by a wrapper
       {{ partial "js/type.html" $font | htmlUnescape | safeJS}});
       {{ partial "js/type.html" $attribution | htmlUnescape | safeJS}});
       {{ partial "js/type.html" $fontPath | htmlUnescape | safeJS}});
       */}}
-      {{ partial "js/type.html" $initalPos | htmlUnescape | safeJS}});
-      {{/*
+      undefined,
+      {{ partial "js/type.html" $initialPos | htmlUnescape | safeJS}},
       {{ partial "js/type.html" $topoRasterTiles | htmlUnescape | safeJS}});
-      */}}
     {{ $var | safeJS }}.then(map => {map.updateSize()});
   //});
 </script>

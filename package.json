@@ -10,7 +10,8 @@
     "three": "^0.185.1",
     "@turf/turf": "^7.3.5",
     "chroma-js": "^3.2.0",
-    "maplibre-gl": "^6.2.0"
+    "maplibre-gl": "^6.2.0",
+    "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^8.0.0",

@@ -126,8 +126,8 @@ jobs:
           npm i
           npm run build
           mv ./dist/assets ../../docs/
-          mkdir -p ../../docs/3d-map
-          mv ./dist/3*/index.html ../../docs/3d-map/
+          mkdir -p ../../docs/future
+          mv ./dist/3*/index.html ../../docs/future/
 
       # - name: Archive links
       #   run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14 -o archived-urls.txt

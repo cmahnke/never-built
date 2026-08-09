@@ -19,6 +19,8 @@
 
 [params.map]
   source = "/map/tiles/{z}/{x}/{y}.pbf"
+  source3d = "/map/never-built/{z}/{x}/{y}.pbf"
+  sourcetopo = "/map/tiles/{z}/{x}/{y}.png"
   style = "/map-styles/style.json"
   marker = '{"src": "/images/marker.svg", "scale": 0.075, "anchorXUnits": "fraction", "anchorYUnits": "fraction", "anchor": [0.5, 1]}'
   bbox = "/map/bbox.json"

@@ -9,7 +9,6 @@ import { TreeLayer } from "./layers/tree-layer";
 import { ArchitectureModelBWLayer } from "./layers/architecture-model-bw-layer";
 import { setupDefaultStyle, defaultSprites, getSourceName } from "./styles";
 import { updateStyle } from "./never-built-styles";
-import "maplibre-gl/dist/maplibre-gl.css";
 import { Map as MapLibreMap, NavigationControl, FullscreenControl, AttributionControl } from "maplibre-gl";
 import chroma from "chroma-js";
 import i18next from "i18next";

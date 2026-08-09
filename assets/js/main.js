@@ -4,6 +4,7 @@ import Glide from '@glidejs/glide'
 import {imageViewer} from './image-viewer';
 import {detect} from 'detect-browser';
 import { projektemacherMap } from '../ts/maps/map';
+import { projektemacher3DMap } from '../ts/maps/3d-map';
 
 const defaultMapFont = "Roboto Mono Variable";
 const animatedLinkColor = ["black", "#000", "#000000", "rgb(0, 0, 0)"]
@@ -110,6 +111,31 @@ window.projektemacherMap = async function(elem, geojson, source, style, bbox, ce
   }
   background = window.getComputedStyle(bgElem).getPropertyValue('--page-background');
   const map = projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font);
+
+  if (!("projektemacher" in window)) {
+    window.projektemacher = {};
+  }
+  if (!("maps" in window.projektemacher)) {
+    window.projektemacher.maps = {};
+  }
+  window.projektemacher.maps[bgElem] = await map
+
+  return map
+}
+
+window.projektemacher3DMap = async function(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font, initialPos, topoRasterTiles) {
+  var bgElem;
+  if (typeof elem === "string") {
+    bgElem = document.getElementById(elem)
+  }
+  if (font === undefined) {
+    font = defaultMapFont;
+  }
+  if (!(typeof marker === 'object')) {
+    marker = JSON.parse(marker)
+  }
+  background = window.getComputedStyle(bgElem).getPropertyValue('--page-background');
+  const map = projektemacher3DMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font, undefined, undefined, initialPos, topoRasterTiles);
 
   if (!("projektemacher" in window)) {
     window.projektemacher = {};

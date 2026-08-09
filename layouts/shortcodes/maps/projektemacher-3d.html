@@ -1,0 +1,91 @@
+{{- $geojson := .Get "geojson" -}}
+{{- $source := false -}}
+{{- if (.Get "source") -}}
+  {{- $source := .Get "source" -}}
+{{- end -}}
+
+{{- $class := "" -}}
+{{- if (.Get "class") -}}
+  {{- $class = (.Get "class") -}}
+{{- end -}}
+
+{{- $download := false -}}
+{{- if (.Get "download") -}}
+  {{- $download = (.Get "download") -}}
+{{- end -}}
+
+{{- $style := "undefined" -}}
+{{- if (.Get "style") -}}
+  {{- $style = (.Get "style") -}}
+{{- end -}}
+
+{{- $cluster := false -}}
+{{- if (.Get "cluster") -}}
+  {{- $cluster = .Get "cluster" -}}
+{{- end -}}
+
+{{- $disabled := false -}}
+{{- if (.Get "disabled") -}}
+  {{- $disabled = .Get "disabled" -}}
+{{- end -}}
+
+{{- $popup := true -}}
+{{- if (.Get "popup") -}}
+  {{- $popup = .Get "popup" -}}
+{{- end -}}
+
+{{- $background := true -}}
+{{- if (.Get "background") -}}
+  {{- $background = .Get "background" -}}
+{{- end -}}
+
+{{- $marker := false -}}
+{{- if (.Get "marker") -}}
+  {{- $marker = .Get "marker" -}}
+{{- end -}}
+
+{{- $bbox := "{}" -}}
+{{- if (.Get "bbox") -}}
+  {{- $bbox = .Get "bbox" -}}
+{{- end -}}
+
+{{- $center := false -}}
+{{- if (.Get "center") -}}
+  {{- $center = .Get "center" -}}
+{{- end -}}
+
+{{- $initialZoom := false -}}
+{{- if (.Get "initialZoom") -}}
+  {{- $initialZoom = .Get "initialZoom" -}}
+{{- end -}}
+
+{{- $minZoom := false -}}
+{{- if (.Get "minZoom") -}}
+  {{- $minZoom = .Get "minZoom" -}}
+{{- end -}}
+
+{{- $maxZoom := false -}}
+{{- if (.Get "maxZoom") -}}
+  {{- $maxZoom = .Get "maxZoom" -}}
+{{- end -}}
+
+{{- $initialPos := "{}" -}}
+{{- if (.Get "initialPos") -}}
+  {{- $initialPos = .Get "initialPos" -}}
+{{- end -}}
+
+{{- $topoRasterTiles := false -}}
+{{- if (.Get "toporastertiles") -}}
+  {{- $topoRasterTiles = .Get "topoRasterTiles" -}}
+{{- end -}}
+
+{{- $debug := false -}}
+{{- if (.Get "debug") -}}
+  {{- $debug = .Get "debug" -}}
+{{- end -}}
+
+{{- partial "maps/projektemacher-3d.html" (dict "context" . "geojson" $geojson "class" $class "download" $download "source" $source "style" $style "cluster" $cluster "bbox" $bbox "center" $center "initialZoom" $initialZoom "minZoom" $minZoom "maxZoom" $maxZoom "disabled" $disabled "popup" $popup "debug" $debug "background" $background "marker" $marker "initialPos" $initialPos "topoRasterTiles" $topoRasterTiles ) -}}
+
+{{- define "_partials/shortcodes/maps/projektemacher-metadata.html" -}}
+  {{- (dict "css" slice "js" (slice) "scss" (slice)) | jsonify -}}
+{{- end -}}
