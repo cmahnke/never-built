@@ -1,6 +1,10 @@
-@import "maplibre-gl";
+@use "maplibre-gl.css" as *;
 
 $map-font: "Roboto Mono Variable";
+
+.map-wrapper:has(.map-3d) {
+  width: 100%;
+}
 
 #never-built-toggle {
   position: absolute;

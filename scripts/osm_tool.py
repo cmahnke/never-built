@@ -6,6 +6,7 @@ import logging
 import os
 import math
 import json
+import time
 import tempfile
 import geopandas
 import osmium
@@ -657,7 +658,7 @@ def filter_cmd(args: argparse.Namespace) -> None:
         logger.info(
             "--- Skipping Pass 2/3 (nested relation expansion, way node resolution): "
             "--no-expand-relations set, restoring legacy behavior. Ways/relations "
-            "pulled in only via relation membership may be written without their "
+            "pulled in only via relation memberships may be written without their "
             "own dependencies (nodes/members) present in the output. ---"
         )
         _log_relations_with_unexpanded_members(dep_collector)
@@ -1012,6 +1013,10 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
     are also excluded, UNLESS they are vertices of kept ways or members
     of kept relations (to prevent breaking geometries).
 
+    Open ways (e.g. highways) are now clipped by the patch polygons (mask),
+    receiving new vertices at intersection points and removing the intersecting
+    segment, unless they are protected (modified/created or marker tags).
+
     Modifications and deletions from the patch file are also applied:
     - Modified objects in the patch overwrite the corresponding base objects.
     - Deleted objects are removed from the base file and not written to the output.
@@ -1027,20 +1032,53 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         Identifies closed ways in the base file that intersect with the
         patch's polygons. Also identifies standalone tagged nodes (e.g. trees)
         that fall inside the patch's polygons as candidates for exclusion.
+        Open ways are clipped by the patch polygons (mask).
         """
-        def __init__(self, target_polygons, mask_polygon, protected_node_ids, protected_way_ids, protected_relation_ids, patch_actions_map, marker_tags):
+        def __init__(self, target_polygons, mask_polygon, open_way_mask, protected_node_ids, protected_way_ids, protected_relation_ids, patch_actions_map, marker_tags):
             super().__init__()
             self.target_polygons = target_polygons
             self.mask_polygon = mask_polygon
+            self.open_way_mask = open_way_mask
             self.wkbfactory = osmium.geom.WKBFactory()
-            self.intersecting_ways = []
+            self.intersecting_ways = [] # list of dicts {'id': id, 'tags': tags}
             self.candidate_intersecting_nodes = []
+
+            self.modified_ways = {} # way_id -> list of node_ids
+            self.new_ways = [] # list of (way_id, node_ids, tags_dict)
+            self.new_nodes = {} # node_id -> (lon, lat)
+
+            # Generate a unique, large positive ID base using the current time to avoid
+            # collisions with real OSM IDs, ID_OFFSET_FALLBACK, and previous runs.
+            base_id = 2_000_000_000_000_000 + int(time.time() * 1_000_000)
+            self.node_id_counter = base_id
+            self.way_id_counter = base_id
+            self.intersection_node_cache = {}
 
             self.protected_node_ids = protected_node_ids or set()
             self.protected_way_ids = protected_way_ids or set()
             self.protected_relation_ids = protected_relation_ids or set()
             self.patch_actions_map = patch_actions_map or {'node': {}, 'way': {}, 'relation': {}}
             self.marker_tags = marker_tags or []
+
+        def get_new_node_id(self):
+            nid = self.node_id_counter
+            self.node_id_counter += 1
+            return nid
+
+        def get_new_way_id(self):
+            wid = self.way_id_counter
+            self.way_id_counter += 1
+            return wid
+
+        def get_or_create_intersection_node(self, lon, lat):
+            key = (round(lon, 7), round(lat, 7))
+            if key in self.intersection_node_cache:
+                return self.intersection_node_cache[key]
+
+            nid = self.get_new_node_id()
+            self.intersection_node_cache[key] = nid
+            self.new_nodes[nid] = (lon, lat)
+            return nid
 
         def is_protected(self, obj, obj_type):
             # 1. Object is from patch file (modified/created)
@@ -1088,43 +1126,107 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         def way(self, w):
             if self.is_protected(w, 'way'):
                 return
+
+            try:
+                wkb_line = self.wkbfactory.create_linestring(w)
+                shapely_line = shapely.from_wkb(wkb_line)
+            except osmium.geom.GeometryError as e:
+                logger.error(f"Could not create geometry for Way {w.id}: {e}")
+                return
+
             if w.is_closed():
+                if len(shapely_line.coords) >= 4:
+                    closed_way_polygon = Polygon(shapely_line)
+
+                    for target_poly in self.target_polygons:
+                        if target_poly is not None and closed_way_polygon.overlaps(target_poly):
+                            name = w.tags.get('name')
+                            logger.debug(
+                                f"Way {w.id} intersects patch polygon, will be excluded from base file"
+                                + (f", name={name!r}" if name else "")
+                            )
+                            self.intersecting_ways.append({
+                                'id': w.id,
+                                'tags': dict(w.tags),
+                                'geometry': closed_way_polygon
+                            })
+                            break
+            else:
+                # Open way (e.g. highway)
+                if not shapely_line.intersects(self.open_way_mask):
+                    return
+
                 try:
-                    wkb_line = self.wkbfactory.create_linestring(w)
-                    shapely_line = shapely.from_wkb(wkb_line)
+                    diff = shapely_line.difference(self.open_way_mask)
+                except Exception as e:
+                    logger.error(f"Failed to compute difference for way {w.id}: {e}")
+                    return
 
-                    if len(shapely_line.coords) >= 4:
-                        closed_way_polygon = Polygon(shapely_line)
+                if diff.is_empty:
+                    name = w.tags.get('name')
+                    logger.debug(f"Open way {w.id} fully inside mask, will be excluded" + (f", name={name!r}" if name else ""))
+                    self.intersecting_ways.append({'id': w.id, 'tags': dict(w.tags)})
+                    return
 
-                        for target_poly in self.target_polygons:
-                            #if target_poly is not None and closed_way_polygon.intersects(target_poly):
-                            # using intersects() will also be true is one ore more vertices are shared, but interiors don't
-                            if target_poly is not None and closed_way_polygon.overlaps(target_poly):
-                                name = w.tags.get('name')
-                                logger.debug(
-                                    f"Way {w.id} intersects patch polygon, will be excluded from base file"
-                                    + (f", name={name!r}" if name else "")
-                                )
-                                self.intersecting_ways.append({
-                                    'id': w.id,
-                                    'tags': dict(w.tags),
-                                    'geometry': closed_way_polygon
-                                })
+                if diff.equals_exact(shapely_line, 1e-7):
+                    return # Effectively outside, keep as is
+
+                segments = []
+                if diff.geom_type == 'LineString':
+                    segments = [diff]
+                elif diff.geom_type in ('MultiLineString', 'GeometryCollection'):
+                    for geom in diff.geoms:
+                        if geom.geom_type == 'LineString' and not geom.is_empty:
+                            segments.append(geom)
+
+                # Filter out tiny segments caused by numerical noise (< 1cm)
+                segments = [seg for seg in segments if seg.length > 1e-7]
+
+                if not segments:
+                    self.intersecting_ways.append({'id': w.id, 'tags': dict(w.tags)})
+                    return
+
+                orig_nodes = [(node.ref, node.lon, node.lat) for node in w.nodes]
+
+                for i, seg in enumerate(segments):
+                    new_node_ids = []
+                    for coord in seg.coords:
+                        lon, lat = coord[0], coord[1]
+                        matched_id = None
+                        for orig_id, orig_lon, orig_lat in orig_nodes:
+                            if math.hypot(orig_lon - lon, orig_lat - lat) < 1e-7:
+                                matched_id = orig_id
                                 break
 
-                except osmium.geom.GeometryError as e:
-                    logger.error(f"Could not create geometry for Way {w.id}: {e}")
+                        if matched_id is not None:
+                            new_node_ids.append(matched_id)
+                        else:
+                            nid = self.get_or_create_intersection_node(lon, lat)
+                            new_node_ids.append(nid)
 
-    class ExcludingIdFilter:
-        """
-        Filter for osmium.FileProcessor to exclude objects based on ID.
-        """
+                    if len(new_node_ids) < 2:
+                        continue
+
+                    if i == 0:
+                        self.modified_ways[w.id] = new_node_ids
+                        logger.debug(f"Modified open way {w.id} clipped by mask.")
+                    else:
+                        new_wid = self.get_new_way_id()
+                        self.new_ways.append((new_wid, new_node_ids, dict(w.tags)))
+                        logger.debug(f"Created new way {new_wid} from clipped segment of {w.id}.")
+
+    class ClippingWriter(osmium.SimpleHandler):
         DESCRIPTIVE_TAGS = ['name', 'service', 'amenity', 'landuse', 'natural', 'building', 'building:part']
+        def __init__(self, writer, excluded_ways, excluded_relations, excluded_nodes, modified_ways, new_ways, new_nodes):
+            super().__init__()
+            self.writer = writer
+            self.excluded_ways = excluded_ways
+            self.excluded_relations = excluded_relations
+            self.excluded_nodes = excluded_nodes
+            self.modified_ways = modified_ways
+            self.new_ways = new_ways
+            self.new_nodes = new_nodes
 
-        def __init__(self, way_ids: Set[int], relation_ids: Optional[Set[int]] = None, node_ids: Optional[Set[int]] = None):
-            self.way_ids = way_ids
-            self.relation_ids = relation_ids or set()
-            self.node_ids = node_ids or set()
             self.discarded_count = 0
             self.discarded_tagged_count = 0
             self.discarded_way_count = 0
@@ -1149,28 +1251,34 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             )
 
         def node(self, n):
-            matched = n.id in self.node_ids
-            if matched:
+            if n.id in self.excluded_nodes:
                 self.discarded_node_count += 1
                 self._log_discard('node', n)
-            return matched
+                return
+            self.writer.add_node(n)
 
         def way(self, w):
-            matched = w.id in self.way_ids
-            if matched:
+            if w.id in self.excluded_ways:
                 self.discarded_way_count += 1
                 self._log_discard('way', w)
-            return matched
+                return
+            if w.id in self.modified_ways:
+                new_nodes = self.modified_ways[w.id]
+                try:
+                    new_w = w.replace(nodes=new_nodes)
+                    self.writer.add_way(new_w)
+                except Exception:
+                    new_w = osmium.osm.mutable.Way(id=w.id, nodes=new_nodes, tags=dict(w.tags))
+                    self.writer.add_way(new_w)
+            else:
+                self.writer.add_way(w)
 
         def relation(self, r):
-            matched = r.id in self.relation_ids
-            if matched:
+            if r.id in self.excluded_relations:
                 self.discarded_relation_count += 1
                 self._log_discard('relation', r)
-            return matched
-
-        def area(self, a):
-            return False
+                return
+            self.writer.add_relation(r)
 
     logger.info("Generating mask and applying it to the input file.")
 
@@ -1313,8 +1421,16 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         else:
             mask_polygon = shapely.geometry.Polygon()
 
+        # We ONLY want to clip open ways using closed ways (Polygons) from the patch,
+        # not with other open ways (LineStrings) like crossing roads.
+        patch_polygons_only = [p for p in polygons if p is not None and p.geom_type in ('Polygon', 'MultiPolygon')]
+        if patch_polygons_only:
+            open_way_mask = unary_union(patch_polygons_only)
+        else:
+            open_way_mask = shapely.geometry.Polygon()
+
         handler = IntersectionHandler(
-            polygons, mask_polygon,
+            polygons, mask_polygon, open_way_mask,
             protected_node_ids=patch_node_ids,
             protected_way_ids=patch_way_ids,
             protected_relation_ids=patch_relation_ids,
@@ -1322,6 +1438,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             marker_tags=marker_tags
         )
         handler.apply_file(current_base_file, locations=True, idx='flex_mem')
+
         results_ways = handler.intersecting_ways
         candidate_node_dicts = handler.candidate_intersecting_nodes
 
@@ -1387,20 +1504,38 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         with tempfile.NamedTemporaryFile(mode='w+b', delete=True, suffix=".pbf") as masked_base_temp:
             masked_base_path = masked_base_temp.name
 
-            excluding_filter = ExcludingIdFilter(
-                way_ids=excluded_way_ids,
-                relation_ids=excluded_relation_ids,
-                node_ids=excluded_node_ids
-            )
-            with osmium.BackReferenceWriter(masked_base_path, current_base_file, overwrite=True) as writer:
-                for o in osmium.FileProcessor(current_base_file).with_filter(excluding_filter):
-                    writer.add(o)
+            # CRITICAL FIX: Write out masked base file in correct PBF order (Nodes -> Ways -> Relations)
+            # Doing 3 separate streaming passes ensures that we don't write Nodes after Relations.
+            with osmium.SimpleWriter(masked_base_path, overwrite=True) as writer:
+                clipping_writer = ClippingWriter(writer, excluded_way_ids, excluded_relation_ids, excluded_node_ids, handler.modified_ways, handler.new_ways, handler.new_nodes)
+
+                # Pass 1: Nodes
+                for o in osmium.FileProcessor(current_base_file).with_filter(osmium.filter.EntityFilter(osmium.osm.NODE)):
+                    clipping_writer.node(o)
+
+                # Add new intersection nodes created during clipping
+                for nid, (lon, lat) in handler.new_nodes.items():
+                    new_n = osmium.osm.mutable.Node(id=nid, location=(lon, lat))
+                    writer.add_node(new_n)
+
+                # Pass 2: Ways
+                for o in osmium.FileProcessor(current_base_file).with_filter(osmium.filter.EntityFilter(osmium.osm.WAY)):
+                    clipping_writer.way(o)
+
+                # Add new split ways created during clipping
+                for wid, nids, tags in handler.new_ways:
+                    new_w = osmium.osm.mutable.Way(id=wid, nodes=nids, tags=tags)
+                    writer.add_way(new_w)
+
+                # Pass 3: Relations
+                for o in osmium.FileProcessor(current_base_file).with_filter(osmium.filter.EntityFilter(osmium.osm.RELATION)):
+                    clipping_writer.relation(o)
 
             logger.info(
-                f"Excluded {excluding_filter.discarded_way_count} way(s), "
-                f"{excluding_filter.discarded_relation_count} relation(s), and "
-                f"{excluding_filter.discarded_node_count} node(s) from base file "
-                f"({excluding_filter.discarded_tagged_count} had a notable descriptive tag "
+                f"Excluded {clipping_writer.discarded_way_count} way(s), "
+                f"{clipping_writer.discarded_relation_count} relation(s), and "
+                f"{clipping_writer.discarded_node_count} node(s) from base file "
+                f"({clipping_writer.discarded_tagged_count} had a notable descriptive tag "
                 f"[name/service/amenity/landuse/natural/building/building:part]). "
                 f"Unrelated relations and non-excluded vertices are preserved."
             )
@@ -1413,7 +1548,8 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             masked_ways = _WayIdCollector()
             masked_ways.apply_file(masked_base_path, locations=False)
 
-            expected_way_ids = all_base_ways.way_ids - excluded_way_ids
+            new_way_ids = set(wid for wid, _, _ in handler.new_ways)
+            expected_way_ids = (all_base_ways.way_ids - excluded_way_ids) | new_way_ids
             unexpectedly_missing = expected_way_ids - masked_ways.way_ids
             unexpectedly_present = masked_ways.way_ids - expected_way_ids
 

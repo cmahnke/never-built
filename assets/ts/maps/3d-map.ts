@@ -7,7 +7,7 @@ import { loadOrParse } from "./map-utils";
 import { setLayerColorByTag, addGeoJSONLayersAndInteractions } from "./maplibregl-util";
 import { TreeLayer } from "./layers/tree-layer";
 import { ArchitectureModelBWLayer } from "./layers/architecture-model-bw-layer";
-import { setupDefaultStyle, defaultSprites, getSourceName } from "./styles";
+import { setupDefaultStyle, defaultSprites, getSourceName, preloadStyleFonts } from "./styles";
 import { updateStyle } from "./never-built-styles";
 import { Map as MapLibreMap, NavigationControl, FullscreenControl, AttributionControl } from "maplibre-gl";
 import chroma from "chroma-js";
@@ -34,11 +34,6 @@ interface MarkerOptions {
   src: string;
   scale?: number;
   anchor?: [number, number];
-}
-
-interface MaplibreMapWithLegacyShim extends MapLibreMap {
-  /** @deprecated Use resize() instead. Kept for legacy call-site compatibility. */
-  updateSize?: () => void;
 }
 
 interface FreeCameraOptionsShim {
@@ -264,6 +259,12 @@ export async function projektemacher3DMap(
     greenFactor: 0.4,
     blueFactor: 0.4
   };
+
+  const resolvedFontPath =
+    ((style.metadata as Record<string, unknown> | undefined)?.[
+      "projektemacher:fontPath"
+    ] as string | undefined) ?? fontPath;
+  await preloadStyleFonts(style, resolvedFontPath);
 
   const map = new MapLibreMap({
     container: container,
@@ -866,44 +867,6 @@ export async function projektemacher3DMap(
     onTweenComplete(map, startFlat);
     updateNeverBuiltControlVisibility(map);
 
-    if (geojsonObj !== undefined) {
-      // Add layers asynchronously but initiate in current scope to not break the sync load handler logic
-      addGeoJSONLayersAndInteractions({
-        map,
-        geojson: geojsonObj,
-        cluster,
-        marker,
-        disabled,
-        popup
-      }).then((names) => {
-        if (Array.isArray(names)) {
-          geojsonLayerNames = names;
-        } else if (typeof names === "string") {
-          geojsonLayerNames = [names];
-        } else if (names && typeof names === "object") {
-          geojsonLayerNames = Object.values(names).flat() as string[];
-        }
-
-        if (debug) {
-          console.log("Created GeoJSON Layers:", geojsonLayerNames);
-        }
-
-        // Apply current tween value to newly added layers to keep them in sync
-        applyTweenValue(map, tween.value);
-
-        // Make sure fit to bounds is only done initially
-        const featureCollection = geojsonObj as GeoJSON.FeatureCollection;
-        if (featureCollection.features?.length) {
-          const box = turfBbox(featureCollection) as [number, number, number, number];
-          const geojsonBounds: LngLatBoundsLike = [
-            [box[0], box[1]],
-            [box[2], box[3]]
-          ];
-          map.fitBounds(geojsonBounds, { padding: defaultPadding });
-        }
-      });
-    }
-
     map.once("idle", () => {
       revealMapWhenReady(map);
     });
@@ -936,6 +899,45 @@ export async function projektemacher3DMap(
     }
   });
 
+  await new Promise(resolve => map.on('load', resolve));
+  if (geojsonObj !== undefined) {
+    // Add layers asynchronously but initiate in current scope to not break the sync load handler logic
+    addGeoJSONLayersAndInteractions({
+      map,
+      geojson: geojsonObj,
+      cluster,
+      marker,
+      disabled,
+      popup
+    }).then((names) => {
+      if (Array.isArray(names)) {
+        geojsonLayerNames = names;
+      } else if (typeof names === "string") {
+        geojsonLayerNames = [names];
+      } else if (names && typeof names === "object") {
+        geojsonLayerNames = Object.values(names).flat() as string[];
+      }
+
+      if (debug) {
+        console.log("Created GeoJSON Layers:", geojsonLayerNames);
+      }
+
+      // Apply current tween value to newly added layers to keep them in sync
+      applyTweenValue(map, tween.value);
+
+      // Make sure fit to bounds is only done initially
+      const featureCollection = geojsonObj as GeoJSON.FeatureCollection;
+      if (featureCollection.features?.length) {
+        const box = turfBbox(featureCollection) as [number, number, number, number];
+        const geojsonBounds: LngLatBoundsLike = [
+          [box[0], box[1]],
+          [box[2], box[3]]
+        ];
+        map.fitBounds(geojsonBounds, { padding: defaultPadding });
+      }
+    });
+  }
+
   if (initialPos !== undefined) {
     const camPos = map.calculateCameraOptionsFromCameraLngLatAltRotation(
       initialPos.cameraLngLat,
@@ -947,7 +949,7 @@ export async function projektemacher3DMap(
     map.jumpTo(camPos);
   }
 
-  (map as MaplibreMapWithLegacyShim).updateSize = () => map.resize();
+  map.resize()
 
   return map;
 }

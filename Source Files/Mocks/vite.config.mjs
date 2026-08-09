@@ -56,6 +56,10 @@ export default defineConfig({
       {
         find: /~(.+)/,
         replacement: join(process.cwd(), "node_modules/$1")
+      },
+      {
+        find: /^maplibre-gl.css$/,
+        replacement: resolve(process.cwd(), "node_modules/maplibre-gl/dist/maplibre-gl.css")
       }
     ]
   },

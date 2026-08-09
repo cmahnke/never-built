@@ -10,13 +10,9 @@ Never built Göttingen Mocks
 - Cleanup and integration
   - Fix linting / `tsc` errors
   - Add Hugo wrapper template
+  - Create a page for all models - started
 - `osm_tool.py`
   - Avoid problems with ID order if IDs get prefixed
-  - Check if intersection also applies to bordering / shared points
-  - Also try to get deletions / modifications from osm file
-    - Implemented for filter file creation - not really working yet
-  - check "need at least two points for linestring" - probably related to deletions
-  - Split ways intersecting closed ways
 - `generate-3d-map.py`
   - make calls to `osm_tool.py` native
   - Add handling of overlaps based on year

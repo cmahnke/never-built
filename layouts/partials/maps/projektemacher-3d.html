@@ -155,6 +155,6 @@
       undefined,
       {{ partial "js/type.html" $initialPos | htmlUnescape | safeJS}},
       {{ partial "js/type.html" $topoRasterTiles | htmlUnescape | safeJS}});
-    {{ $var | safeJS }}.then(map => {map.updateSize()});
+    {{ $var | safeJS }}.then(map => {map.resize()});
   //});
 </script>

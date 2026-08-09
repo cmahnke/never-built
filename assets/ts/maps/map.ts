@@ -53,15 +53,6 @@ export const defaultPadding = 50;
 
 const debug = false;
 
-/**
- * Extends MapLibre's Map type with a legacy OpenLayers-style method for
- * backwards compatibility with external code that hasn't been migrated yet.
- */
-interface MaplibreMapWithLegacyShim extends MapLibreMap {
-  /** @deprecated Use resize() instead. Kept for legacy call-site compatibility. */
-  updateSize?: () => void;
-}
-
 /* =========================================================================
  * base-map: tooltips, helpers
  * ========================================================================= */
@@ -301,14 +292,7 @@ export async function projektemacherMap(
     }
   }
 
-  // MapLibre/Mapbox GL uses resize(), not the OpenLayers-style updateSize().
   map.resize();
-
-  // Compatibility shim: legacy/external call sites (migrated from OpenLayers)
-  // may still call map.updateSize() instead of MapLibre's map.resize().
-  // Add a thin polyfill so those calls don't throw, instead of requiring
-  // every external caller to be updated.
-  (map as MaplibreMapWithLegacyShim).updateSize = () => map.resize();
 
   return map;
 }
@@ -317,6 +301,7 @@ export async function projektemacherMap(
  * window.projektemacherMap wrapper
  * ========================================================================= */
 
+/*
 declare global {
   interface Window {
     projektemacherMap: (
@@ -413,3 +398,4 @@ window.projektemacherMap = async function (
 
   return map;
 };
+*/

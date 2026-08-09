@@ -127,6 +127,6 @@
       {{ partial "js/type.html" $debug | htmlUnescape | safeJS }},
       {{ partial "js/type.html" $marker | htmlUnescape | safeJS}});
       /*{{ if $marker }}, {{ $marker | safeJS}} {{ end }});*/
-    {{ $var | safeJS }}.then(map => {map.updateSize()});
+    {{ $var | safeJS }}.then(map => {map.resize()});
   //});
 </script>

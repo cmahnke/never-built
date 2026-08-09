@@ -113,12 +113,12 @@ window.projektemacherMap = async function(elem, geojson, source, style, bbox, ce
   const map = projektemacherMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font);
 
   if (!("projektemacher" in window)) {
-    window.projektemacher = {};
+    window.projektemacher = new Map();
   }
   if (!("maps" in window.projektemacher)) {
-    window.projektemacher.maps = {};
+    window.projektemacher.maps = new Map();
   }
-  window.projektemacher.maps[bgElem] = await map
+  window.projektemacher.maps.set(bgElem, await map);
 
   return map
 }
@@ -138,12 +138,12 @@ window.projektemacher3DMap = async function(elem, geojson, source, style, bbox, 
   const map = projektemacher3DMap(elem, geojson, source, style, bbox, center, initialZoom, minZoom, maxZoom, cluster, disabled, popup, background, debug, marker, font, undefined, undefined, initialPos, topoRasterTiles);
 
   if (!("projektemacher" in window)) {
-    window.projektemacher = {};
+    window.projektemacher = new Map();
   }
   if (!("maps" in window.projektemacher)) {
-    window.projektemacher.maps = {};
+    window.projektemacher.maps = new Map();
   }
-  window.projektemacher.maps[bgElem] = await map
+  window.projektemacher.maps.set(bgElem, await map);
 
   return map
 }
