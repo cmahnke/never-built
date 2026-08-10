@@ -338,19 +338,7 @@ export async function projektemacher3DMap(
   if (debug) {
     const debugEl = document.createElement("div");
     debugEl.id = "debug-overlay";
-    Object.assign(debugEl.style, {
-      position: "absolute",
-      left: "8px",
-      bottom: "8px",
-      zIndex: "1000",
-      padding: "4px 8px",
-      background: "rgba(0, 0, 0, 0.65)",
-      color: "#fff",
-      font: "12px/1.4 monospace",
-      whiteSpace: "pre",
-      pointerEvents: "none",
-      borderRadius: "3px"
-    } as CSSStyleDeclaration);
+    debugEl.className = "debug-overlay";
 
     map.getContainer().appendChild(debugEl);
 
@@ -919,6 +907,16 @@ export async function projektemacher3DMap(
     updateNeverBuiltControlVisibility(map);
 
     map.once("idle", () => {
+      if (initialPos !== undefined) {
+        const camPos = map.calculateCameraOptionsFromCameraLngLatAltRotation(
+          initialPos.cameraLngLat,
+          initialPos.cameraAlt,
+          initialPos.bearing,
+          initialPos.pitch,
+          initialPos.roll
+        );
+        map.jumpTo(camPos);
+      }
       revealMapWhenReady(map);
     });
 
@@ -950,18 +948,9 @@ export async function projektemacher3DMap(
     }
   });
 
-  //map.resize()
+  map.resize()
 
-  if (initialPos !== undefined) {
-    const camPos = map.calculateCameraOptionsFromCameraLngLatAltRotation(
-      initialPos.cameraLngLat,
-      initialPos.cameraAlt,
-      initialPos.bearing,
-      initialPos.pitch,
-      initialPos.roll
-    );
-    map.jumpTo(camPos);
-  }
+
 
   return map;
 }

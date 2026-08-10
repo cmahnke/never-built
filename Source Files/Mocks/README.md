@@ -9,8 +9,7 @@ Never built Göttingen Mocks
   - Currently no known issues
 - Cleanup and integration
   - Fix linting / `tsc` errors
-  - Add Hugo wrapper template
-  - Camera position
+  - Make buildings cloickable
 - `osm_tool.py`
   - Avoid problems with ID order if IDs get prefixed
 - `generate-3d-map.py`
