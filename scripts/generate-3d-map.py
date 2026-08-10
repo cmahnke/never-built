@@ -329,6 +329,7 @@ def prepare_osm_patch(osm_patch: Path, docker_client) -> tuple[Path, Path]:
     title = post.getParam('title')
     path = post.path
     year = post.getParam('year')
+    url = post.getURL()
     display3D = post.getParam('3d')
 
     if display3D:
@@ -355,6 +356,10 @@ def prepare_osm_patch(osm_patch: Path, docker_client) -> tuple[Path, Path]:
 
     patch_file_name = f"{file_base_name}{PATCH_SUFFIX}"
     patch_file_path = tmp_dir / patch_file_name
+
+    additionalTags = "meta=never-built"
+    if url is not None:
+        additionalTags = f"{additionalTags},post_url={url}"
 
     if not map_file.is_file() or not patch_file_path.is_file():
         tmp_dir.mkdir(parents=True, exist_ok=True)
@@ -385,7 +390,7 @@ def prepare_osm_patch(osm_patch: Path, docker_client) -> tuple[Path, Path]:
         outline_file_name = f"{file_base_name}-meta.geojson"
         logger.info(f"Writing patch to {tmp_dir / patch_file_name}")
 
-        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(patch_file_path), "--tag", "meta=never-built", "-f", "--full", "--include-actions", "modify,create,delete"])
+        run_cmd([sys.executable, "scripts/osm_tool.py", "filter", "-v", "-p", str(osm_patch), "-o", str(patch_file_path), "--tag", additionalTags, "-f", "--full", "--include-actions", "modify,create,delete"])
         run_cmd([sys.executable, "scripts/osm_tool.py", "tile-info", "-v", "-i", str(patch_file_path), "-o", str(tmp_dir / outline_file_name)])
 
         filter_args = Namespace(subcommand="filter", patch=str(osm_patch), output=str(patch_file_path), tag="meta=never-built", force=True, verbose=1, full=True, include_actions="modify,create,delete")
