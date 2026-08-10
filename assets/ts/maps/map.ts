@@ -20,7 +20,7 @@ import type { StyleSpecification, MapMouseEvent } from "maplibre-gl";
 import type { FeatureCollection, GeoJSON } from "geojson";
 import type { MarkerOptions } from "./map-utils";
 
-setWorkerUrl("/js/maplibre-gl/maplibre-gl-worker.mjs");
+//setWorkerUrl("/js/maplibre-gl/maplibre-gl-worker.mjs");
 
 /* =========================================================================
  * Shared defaults

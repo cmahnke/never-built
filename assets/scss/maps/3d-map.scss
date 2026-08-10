@@ -22,7 +22,21 @@ $map-font: "Roboto Mono Variable";
   align-items: center;
   gap: 6px;
   user-select: none;
-  display: flex;
+  flex-direction: column;
+
+  .map-option-group {
+    display: flex;
+    align-items: center;
+  }
+
+  .map-checkbox {
+    cursor: pointer;
+    margin-right: .6rem;
+  }
+
+  label {
+    cursor: pointer;
+  }
 }
 
 #map-loading {
@@ -45,7 +59,7 @@ $map-font: "Roboto Mono Variable";
 #map-loading svg {
   width: 48px;
   height: 48px;
-  animation: map-loading-spin 1.5s linear infinite;
+  animation: map-loading-spin 1.5s linear infinite !important;
 }
 
 @keyframes map-loading-spin {
@@ -62,6 +76,10 @@ $map-font: "Roboto Mono Variable";
   transition: opacity 500ms ease;
   font-family: $map-font, courier;
 
+  .maplibregl-canvas {
+    animation-name: unset;
+  }
+
   &.map-3d-visible {
     opacity: 1;
   }
@@ -70,3 +88,10 @@ $map-font: "Roboto Mono Variable";
     border-radius: unset;
   }
 }
+
+/*
+body.dir-3d-map .map-wrapper .map-3d .maplibregl-canvas {
+  animation-name: unset;
+  animation-fill-mode: unset;
+}
+*/

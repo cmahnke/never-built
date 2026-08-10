@@ -5,9 +5,12 @@ import {imageViewer} from './image-viewer';
 import {detect} from 'detect-browser';
 import { projektemacherMap } from '../ts/maps/map';
 import { projektemacher3DMap } from '../ts/maps/3d-map';
+import { setWorkerUrl } from "maplibre-gl";
 
 const defaultMapFont = "Roboto Mono Variable";
 const animatedLinkColor = ["black", "#000", "#000000", "rgb(0, 0, 0)"]
+
+setWorkerUrl("/js/maplibre-gl/maplibre-gl-worker.mjs");
 
 //Needed agains Safari caching
 const browser = detect();

@@ -47,9 +47,9 @@ $page-elements-duration: 1600ms !default;
 body {
   &.section-post,
   &.section-books,
-  &.section-.meta,
+  &.section-.meta:not(.dir-3d-map),
   &.section-.home,
-  &.meta {
+  &.meta:not(.dir-3d-map) {
     * :not(.header-title) {
       animation-name: fade-in;
       animation-duration: $show-page-duration;

@@ -247,12 +247,17 @@ export async function projektemacher3DMap(
     return layer;
   });
 
+  const sourceBounds: [number, number, number, number] | undefined = bboxObj
+  ? [bboxObj[0][0], bboxObj[0][1], bboxObj[1][0], bboxObj[1][1]]
+  : undefined;
+
   const terrainSourceDef: RasterDEMSourceSpecification = {
     type: "raster-dem",
     tiles: [topoRasterTiles],
     tileSize: 256,
-    minzoom: 11,
-    maxzoom: 16,
+    minzoom: minZoom,
+    maxzoom: Math.min(16, maxZoom),
+    bounds: sourceBounds,
     encoding: "custom",
     baseShift: 0,
     redFactor: 0.4,
@@ -450,39 +455,32 @@ export async function projektemacher3DMap(
 
   const neverBuiltControlEl = document.createElement("div");
   neverBuiltControlEl.id = "never-built-toggle";
-  neverBuiltControlEl.style.display = "flex";
-  neverBuiltControlEl.style.flexDirection = "column";
-  neverBuiltControlEl.style.gap = "4px";
 
   const neverBuiltCheckbox = document.createElement("input");
   neverBuiltCheckbox.type = "checkbox";
   neverBuiltCheckbox.id = "never-built-checkbox";
-  neverBuiltCheckbox.style.cursor = "pointer";
+  neverBuiltCheckbox.className = "map-checkbox";
 
   const neverBuiltLabel = document.createElement("label");
   neverBuiltLabel.htmlFor = "never-built-checkbox";
   neverBuiltLabel.textContent = i18next.t("3d:hideBuildings");
-  neverBuiltLabel.style.cursor = "pointer";
 
   const row1 = document.createElement("div");
-  row1.style.display = "flex";
-  row1.style.alignItems = "center";
+  row1.className = "map-option-group";
   row1.appendChild(neverBuiltCheckbox);
   row1.appendChild(neverBuiltLabel);
 
   const highlightCheckbox = document.createElement("input");
   highlightCheckbox.type = "checkbox";
   highlightCheckbox.id = "highlight-checkbox";
-  highlightCheckbox.style.cursor = "pointer";
+  highlightCheckbox.className = "map-checkbox";
 
   const highlightLabel = document.createElement("label");
   highlightLabel.htmlFor = "highlight-checkbox";
   highlightLabel.textContent = i18next.t("3d:highlightBuildings");
-  highlightLabel.style.cursor = "pointer";
 
   const row2 = document.createElement("div");
-  row2.style.display = "flex";
-  row2.style.alignItems = "center";
+  row2.className = "map-option-group";
   row2.appendChild(highlightCheckbox);
   row2.appendChild(highlightLabel);
 
@@ -648,6 +646,7 @@ export async function projektemacher3DMap(
     startTween(m, isOverhead(m) ? 0 : 1);
   }
 
+  //TODO: Remove?
   function updateNeverBuiltControlVisibility(m: MapLibreMap): void {
     // Keep control visible from above for highlight functionality
     neverBuiltControlEl.style.display = "flex";
@@ -867,6 +866,44 @@ export async function projektemacher3DMap(
     onTweenComplete(map, startFlat);
     updateNeverBuiltControlVisibility(map);
 
+    if (geojsonObj !== undefined) {
+      // Add layers asynchronously but initiate in current scope to not break the sync load handler logic
+      addGeoJSONLayersAndInteractions({
+        map,
+        geojson: geojsonObj,
+        cluster,
+        marker,
+        disabled,
+        popup
+      }).then((names) => {
+        if (Array.isArray(names)) {
+          geojsonLayerNames = names;
+        } else if (typeof names === "string") {
+          geojsonLayerNames = [names];
+        } else if (names && typeof names === "object") {
+          geojsonLayerNames = Object.values(names).flat() as string[];
+        }
+
+        if (debug) {
+          console.log("Created GeoJSON Layers:", geojsonLayerNames);
+        }
+
+        // Apply current tween value to newly added layers to keep them in sync
+        applyTweenValue(map, tween.value);
+
+        // Make sure fit to bounds is only done initially
+        const featureCollection = geojsonObj as GeoJSON.FeatureCollection;
+        if (featureCollection.features?.length) {
+          const box = turfBbox(featureCollection) as [number, number, number, number];
+          const geojsonBounds: LngLatBoundsLike = [
+            [box[0], box[1]],
+            [box[2], box[3]]
+          ];
+          map.fitBounds(geojsonBounds, { padding: defaultPadding });
+        }
+      });
+    }
+
     map.once("idle", () => {
       revealMapWhenReady(map);
     });
@@ -898,45 +935,6 @@ export async function projektemacher3DMap(
       });
     }
   });
-
-  await new Promise(resolve => map.on('load', resolve));
-  if (geojsonObj !== undefined) {
-    // Add layers asynchronously but initiate in current scope to not break the sync load handler logic
-    addGeoJSONLayersAndInteractions({
-      map,
-      geojson: geojsonObj,
-      cluster,
-      marker,
-      disabled,
-      popup
-    }).then((names) => {
-      if (Array.isArray(names)) {
-        geojsonLayerNames = names;
-      } else if (typeof names === "string") {
-        geojsonLayerNames = [names];
-      } else if (names && typeof names === "object") {
-        geojsonLayerNames = Object.values(names).flat() as string[];
-      }
-
-      if (debug) {
-        console.log("Created GeoJSON Layers:", geojsonLayerNames);
-      }
-
-      // Apply current tween value to newly added layers to keep them in sync
-      applyTweenValue(map, tween.value);
-
-      // Make sure fit to bounds is only done initially
-      const featureCollection = geojsonObj as GeoJSON.FeatureCollection;
-      if (featureCollection.features?.length) {
-        const box = turfBbox(featureCollection) as [number, number, number, number];
-        const geojsonBounds: LngLatBoundsLike = [
-          [box[0], box[1]],
-          [box[2], box[3]]
-        ];
-        map.fitBounds(geojsonBounds, { padding: defaultPadding });
-      }
-    });
-  }
 
   if (initialPos !== undefined) {
     const camPos = map.calculateCameraOptionsFromCameraLngLatAltRotation(
