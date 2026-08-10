@@ -10,7 +10,7 @@ Never built Göttingen Mocks
 - Cleanup and integration
   - Fix linting / `tsc` errors
   - Add Hugo wrapper template
-  - Create a page for all models - started
+  - Camera position
 - `osm_tool.py`
   - Avoid problems with ID order if IDs get prefixed
 - `generate-3d-map.py`

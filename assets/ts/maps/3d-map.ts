@@ -356,17 +356,32 @@ export async function projektemacher3DMap(
 
     function getCurrentCameraPosition(m: MapLibreMap): CameraPositionConfig {
       const mapInternal = m as unknown as MaplibreMapInternal;
-      const transform = mapInternal.transform;
+
+      // In MapLibre GL JS v6+, `map.transform` was removed and moved to `map._camera.transform`.
+      // We check both to maintain backwards compatibility with older MapLibre/Mapbox versions.
+      const transform = (mapInternal as any)._camera?.transform || mapInternal.transform;
+
       const pitch = m.getPitch();
       let altitude = 0;
 
-      if (transform && transform.cameraToCenterDistance !== undefined && transform.worldSize !== undefined) {
+      // 1. Try the native MapLibre Transform method (safest and most accurate for v5/v6+)
+      if (transform && typeof (transform as any).getCameraAltitude === "function") {
+        const alt = (transform as any).getCameraAltitude();
+        if (typeof alt === "number" && !isNaN(alt)) {
+          altitude = alt;
+        }
+      }
+
+      // 2. Fallback to manual calculation (useful for older MapLibre v4/v5 or if the native method fails)
+      if (altitude === 0 && transform && transform.cameraToCenterDistance !== undefined && transform.worldSize !== undefined) {
         const pitchInRadians = pitch * (Math.PI / 180);
         const altitudeWithoutScaling = Math.cos(pitchInRadians) * transform.cameraToCenterDistance;
         const earthCircAtLat = 2 * Math.PI * 6378137 * Math.abs(Math.cos(m.getCenter().lat * (Math.PI / 180)));
         const verticalScaleConstant = transform.worldSize / earthCircAtLat;
         altitude = altitudeWithoutScaling / verticalScaleConstant;
-      } else if (mapInternal.getFreeCameraOptions) {
+      }
+      // 3. Fallback to Mapbox GL JS FreeCamera API (only works if using Mapbox instead of MapLibre)
+      else if (altitude === 0 && mapInternal.getFreeCameraOptions) {
         const camera = mapInternal.getFreeCameraOptions();
         if (camera && camera.position) {
           altitude = camera.position.toAltitude();
@@ -842,32 +857,7 @@ export async function projektemacher3DMap(
     treeLayer.minzoom = 13;
     treeLayer.addTo(map);
 
-    map.addLayer(architectureModelBWLayer);
-    architectureModelBWLayer.contrast = 1.5;
-    architectureModelBWLayer.edgeStrength = 0.2;
-    architectureModelBWLayer.grainAmount = 0.04;
-    architectureModelBWLayer.paperTone = [1, 1, 1];
-    architectureModelBWLayer.shadowTone = [0.03, 0.03, 0.05];
-    architectureModelBWLayer.antialias = true;
-    architectureModelBWLayer.addHighlightColor(HIGHLIGHT_COLOR);
-    map.triggerRepaint();
-
-    // Populate label IDs for street names fading logic
-    style.layers.forEach((layer) => {
-      if (layer.id.includes("label")) {
-        labelLayerIds.push({ id: layer.id, type: layer.type });
-      }
-    });
-
-    const startFlat = isOverhead(map);
-    tween.value = startFlat ? 0 : 1;
-    tween.target = startFlat ? 0 : 1;
-    applyTweenValue(map, tween.value);
-    onTweenComplete(map, startFlat);
-    updateNeverBuiltControlVisibility(map);
-
     if (geojsonObj !== undefined) {
-      // Add layers asynchronously but initiate in current scope to not break the sync load handler logic
       addGeoJSONLayersAndInteractions({
         map,
         geojson: geojsonObj,
@@ -904,6 +894,30 @@ export async function projektemacher3DMap(
       });
     }
 
+    map.addLayer(architectureModelBWLayer);
+    architectureModelBWLayer.contrast = 1.5;
+    architectureModelBWLayer.edgeStrength = 0.2;
+    architectureModelBWLayer.grainAmount = 0.04;
+    architectureModelBWLayer.paperTone = [1, 1, 1];
+    architectureModelBWLayer.shadowTone = [0.03, 0.03, 0.05];
+    architectureModelBWLayer.antialias = true;
+    architectureModelBWLayer.addHighlightColor(HIGHLIGHT_COLOR);
+    map.triggerRepaint();
+
+    // Populate label IDs for street names fading logic
+    style.layers.forEach((layer) => {
+      if (layer.id.includes("label")) {
+        labelLayerIds.push({ id: layer.id, type: layer.type });
+      }
+    });
+
+    const startFlat = isOverhead(map);
+    tween.value = startFlat ? 0 : 1;
+    tween.target = startFlat ? 0 : 1;
+    applyTweenValue(map, tween.value);
+    onTweenComplete(map, startFlat);
+    updateNeverBuiltControlVisibility(map);
+
     map.once("idle", () => {
       revealMapWhenReady(map);
     });
@@ -936,6 +950,8 @@ export async function projektemacher3DMap(
     }
   });
 
+  //map.resize()
+
   if (initialPos !== undefined) {
     const camPos = map.calculateCameraOptionsFromCameraLngLatAltRotation(
       initialPos.cameraLngLat,
@@ -946,8 +962,6 @@ export async function projektemacher3DMap(
     );
     map.jumpTo(camPos);
   }
-
-  map.resize()
 
   return map;
 }
