@@ -929,13 +929,17 @@ export async function projektemacher3DMap(
       map.on("click", "3d-buildings", (e) => {
         if (e.features?.length) {
           const props = e.features[0].properties;
-          let html = "<h4>Building Properties</h4><table>";
+          let html = `<h4>${i18next.t("3d:buildingProperties")}</h4><table>`;
           for (const key in props) {
-            html += `<tr><td><strong>${key}</strong></td><td>${props[key]}</td></tr>`;
+            if (String(props[key]).startsWith("http")) {
+              html += `<tr><td><strong>${key}</strong></td><td><a href="${props[key]}">${props[key]}</a></td></tr>`;
+            } else {
+              html += `<tr><td><strong>${key}</strong></td><td>${props[key]}</td></tr>`;
+            }
           }
           html += "</table>";
           closeActivePopup();
-          activePopup = new maplibregl.Popup().setLngLat(e.lngLat).setHTML(html).addTo(map);
+          activePopup = new maplibregl.Popup({maxWidth: "16rem"}).setLngLat(e.lngLat).setHTML(html).addTo(map);
         }
       });
 
@@ -944,6 +948,17 @@ export async function projektemacher3DMap(
       });
       map.on("mouseleave", "3d-buildings", () => {
         map.getCanvas().style.cursor = "";
+      });
+    } else {
+      map.on("click", "3d-buildings", (e) => {
+        if (e.features?.length) {
+          const props = e.features[0].properties;
+          if ("projektemacher:url" in props) {
+            let html = `<h4><a href="${props["projektemacher:url"]}" title="${i18next.t("3d:buildingPost")}">${i18next.t("3d:buildingPost")}</a></h4>`;
+            closeActivePopup();
+            activePopup = new maplibregl.Popup({maxWidth: "16rem"}).setLngLat(e.lngLat).setHTML(html).addTo(map);
+          }
+        }
       });
     }
   });

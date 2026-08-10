@@ -359,7 +359,7 @@ def prepare_osm_patch(osm_patch: Path, docker_client) -> tuple[Path, Path]:
 
     additionalTags = "meta=never-built"
     if url is not None:
-        additionalTags = f"{additionalTags},post_url={url}"
+        additionalTags = f"{additionalTags},projektemacher:url={url}"
 
     if not map_file.is_file() or not patch_file_path.is_file():
         tmp_dir.mkdir(parents=True, exist_ok=True)

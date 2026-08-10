@@ -31,6 +31,8 @@ export const translations = {
     "3d": {
       hideBuildings: "Show only never-built buildings",
       highlightBuildings: "Highlight never-built buildings",
+      buildingProperties: "Gebäudeeigenschaften",
+      buildingPost: "Beitrag zu siesem Gebäude"
     },
   },
   de: {
@@ -50,6 +52,8 @@ export const translations = {
     "3d": {
       hideBuildings: "Nur nicht gebaute Gebäude zeigen",
       highlightBuildings: "Nicht gebaute Gebäude hervorheben",
+      buildingProperties: "Building Properties",
+      buildingPost: "Post about this building"
     },
   },
 };
