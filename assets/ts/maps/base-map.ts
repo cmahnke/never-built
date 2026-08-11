@@ -71,6 +71,14 @@ export function getMaplibreGLLocale(): Record<string, string> {
     fallbackLng: "en",
     resources: translations,
     supportedLngs: ["en", "de"],
+    detection: {
+      order: [
+        "htmlTag",
+        "localStorage",
+        "sessionStorage",
+        "navigator"
+      ]
+    }
   });
 
   return {

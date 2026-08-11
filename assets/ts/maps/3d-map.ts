@@ -122,7 +122,15 @@ export async function projektemacher3DMap(
       debug: false,
       fallbackLng: "en",
       resources: translations,
-      supportedLngs: ["en", "de"]
+      supportedLngs: ["en", "de"],
+      detection: {
+        order: [
+          "htmlTag",
+          "localStorage",
+          "sessionStorage",
+          "navigator"
+        ]
+      }
     });
   }
 
