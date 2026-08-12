@@ -13,7 +13,9 @@ build:
 cascade:
   - target:
       kind: '{page,section}'
-      lang: de
+      sites:
+        matrix:
+          languages: [en]
       path: '**'
     outputs:
       - print
