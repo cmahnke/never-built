@@ -26,6 +26,11 @@ jobs:
           sudo rm -rf /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/graalvm/ /usr/local/share/powershell /usr/local/lib/android /usr/local/.ghcup/ /usr/share/dotnet/ /opt/microsoft /usr/local/aws-* /usr/share/miniconda /opt/az /usr/share/kotlinc /usr/share/man /usr/share/sbt /usr/local/julia* /usr/share/az* /usr/share/apache-maven* /usr/share/gradle* /usr/share/swift
           df -h
 
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+
       - uses: actions/checkout@v7
         with:
           submodules: true  # Fetch Hugo themes (true OR recursive)
