@@ -9,4 +9,5 @@ fi
 LOG_LEVEL=INFO
 export LOG_LEVEL
 
-$PYTHON themes/projektemacher-base/scripts/indexer.py -c pagefind-index.yaml
+pagefind-indexer -c pagefind-index.yaml
+#$PYTHON themes/projektemacher-base/scripts/indexer.py -c pagefind-index.yaml
