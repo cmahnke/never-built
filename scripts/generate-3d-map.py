@@ -447,7 +447,7 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
             logger.error(f"Failed to get Docker image ({DOCKER_IMAGE}), is the daemon running? Error: {e}")
             sys.exit(1)
 
-    cmd_planetiler = "java -Xmx4g -jar /opt/planetiler/planetiler-dist-0.*-SNAPSHOT-with-deps.jar"
+    cmd_planetiler = "java -Xmx6g -jar /opt/planetiler/planetiler-dist-0.*-SNAPSHOT-with-deps.jar"
 
     bbox = get_bbox()
     logger.info(f"Using {map_file}, using BBox {bbox}")
