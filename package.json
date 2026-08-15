@@ -4,13 +4,13 @@
     "@turf/turf": "^7.4.0",
     "detect-browser": "5.3.0",
     "echarts": "^6.1.0",
-    "motion": "^13.0.0",
+    "motion": "^13.1.0",
     "photoswipe": "^5.4.4",
     "terminal.css": "^0.7.5",
     "three": "^0.185.1",
     "@turf/turf": "^7.4.0",
     "chroma-js": "^3.2.0",
-    "maplibre-gl": "^6.2.0",
+    "maplibre-gl": "^6.3.0",
     "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {
