@@ -14,7 +14,7 @@ TILES_DIR="$(dirname "$(realpath "$0")")/../static/map/"
 COVERAGE=goettingen
 MAX_ZOOM=16
 TILE_COMPRESSION=none
-PLANETILER_OPTS="--fetch-wikidata --use_wikidata=true --osm_parse_node_bounds=true --exclude-layers=building,housenumber,aeroway"
+PLANETILER_OPTS="--fetch-wikidata --use_wikidata=true --osm_parse_node_bounds=true --exclude-layers=building,housenumber,aeroway --nodemap-type=array --storage=mmap"
 BBOX="9.7 51.45 10.1 51.6"
 PBF=$TILES_DIR/${COVERAGE}.osm.pbf
 MAP_DIR=./static/map/tiles/
