@@ -59,11 +59,6 @@ jobs:
       #   run: |
       #     mkdir -p ~/.ssh && echo "$DEPLOY_SSH_IDENTITY" >>  ~/.ssh/known_hosts
 
-      # - name: Setup Hugo
-      #   uses: peaceiris/actions-hugo@v3.0.0
-      #   with:
-      #     hugo-version: ${{ env.HUGO_VERSION }}
-      #     extended: true
 
       - name: Install Hugo
         run: |
@@ -105,7 +100,7 @@ jobs:
 
       - name: Generate stats
         run: |
-          ./themes/projektemacher-base/scripts/stat.sh
+          ./themes/projektemacher-base/scripts/stat.py
 
       - name: Build Hugo site
         run: hugo --printI18nWarnings --printUnusedTemplates
