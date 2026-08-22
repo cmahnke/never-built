@@ -37,7 +37,7 @@ jobs:
 
       - name: Install required dependencies
         run: |
-          ./themes/projektemacher-base/scripts/github/jxl-0.11.1.sh
+          ./themes/projektemacher-base/scripts/github/jxl-0.12.0.sh
           ./themes/projektemacher-base/scripts/github/setup-dependencies.sh
           ./themes/projektemacher-base/scripts/github/python-dependencies.sh
 

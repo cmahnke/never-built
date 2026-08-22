@@ -19,7 +19,7 @@ env:
 
 jobs:
   deploy:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Free some disk space
         run: |
@@ -128,13 +128,6 @@ jobs:
           mv ./dist/assets ../../docs/
           mkdir -p ../../docs/future
           mv ./dist/3*/index.html ../../docs/future/
-
-      # - name: Archive links
-      #   run: python ./themes/projektemacher-base/scripts/archive.py -d docs/ -e projektemacher.org -a 14 -o archived-urls.txt
-
-      # - name: Save URL list
-      #   run: |
-      #     cp archived-urls.txt docs/
 
       # - name: Copy future
       #   run: mv ./future ./docs/
