@@ -20,6 +20,10 @@ PBF=$TILES_DIR/${COVERAGE}.osm.pbf
 MAP_DIR=./static/map/tiles/
 MASTER_TILE_DIR="$(cd "$MAP_DIR" && pwd)"
 
+if [ -z "$PLANETILER_JAVA_OPTS" ] ; then
+  PLANETILER_JAVA_OPTS="-Xmx8g"
+fi
+
 # https://wiki.openstreetmap.org/wiki/JOSM_file_format
 
 FILES=$(find ./content -path '*/osm/*' \( -name "*.osm.pbf" -o -name "*.osm" \))
@@ -90,7 +94,7 @@ do
 
   # This path only works for the original mockup since thedev version was around 0.9.4
   #CMD="java -Xmx4g -jar /opt/planetiler/planetiler-dist-0.9.4-SNAPSHOT-with-deps.jar"
-  CMD="java -Xmx4g -jar /opt/planetiler/planetiler-dist-0.*-SNAPSHOT-with-deps.jar"
+  CMD="java $PLANETILER_JAVA_OPTS -jar /opt/planetiler/planetiler-dist-0.*-SNAPSHOT-with-deps.jar"
 
   #CMD="/opt/planetiler/bin/planetiler"
   BBOX=$(echo $BBOX| tr ' ' ',')

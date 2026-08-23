@@ -72,6 +72,10 @@ for p in import_paths:
 from osm_tool import patch_cmd, tile_info_cmd, filter_cmd
 from PyHugo import Content, Config, Post
 
+planetiler_java_opts = os.environ.get("PLANETILER_JAVA_OPTS")
+if not planetiler_java_opts:
+    planetiler_java_opts = "-Xmx8g"
+
 # Initialize Docker client
 if not os.environ.get("DOCKER_HOST"):
     rancher_sock = Path.home() / ".rd" / "docker.sock"
@@ -449,7 +453,7 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
             logger.error(f"Failed to get Docker image ({DOCKER_IMAGE}), is the daemon running? Error: {e}")
             sys.exit(1)
 
-    cmd_planetiler = "java -Xmx6g -jar /opt/planetiler/planetiler-dist-0.*-SNAPSHOT-with-deps.jar"
+    cmd_planetiler = f"java {planetiler_java_opts} -jar /opt/planetiler/planetiler-dist-0.*-SNAPSHOT-with-deps.jar"
 
     bbox = get_bbox()
     logger.info(f"Using {map_file}, using BBox {bbox}")
