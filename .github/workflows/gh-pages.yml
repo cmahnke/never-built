@@ -31,6 +31,14 @@ jobs:
       #   with:
       #     swap-size-gb: 10
 
+      - name: Get memory statistics
+        run: |
+          echo "Storage"
+          df -h
+          echo "Memory"
+          free -h
+          vmstat -s:
+
       - uses: actions/checkout@v7
         with:
           submodules: true  # Fetch Hugo themes (true OR recursive)
