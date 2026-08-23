@@ -526,8 +526,8 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
             working_dir=str(current_pwd),
             tty=False,
             remove=True,
-            stream=True
-            mem_limit=DOCKER_MAX_MEMORY
+            stream=True,
+            mem_limit=DOCKER_MAX_MEMORY,
             memswap_limit=DOCKER_MAX_MEMORY + parse_suffixed_int("2g")
         )
 
