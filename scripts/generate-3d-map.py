@@ -37,6 +37,12 @@ PLANETILER_OPTS = [
 ]
 DEFAULT_BBOX = "9.7,51.45,10.1,51.6"
 
+# ---------------------------------------------------------
+# Memory settings
+# ---------------------------------------------------------
+DEFAULT_JAVA_OPTS = "-Xmx8g"
+DOCKER_MAX_MEMORY = "6g"
+
 # Directory settings
 MAP_BASE_DIR = "./static/map"
 COVERAGE = "goettingen"
@@ -74,8 +80,14 @@ from PyHugo import Content, Config, Post
 
 planetiler_java_opts = os.environ.get("PLANETILER_JAVA_OPTS")
 if not planetiler_java_opts:
-    planetiler_java_opts = "-Xmx8g"
+    planetiler_java_opts = DEFAULT_JAVA_OPTS
 
+if parse_java_memory(planetiler_java_opts) > parse_suffixed_int(DOCKER_MAX_MEMORY):
+    DOCKER_MAX_MEMORY = parse_java_memory
+else:
+    DOCKER_MAX_MEMORY = parse_suffixed_int(DOCKER_MAX_MEMORY)
+
+# TODO: switch to OCI runtime
 # Initialize Docker client
 if not os.environ.get("DOCKER_HOST"):
     rancher_sock = Path.home() / ".rd" / "docker.sock"
@@ -114,6 +126,34 @@ class GeoJSONProcessor:
         tiles = [tile for tile in self.all_tiles if tile[0] >= level]
         for tile in tiles:
             logger.debug(f"Tile path: {'/'.join(map(str, tile))}")
+
+def parse_suffixed_int(val: str) -> int:
+    units = {
+        'k': 10**3, 'm': 10**6, 'g': 10**9, 't': 10**12,
+        'kb': 1024, 'mb': 1024**2, 'gb': 1024**3, 'tb': 1024**4
+    }
+    val = val.strip().lower()
+    for unit, factor in units.items():
+        if val.endswith(unit):
+            return int(float(val[:-len(unit)]) * factor)
+    return int(val)
+
+def parse_java_memory(arg_string: str) -> int:
+    units = {
+        'k': 1024,
+        'm': 1024**2,
+        'g': 1024**3,
+        't': 1024**4
+    }
+
+    # Matches flags like -Xmx10g, -Xms512m, -XX:MaxRAM=40m, etc.
+    pattern = r'(?:-Xm[xm]|-XX:(?:MaxRAM|InitialRAM)=?)\s*(\d+)([kmgtKMGT]?)'
+    matches = re.findall(pattern, arg_string)
+
+    return sum(
+        int(number) * units.get(unit.lower(), 1)
+        for number, unit in matches
+    )
 
 def parse_year_arg(year_str: str) -> tuple[int, int]:
     """Parses a 4-digit year or year range 'YYYY-YYYY' into a (min_year, max_year) tuple."""
@@ -487,6 +527,8 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
             tty=False,
             remove=True,
             stream=True
+            mem_limit=DOCKER_MAX_MEMORY
+            memswap_limit=DOCKER_MAX_MEMORY + parse_suffixed_int("2g")
         )
 
         buffer = ""
@@ -620,7 +662,7 @@ def main():
         datefmt='%Y-%m-%d %H:%M:%S',
         force=True
     )
-
+    logger.info(f"Docker container memory limit set to {DOCKER_MAX_MEMORY}")
     if DEBUG:
         logger.debug("Debug mode enabled")
 
