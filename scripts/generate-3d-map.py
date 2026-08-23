@@ -82,11 +82,6 @@ planetiler_java_opts = os.environ.get("PLANETILER_JAVA_OPTS")
 if not planetiler_java_opts:
     planetiler_java_opts = DEFAULT_JAVA_OPTS
 
-if parse_java_memory(planetiler_java_opts) > parse_suffixed_int(DOCKER_MAX_MEMORY):
-    DOCKER_MAX_MEMORY = parse_java_memory
-else:
-    DOCKER_MAX_MEMORY = parse_suffixed_int(DOCKER_MAX_MEMORY)
-
 # TODO: switch to OCI runtime
 # Initialize Docker client
 if not os.environ.get("DOCKER_HOST"):
@@ -649,10 +644,15 @@ def main():
     )
     args = parser.parse_args()
 
-    global DEBUG, COMPACT
+    global DEBUG, COMPACT, DOCKER_MAX_MEMORY
     DEBUG = args.debug
     COMPACT = args.compact
     MERGE = args.merge
+
+    if parse_java_memory(planetiler_java_opts) > parse_suffixed_int(DOCKER_MAX_MEMORY):
+        DOCKER_MAX_MEMORY = parse_java_memory(planetiler_java_opts)
+    else:
+        DOCKER_MAX_MEMORY = parse_suffixed_int(DOCKER_MAX_MEMORY)
 
     # Configure logging format and level based on parsed arguments
     log_level = logging.DEBUG if DEBUG else logging.INFO
