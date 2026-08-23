@@ -1,7 +1,6 @@
 baseURL = 'https://never-built.goettingen.xyz/'
-languageCode = 'de'
+locale = 'de'
 title = 'Never Built Göttingen'
-languagecode = "de"
 defaultcontentlanguage = "de"
 copyright = "Christian Mahnke"
 publishDir = "docs"
@@ -17,7 +16,7 @@ enableRobotsTXT = true
 
 [languages]
   [languages.de]
-    languagename = "Deutsch"
+    label = "Deutsch"
 
     [languages.de.params]
 
