@@ -22,7 +22,7 @@ from itertools import combinations
 # ---------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------
-DOCKER_IMAGE = "ghcr.io/cmahnke/map-tools/planetiler:latest"
+DOCKER_IMAGE = "ghcr.io/cmahnke/map-tools/planetiler:0.10.2-data"
 DATA_IMAGE = "ghcr.io/cmahnke/map-data/goettingen:latest"
 MAX_ZOOM = 16
 BUILDING_LEVEL = 13
