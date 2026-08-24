@@ -33,8 +33,7 @@ PLANETILER_OPTS = [
     "--use_wikidata=true",
     "--osm_parse_node_bounds=true",
     "--exclude-layers=building,housenumber,aeroway",
-    "--nodemap-type=array",
-    "--storage=mmap"
+    "--nodemap-type=sparsearray"
 ]
 DEFAULT_BBOX = "9.7,51.45,10.1,51.6"
 
@@ -495,7 +494,6 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
     logger.info(f"Using {map_file}, using BBox {bbox}")
 
     args_list = [
-        "--nodemap-type=sparsearray",
         "--download_dir=planetiler-data/sources",
         "--tmpdir=planetiler-data/tmp",
         "--tile_weights=planetiler-data/tile_weights.tsv.gz",
