@@ -1,0 +1,62 @@
+{{/*
+Hugo Shortcode for IIIF Image API integration using OpenLayers
+Make sure to integrate the CSS styles of OpenLayers
+
+Parameters:
+* src - The url to the 'info.json' file
+* includeSources - Include JavaScript sources (optional - default 'false')
+* share - Add share links (optional)
+* contextPath - directory to load the info.json file from
+*/}}
+
+{{/* TODO: The logic of this is flawed */}}
+
+{{- if not (.Get "includeSources") -}}
+    {{/* JavaScript */}}
+    {{- $defines := dict "process.env.NODE_ENV" `"development"` -}}
+    {{- $opts := dict "targetPath" "js/main.js" "defines" $defines -}}
+    {{- $iiifViewer := resources.Get "js/iiif-image-viewer.js" | js.Build $opts -}}
+    {{- $js := slice $iiifViewer | resources.Concat "js/iiif-ol.js" | minify | fingerprint -}}
+    <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+{{ end }}
+
+{{- $src := .Get "src" -}}
+{{- $baseURL := path.Dir $src -}}
+
+{{ if (.Get "contextPath") }}
+  {{- $src = printf "%s/%s" (.Get "contextPath") $src -}}
+  {{- $suffix := substr (path.Dir $src) (len (.Get "contextPath")) -}}
+  {{- $baseURL = printf "%s%s" (.Get "contextPath") $suffix -}}
+{{- else -}}
+  {{- if .Page.IsTranslated -}}
+    {{- $translationPath := path.Dir .Page.RelPermalink -}}
+    {{- range .Page.Translations -}}
+      {{- if .Language.IsDefault -}}
+        {{- $baseURL = .Page.RelPermalink | replaceRE "\\.html$" "/" -}}
+        {{- $src = printf "%s%s" $baseURL $src -}}
+        {{/*
+        {{- $relPath := partial "functions/url/rel-path.html" (dict "from" $translationPath "to" (path.Dir .Page.RelPermalink)) -}}
+        {{- $baseURL = printf "%s%s" $relPath (strings.TrimSuffix "/" (path.Dir $src)) -}}
+        */}}
+        {{- $baseURL = printf "%s" (strings.TrimSuffix "/" (path.Dir $src)) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $share := false -}}
+{{ if (.Get "share") }}
+  {{- $share = (.Get "share") -}}
+{{- end -}}
+
+{{- $hdr := false -}}
+{{ if (.Get "hdr") }}
+  {{- $hdr = (.Get "hdr") -}}
+{{- end -}}
+
+{{- $downloadURL := "" -}}
+{{- if .Get "downloadURL" -}}
+  {{- $downloadURL = .Get "downloadURL" -}}
+{{- end -}}
+
+{{ partial "iiif/_iiif-image.html" (dict "infoJson" $src "share" $share "downloadURL" $downloadURL "baseURL" $baseURL "hdr" $hdr) }}
