@@ -101,7 +101,7 @@ do
 
   OUTPUT_FILE="$TMP_DIR/output.mbtiles"
   echo "Using $MAP_FILE"
-  ARGS="--download_dir=planetiler-data/sources --tmpdir=planetiler-data/tmp --tile_weights=planetiler-data/tile_weights.tsv.gz --download=true --languages=de,en --osm-path=$MAP_FILE  --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --bounds=${BBOX} --force --output=$OUTPUT_FILE"
+  ARGS="--download_dir=planetiler-data/sources --nodemap-type=sparsearray --tmpdir=planetiler-data/tmp --tile_weights=planetiler-data/tile_weights.tsv.gz --download=true --languages=de,en --osm-path=$MAP_FILE  --tile_compression=${TILE_COMPRESSION} --maxzoom=${MAX_ZOOM} --render_maxzoom=${MAX_ZOOM} $PLANETILER_OPTS --bounds=${BBOX} --force --output=$OUTPUT_FILE"
 
   #docker run -v "`pwd`:`pwd`" -w "`pwd`" $DOCKER_IMAGE $CMD $ARGS
   docker run -v "$(pwd):$(pwd)" -w "$(pwd)" "$DOCKER_IMAGE" sh -c "$CMD \"\$@\"" -- $ARGS
