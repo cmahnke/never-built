@@ -10,7 +10,7 @@
     "three": "^0.185.1",
     "@turf/turf": "^7.4.0",
     "chroma-js": "^3.2.0",
-    "maplibre-gl": "^6.4.1",
+    "maplibre-gl": "^6.5.0",
     "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {
@@ -20,7 +20,7 @@
     "@gltf-transform/extensions": "^4.4.2",
     "@gltf-transform/functions": "^4.4.2",
     "@maplibre/maplibre-gl-style-spec": "26.2.1",
-    "cssnano": "^8.0.7",
+    "cssnano": "^8.0.8",
     "gltf-pipeline": "^4.3.1",
     "obj2gltf": "^3.2.0",
     "postcss": "^8.5.26"
