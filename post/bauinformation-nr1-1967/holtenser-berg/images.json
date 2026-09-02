@@ -1,0 +1,62 @@
+[
+  {
+    "image": "page084.jxl",
+    "size": [4918, 7003],
+    "areas": [
+      {
+        "name": "model-1",
+        "postprocess": ["smoothen_median", "preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 2830,
+          "y": 2162
+        }
+      },
+      {
+        "name": "model-2",
+        "postprocess": ["smoothen_median", "preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 2475
+        },
+        "size": {
+          "x": 2820,
+          "y": 2120
+        }
+      },
+      {
+        "name": "model-3",
+        "postprocess": ["smoothen_median", "preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 4908
+        },
+        "size": {
+          "x": 2805,
+          "y": 2095
+        }
+      }
+    ]
+  },
+  {
+    "image": "page085.jxl",
+    "size": [4944, 6997],
+    "areas": [
+      {
+        "name": "model-4",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 7,
+          "y": 2
+        },
+        "size": {
+          "x": 4940,
+          "y": 2948
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "image": "page060.jxl",
+    "size": [4910, 6995],
+    "areas": [
+      {
+        "name": "overview",
+        "postprocess": ["smoothen_median", "preview", "grayscale_simple", "enhance_ai"],
+        "position": {
+          "x": 210,
+          "y": 198
+        },
+        "size": {
+          "x": 2905,
+          "y": 3483
+        }
+      }
+    ]
+  },
+  {
+    "image": "page061.jxl",
+    "size": [4892, 7007],
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 220,
+          "y": 176
+        },
+        "size": {
+          "x": 4422,
+          "y": 2354
+        }
+      },
+      {
+        "name": "model-front",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 220,
+          "y": 4697
+        },
+        "size": {
+          "x": 4466,
+          "y": 1989
+        }
+      }
+    ]
+  }
+]

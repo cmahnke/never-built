@@ -1,0 +1,36 @@
+[
+  {
+    "image": "page128.jxl",
+    "size": [4839, 6991],
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 4697,
+          "y": 2981
+        }
+      },
+      {
+        "name": "model-detail",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 3982
+        },
+        "size": {
+          "x": 4686,
+          "y": 2992
+        }
+      }
+    ]
+  },
+  {
+    "image": "page129.jxl",
+    "size": [4785, 6987]
+  }
+]
