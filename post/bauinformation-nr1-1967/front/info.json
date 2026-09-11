@@ -1,0 +1,29 @@
+{
+  "@context": "http://iiif.io/api/image/2/context.json",
+  "@id": "https://never-build.goettingen.xyz/post/bauinformation-nr1-1967/front",
+  "profile": [
+    "http://iiif.io/api/image/2/level0.json",
+    {
+      "formats": [
+        "jpg"
+      ],
+      "qualities": [
+        "default"
+      ]
+    }
+  ],
+  "protocol": "http://iiif.io/api/image",
+  "tiles": [
+    {
+      "scaleFactors": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "width": 512
+    }
+  ],
+  "width": 5010,
+  "height": 6994
+}

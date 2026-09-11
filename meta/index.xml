@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Meta on Never Built Göttingen</title>
+		<link>https://never-built.goettingen.xyz/meta/</link>
+		<description>Recent content in Meta on Never Built Göttingen</description>
+		<generator>Hugo</generator>
+		<language>de</language>
+		
+			<managingEditor>mail@christianmahnke.de (Christian Mahnke)</managingEditor>
+		
+		
+			<webMaster>mail@christianmahnke.de (Christian Mahnke)</webMaster>
+		
+		
+			<copyright>Christian Mahnke</copyright>
+		
+		
+			<atom:link href="https://never-built.goettingen.xyz/meta/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Linked Art</title>
+				<link>https://never-built.goettingen.xyz/meta/linked-art/index.json</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/meta/linked-art/index.json</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Meta</title>
+				<link>https://never-built.goettingen.xyz/meta/_index.en/</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/meta/_index.en/</guid>
+				<description>&lt;p&gt;This page provides some statistical analyses and data about the posts as JSON files&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;./tags/index.json&#34;&gt;Tags&lt;/a&gt; of the blog&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;./wikidata/index.json&#34;&gt;Wikidata URIs&lt;/a&gt; for posts in the blog&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
+			</item>
+			<item>
+				<title>Posts</title>
+				<link>https://never-built.goettingen.xyz/meta/posts/index.json</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/meta/posts/index.json</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Schema.org</title>
+				<link>https://never-built.goettingen.xyz/meta/schema.org/index.json</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/meta/schema.org/index.json</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Tags</title>
+				<link>https://never-built.goettingen.xyz/meta/tags/index.json</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/meta/tags/index.json</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Wikidata</title>
+				<link>https://never-built.goettingen.xyz/meta/wikidata/index.json</link>
+				<pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/meta/wikidata/index.json</guid>
+				<description></description>
+			</item>
+	</channel>
+</rss>

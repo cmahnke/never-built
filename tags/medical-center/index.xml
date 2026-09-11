@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Universitätsmedizin on Never Built Göttingen</title>
+		<link>https://never-built.goettingen.xyz/tags/medical-center/</link>
+		<description>Recent content in Universitätsmedizin on Never Built Göttingen</description>
+		<generator>Hugo</generator>
+		<language>de</language>
+		
+			<managingEditor>mail@christianmahnke.de (Christian Mahnke)</managingEditor>
+		
+		
+			<webMaster>mail@christianmahnke.de (Christian Mahnke)</webMaster>
+		
+		
+			<copyright>Christian Mahnke</copyright>
+		
+		
+			<atom:link href="https://never-built.goettingen.xyz/tags/medical-center/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Zielplanungen Uni Göttingen</title>
+				<link>https://never-built.goettingen.xyz/post/zielplanungen-universitaet-goettingen-1994/manifest.json</link>
+				<pubDate>Tue, 12 Aug 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/post/zielplanungen-universitaet-goettingen-1994/manifest.json</guid>
+				<description>&lt;p&gt;Ein Stadtplan zum Stand der Planungen des Staatshochbauamtes Göttingen aus dem Jahr 1994&amp;hellip;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Modell-Fotos</title>
+				<link>https://never-built.goettingen.xyz/post/modell-fotos-1994/manifest.json</link>
+				<pubDate>Tue, 29 Jul 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/post/modell-fotos-1994/manifest.json</guid>
+				<description>&lt;p&gt;Ein altes Ausstellungsplakat, das Modelle zum Stand der Planungen des Staatshochbauamtes Göttingen für das Nordgebiet, die Medizin und das GWZ (Zentralcampus) aus dem Jahr 1994 zeigt&amp;hellip;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Medizinische Fakultät</title>
+				<link>https://never-built.goettingen.xyz/post/bauinformation-nr1-1967/klinikum/manifest.json</link>
+				<pubDate>Wed, 07 May 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/post/bauinformation-nr1-1967/klinikum/manifest.json</guid>
+				<description>&lt;p&gt;Ein früher Entwurf des Klinikums&amp;hellip;&lt;/p&gt;</description>
+			</item>
+			<item>
+				<title>Medizinische Fakultät</title>
+				<link>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/manifest.json</link>
+				<pubDate>Wed, 05 Mar 2025 17:15:07 +0200</pubDate><author>mail@christianmahnke.de (Christian Mahnke)</author>
+				<guid>https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/manifest.json</guid>
+				<description>&lt;p&gt;Ein &amp;bdquo;vollständiger&amp;ldquo; Entwurf für das Klinikum&amp;hellip;&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

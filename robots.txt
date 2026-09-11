@@ -1,0 +1,9 @@
+User-agent: *
+
+Disallow: /privacy/
+
+Disallow: /meta/_index.en/
+
+Sitemap: https://never-built.goettingen.xyz/sitemap.xml
+
+

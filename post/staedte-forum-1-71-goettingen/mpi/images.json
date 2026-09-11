@@ -1,0 +1,38 @@
+[
+  {
+    "image": "page072.jxl",
+    "size": [4706, 6989],
+    "areas": [
+      {
+        "name": "model-planned",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 4672,
+          "y": 2174
+        }
+      }
+    ]
+  },
+  {
+    "image": "page073.jxl",
+    "size": [4727, 6991],
+    "areas": [
+      {
+        "name": "blueprint",
+        "postprocess": ["preview"],
+        "position": {
+          "x": 20,
+          "y": 0
+        },
+        "size": {
+          "x": 4704,
+          "y": 2222
+        }
+      }
+    ]
+  }
+]
