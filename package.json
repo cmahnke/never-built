@@ -7,10 +7,10 @@
     "motion": "^13.2.0",
     "photoswipe": "^5.4.4",
     "terminal.css": "^0.7.5",
-    "three": "^0.185.1",
+    "three": "^0.186.0",
     "@turf/turf": "^7.4.0",
     "chroma-js": "^3.2.0",
-    "maplibre-gl": "^6.8.0",
+    "maplibre-gl": "^6.9.0",
     "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {
@@ -19,7 +19,7 @@
     "@gltf-transform/core": "^4.5.0",
     "@gltf-transform/extensions": "^4.5.0",
     "@gltf-transform/functions": "^4.5.0",
-    "@maplibre/maplibre-gl-style-spec": "26.4.1",
+    "@maplibre/maplibre-gl-style-spec": "26.4.2",
     "cssnano": "^9.0.4",
     "gltf-pipeline": "^4.3.1",
     "obj2gltf": "^3.2.0",
