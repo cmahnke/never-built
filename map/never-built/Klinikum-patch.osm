@@ -1,0 +1,2355 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version='0.6' generator='osm_tool'>
+  <node id='-33041' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5497013' lon='9.9457469'/>
+  <node id='-33042' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5497025' lon='9.9455882'/>
+  <node id='-33043' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.549804' lon='9.9455902'/>
+  <node id='-33044' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5498054' lon='9.9454126'/>
+  <node id='-33045' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.549389' lon='9.9454042'>
+    <tag k='entrance' v='yes'/>
+  </node>
+  <node id='-33046' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5489565' lon='9.9453954'/>
+  <node id='-33047' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5489551' lon='9.9455731'/>
+  <node id='-33048' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5490674' lon='9.9455753'/>
+  <node id='-33049' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5490654' lon='9.9458347'/>
+  <node id='-33050' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5489534' lon='9.9458324'/>
+  <node id='-33051' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.548952' lon='9.9460067'/>
+  <node id='-33052' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.549132' lon='9.9460103'>
+    <tag k='bicycle' v='no'/>
+    <tag k='entrance' v='yes'/>
+    <tag k='foot' v='yes'/>
+    <tag k='name' v='Palliativstation'/>
+  </node>
+  <node id='-33053' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5493772' lon='9.9460153'/>
+  <node id='-33054' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5493912' lon='9.9460156'>
+    <tag k='entrance' v='yes'/>
+    <tag k='survey:date' v='2016-01-18'/>
+  </node>
+  <node id='-33055' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5494066' lon='9.9460159'/>
+  <node id='-33056' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5498009' lon='9.9460239'/>
+  <node id='-33057' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5498022' lon='9.9458496'/>
+  <node id='-33058' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5497005' lon='9.9458475'/>
+  <node id='-33059' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5497009' lon='9.9458006'/>
+  <node id='-33060' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5497011' lon='9.9457737'/>
+  <node id='-33061' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5499206' lon='9.9457514'/>
+  <node id='-33062' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5499204' lon='9.945778'/>
+  <node id='-33063' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5499201' lon='9.945805'/>
+  <node id='-33064' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5513693' lon='9.9452215'/>
+  <node id='-33065' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5500696' lon='9.9454704'/>
+  <node id='-33066' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5500676' lon='9.9457269'/>
+  <node id='-33067' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5499534' lon='9.9457246'/>
+  <node id='-33068' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5499554' lon='9.9454681'/>
+  <node id='-33069' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512835' lon='9.9433656'/>
+  <node id='-33070' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512815' lon='9.9436248'/>
+  <node id='-33071' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511659' lon='9.9436225'/>
+  <node id='-33072' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511679' lon='9.9433633'/>
+  <node id='-33073' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504677' lon='9.9452088'/>
+  <node id='-33074' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512821' lon='9.9442282'/>
+  <node id='-33075' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.55128' lon='9.9444875'/>
+  <node id='-33076' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511645' lon='9.9444851'/>
+  <node id='-33077' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511665' lon='9.9442258'/>
+  <node id='-33078' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508714' lon='9.9454806'/>
+  <node id='-33079' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508694' lon='9.9457371'/>
+  <node id='-33080' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5507552' lon='9.9457348'/>
+  <node id='-33081' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5507572' lon='9.9454783'/>
+  <node id='-33082' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512809' lon='9.9450216'/>
+  <node id='-33083' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512788' lon='9.9452809'/>
+  <node id='-33084' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511633' lon='9.9452785'/>
+  <node id='-33085' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511653' lon='9.9450192'/>
+  <node id='-33086' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5518071' lon='9.9457283'/>
+  <node id='-33087' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5499574' lon='9.9467142'/>
+  <node id='-33088' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5522048' lon='9.9467142'/>
+  <node id='-33089' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503068' lon='9.9460014'>
+    <tag k='natural' v='tree'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </node>
+  <node id='-33090' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503096' lon='9.9460765'>
+    <tag k='natural' v='tree'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </node>
+  <node id='-33091' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503482' lon='9.9460706'>
+    <tag k='natural' v='tree'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </node>
+  <node id='-33092' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503779' lon='9.9460027'>
+    <tag k='natural' v='tree'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </node>
+  <node id='-33093' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504092' lon='9.9461987'>
+    <tag k='natural' v='tree'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </node>
+  <node id='-33094' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5499733' lon='9.945841'/>
+  <node id='-33095' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5499619' lon='9.9458635'/>
+  <node id='-33096' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5516136' lon='9.9458781'/>
+  <node id='-33097' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5505071' lon='9.9393245'/>
+  <node id='-33098' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504678' lon='9.9458424'/>
+  <node id='-33099' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503523' lon='9.94584'/>
+  <node id='-33100' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503538' lon='9.9456468'/>
+  <node id='-33101' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504693' lon='9.9456492'/>
+  <node id='-33102' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512795' lon='9.9458659'/>
+  <node id='-33103' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.551164' lon='9.9458635'/>
+  <node id='-33104' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511655' lon='9.9456703'/>
+  <node id='-33105' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.551281' lon='9.9456727'/>
+  <node id='-33106' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502247' lon='9.940345'/>
+  <node id='-33107' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502709' lon='9.9406634'/>
+  <node id='-33108' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503453' lon='9.9411238'/>
+  <node id='-33109' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503144' lon='9.9411347'/>
+  <node id='-33110' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502191' lon='9.9405959'/>
+  <node id='-33111' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5501664' lon='9.9402581'/>
+  <node id='-33112' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502904' lon='9.9407812'/>
+  <node id='-33113' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502588' lon='9.9407934'/>
+  <node id='-33114' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502562' lon='9.9405334'/>
+  <node id='-33115' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550197' lon='9.9404956'/>
+  <node id='-33116' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502388' lon='9.9407099'/>
+  <node id='-33117' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503201' lon='9.940949'/>
+  <node id='-33118' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502912' lon='9.9409683'/>
+  <node id='-33119' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503596' lon='9.9412785'/>
+  <node id='-33120' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503271' lon='9.9412824'/>
+  <node id='-33121' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5501641' lon='9.9399973'/>
+  <node id='-33122' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5501794' lon='9.9403873'/>
+  <node id='-33123' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502199' lon='9.9402587'/>
+  <node id='-33124' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502395' lon='9.940433'/>
+  <node id='-33126' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503006' lon='9.9412451'/>
+  <node id='-33127' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503019' lon='9.941355'/>
+  <node id='-33128' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5501185' lon='9.9416937'/>
+  <node id='-33129' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502263' lon='9.9407984'/>
+  <node id='-33130' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5501447' lon='9.9403421'/>
+  <node id='-33131' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502834' lon='9.9405421'/>
+  <node id='-33132' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503129' lon='9.9407588'/>
+  <node id='-33133' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502667' lon='9.9409801'/>
+  <node id='-33134' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5501704' lon='9.9405486'/>
+  <node id='-33135' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502542' lon='9.940366'/>
+  <node id='-33136' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5522564' lon='9.9398119'/>
+  <node id='-33137' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504177' lon='9.9395014'/>
+  <node id='-33138' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503036' lon='9.9397892'/>
+  <node id='-33139' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506756' lon='9.9399941'/>
+  <node id='-33140' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502937' lon='9.9397258'/>
+  <node id='-33141' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5520695' lon='9.940743'/>
+  <node id='-33142' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5521354' lon='9.9410342'/>
+  <node id='-33143' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508073' lon='9.9399946'/>
+  <node id='-33144' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504026' lon='9.9398579'/>
+  <node id='-33145' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550673' lon='9.9399165'/>
+  <node id='-33146' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5510907' lon='9.9399168'/>
+  <node id='-33147' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508321' lon='9.9400933'/>
+  <node id='-33148' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5513242' lon='9.9416695'/>
+  <node id='-33149' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512978' lon='9.9411202'/>
+  <node id='-33150' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512564' lon='9.9408332'/>
+  <node id='-33151' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503702' lon='9.9414536'/>
+  <node id='-33152' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550336' lon='9.9414601'/>
+  <node id='-33153' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503368' lon='9.9417254'/>
+  <node id='-33154' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503718' lon='9.9417254'/>
+  <node id='-33155' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550469' lon='9.9393837'/>
+  <node id='-33156' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504563' lon='9.9397615'/>
+  <node id='-33157' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550635' lon='9.9398412'/>
+  <node id='-33158' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508625' lon='9.9399692'/>
+  <node id='-33159' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.551038' lon='9.9401456'/>
+  <node id='-33160' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511412' lon='9.940339'/>
+  <node id='-33161' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512038' lon='9.9405324'/>
+  <node id='-33162' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5513127' lon='9.9409623'/>
+  <node id='-33163' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5513484' lon='9.9412994'/>
+  <node id='-33164' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5514028' lon='9.9417201'/>
+  <node id='-33165' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504597' lon='9.9395759'/>
+  <node id='-33166' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550631' lon='9.9396595'/>
+  <node id='-33167' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508772' lon='9.9397876'/>
+  <node id='-33168' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5510315' lon='9.9399496'/>
+  <node id='-33169' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511583' lon='9.9401613'/>
+  <node id='-33170' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5513005' lon='9.9405167'/>
+  <node id='-33171' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5513915' lon='9.9409087'/>
+  <node id='-33172' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5514589' lon='9.9412955'/>
+  <node id='-33173' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5515052' lon='9.9417045'/>
+  <node id='-33174' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503783' lon='9.9399718'/>
+  <node id='-33175' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503653' lon='9.9399731'/>
+  <node id='-33176' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503519' lon='9.9399686'/>
+  <node id='-33177' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503336' lon='9.9399686'/>
+  <node id='-33178' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503092' lon='9.9399627'/>
+  <node id='-33179' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502869' lon='9.9399856'/>
+  <node id='-33180' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502844' lon='9.9400104'/>
+  <node id='-33181' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502832' lon='9.9401051'/>
+  <node id='-33182' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502857' lon='9.9402449'/>
+  <node id='-33183' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502905' lon='9.9404396'/>
+  <node id='-33184' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550323' lon='9.9407088'/>
+  <node id='-33185' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503929' lon='9.9411308'/>
+  <node id='-33186' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504018' lon='9.9412968'/>
+  <node id='-33187' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504132' lon='9.9413223'/>
+  <node id='-33188' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504258' lon='9.9412105'/>
+  <node id='-33189' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504343' lon='9.9400267'/>
+  <node id='-33190' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503978' lon='9.9399771'/>
+  <node id='-33191' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5505497' lon='9.9413432'/>
+  <node id='-33192' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5507715' lon='9.9394719'/>
+  <node id='-33193' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506379' lon='9.9394293'/>
+  <node id='-33194' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5509267' lon='9.9396138'/>
+  <node id='-33195' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.551116' lon='9.9398033'/>
+  <node id='-33196' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5513062' lon='9.940079'/>
+  <node id='-33197' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5514321' lon='9.9403717'/>
+  <node id='-33198' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5515629' lon='9.9409126'/>
+  <node id='-33199' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5516482' lon='9.9414627'/>
+  <node id='-33200' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5516799' lon='9.9419357'/>
+  <node id='-33201' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511806' lon='9.9396843'/>
+  <node id='-33202' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5514264' lon='9.939994'/>
+  <node id='-33203' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5515523' lon='9.9402319'/>
+  <node id='-33204' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5516344' lon='9.9404814'/>
+  <node id='-33205' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5517498' lon='9.9408721'/>
+  <node id='-33206' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5518847' lon='9.9412615'/>
+  <node id='-33207' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5515652' lon='9.9399745'/>
+  <node id='-33208' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5501334' lon='9.9413808'/>
+  <node id='-33209' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5501202' lon='9.9414148'/>
+  <node id='-33210' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502789' lon='9.9413853'/>
+  <node id='-33211' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504158' lon='9.9413664'/>
+  <node id='-33212' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5501539' lon='9.9413764'/>
+  <node id='-33213' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503516' lon='9.9414287'/>
+  <node id='-33214' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503532' lon='9.9417433'/>
+  <node id='-33215' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5505546' lon='9.9412289'/>
+  <node id='-33216' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5505918' lon='9.94146'/>
+  <node id='-33217' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5505839' lon='9.941386'/>
+  <node id='-33218' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506412' lon='9.9413349'/>
+  <node id='-33219' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550592' lon='9.9417499'/>
+  <node id='-33220' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506617' lon='9.9414202'/>
+  <node id='-33221' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506608' lon='9.9417526'/>
+  <node id='-33222' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550574' lon='9.9413693'/>
+  <node id='-33223' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506061' lon='9.9412564'/>
+  <node id='-33224' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506578' lon='9.94212'/>
+  <node id='-33225' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506147' lon='9.94212'/>
+  <node id='-33226' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506179' lon='9.941753'/>
+  <node id='-33227' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504725' lon='9.9419129'/>
+  <node id='-33228' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504124' lon='9.9418822'/>
+  <node id='-33229' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550401' lon='9.9417959'/>
+  <node id='-33230' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503946' lon='9.9416812'/>
+  <node id='-33231' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503897' lon='9.9414353'/>
+  <node id='-33232' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502987' lon='9.9415346'/>
+  <node id='-33233' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502954' lon='9.9417201'/>
+  <node id='-33234' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502954' lon='9.9418247'/>
+  <node id='-33235' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503115' lon='9.9418772'/>
+  <node id='-33236' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5503363' lon='9.9419229'/>
+  <node id='-33237' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506708' lon='9.9418371'/>
+  <node id='-33238' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511989' lon='9.9418364'/>
+  <node id='-33239' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504419' lon='9.9398776'/>
+  <node id='-33240' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5507203' lon='9.9419183'/>
+  <node id='-33241' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5507228' lon='9.9414118'/>
+  <node id='-33242' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550696' lon='9.9412628'/>
+  <node id='-33243' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506562' lon='9.94117'/>
+  <node id='-33244' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506139' lon='9.9411387'/>
+  <node id='-33245' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504847' lon='9.9411034'/>
+  <node id='-33246' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504912' lon='9.9399901'/>
+  <node id='-33247' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504067' lon='9.9399156'/>
+  <node id='-33248' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550306' lon='9.9398778'/>
+  <node id='-33249' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5502473' lon='9.9398622'/>
+  <node id='-33250' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512761' lon='9.9419285'/>
+  <node id='-33251' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5512655' lon='9.9416653'/>
+  <node id='-33252' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.551213' lon='9.9411962'/>
+  <node id='-33253' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511136' lon='9.940812'/>
+  <node id='-33254' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5510315' lon='9.9405428'/>
+  <node id='-33255' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508625' lon='9.9402815'/>
+  <node id='-33256' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5507447' lon='9.9401848'/>
+  <node id='-33257' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550622' lon='9.9400829'/>
+  <node id='-33258' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511713' lon='9.9419271'/>
+  <node id='-33259' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511469' lon='9.9416221'/>
+  <node id='-33260' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5511095' lon='9.9412014'/>
+  <node id='-33261' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5510299' lon='9.9408656'/>
+  <node id='-33262' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5509324' lon='9.9406029'/>
+  <node id='-33263' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508243' lon='9.9404566'/>
+  <node id='-33264' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550674' lon='9.940322'/>
+  <node id='-33265' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504899' lon='9.9402084'/>
+  <node id='-33266' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5510356' lon='9.941925'/>
+  <node id='-33267' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5510063' lon='9.9415633'/>
+  <node id='-33268' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5509478' lon='9.941123'/>
+  <node id='-33269' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508471' lon='9.9408904'/>
+  <node id='-33270' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550774' lon='9.9407519'/>
+  <node id='-33271' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5506285' lon='9.9406095'/>
+  <node id='-33272' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550488' lon='9.9405363'/>
+  <node id='-33273' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550908' lon='9.9419223'/>
+  <node id='-33274' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5508658' lon='9.9414444'/>
+  <node id='-33275' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550826' lon='9.9411779'/>
+  <node id='-33276' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5507415' lon='9.9409832'/>
+  <node id='-33277' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.550644' lon='9.9408577'/>
+  <node id='-33278' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504866' lon='9.9407832'/>
+  <node id='-33279' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5518205' lon='9.9418916'/>
+  <node id='-33280' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5514832' lon='9.9400764'/>
+  <node id='-33281' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5504018' lon='9.9393107'/>
+  <node id='-33282' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5517595' lon='9.9418495'/>
+  <node id='-33283' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5518587' lon='9.9418508'/>
+  <node id='-33284' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5518668' lon='9.9412981'/>
+  <node id='-33285' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5516418' lon='9.9402094'/>
+  <node id='64763372' action='modify' version='4' changeset='16371092' timestamp='2013-05-31T21:17:11Z' uid='65504' user='julianladisch' lat='51.5532093' lon='9.9415328'/>
+  <node id='213562757' action='modify' version='10' changeset='38097148' timestamp='2016-03-27T10:11:27Z' uid='1468043' user='jengelh' lat='51.5503732' lon='9.9425148'/>
+  <node id='254919100' action='modify' version='7' changeset='38097148' timestamp='2016-03-27T10:11:27Z' uid='1468043' user='jengelh' lat='51.5499455' lon='9.9425062'/>
+  <node id='254919101' action='modify' version='7' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5512862' lon='9.9425308'/>
+  <node id='254919102' action='modify' version='7' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5513819' lon='9.9436001'/>
+  <node id='254919104' action='modify' version='7' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5513643' lon='9.9458688'/>
+  <node id='254919137' action='modify' version='4' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.552709' lon='9.9418192'/>
+  <node id='254919140' action='modify' version='4' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5520713' lon='9.9418064'/>
+  <node id='254919193' action='modify' version='4' changeset='13543647' timestamp='2012-10-18T12:06:49Z' uid='16256' user='patzi' lat='51.551269' lon='9.9411714'/>
+  <node id='316634770' action='modify' version='4' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5502409' lon='9.9402217'/>
+  <node id='316634773' action='modify' version='4' changeset='39357316' timestamp='2016-05-16T16:49:26Z' uid='1468043' user='jengelh' lat='51.5505153' lon='9.9422123'>
+    <tag k='abandoned:highway' v='bus_stop'/>
+    <tag k='name' v='Klinikum-West'/>
+  </node>
+  <node id='316634777' action='modify' version='3' changeset='22888304' timestamp='2014-06-12T12:44:11Z' uid='16256' user='patzi' lat='51.550552' lon='9.9414016'/>
+  <node id='316635814' action='modify' version='5' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5514038' lon='9.9419308'>
+    <tag k='bus' v='yes'/>
+    <tag k='name' v='Klinikum'/>
+    <tag k='public_transport' v='stop_position'/>
+  </node>
+  <node id='316635815' action='modify' version='6' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5517311' lon='9.9419368'/>
+  <node id='316635816' action='modify' version='5' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5519214' lon='9.94193'/>
+  <node id='316635818' action='modify' version='3' changeset='13543647' timestamp='2012-10-18T12:06:52Z' uid='16256' user='patzi' lat='51.5525551' lon='9.941365'/>
+  <node id='316635819' action='modify' version='3' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5527815' lon='9.9414411'/>
+  <node id='316635820' action='modify' version='2' changeset='13543647' timestamp='2012-10-18T12:06:52Z' uid='16256' user='patzi' lat='51.5528478' lon='9.9415156'/>
+  <node id='316635821' action='modify' version='2' changeset='13543647' timestamp='2012-10-18T12:06:52Z' uid='16256' user='patzi' lat='51.552871' lon='9.9415512'/>
+  <node id='316635822' action='modify' version='3' changeset='13543647' timestamp='2012-10-18T12:06:52Z' uid='16256' user='patzi' lat='51.5531313' lon='9.9415354'/>
+  <node id='316635823' action='modify' version='4' changeset='159068056' timestamp='2024-11-12T20:57:48Z' uid='1468043' user='jengelh' lat='51.5506361' lon='9.9419164'/>
+  <node id='318905298' action='modify' version='3' changeset='13543647' timestamp='2012-10-18T12:06:52Z' uid='16256' user='patzi' lat='51.5520829' lon='9.9409565'/>
+  <node id='318905299' action='modify' version='4' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5512537' lon='9.9397307'/>
+  <node id='318905300' action='modify' version='3' changeset='13543647' timestamp='2012-10-18T12:06:52Z' uid='16256' user='patzi' lat='51.5502543' lon='9.9393622'/>
+  <node id='369740173' action='modify' version='3' changeset='22886972' timestamp='2014-06-12T11:16:53Z' uid='16256' user='patzi' lat='51.5522536' lon='9.9412604'/>
+  <node id='369740180' action='modify' version='3' changeset='22886972' timestamp='2014-06-12T11:16:54Z' uid='16256' user='patzi' lat='51.5520969' lon='9.9408523'/>
+  <node id='369740181' action='modify' version='3' changeset='22886972' timestamp='2014-06-12T11:16:54Z' uid='16256' user='patzi' lat='51.5521787' lon='9.9411782'/>
+  <node id='431577699' action='modify' version='5' changeset='163273453' timestamp='2025-03-06T07:49:14Z' uid='8804172' user='ayxis' lat='51.5529818' lon='9.9415386'>
+    <tag k='barrier' v='lift_gate'/>
+    <tag k='bicycle' v='yes'/>
+    <tag k='emergency' v='yes'/>
+    <tag k='foot' v='yes'/>
+    <tag k='survey:date' v='2017-04-02'/>
+  </node>
+  <node id='431577706' action='modify' version='2' changeset='13543647' timestamp='2012-10-18T12:06:54Z' uid='16256' user='patzi' lat='51.5529153' lon='9.9415555'/>
+  <node id='431577707' action='modify' version='5' changeset='38200003' timestamp='2016-03-31T15:02:52Z' uid='16256' user='patzi' lat='51.5526518' lon='9.9411301'/>
+  <node id='431577710' action='modify' version='4' changeset='11810981' timestamp='2012-06-05T22:05:02Z' uid='16256' user='patzi' lat='51.5528581' lon='9.9411331'/>
+  <node id='431577718' action='modify' version='4' changeset='134018922' timestamp='2023-03-23T11:46:37Z' uid='2477918' user='bnnHllr' lat='51.5525534' lon='9.9410761'>
+    <tag k='access' v='permit'/>
+    <tag k='barrier' v='gate'/>
+    <tag k='emergency' v='yes'/>
+    <tag k='material' v='metal'/>
+  </node>
+  <node id='438253594' action='modify' version='4' changeset='177369316' timestamp='2026-01-18T11:29:38Z' uid='17360977' user='CaptainCarte' lat='51.5524565' lon='9.9413592'>
+    <tag k='crossing' v='uncontrolled'/>
+    <tag k='crossing:island' v='no'/>
+    <tag k='crossing:markings' v='zebra'/>
+    <tag k='highway' v='crossing'/>
+  </node>
+  <node id='438253676' action='modify' version='7' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5513901' lon='9.9425329'/>
+  <node id='441538876' action='modify' version='5' changeset='159068056' timestamp='2024-11-12T20:57:48Z' uid='1468043' user='jengelh' lat='51.5507356' lon='9.9419186'>
+    <tag k='crossing_ref' v='zebra'/>
+    <tag k='highway' v='crossing'/>
+  </node>
+  <node id='877579994' action='modify' version='6' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5499423' lon='9.9429205'/>
+  <node id='877580014' action='modify' version='6' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5499311' lon='9.9443695'/>
+  <node id='877580065' action='modify' version='7' changeset='38097148' timestamp='2016-03-27T10:11:25Z' uid='1468043' user='jengelh' lat='51.5499279' lon='9.9447813'>
+    <tag k='bicycle' v='no'/>
+    <tag k='entrance' v='yes'/>
+    <tag k='foot' v='yes'/>
+    <tag k='name' v='Pädiatriestation'/>
+  </node>
+  <node id='877580093' action='modify' version='6' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5499315' lon='9.9443159'/>
+  <node id='877580094' action='modify' version='6' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5499427' lon='9.9428694'/>
+  <node id='1777485617' action='modify' version='3' changeset='38200003' timestamp='2016-03-31T15:02:52Z' uid='16256' user='patzi' lat='51.5526198' lon='9.9410604'/>
+  <node id='1777485619' action='modify' version='1' changeset='11810981' timestamp='2012-06-05T22:04:56Z' uid='16256' user='patzi' lat='51.5526291' lon='9.9410726'/>
+  <node id='1777485621' action='modify' version='1' changeset='11810981' timestamp='2012-06-05T22:04:56Z' uid='16256' user='patzi' lat='51.5526421' lon='9.9410789'/>
+  <node id='1777485627' action='modify' version='2' changeset='38200003' timestamp='2016-03-31T15:02:52Z' uid='16256' user='patzi' lat='51.5526521' lon='9.941079'/>
+  <node id='1777485632' action='modify' version='1' changeset='11810981' timestamp='2012-06-05T22:04:57Z' uid='16256' user='patzi' lat='51.5528229' lon='9.9408061'/>
+  <node id='1777485633' action='modify' version='1' changeset='11810981' timestamp='2012-06-05T22:04:57Z' uid='16256' user='patzi' lat='51.552828' lon='9.9408766'/>
+  <node id='1777485634' action='modify' version='1' changeset='11810981' timestamp='2012-06-05T22:04:57Z' uid='16256' user='patzi' lat='51.5528409' lon='9.9409656'/>
+  <node id='1777485635' action='modify' version='1' changeset='11810981' timestamp='2012-06-05T22:04:57Z' uid='16256' user='patzi' lat='51.5528538' lon='9.9410385'/>
+  <node id='1781487230' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5499264' lon='9.9449763'/>
+  <node id='1781487231' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5499587' lon='9.9448781'/>
+  <node id='1781487232' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5499607' lon='9.9446216'/>
+  <node id='1781487233' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5499653' lon='9.9440294'/>
+  <node id='1781487235' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5499674' lon='9.9437695'/>
+  <node id='1781487236' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5499719' lon='9.9431808'/>
+  <node id='1781487237' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.549974' lon='9.9429221'/>
+  <node id='1781487240' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.549992' lon='9.9443552'/>
+  <node id='1781487241' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5499929' lon='9.9442585'/>
+  <node id='1781487242' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5500104' lon='9.9435112'/>
+  <node id='1781487243' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5500109' lon='9.9434179'/>
+  <node id='1781487244' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5500147' lon='9.9426773'/>
+  <node id='1781487245' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5500155' lon='9.9425815'/>
+  <node id='1781487246' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.550052' lon='9.9443566'/>
+  <node id='1781487247' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5500529' lon='9.94426'/>
+  <node id='1781487248' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5500538' lon='9.9435117'/>
+  <node id='1781487249' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5500543' lon='9.9434185'/>
+  <node id='1781487250' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5500591' lon='9.9426783'/>
+  <node id='1781487251' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:33Z' uid='16256' user='patzi' lat='51.5500599' lon='9.9425824'/>
+  <node id='1781487253' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5500729' lon='9.9448804'/>
+  <node id='1781487254' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5500749' lon='9.9446239'/>
+  <node id='1781487255' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5500795' lon='9.9440317'/>
+  <node id='1781487256' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5500815' lon='9.9437718'/>
+  <node id='1781487257' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5500861' lon='9.9431831'/>
+  <node id='1781487258' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5500882' lon='9.9429244'/>
+  <node id='1781487261' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:34Z' uid='16256' user='patzi' lat='51.5501608' lon='9.9435473'/>
+  <node id='1781487262' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:34Z' uid='16256' user='patzi' lat='51.5501627' lon='9.9433865'/>
+  <node id='1781487263' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:34Z' uid='16256' user='patzi' lat='51.5502269' lon='9.9435493'/>
+  <node id='1781487264' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:34Z' uid='16256' user='patzi' lat='51.5502288' lon='9.9433885'/>
+  <node id='1781487268' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5503578' lon='9.9444858'/>
+  <node id='1781487269' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5503598' lon='9.9442265'/>
+  <node id='1781487270' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5503646' lon='9.9436144'/>
+  <node id='1781487271' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5503666' lon='9.9433552'/>
+  <node id='1781487272' action='modify' version='3' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5503712' lon='9.9427738'/>
+  <node id='1781487273' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5499197' lon='9.9458399'/>
+  <node id='1781487274' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5504197' lon='9.9458499'/>
+  <node id='1781487278' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5504733' lon='9.9444882'/>
+  <node id='1781487279' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5504754' lon='9.9442289'/>
+  <node id='1781487280' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5504763' lon='9.9425168'/>
+  <node id='1781487282' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5504802' lon='9.9436167'/>
+  <node id='1781487283' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5504822' lon='9.9433575'/>
+  <node id='1781487284' action='modify' version='3' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5504867' lon='9.9427762'/>
+  <node id='1781487285' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5504888' lon='9.9425164'/>
+  <node id='1781487287' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5505933' lon='9.9425169'/>
+  <node id='1781487289' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5507519' lon='9.9448941'/>
+  <node id='1781487290' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5507539' lon='9.9446376'/>
+  <node id='1781487291' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5507585' lon='9.9440472'/>
+  <node id='1781487292' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5507605' lon='9.9437877'/>
+  <node id='1781487293' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5507651' lon='9.9431968'/>
+  <node id='1781487294' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5507671' lon='9.9429381'/>
+  <node id='1781487295' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:35Z' uid='16256' user='patzi' lat='51.5507732' lon='9.9451374'/>
+  <node id='1781487296' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:35Z' uid='16256' user='patzi' lat='51.5507743' lon='9.9450647'/>
+  <node id='1781487297' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:35Z' uid='16256' user='patzi' lat='51.5508519' lon='9.9451405'/>
+  <node id='1781487298' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:35Z' uid='16256' user='patzi' lat='51.550853' lon='9.9450678'/>
+  <node id='1781487299' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.55087' lon='9.9448965'/>
+  <node id='1781487300' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.550872' lon='9.94464'/>
+  <node id='1781487301' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5508766' lon='9.9440496'/>
+  <node id='1781487302' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5508786' lon='9.9437901'/>
+  <node id='1781487303' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5508832' lon='9.9431992'/>
+  <node id='1781487304' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5508852' lon='9.9429405'/>
+  <node id='1781487306' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5513804' lon='9.9437967'/>
+  <node id='1781487314' action='modify' version='4' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5511651' lon='9.942789'/>
+  <node id='1781487315' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5511671' lon='9.9425284'/>
+  <node id='1781487318' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:36Z' uid='16256' user='patzi' lat='51.5512406' lon='9.9431634'/>
+  <node id='1781487319' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:36Z' uid='16256' user='patzi' lat='51.551241' lon='9.9430548'/>
+  <node id='1781487325' action='modify' version='4' changeset='38097148' timestamp='2016-03-27T10:11:26Z' uid='1468043' user='jengelh' lat='51.5512842' lon='9.9427914'/>
+  <node id='1781487326' action='modify' version='2' changeset='11903887' timestamp='2012-06-15T11:32:24Z' uid='16256' user='patzi' lat='51.5513081' lon='9.9431652'/>
+  <node id='1781487327' action='modify' version='1' changeset='11844016' timestamp='2012-06-09T11:45:36Z' uid='16256' user='patzi' lat='51.5513077' lon='9.9430555'/>
+  <node id='1781487359' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:27Z' uid='1468043' user='jengelh' lat='51.5519962' lon='9.9419524'/>
+  <node id='1781487372' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:27Z' uid='1468043' user='jengelh' lat='51.5520702' lon='9.9419539'/>
+  <node id='1972026732' action='modify' version='1' changeset='13543647' timestamp='2012-10-18T12:06:29Z' uid='16256' user='patzi' lat='51.5501383' lon='9.939364'/>
+  <node id='1972026736' action='modify' version='1' changeset='13543647' timestamp='2012-10-18T12:06:29Z' uid='16256' user='patzi' lat='51.5501233' lon='9.9396475'/>
+  <node id='1972026741' action='modify' version='3' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5501284' lon='9.9398794'/>
+  <node id='1972026751' action='modify' version='3' changeset='134853125' timestamp='2023-04-13T09:16:56Z' uid='1468043' user='jengelh' lat='51.5501562' lon='9.939152'/>
+  <node id='1972026755' action='modify' version='2' changeset='22888304' timestamp='2014-06-12T12:44:11Z' uid='16256' user='patzi' lat='51.5503671' lon='9.9411198'/>
+  <node id='1972026776' action='modify' version='2' changeset='22888304' timestamp='2014-06-12T12:44:11Z' uid='16256' user='patzi' lat='51.550393' lon='9.9413504'/>
+  <node id='1972026812' action='modify' version='1' changeset='13543647' timestamp='2012-10-18T12:06:30Z' uid='16256' user='patzi' lat='51.5508345' lon='9.9394829'/>
+  <node id='1972026817' action='modify' version='1' changeset='13543647' timestamp='2012-10-18T12:06:30Z' uid='16256' user='patzi' lat='51.5514737' lon='9.9398779'/>
+  <node id='1972026820' action='modify' version='2' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5518595' lon='9.9403674'/>
+  <node id='1972026825' action='modify' version='1' changeset='13543647' timestamp='2012-10-18T12:06:30Z' uid='16256' user='patzi' lat='51.551947' lon='9.9405055'/>
+  <node id='1972026846' action='modify' version='2' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5509463' lon='9.940199'/>
+  <node id='1972026872' action='modify' version='2' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5510778' lon='9.9404046'/>
+  <node id='1972026881' action='modify' version='2' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5511268' lon='9.9405451'/>
+  <node id='1972026886' action='modify' version='1' changeset='13543647' timestamp='2012-10-18T12:06:30Z' uid='16256' user='patzi' lat='51.5521827' lon='9.9413476'/>
+  <node id='1972026889' action='modify' version='2' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5512034' lon='9.9407907'/>
+  <node id='1972026990' action='modify' version='1' changeset='13543647' timestamp='2012-10-18T12:06:31Z' uid='16256' user='patzi' lat='51.551918' lon='9.9413347'/>
+  <node id='1972027010' action='modify' version='2' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5527443' lon='9.9414022'/>
+  <node id='2415228671' action='modify' version='1' changeset='17308008' timestamp='2013-08-11T20:50:01Z' uid='165061' user='mapper999' lat='51.5505656' lon='9.9420598'/>
+  <node id='2415228672' action='modify' version='2' changeset='22888304' timestamp='2014-06-12T12:44:11Z' uid='16256' user='patzi' lat='51.5505692' lon='9.941838'/>
+  <node id='2886880959' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5499377' lon='9.9435169'/>
+  <node id='2886880960' action='modify' version='5' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.549938' lon='9.9434735'/>
+  <node id='2912527783' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504776' lon='9.9451062'/>
+  <node id='2912527784' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504792' lon='9.9448837'/>
+  <node id='2912527785' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504807' lon='9.9446869'/>
+  <node id='2912527786' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504824' lon='9.9444623'/>
+  <node id='2912527787' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504838' lon='9.944265'/>
+  <node id='2912527788' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504855' lon='9.9440409'/>
+  <node id='2912527789' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.550487' lon='9.9438413'/>
+  <node id='2912527790' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504886' lon='9.9436188'/>
+  <node id='2912527791' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504901' lon='9.9434208'/>
+  <node id='2912527792' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504918' lon='9.9431952'/>
+  <node id='2912527793' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504933' lon='9.9429952'/>
+  <node id='2912527794' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5504949' lon='9.9427744'/>
+  <node id='2912527795' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5507478' lon='9.9451114'/>
+  <node id='2912527796' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5507494' lon='9.9448889'/>
+  <node id='2912527797' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5507509' lon='9.9446921'/>
+  <node id='2912527798' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5507526' lon='9.9444675'/>
+  <node id='2912527799' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.550754' lon='9.9442702'/>
+  <node id='2912527800' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:28Z' uid='1468043' user='jengelh' lat='51.5507557' lon='9.9440461'/>
+  <node id='2912530901' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:29Z' uid='1468043' user='jengelh' lat='51.5507572' lon='9.9438465'/>
+  <node id='2912530902' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:29Z' uid='1468043' user='jengelh' lat='51.5507588' lon='9.943624'/>
+  <node id='2912530903' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:29Z' uid='1468043' user='jengelh' lat='51.5507603' lon='9.943426'/>
+  <node id='2912530904' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:29Z' uid='1468043' user='jengelh' lat='51.550762' lon='9.9432004'/>
+  <node id='2912530905' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:29Z' uid='1468043' user='jengelh' lat='51.5507635' lon='9.9430004'/>
+  <node id='2912530906' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:29Z' uid='1468043' user='jengelh' lat='51.5507651' lon='9.9427796'/>
+  <node id='2912530907' action='modify' version='1' changeset='22886126' timestamp='2014-06-12T10:10:38Z' uid='16256' user='patzi' lat='51.5509192' lon='9.9432084'/>
+  <node id='2912530908' action='modify' version='1' changeset='22886126' timestamp='2014-06-12T10:10:38Z' uid='16256' user='patzi' lat='51.5509208' lon='9.942989'/>
+  <node id='2912530909' action='modify' version='1' changeset='22886126' timestamp='2014-06-12T10:10:38Z' uid='16256' user='patzi' lat='51.5511249' lon='9.9432124'/>
+  <node id='2912530910' action='modify' version='1' changeset='22886126' timestamp='2014-06-12T10:10:38Z' uid='16256' user='patzi' lat='51.5511265' lon='9.9429929'/>
+  <node id='2912579742' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:43Z' uid='16256' user='patzi' lat='51.5502945' lon='9.9388727'/>
+  <node id='2912579748' action='modify' version='2' changeset='55407904' timestamp='2018-01-13T14:33:05Z' uid='1468043' user='jengelh' lat='51.5504181' lon='9.9390499'/>
+  <node id='2912579749' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:43Z' uid='16256' user='patzi' lat='51.5504692' lon='9.9388797'/>
+  <node id='2912579750' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:43Z' uid='16256' user='patzi' lat='51.5506254' lon='9.9391785'/>
+  <node id='2912579751' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5506851' lon='9.9393729'/>
+  <node id='2912579752' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.550694' lon='9.9389262'/>
+  <node id='2912579753' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5507347' lon='9.9392368'/>
+  <node id='2912579754' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5508743' lon='9.9392953'/>
+  <node id='2912579755' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5509099' lon='9.9394403'/>
+  <node id='2912579756' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5510021' lon='9.9393525'/>
+  <node id='2912579757' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5512343' lon='9.9396584'/>
+  <node id='2912579758' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5514306' lon='9.9397746'/>
+  <node id='2912579759' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5510694' lon='9.939446'/>
+  <node id='2912579760' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5517467' lon='9.9400686'/>
+  <node id='2912579761' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5518897' lon='9.9402968'/>
+  <node id='2912579762' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5508678' lon='9.9389713'/>
+  <node id='2912579767' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5519916' lon='9.9404981'/>
+  <node id='2912579771' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.551147' lon='9.9395665'/>
+  <node id='2912579772' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5511867' lon='9.9395582'/>
+  <node id='2912579773' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5511997' lon='9.939529'/>
+  <node id='2912579774' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5512118' lon='9.9391954'/>
+  <node id='2912579775' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5512239' lon='9.9391399'/>
+  <node id='2912579776' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5512446' lon='9.9391094'/>
+  <node id='2912579777' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5520434' lon='9.9406543'/>
+  <node id='2912579778' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:44Z' uid='16256' user='patzi' lat='51.5514379' lon='9.9391954'/>
+  <node id='2912579917' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:47Z' uid='16256' user='patzi' lat='51.5518706' lon='9.939431'/>
+  <node id='2912579921' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:47Z' uid='16256' user='patzi' lat='51.5518889' lon='9.9394423'/>
+  <node id='2912579936' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5522397' lon='9.9397984'/>
+  <node id='2912579937' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5522415' lon='9.9396679'/>
+  <node id='2912579947' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5525875' lon='9.9412281'/>
+  <node id='2912579948' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5525961' lon='9.9411013'/>
+  <node id='2912579949' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5526021' lon='9.941075'/>
+  <node id='2912579950' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5525949' lon='9.9412524'/>
+  <node id='2912579952' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5526104' lon='9.9412725'/>
+  <node id='2912579953' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5526587' lon='9.9412822'/>
+  <node id='2912579954' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5527282' lon='9.9413031'/>
+  <node id='2912579955' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5527748' lon='9.9413315'/>
+  <node id='2912579958' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5528011' lon='9.9413551'/>
+  <node id='2912579959' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5528222' lon='9.9407794'/>
+  <node id='2912579961' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5528391' lon='9.9414161'/>
+  <node id='2912579965' action='modify' version='2' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.5528201' lon='9.9406969'/>
+  <node id='2912579966' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5528943' lon='9.9414622'/>
+  <node id='2912579970' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:48Z' uid='16256' user='patzi' lat='51.5529186' lon='9.9414752'/>
+  <node id='2912579984' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:49Z' uid='16256' user='patzi' lat='51.5529632' lon='9.9414184'/>
+  <node id='2912579986' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:49Z' uid='16256' user='patzi' lat='51.5529815' lon='9.9413942'/>
+  <node id='2912579987' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:49Z' uid='16256' user='patzi' lat='51.5529819' lon='9.9413491'/>
+  <node id='2912579989' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:49Z' uid='16256' user='patzi' lat='51.5529944' lon='9.9414205'/>
+  <node id='2912579993' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:49Z' uid='16256' user='patzi' lat='51.5530194' lon='9.9413047'/>
+  <node id='2912579996' action='modify' version='3' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.5530289' lon='9.9411881'/>
+  <node id='2912579999' action='modify' version='3' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.553086' lon='9.9406661'/>
+  <node id='2912580001' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:49Z' uid='16256' user='patzi' lat='51.5530766' lon='9.9412013'/>
+  <node id='2912580004' action='modify' version='2' changeset='28641889' timestamp='2015-02-05T23:14:51Z' uid='1468043' user='jengelh' lat='51.5530845' lon='9.9409713'/>
+  <node id='2912580007' action='modify' version='1' changeset='22886972' timestamp='2014-06-12T11:16:49Z' uid='16256' user='patzi' lat='51.5530969' lon='9.9412026'/>
+  <node id='2912580010' action='modify' version='2' changeset='28641889' timestamp='2015-02-05T23:14:51Z' uid='1468043' user='jengelh' lat='51.5531055' lon='9.9409733'/>
+  <node id='2912580015' action='modify' version='2' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.5531313' lon='9.9406822'/>
+  <node id='2912588572' action='modify' version='1' changeset='22887165' timestamp='2014-06-12T11:31:05Z' uid='16256' user='patzi' lat='51.5519821' lon='9.9419948'/>
+  <node id='2912588578' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:29Z' uid='1468043' user='jengelh' lat='51.5519958' lon='9.9419961'/>
+  <node id='2912588584' action='modify' version='2' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.552018' lon='9.9414187'/>
+  <node id='2912588597' action='modify' version='1' changeset='22887165' timestamp='2014-06-12T11:31:06Z' uid='16256' user='patzi' lat='51.5526169' lon='9.9414277'/>
+  <node id='2912588598' action='modify' version='1' changeset='22887165' timestamp='2014-06-12T11:31:06Z' uid='16256' user='patzi' lat='51.5526628' lon='9.9414324'/>
+  <node id='2912588599' action='modify' version='1' changeset='22887165' timestamp='2014-06-12T11:31:06Z' uid='16256' user='patzi' lat='51.5526988' lon='9.9414459'/>
+  <node id='2912588801' action='modify' version='1' changeset='22887165' timestamp='2014-06-12T11:31:06Z' uid='16256' user='patzi' lat='51.5527243' lon='9.9414796'/>
+  <node id='2912588802' action='modify' version='1' changeset='22887165' timestamp='2014-06-12T11:31:06Z' uid='16256' user='patzi' lat='51.55275' lon='9.9415188'/>
+  <node id='2912588806' action='modify' version='2' changeset='72447090' timestamp='2019-07-19T21:48:00Z' uid='2551686' user='gausserrorfunction' lat='51.5528223' lon='9.9418223'/>
+  <node id='2912588807' action='modify' version='1' changeset='22887165' timestamp='2014-06-12T11:31:06Z' uid='16256' user='patzi' lat='51.5528209' lon='9.9417614'/>
+  <node id='2912657976' action='modify' version='3' changeset='38097148' timestamp='2016-03-27T10:11:29Z' uid='1468043' user='jengelh' lat='51.5500108' lon='9.9425075'/>
+  <node id='2912662106' action='modify' version='1' changeset='22888304' timestamp='2014-06-12T12:44:05Z' uid='16256' user='patzi' lat='51.5504995' lon='9.9413749'/>
+  <node id='2912662126' action='modify' version='1' changeset='22888304' timestamp='2014-06-12T12:44:06Z' uid='16256' user='patzi' lat='51.5505297' lon='9.9413819'/>
+  <node id='2912662127' action='modify' version='1' changeset='22888304' timestamp='2014-06-12T12:44:06Z' uid='16256' user='patzi' lat='51.5505364' lon='9.942201'/>
+  <node id='2912662128' action='modify' version='1' changeset='22888304' timestamp='2014-06-12T12:44:06Z' uid='16256' user='patzi' lat='51.5505543' lon='9.9421792'/>
+  <node id='2912662129' action='modify' version='1' changeset='22888304' timestamp='2014-06-12T12:44:06Z' uid='16256' user='patzi' lat='51.5505635' lon='9.9421334'/>
+  <node id='2912662130' action='modify' version='1' changeset='22888304' timestamp='2014-06-12T12:44:06Z' uid='16256' user='patzi' lat='51.550566' lon='9.941446'/>
+  <node id='2912662131' action='modify' version='4' changeset='159068056' timestamp='2024-11-12T20:57:48Z' uid='1468043' user='jengelh' lat='51.5506714' lon='9.9417541'/>
+  <node id='3162641217' action='modify' version='2' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.550758' lon='9.9418375'/>
+  <node id='3332991421' action='modify' version='1' changeset='28641889' timestamp='2015-02-05T23:14:11Z' uid='1468043' user='jengelh' lat='51.5530817' lon='9.9410486'/>
+  <node id='3332991423' action='modify' version='1' changeset='28641889' timestamp='2015-02-05T23:14:11Z' uid='1468043' user='jengelh' lat='51.5531027' lon='9.9410505'/>
+  <node id='3984850559' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:29Z' uid='1468043' user='jengelh' lat='51.5499394' lon='9.9432967'>
+    <tag k='entrance' v='yes'/>
+  </node>
+  <node id='3999908030' action='modify' version='4' changeset='60230698' timestamp='2018-06-27T22:53:35Z' uid='1468043' user='jengelh' lat='51.5512464' lon='9.9419281'>
+    <tag k='bus' v='yes'/>
+    <tag k='name' v='Klinikum'/>
+    <tag k='public_transport' v='stop_position'/>
+  </node>
+  <node id='4031445937' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5501597' lon='9.9394667'/>
+  <node id='4031445939' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5503325' lon='9.9413259'/>
+  <node id='4031445942' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5501628' lon='9.9394338'/>
+  <node id='4031445943' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5503454' lon='9.941333'/>
+  <node id='4031445944' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5501735' lon='9.9394143'/>
+  <node id='4031445945' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5501821' lon='9.9392578'/>
+  <node id='4031445946' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5501832' lon='9.9392909'/>
+  <node id='4031445947' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5503602' lon='9.9413188'/>
+  <node id='4031445948' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5501894' lon='9.9393196'/>
+  <node id='4031445950' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5501962' lon='9.9394118'/>
+  <node id='4031445951' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5502164' lon='9.9398204'/>
+  <node id='4031445952' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.550189' lon='9.9392102'/>
+  <node id='4031445953' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5501966' lon='9.9391083'/>
+  <node id='4031445954' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5502145' lon='9.9394179'/>
+  <node id='4031445955' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5501996' lon='9.9388704'/>
+  <node id='4031445956' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5502193' lon='9.9397136'/>
+  <node id='4031445957' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.550222' lon='9.9393232'/>
+  <node id='4031445958' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5502258' lon='9.9394316'/>
+  <node id='4031445959' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5502325' lon='9.9394833'/>
+  <node id='4031445960' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5502328' lon='9.9394518'/>
+  <node id='4031445961' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5502343' lon='9.9392973'/>
+  <node id='4031445962' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:26Z' uid='1468043' user='jengelh' lat='51.5502239' lon='9.938871'/>
+  <node id='4079713831' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5499313' lon='9.9443425'/>
+  <node id='4079713832' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5499425' lon='9.9428947'/>
+  <node id='4079713839' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5505356' lon='9.9425172'/>
+  <node id='4081067410' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5503567' lon='9.9446296'/>
+  <node id='4081067433' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5506134' lon='9.9431402'/>
+  <node id='4081067434' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5506154' lon='9.9429907'/>
+  <node id='4081067451' action='modify' version='1' changeset='38096848' timestamp='2016-03-27T09:51:26Z' uid='1468043' user='jengelh' lat='51.5507127' lon='9.942994'/>
+  <node id='4081067452' action='modify' version='1' changeset='38096848' timestamp='2016-03-27T09:51:26Z' uid='1468043' user='jengelh' lat='51.5507135' lon='9.9429374'/>
+  <node id='4081067454' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5507459' lon='9.9431448'/>
+  <node id='4081067455' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5507486' lon='9.9429386'/>
+  <node id='4081067475' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5508872' lon='9.9433192'/>
+  <node id='4081067476' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5508905' lon='9.9428044'/>
+  <node id='4081067480' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5511611' lon='9.9432978'/>
+  <node id='4081067481' action='modify' version='2' changeset='38097148' timestamp='2016-03-27T10:11:30Z' uid='1468043' user='jengelh' lat='51.5511645' lon='9.9428739'/>
+  <node id='4081067488' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5513839' lon='9.9433379'>
+    <tag k='entrance' v='yes'/>
+  </node>
+  <node id='4081096097' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.550083' lon='9.9435912'/>
+  <node id='4081096098' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5503647' lon='9.9435969'/>
+  <node id='4088424451' action='modify' version='2' changeset='52548146' timestamp='2017-10-01T21:49:02Z' uid='1468043' user='jengelh' lat='51.5527651' lon='9.9411318'/>
+  <node id='4771320404' action='modify' version='1' changeset='47386588' timestamp='2017-04-02T16:29:12Z' uid='1468043' user='jengelh' lat='51.550167' lon='9.9425106'/>
+  <node id='4771475588' action='modify' version='1' changeset='47388921' timestamp='2017-04-02T18:04:08Z' uid='1468043' user='jengelh' lat='51.5512926' lon='9.9413705'/>
+  <node id='4860368529' action='modify' version='1' changeset='48770047' timestamp='2017-05-17T18:23:37Z' uid='1468043' user='jengelh' lat='51.5513838' lon='9.9433569'/>
+  <node id='5299630203' action='modify' version='2' changeset='55407904' timestamp='2018-01-13T14:33:07Z' uid='1468043' user='jengelh' lat='51.5504181' lon='9.9388762'/>
+  <node id='5327362378' action='modify' version='5' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5503979' lon='9.9393782'>
+    <tag k='crossing' v='uncontrolled'/>
+    <tag k='crossing_ref' v='zebra'/>
+    <tag k='highway' v='crossing'/>
+    <tag k='survey:date' v='2018-01-13'/>
+    <tag k='tactile_paving' v='no'/>
+  </node>
+  <node id='5336966931' action='modify' version='1' changeset='55407904' timestamp='2018-01-13T14:33:01Z' uid='1468043' user='jengelh' lat='51.5503842' lon='9.9413217'/>
+  <node id='5336966943' action='modify' version='1' changeset='55407904' timestamp='2018-01-13T14:33:01Z' uid='1468043' user='jengelh' lat='51.5507017' lon='9.9394465'/>
+  <node id='6632324701' action='modify' version='2' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.5523389' lon='9.9418118'/>
+  <node id='6632324702' action='modify' version='2' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.5523073' lon='9.9418112'/>
+  <node id='7138956833' action='modify' version='1' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.552823' lon='9.941483'/>
+  <node id='7138956834' action='modify' version='2' changeset='107272725' timestamp='2021-07-01T17:37:50Z' uid='1370380' user='warelippe' lat='51.552897' lon='9.9412905'>
+    <tag k='access' v='permit'/>
+    <tag k='barrier' v='gate'/>
+  </node>
+  <node id='7138956835' action='modify' version='1' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.5528974' lon='9.9405466'/>
+  <node id='7138956836' action='modify' version='1' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.5528173' lon='9.9406602'/>
+  <node id='7138956845' action='modify' version='1' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.551992' lon='9.9418626'/>
+  <node id='7138956846' action='modify' version='1' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh' lat='51.5520199' lon='9.9417064'/>
+  <node id='7200470536' action='modify' version='1' changeset='80798927' timestamp='2020-02-10T13:38:05Z' uid='1468043' user='jengelh' lat='51.5528762' lon='9.9411404'/>
+  <node id='7200470537' action='modify' version='1' changeset='80798927' timestamp='2020-02-10T13:38:05Z' uid='1468043' user='jengelh' lat='51.5530305' lon='9.9411437'/>
+  <node id='7200470538' action='modify' version='1' changeset='80798927' timestamp='2020-02-10T13:38:05Z' uid='1468043' user='jengelh' lat='51.5530345' lon='9.940665'/>
+  <node id='7200470539' action='modify' version='1' changeset='80798927' timestamp='2020-02-10T13:38:05Z' uid='1468043' user='jengelh' lat='51.5528803' lon='9.9406616'/>
+  <node id='8293879756' action='modify' version='3' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5502501' lon='9.9399922'/>
+  <node id='8883530522' action='modify' version='1' changeset='107272165' timestamp='2021-07-01T17:23:43Z' uid='1370380' user='warelippe' lat='51.5499353' lon='9.9438268'/>
+  <node id='8883530523' action='modify' version='1' changeset='107272165' timestamp='2021-07-01T17:23:43Z' uid='1370380' user='warelippe' lat='51.5499356' lon='9.9437838'/>
+  <node id='10807081227' action='modify' version='1' changeset='134853125' timestamp='2023-04-13T09:16:56Z' uid='1468043' user='jengelh' lat='51.5503256' lon='9.9388736'/>
+  <node id='10807081229' action='modify' version='1' changeset='134853125' timestamp='2023-04-13T09:16:56Z' uid='1468043' user='jengelh' lat='51.5503503' lon='9.939304'/>
+  <node id='10807081230' action='modify' version='1' changeset='134853125' timestamp='2023-04-13T09:16:56Z' uid='1468043' user='jengelh' lat='51.5503299' lon='9.9392993'/>
+  <node id='10807081231' action='modify' version='1' changeset='134853125' timestamp='2023-04-13T09:16:56Z' uid='1468043' user='jengelh' lat='51.550317' lon='9.9392919'/>
+  <node id='10807081232' action='modify' version='1' changeset='134853125' timestamp='2023-04-13T09:16:56Z' uid='1468043' user='jengelh' lat='51.5503045' lon='9.9392691'/>
+  <node id='10807081233' action='modify' version='1' changeset='134853125' timestamp='2023-04-13T09:16:56Z' uid='1468043' user='jengelh' lat='51.5502982' lon='9.9392383'/>
+  <node id='10807081234' action='modify' version='1' changeset='134853125' timestamp='2023-04-13T09:16:56Z' uid='1468043' user='jengelh' lat='51.5501396' lon='9.9392997'/>
+  <node id='12335580492' action='modify' version='1' changeset='159068056' timestamp='2024-11-12T20:57:48Z' uid='1468043' user='jengelh' lat='51.5502326' lon='9.9425119'/>
+  <node id='12396969729' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.55276' lon='9.9414199'/>
+  <node id='12396969730' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5527222' lon='9.9413937'/>
+  <node id='12396969731' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5526947' lon='9.9413829'/>
+  <node id='12396969748' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5515312' lon='9.9419331'/>
+  <node id='12396969749' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5510265' lon='9.9419248'/>
+  <node id='12396969765' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5521415' lon='9.9411879'/>
+  <node id='12396969766' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5520141' lon='9.9406679'/>
+  <node id='12396969767' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5517524' lon='9.940187'/>
+  <node id='12396969768' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5516814' lon='9.9400982'/>
+  <node id='12396969769' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5513769' lon='9.9398022'/>
+  <node id='12396969770' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5510638' lon='9.9395995'/>
+  <node id='12396969771' action='modify' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh' lat='51.5509534' lon='9.9395335'/>
+  <node id='12739938460' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5509664' lon='9.9401239'/>
+  <node id='12739938464' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5510447' lon='9.9402214'/>
+  <node id='12739938465' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5511121' lon='9.9403467'/>
+  <node id='12739938466' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5512315' lon='9.9407345'/>
+  <node id='12739938467' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5512842' lon='9.9409937'/>
+  <node id='12739938468' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5513156' lon='9.9413098'/>
+  <node id='12739938469' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.551353' lon='9.9416283'/>
+  <node id='12739938470' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5513672' lon='9.9418363'/>
+  <node id='12739938471' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5513364' lon='9.9418365'/>
+  <node id='12739938473' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5510231' lon='9.9403048'/>
+  <node id='12739938474' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5511707' lon='9.940673'/>
+  <node id='12739938475' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5512451' lon='9.9409989'/>
+  <node id='12739938485' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5501289' lon='9.9400454'/>
+  <node id='12739960113' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5503959' lon='9.9394427'/>
+  <node id='12739960114' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5504207' lon='9.939572'/>
+  <node id='12739960115' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5504235' lon='9.9397073'/>
+  <node id='12739960116' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5504254' lon='9.9397787'/>
+  <node id='12739960117' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5505003' lon='9.9398321'/>
+  <node id='12739960118' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5503226' lon='9.9398101'/>
+  <node id='12739960119' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5502953' lon='9.939766'/>
+  <node id='12739960120' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5502913' lon='9.9394747'/>
+  <node id='12739960121' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5502942' lon='9.9394559'/>
+  <node id='12739960122' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5503007' lon='9.9394388'/>
+  <node id='12739960123' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5503113' lon='9.9394244'/>
+  <node id='12739960124' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.550323' lon='9.9394184'/>
+  <node id='12739960125' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh' lat='51.5503493' lon='9.9394237'/>
+  <node id='12945023051' action='modify' version='1' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5503616' lon='9.943999'>
+    <tag k='door' v='yes'/>
+    <tag k='indoor' v='yes'/>
+  </node>
+  <node id='12945023052' action='modify' version='1' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5500819' lon='9.9437307'>
+    <tag k='door' v='yes'/>
+    <tag k='indoor' v='yes'/>
+  </node>
+  <node id='12945023060' action='modify' version='1' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5511062' lon='9.9428082'/>
+  <node id='12945023061' action='modify' version='1' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5511057' lon='9.9428729'/>
+  <node id='12945023062' action='modify' version='1' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5510302' lon='9.9433205'/>
+  <node id='12945023063' action='modify' version='1' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh' lat='51.5510303' lon='9.9432966'/>
+  <node id='13749466196' action='modify' version='1' changeset='181632802' timestamp='2026-04-21T15:20:56Z' uid='1468043' user='jengelh' lat='51.5501168' lon='9.9417425'/>
+  <way id='-50969' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33041'/>
+    <nd ref='-33042'/>
+    <nd ref='-33043'/>
+    <nd ref='-33044'/>
+    <nd ref='-33045'/>
+    <nd ref='-33046'/>
+    <nd ref='-33047'/>
+    <nd ref='-33048'/>
+    <nd ref='-33049'/>
+    <nd ref='-33050'/>
+    <nd ref='-33051'/>
+    <nd ref='-33052'/>
+    <nd ref='-33053'/>
+    <nd ref='-33054'/>
+    <nd ref='-33055'/>
+    <nd ref='-33056'/>
+    <nd ref='-33057'/>
+    <nd ref='-33058'/>
+    <nd ref='-33059'/>
+    <nd ref='-33060'/>
+    <nd ref='-33041'/>
+    <tag k='architect' v='BDA Titus Felixmüller'/>
+    <tag k='building' v='hospital'/>
+    <tag k='building:levels' v='9'/>
+    <tag k='name' v='Bettenhaus 2'/>
+    <tag k='ref:PIZ' v='3460'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='start_date' v='1969-1988'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50970' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33042'/>
+    <nd ref='-33041'/>
+    <nd ref='-33060'/>
+    <nd ref='-33059'/>
+    <nd ref='-33058'/>
+    <nd ref='-33049'/>
+    <nd ref='-33048'/>
+    <nd ref='-33042'/>
+    <tag k='building:levels' v='10'/>
+    <tag k='building:min_level' v='9'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50971' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33041'/>
+    <nd ref='-33061'/>
+    <nd ref='-33062'/>
+    <nd ref='-33063'/>
+    <nd ref='-33059'/>
+    <nd ref='-33060'/>
+    <nd ref='-33041'/>
+    <tag k='building' v='yes'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='layer' v='1'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50972' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33065'/>
+    <nd ref='-33066'/>
+    <nd ref='-33067'/>
+    <nd ref='-33068'/>
+    <nd ref='-33065'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='B3'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50973' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33069'/>
+    <nd ref='-33070'/>
+    <nd ref='-33071'/>
+    <nd ref='-33072'/>
+    <nd ref='-33069'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='C2'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50974' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33074'/>
+    <nd ref='-33075'/>
+    <nd ref='-33076'/>
+    <nd ref='-33077'/>
+    <nd ref='-33074'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='C3'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50975' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33078'/>
+    <nd ref='-33079'/>
+    <nd ref='-33080'/>
+    <nd ref='-33081'/>
+    <nd ref='-33078'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='B3'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50976' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33082'/>
+    <nd ref='-33083'/>
+    <nd ref='-33084'/>
+    <nd ref='-33085'/>
+    <nd ref='-33082'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='C3'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50977' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33086'/>
+    <nd ref='-33096'/>
+    <nd ref='-33095'/>
+    <nd ref='-33087'/>
+    <nd ref='-33088'/>
+    <nd ref='-33086'/>
+    <tag k='natural' v='scrub'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50978' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33098'/>
+    <nd ref='-33099'/>
+    <nd ref='-33100'/>
+    <nd ref='-33101'/>
+    <nd ref='-33098'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus'/>
+    <tag k='ref' v='C4'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50979' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33102'/>
+    <nd ref='-33103'/>
+    <nd ref='-33104'/>
+    <nd ref='-33105'/>
+    <nd ref='-33102'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus'/>
+    <tag k='ref' v='C4'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50980' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33151'/>
+    <nd ref='-33213'/>
+    <nd ref='-33152'/>
+    <nd ref='-33153'/>
+    <nd ref='-33214'/>
+    <nd ref='-33154'/>
+    <nd ref='-33151'/>
+    <tag k='natural' v='scrub'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50981' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='316635814'/>
+    <nd ref='-33164'/>
+    <nd ref='-33163'/>
+    <nd ref='-33162'/>
+    <nd ref='-33161'/>
+    <nd ref='-33160'/>
+    <nd ref='-33159'/>
+    <nd ref='-33158'/>
+    <nd ref='-33157'/>
+    <nd ref='-33156'/>
+    <nd ref='-33165'/>
+    <nd ref='-33155'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='service' v='parking_aisle'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50982' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='12396969748'/>
+    <nd ref='-33173'/>
+    <nd ref='-33172'/>
+    <nd ref='-33171'/>
+    <nd ref='-33170'/>
+    <nd ref='-33169'/>
+    <nd ref='-33168'/>
+    <nd ref='-33167'/>
+    <nd ref='-33166'/>
+    <nd ref='-33165'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='service' v='parking_aisle'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50983' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33174'/>
+    <nd ref='-33175'/>
+    <nd ref='-33176'/>
+    <nd ref='-33177'/>
+    <nd ref='-33178'/>
+    <nd ref='-33179'/>
+    <nd ref='-33180'/>
+    <nd ref='-33181'/>
+    <nd ref='-33182'/>
+    <nd ref='-33183'/>
+    <nd ref='-33184'/>
+    <nd ref='-33185'/>
+    <nd ref='-33186'/>
+    <nd ref='-33187'/>
+    <nd ref='-33191'/>
+    <nd ref='-33222'/>
+    <nd ref='-33217'/>
+    <nd ref='-33216'/>
+    <nd ref='-33219'/>
+    <nd ref='-33226'/>
+    <nd ref='-33221'/>
+    <nd ref='-33220'/>
+    <nd ref='-33218'/>
+    <nd ref='-33223'/>
+    <nd ref='-33215'/>
+    <nd ref='-33188'/>
+    <nd ref='-33189'/>
+    <nd ref='-33190'/>
+    <nd ref='-33174'/>
+    <tag k='natural' v='scrub'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50984' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33200'/>
+    <nd ref='-33199'/>
+    <nd ref='-33198'/>
+    <nd ref='-33197'/>
+    <nd ref='-33196'/>
+    <nd ref='-33195'/>
+    <nd ref='-33194'/>
+    <nd ref='1972026812'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='service' v='parking_aisle'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50985' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='1972026990'/>
+    <nd ref='-33206'/>
+    <nd ref='-33205'/>
+    <nd ref='-33204'/>
+    <nd ref='-33203'/>
+    <nd ref='-33202'/>
+    <nd ref='318905299'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='service' v='parking_aisle'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50986' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33221'/>
+    <nd ref='-33224'/>
+    <nd ref='-33225'/>
+    <nd ref='-33226'/>
+    <nd ref='-33221'/>
+    <tag k='landuse' v='grass'/>
+    <tag k='layer' v='3'/>
+    <tag k='service' v='parking_aisle'/>
+  </way>
+  <way id='-50987' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33227'/>
+    <nd ref='-33228'/>
+    <nd ref='-33229'/>
+    <nd ref='-33230'/>
+    <nd ref='-33231'/>
+    <nd ref='5336966931'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50988' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33127'/>
+    <nd ref='-33232'/>
+    <nd ref='-33233'/>
+    <nd ref='-33234'/>
+    <nd ref='-33235'/>
+    <nd ref='-33236'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50989' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33189'/>
+    <nd ref='-33188'/>
+    <nd ref='-33215'/>
+    <nd ref='-33223'/>
+    <nd ref='-33218'/>
+    <nd ref='-33220'/>
+    <nd ref='2912662131'/>
+    <nd ref='-33237'/>
+    <nd ref='3162641217'/>
+    <nd ref='-33238'/>
+    <nd ref='12739938471'/>
+    <nd ref='-33148'/>
+    <nd ref='4771475588'/>
+    <nd ref='254919193'/>
+    <nd ref='12739938475'/>
+    <nd ref='1972026889'/>
+    <nd ref='12739938474'/>
+    <nd ref='1972026881'/>
+    <nd ref='1972026872'/>
+    <nd ref='12739938473'/>
+    <nd ref='1972026846'/>
+    <nd ref='-33147'/>
+    <nd ref='-33139'/>
+    <nd ref='-33239'/>
+    <nd ref='-33189'/>
+    <tag k='amenity' v='parking_space'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50990' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33240'/>
+    <nd ref='-33241'/>
+    <nd ref='-33242'/>
+    <nd ref='-33243'/>
+    <nd ref='-33244'/>
+    <nd ref='-33245'/>
+    <nd ref='-33278'/>
+    <nd ref='-33272'/>
+    <nd ref='-33265'/>
+    <nd ref='-33246'/>
+    <nd ref='-33247'/>
+    <nd ref='-33248'/>
+    <nd ref='-33249'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='service' v='parking_aisle'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50991' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33250'/>
+    <nd ref='-33251'/>
+    <nd ref='-33252'/>
+    <nd ref='-33253'/>
+    <nd ref='-33254'/>
+    <nd ref='-33255'/>
+    <nd ref='-33256'/>
+    <nd ref='-33257'/>
+    <nd ref='-33246'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='service' v='parking_aisle'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50992' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33258'/>
+    <nd ref='-33259'/>
+    <nd ref='-33260'/>
+    <nd ref='-33261'/>
+    <nd ref='-33262'/>
+    <nd ref='-33263'/>
+    <nd ref='-33264'/>
+    <nd ref='-33265'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='service' v='parking_aisle'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50993' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33266'/>
+    <nd ref='-33267'/>
+    <nd ref='-33268'/>
+    <nd ref='-33269'/>
+    <nd ref='-33270'/>
+    <nd ref='-33271'/>
+    <nd ref='-33272'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='service' v='parking_aisle'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50994' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33273'/>
+    <nd ref='-33274'/>
+    <nd ref='-33275'/>
+    <nd ref='-33276'/>
+    <nd ref='-33277'/>
+    <nd ref='-33278'/>
+    <tag k='highway' v='service'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='service' v='parking_aisle'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='-50995' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33281'/>
+    <nd ref='12739960113'/>
+    <nd ref='-33137'/>
+    <nd ref='12739960114'/>
+    <nd ref='12739960115'/>
+    <nd ref='12739960116'/>
+    <nd ref='12739960117'/>
+    <nd ref='-33145'/>
+    <nd ref='-33143'/>
+    <nd ref='12739938460'/>
+    <nd ref='12739938464'/>
+    <nd ref='12739938465'/>
+    <nd ref='12739938466'/>
+    <nd ref='-33150'/>
+    <nd ref='12739938467'/>
+    <nd ref='-33149'/>
+    <nd ref='12739938468'/>
+    <nd ref='12739938470'/>
+    <nd ref='-33282'/>
+    <nd ref='-33283'/>
+    <nd ref='-33284'/>
+    <nd ref='369740173'/>
+    <nd ref='369740181'/>
+    <nd ref='-33142'/>
+    <nd ref='369740180'/>
+    <nd ref='-33141'/>
+    <nd ref='2912579777'/>
+    <nd ref='2912579767'/>
+    <nd ref='2912579761'/>
+    <nd ref='2912579760'/>
+    <nd ref='2912579758'/>
+    <nd ref='2912579757'/>
+    <nd ref='2912579755'/>
+    <nd ref='2912579751'/>
+    <nd ref='-33097'/>
+    <nd ref='-33281'/>
+    <tag k='amenity' v='parking_space'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='28798320' action='modify' version='12' changeset='169368812' timestamp='2025-07-23T22:40:50Z' uid='2725798' user='lesekaffee'>
+    <nd ref='316634770'/>
+    <nd ref='8293879756'/>
+    <tag k='access' v='permissive'/>
+    <tag k='bicycle' v='no'/>
+    <tag k='cycleway:both' v='no'/>
+    <tag k='dog' v='no'/>
+    <tag k='foot' v='no'/>
+    <tag k='highway' v='service'/>
+    <tag k='layer' v='1'/>
+    <tag k='level' v='0.5'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='37109001' action='modify' version='12' changeset='171173210' timestamp='2025-08-29T09:20:01Z' uid='8804172' user='ayxis'>
+    <nd ref='316635818'/>
+    <nd ref='431577718'/>
+    <tag k='access' v='private'/>
+    <tag k='bicycle' v='yes'/>
+    <tag k='dog' v='no'/>
+    <tag k='emergency' v='yes'/>
+    <tag k='foot' v='yes'/>
+    <tag k='highway' v='service'/>
+    <tag k='lit' v='yes'/>
+    <tag k='service' v='driveway'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='37480461' action='modify' version='20' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh'>
+    <nd ref='316635818'/>
+    <nd ref='12396969731'/>
+    <nd ref='12396969730'/>
+    <nd ref='1972027010'/>
+    <nd ref='12396969729'/>
+    <nd ref='316635819'/>
+    <nd ref='7138956833'/>
+    <nd ref='316635820'/>
+    <nd ref='316635821'/>
+    <nd ref='431577706'/>
+    <nd ref='431577699'/>
+    <nd ref='316635822'/>
+    <nd ref='64763372'/>
+    <tag k='access' v='private'/>
+    <tag k='bicycle' v='yes'/>
+    <tag k='dog' v='no'/>
+    <tag k='emergency' v='yes'/>
+    <tag k='foot' v='yes'/>
+    <tag k='highway' v='service'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='psv' v='yes'/>
+    <tag k='sidewalk' v='both'/>
+    <tag k='source:maxspeed' v='DE:zone10'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='traffic_sign' v='DE:250,"Durchfahrt nur für Bedienstete"'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697702' action='modify' version='2' changeset='22886126' timestamp='2014-06-12T10:10:40Z' uid='16256' user='patzi'>
+    <nd ref='1781487251'/>
+    <nd ref='1781487250'/>
+    <nd ref='1781487244'/>
+    <nd ref='1781487245'/>
+    <nd ref='1781487251'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697703' action='modify' version='3' changeset='38097349' timestamp='2016-03-27T10:23:09Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487300'/>
+    <nd ref='1781487299'/>
+    <nd ref='1781487289'/>
+    <nd ref='1781487290'/>
+    <nd ref='1781487300'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='ref' v='D3'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697704' action='modify' version='3' changeset='38096848' timestamp='2016-03-27T09:51:33Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487283'/>
+    <nd ref='1781487282'/>
+    <nd ref='1781487270'/>
+    <nd ref='1781487271'/>
+    <nd ref='1781487283'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='C2'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697705' action='modify' version='3' changeset='38096848' timestamp='2016-03-27T09:51:33Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487279'/>
+    <nd ref='1781487278'/>
+    <nd ref='1781487268'/>
+    <nd ref='1781487269'/>
+    <nd ref='1781487279'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='C3'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697708' action='modify' version='3' changeset='38096848' timestamp='2016-03-27T09:51:33Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487256'/>
+    <nd ref='1781487255'/>
+    <nd ref='1781487233'/>
+    <nd ref='1781487235'/>
+    <nd ref='1781487256'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='B2'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697709' action='modify' version='3' changeset='38096848' timestamp='2016-03-27T09:51:32Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487264'/>
+    <nd ref='1781487263'/>
+    <nd ref='1781487261'/>
+    <nd ref='1781487262'/>
+    <nd ref='1781487264'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697711' action='modify' version='3' changeset='38096848' timestamp='2016-03-27T09:51:34Z' uid='1468043' user='jengelh'>
+    <nd ref='254919101'/>
+    <nd ref='1781487325'/>
+    <nd ref='1781487314'/>
+    <nd ref='1781487315'/>
+    <nd ref='254919101'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='E1'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697713' action='modify' version='3' changeset='38096848' timestamp='2016-03-27T09:51:33Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487254'/>
+    <nd ref='1781487253'/>
+    <nd ref='1781487231'/>
+    <nd ref='1781487232'/>
+    <nd ref='1781487254'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='B3'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697714' action='modify' version='3' changeset='38097349' timestamp='2016-03-27T10:23:09Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487298'/>
+    <nd ref='1781487297'/>
+    <nd ref='1781487295'/>
+    <nd ref='1781487296'/>
+    <nd ref='1781487298'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='ref' v='D4'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697715' action='modify' version='2' changeset='22886126' timestamp='2014-06-12T10:10:41Z' uid='16256' user='patzi'>
+    <nd ref='1781487249'/>
+    <nd ref='1781487248'/>
+    <nd ref='1781487242'/>
+    <nd ref='1781487243'/>
+    <nd ref='1781487249'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697716' action='modify' version='4' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487304'/>
+    <nd ref='1781487294'/>
+    <nd ref='1781487293'/>
+    <nd ref='1781487303'/>
+    <nd ref='1781487304'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='D1'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697717' action='modify' version='3' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487327'/>
+    <nd ref='1781487319'/>
+    <nd ref='1781487318'/>
+    <nd ref='1781487326'/>
+    <nd ref='1781487327'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697718' action='modify' version='2' changeset='22886126' timestamp='2014-06-12T10:10:42Z' uid='16256' user='patzi'>
+    <nd ref='1781487247'/>
+    <nd ref='1781487246'/>
+    <nd ref='1781487240'/>
+    <nd ref='1781487241'/>
+    <nd ref='1781487247'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697719' action='modify' version='3' changeset='38096848' timestamp='2016-03-27T09:51:32Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487258'/>
+    <nd ref='1781487257'/>
+    <nd ref='1781487236'/>
+    <nd ref='1781487237'/>
+    <nd ref='1781487258'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697720' action='modify' version='4' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487302'/>
+    <nd ref='1781487292'/>
+    <nd ref='1781487291'/>
+    <nd ref='1781487301'/>
+    <nd ref='1781487302'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='D2'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697721' action='modify' version='3' changeset='38096848' timestamp='2016-03-27T09:51:33Z' uid='1468043' user='jengelh'>
+    <nd ref='1781487285'/>
+    <nd ref='1781487284'/>
+    <nd ref='1781487272'/>
+    <nd ref='213562757'/>
+    <nd ref='1781487280'/>
+    <nd ref='1781487285'/>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='C1'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='166697723' action='delete' version='3' changeset='38096848' timestamp='2016-03-27T09:51:34Z' uid='1468043' user='jengelh'>
+    <tag k='building:levels' v='6'/>
+    <tag k='building:min_level' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='description' v='Treppenhaus + Aufzugsschächte'/>
+    <tag k='ref' v='E2'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='186488054' action='delete' version='15' changeset='169368812' timestamp='2025-07-23T22:40:34Z' uid='2725798' user='lesekaffee'>
+    <tag k='access' v='permissive'/>
+    <tag k='bicycle' v='no'/>
+    <tag k='cycleway:both' v='no'/>
+    <tag k='dog' v='no'/>
+    <tag k='foot' v='no'/>
+    <tag k='highway' v='service'/>
+    <tag k='incline' v='up'/>
+    <tag k='lanes:backward' v='1'/>
+    <tag k='lanes:forward' v='1'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='maxweight' v='12 t'/>
+    <tag k='mofa' v='no'/>
+    <tag k='moped' v='no'/>
+    <tag k='motorcycle' v='no'/>
+    <tag k='psv' v='yes'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='traffic_sign' v='DE:262, DE:274, DE:250, DE:10XX-XX'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='186488055' action='modify' version='17' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh'>
+    <nd ref='1972026886'/>
+    <nd ref='12396969765'/>
+    <nd ref='318905298'/>
+    <nd ref='12396969766'/>
+    <nd ref='1972026825'/>
+    <nd ref='1972026820'/>
+    <nd ref='12396969767'/>
+    <nd ref='12396969768'/>
+    <nd ref='-33207'/>
+    <nd ref='1972026817'/>
+    <nd ref='12396969769'/>
+    <nd ref='318905299'/>
+    <nd ref='-33201'/>
+    <nd ref='12396969770'/>
+    <nd ref='12396969771'/>
+    <nd ref='1972026812'/>
+    <tag k='access' v='private'/>
+    <tag k='bus' v='yes'/>
+    <tag k='dog' v='no'/>
+    <tag k='highway' v='service'/>
+    <tag k='lanes' v='2'/>
+    <tag k='level' v='0'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='oneway' v='no'/>
+    <tag k='sidewalk' v='no'/>
+    <tag k='source:maxspeed' v='sign'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='traffic_sign' v='DE:250,"außer Berechtigte"'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='186488067' action='modify' version='12' changeset='169368812' timestamp='2025-07-23T22:40:47Z' uid='2725798' user='lesekaffee'>
+    <nd ref='1972026732'/>
+    <nd ref='1972026736'/>
+    <nd ref='1972026741'/>
+    <nd ref='12739938485'/>
+    <nd ref='-33130'/>
+    <nd ref='-33134'/>
+    <nd ref='-33129'/>
+    <tag k='access' v='permissive'/>
+    <tag k='bicycle' v='no'/>
+    <tag k='cycleway:both' v='no'/>
+    <tag k='dog' v='no'/>
+    <tag k='foot' v='no'/>
+    <tag k='highway' v='service'/>
+    <tag k='lanes' v='1'/>
+    <tag k='level' v='0.5'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='psv' v='yes'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='195619281' action='modify' version='8' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh'>
+    <nd ref='1972026751'/>
+    <nd ref='10807081234'/>
+    <nd ref='1972026732'/>
+    <tag k='bicycle' v='no'/>
+    <tag k='dog' v='no'/>
+    <tag k='foot' v='no'/>
+    <tag k='highway' v='service'/>
+    <tag k='lanes' v='2'/>
+    <tag k='lit' v='yes'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='233172757' action='modify' version='13' changeset='181632802' timestamp='2026-04-21T15:20:56Z' uid='1468043' user='jengelh'>
+    <nd ref='316634773'/>
+    <nd ref='2912662127'/>
+    <nd ref='2912662128'/>
+    <nd ref='2912662129'/>
+    <nd ref='2415228671'/>
+    <nd ref='2415228672'/>
+    <nd ref='2912662130'/>
+    <nd ref='316634777'/>
+    <nd ref='2912662126'/>
+    <nd ref='2912662106'/>
+    <nd ref='-33211'/>
+    <nd ref='1972026776'/>
+    <nd ref='5336966931'/>
+    <nd ref='1972026755'/>
+    <nd ref='-33132'/>
+    <nd ref='-33131'/>
+    <nd ref='-33135'/>
+    <nd ref='316634770'/>
+    <tag k='access' v='permissive'/>
+    <tag k='bridge' v='yes'/>
+    <tag k='cycleway:both' v='no'/>
+    <tag k='dog' v='no'/>
+    <tag k='highway' v='service'/>
+    <tag k='layer' v='2'/>
+    <tag k='level' v='1'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='maxweight' v='12 t'/>
+    <tag k='mofa' v='no'/>
+    <tag k='moped' v='no'/>
+    <tag k='motorcycle' v='no'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='psv' v='yes'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='traffic_sign' v='DE:262, DE:274, DE:250, DE:10XX-XX'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287682902' action='modify' version='16' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='254919100'/>
+    <nd ref='2912657976'/>
+    <nd ref='4771320404'/>
+    <nd ref='12335580492'/>
+    <nd ref='213562757'/>
+    <nd ref='1781487280'/>
+    <nd ref='1781487285'/>
+    <nd ref='4079713839'/>
+    <nd ref='1781487287'/>
+    <nd ref='1781487315'/>
+    <nd ref='254919101'/>
+    <nd ref='438253676'/>
+    <nd ref='4081067488'/>
+    <nd ref='4860368529'/>
+    <nd ref='254919102'/>
+    <nd ref='1781487306'/>
+    <nd ref='-33064'/>
+    <nd ref='254919104'/>
+    <nd ref='1781487274'/>
+    <nd ref='-33094'/>
+    <nd ref='1781487273'/>
+    <nd ref='1781487230'/>
+    <nd ref='877580065'/>
+    <nd ref='877580014'/>
+    <nd ref='4079713831'/>
+    <nd ref='877580093'/>
+    <nd ref='8883530522'/>
+    <nd ref='8883530523'/>
+    <nd ref='2886880959'/>
+    <nd ref='2886880960'/>
+    <nd ref='3984850559'/>
+    <nd ref='877579994'/>
+    <nd ref='4079713832'/>
+    <nd ref='877580094'/>
+    <nd ref='254919100'/>
+    <tag k='building:levels' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287682903' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='2912530906'/>
+    <nd ref='2912527794'/>
+    <nd ref='2912527793'/>
+    <nd ref='2912530905'/>
+    <nd ref='2912530906'/>
+    <tag k='building:levels' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:material' v='glass'/>
+    <tag k='roof:shape' v='sawtooth'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287682904' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='2912530904'/>
+    <nd ref='2912527792'/>
+    <nd ref='2912527791'/>
+    <nd ref='2912530903'/>
+    <nd ref='2912530904'/>
+    <tag k='building:levels' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:material' v='glass'/>
+    <tag k='roof:shape' v='sawtooth'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287682905' action='modify' version='1' changeset='22886126' timestamp='2014-06-12T10:10:39Z' uid='16256' user='patzi'>
+    <nd ref='2912527798'/>
+    <nd ref='2912527797'/>
+    <nd ref='2912527785'/>
+    <nd ref='2912527786'/>
+    <nd ref='2912527798'/>
+    <tag k='building:levels' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:material' v='glass'/>
+    <tag k='roof:shape' v='sawtooth'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287682906' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='2912527800'/>
+    <nd ref='2912527788'/>
+    <nd ref='2912527787'/>
+    <nd ref='2912527799'/>
+    <nd ref='2912527800'/>
+    <tag k='building:levels' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:material' v='glass'/>
+    <tag k='roof:shape' v='sawtooth'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287682907' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='2912530902'/>
+    <nd ref='2912527790'/>
+    <nd ref='2912527789'/>
+    <nd ref='2912530901'/>
+    <nd ref='2912530902'/>
+    <tag k='building:levels' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:material' v='glass'/>
+    <tag k='roof:shape' v='sawtooth'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287682908' action='modify' version='2' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='2912530909'/>
+    <nd ref='2912530910'/>
+    <nd ref='2912530908'/>
+    <nd ref='2912530907'/>
+    <nd ref='2912530909'/>
+    <tag k='building:levels' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:material' v='glass'/>
+    <tag k='roof:shape' v='sawtooth'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287682909' action='modify' version='1' changeset='22886126' timestamp='2014-06-12T10:10:39Z' uid='16256' user='patzi'>
+    <nd ref='2912527795'/>
+    <nd ref='2912527783'/>
+    <nd ref='2912527784'/>
+    <nd ref='2912527796'/>
+    <nd ref='2912527795'/>
+    <tag k='building:levels' v='5'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:material' v='glass'/>
+    <tag k='roof:shape' v='sawtooth'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287687223' action='modify' version='3' changeset='54846210' timestamp='2017-12-22T17:31:02Z' uid='2551686' user='gausserrorfunction'>
+    <nd ref='5299630203'/>
+    <nd ref='2912579749'/>
+    <nd ref='2912579752'/>
+    <nd ref='2912579762'/>
+    <nd ref='2912579776'/>
+    <nd ref='2912579775'/>
+    <nd ref='2912579774'/>
+    <nd ref='2912579773'/>
+    <nd ref='2912579772'/>
+    <nd ref='2912579771'/>
+    <nd ref='2912579759'/>
+    <nd ref='2912579756'/>
+    <nd ref='2912579754'/>
+    <nd ref='2912579753'/>
+    <nd ref='2912579750'/>
+    <nd ref='2912579748'/>
+    <nd ref='5299630203'/>
+    <tag k='landuse' v='meadow'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287687224' action='modify' version='5' changeset='80798927' timestamp='2020-02-10T13:38:05Z' uid='1468043' user='jengelh'>
+    <nd ref='7200470538'/>
+    <nd ref='7200470537'/>
+    <nd ref='7200470536'/>
+    <nd ref='7200470539'/>
+    <nd ref='7138956836'/>
+    <nd ref='2912579965'/>
+    <nd ref='2912579959'/>
+    <nd ref='1777485632'/>
+    <nd ref='1777485633'/>
+    <nd ref='1777485634'/>
+    <nd ref='1777485635'/>
+    <nd ref='431577710'/>
+    <nd ref='4088424451'/>
+    <nd ref='431577707'/>
+    <nd ref='1777485627'/>
+    <nd ref='1777485621'/>
+    <nd ref='1777485619'/>
+    <nd ref='1777485617'/>
+    <nd ref='2912579949'/>
+    <nd ref='2912579948'/>
+    <nd ref='2912579947'/>
+    <nd ref='2912579950'/>
+    <nd ref='2912579952'/>
+    <nd ref='2912579953'/>
+    <nd ref='2912579954'/>
+    <nd ref='2912579955'/>
+    <nd ref='2912579958'/>
+    <nd ref='2912579961'/>
+    <nd ref='2912579966'/>
+    <nd ref='2912579970'/>
+    <nd ref='2912579984'/>
+    <nd ref='2912579989'/>
+    <nd ref='2912579986'/>
+    <nd ref='2912579987'/>
+    <nd ref='2912579993'/>
+    <nd ref='2912579996'/>
+    <nd ref='2912580001'/>
+    <nd ref='2912580007'/>
+    <nd ref='3332991423'/>
+    <nd ref='3332991421'/>
+    <nd ref='2912580004'/>
+    <nd ref='2912580010'/>
+    <nd ref='2912580015'/>
+    <nd ref='2912579999'/>
+    <nd ref='7200470538'/>
+    <tag k='landuse' v='grass'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287687236' action='modify' version='3' changeset='54846210' timestamp='2017-12-22T17:31:02Z' uid='2551686' user='gausserrorfunction'>
+    <nd ref='2912579748'/>
+    <nd ref='2912579750'/>
+    <nd ref='2912579753'/>
+    <nd ref='2912579754'/>
+    <nd ref='2912579756'/>
+    <nd ref='2912579759'/>
+    <nd ref='2912579771'/>
+    <nd ref='2912579772'/>
+    <nd ref='2912579773'/>
+    <nd ref='2912579774'/>
+    <nd ref='2912579775'/>
+    <nd ref='2912579776'/>
+    <nd ref='2912579778'/>
+    <nd ref='2912579917'/>
+    <nd ref='2912579921'/>
+    <nd ref='2912579937'/>
+    <nd ref='2912579936'/>
+    <nd ref='-33136'/>
+    <nd ref='369740173'/>
+    <nd ref='369740181'/>
+    <nd ref='-33142'/>
+    <nd ref='369740180'/>
+    <nd ref='-33141'/>
+    <nd ref='2912579777'/>
+    <nd ref='2912579767'/>
+    <nd ref='2912579761'/>
+    <nd ref='2912579760'/>
+    <nd ref='2912579758'/>
+    <nd ref='2912579757'/>
+    <nd ref='2912579755'/>
+    <nd ref='2912579751'/>
+    <nd ref='-33097'/>
+    <nd ref='-33281'/>
+    <nd ref='10807081229'/>
+    <nd ref='10807081230'/>
+    <nd ref='10807081231'/>
+    <nd ref='10807081232'/>
+    <nd ref='10807081233'/>
+    <nd ref='2912579742'/>
+    <nd ref='10807081227'/>
+    <nd ref='5299630203'/>
+    <nd ref='2912579748'/>
+    <tag k='landuse' v='grass'/>
+    <tag k='natural' v='scrub'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287687239' action='delete' version='1' changeset='22886972' timestamp='2014-06-12T11:16:52Z' uid='16256' user='patzi'>
+    <tag k='landuse' v='grass'/>
+    <tag k='natural' v='scrub'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='287688293' action='modify' version='3' changeset='79694939' timestamp='2020-01-17T11:42:36Z' uid='1468043' user='jengelh'>
+    <nd ref='6632324701'/>
+    <nd ref='254919137'/>
+    <nd ref='2912588806'/>
+    <nd ref='2912588807'/>
+    <nd ref='2912588802'/>
+    <nd ref='2912588801'/>
+    <nd ref='2912588599'/>
+    <nd ref='2912588598'/>
+    <nd ref='2912588597'/>
+    <nd ref='2912588584'/>
+    <nd ref='7138956846'/>
+    <nd ref='7138956845'/>
+    <nd ref='2912588572'/>
+    <nd ref='2912588578'/>
+    <nd ref='1781487359'/>
+    <nd ref='1781487372'/>
+    <nd ref='254919140'/>
+    <nd ref='6632324702'/>
+    <nd ref='6632324701'/>
+    <tag k='landuse' v='grass'/>
+    <tag k='survey:date' v='2020-01-16'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='310778238' action='modify' version='13' changeset='171173210' timestamp='2025-08-29T09:20:01Z' uid='8804172' user='ayxis'>
+    <nd ref='1972026990'/>
+    <nd ref='1972026886'/>
+    <nd ref='438253594'/>
+    <tag k='access' v='private'/>
+    <tag k='bicycle' v='yes'/>
+    <tag k='dog' v='no'/>
+    <tag k='emergency' v='yes'/>
+    <tag k='foot' v='yes'/>
+    <tag k='highway' v='service'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='psv' v='yes'/>
+    <tag k='sidewalk' v='both'/>
+    <tag k='source:maxspeed' v='DE:zone10'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='survey:date' v='2020-01-16'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='310778239' action='modify' version='18' changeset='179697721' timestamp='2026-03-11T12:32:23Z' uid='1468043' user='jengelh'>
+    <nd ref='3999908030'/>
+    <nd ref='-33250'/>
+    <nd ref='316635814'/>
+    <nd ref='12396969748'/>
+    <nd ref='-33200'/>
+    <nd ref='316635815'/>
+    <nd ref='316635816'/>
+    <nd ref='1972026990'/>
+    <tag k='access' v='private'/>
+    <tag k='bicycle' v='yes'/>
+    <tag k='dog' v='no'/>
+    <tag k='foot' v='yes'/>
+    <tag k='highway' v='service'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='psv' v='yes'/>
+    <tag k='sidewalk' v='both'/>
+    <tag k='source:maxspeed' v='DE:zone10'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='survey:date' v='2020-01-16'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='345691746' action='delete' version='18' changeset='181632802' timestamp='2026-04-21T15:20:56Z' uid='1468043' user='jengelh'>
+    <tag k='access' v='customers'/>
+    <tag k='amenity' v='parking'/>
+    <tag k='capacity' v='~428'/>
+    <tag k='charge' v='0.70 EUR/30 min'/>
+    <tag k='description' v='für Patienten; Teile vom Polygon sind dem Robert-Koch-Wohnheim zugeordnet und gehören eigentlich nicht zum P1'/>
+    <tag k='fee' v='yes'/>
+    <tag k='layer' v='1'/>
+    <tag k='level' v='1'/>
+    <tag k='name' v='Klinikum Haupteingang'/>
+    <tag k='opening_hours' v='24/7'/>
+    <tag k='operator' v='Universitätsmedizin Göttingen (UMG)'/>
+    <tag k='parking' v='multi-storey'/>
+    <tag k='ref' v='P1'/>
+    <tag k='upload' v='false'/>
+    <tag k='wheelchair' v='yes'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='400600227' action='modify' version='2' changeset='37503493' timestamp='2016-02-28T17:24:37Z' uid='1468043' user='jengelh'>
+    <nd ref='4031445962'/>
+    <nd ref='4031445955'/>
+    <nd ref='4031445953'/>
+    <nd ref='4031445952'/>
+    <nd ref='4031445945'/>
+    <nd ref='4031445946'/>
+    <nd ref='4031445948'/>
+    <nd ref='4031445957'/>
+    <nd ref='4031445961'/>
+    <nd ref='4031445962'/>
+    <tag k='barrier' v='kerb'/>
+    <tag k='natural' v='scrub'/>
+    <tag k='source' v='hi-res aerial imagery'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='400600229' action='modify' version='1' changeset='37502284' timestamp='2016-02-28T16:39:27Z' uid='1468043' user='jengelh'>
+    <nd ref='4031445947'/>
+    <nd ref='-33119'/>
+    <nd ref='-33108'/>
+    <nd ref='-33117'/>
+    <nd ref='-33112'/>
+    <nd ref='-33107'/>
+    <nd ref='-33114'/>
+    <nd ref='-33124'/>
+    <nd ref='-33106'/>
+    <nd ref='-33123'/>
+    <nd ref='4031445951'/>
+    <nd ref='4031445956'/>
+    <nd ref='4031445959'/>
+    <nd ref='4031445960'/>
+    <nd ref='4031445958'/>
+    <nd ref='4031445954'/>
+    <nd ref='4031445950'/>
+    <nd ref='4031445944'/>
+    <nd ref='4031445942'/>
+    <nd ref='4031445937'/>
+    <nd ref='-33121'/>
+    <nd ref='-33111'/>
+    <nd ref='-33122'/>
+    <nd ref='-33115'/>
+    <nd ref='-33110'/>
+    <nd ref='-33116'/>
+    <nd ref='-33113'/>
+    <nd ref='-33118'/>
+    <nd ref='-33109'/>
+    <nd ref='-33120'/>
+    <nd ref='4031445939'/>
+    <nd ref='4031445943'/>
+    <nd ref='4031445947'/>
+    <tag k='natural' v='scrub'/>
+    <tag k='source' v='hi-res aerial imagery'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='400600236' action='delete' version='4' changeset='159068056' timestamp='2024-11-12T20:57:48Z' uid='1468043' user='jengelh'>
+    <tag k='natural' v='scrub'/>
+    <tag k='source' v='hi-res aerial imagery'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='405976571' action='modify' version='6' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='4081067475'/>
+    <nd ref='12945023062'/>
+    <nd ref='12945023063'/>
+    <nd ref='4081067480'/>
+    <nd ref='4081067481'/>
+    <nd ref='12945023061'/>
+    <nd ref='12945023060'/>
+    <nd ref='4081067476'/>
+    <nd ref='4081067475'/>
+    <tag k='addr:city' v='Göttingen'/>
+    <tag k='addr:country' v='DE'/>
+    <tag k='addr:housenumber' v='40'/>
+    <tag k='addr:postcode' v='37075'/>
+    <tag k='addr:street' v='Robert-Koch-Straße'/>
+    <tag k='amenity' v='restaurant'/>
+    <tag k='capacity' v='598'/>
+    <tag k='check_date:opening_hours' v='2023-06-01'/>
+    <tag k='contact:phone' v='+49 551 3965162'/>
+    <tag k='contact:website' v='https://umg-gastronomie.de/umgg-campus/'/>
+    <tag k='diet:vegetarian' v='yes'/>
+    <tag k='level' v='0'/>
+    <tag k='name' v='MITTAGS[genuss]'/>
+    <tag k='opening_hours' v='Mo-Fr 11:30-14:00; PH off'/>
+    <tag k='operator' v='UMG Gastronomie'/>
+    <tag k='upload' v='false'/>
+    <tag k='wheelchair' v='yes'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='405976572' action='delete' version='4' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <tag k='level' v='0'/>
+    <tag k='name' v='Otto Bock Healthcare GmbH'/>
+    <tag k='office' v='company'/>
+    <tag k='upload' v='false'/>
+    <tag k='wheelchair' v='yes'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='405976573' action='modify' version='4' changeset='58035304' timestamp='2018-04-12T12:55:48Z' uid='16256' user='patzi'>
+    <nd ref='4081067455'/>
+    <nd ref='4081067452'/>
+    <nd ref='4081067451'/>
+    <nd ref='4081067434'/>
+    <nd ref='4081067433'/>
+    <nd ref='4081067454'/>
+    <nd ref='4081067455'/>
+    <tag k='amenity' v='bank'/>
+    <tag k='atm' v='yes'/>
+    <tag k='contact:fax' v='+49 551 4051919'/>
+    <tag k='contact:phone' v='+49 551 4051819'/>
+    <tag k='contact:website' v='http://www.spk-goettingen.de'/>
+    <tag k='name' v='Sparkasse – Filiale Klinikum'/>
+    <tag k='opening_hours' v='Mo-Th 09:00-16:30; Fr 09:00-14:00; PH off'/>
+    <tag k='ref' v='Zweigstelle 19'/>
+    <tag k='upload' v='false'/>
+    <tag k='wheelchair' v='yes'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='405979530' action='modify' version='6' changeset='167965980' timestamp='2025-06-22T16:18:27Z' uid='1468043' user='jengelh'>
+    <nd ref='4081096097'/>
+    <nd ref='12945023052'/>
+    <nd ref='1781487254'/>
+    <nd ref='4081067410'/>
+    <nd ref='1781487268'/>
+    <nd ref='1781487269'/>
+    <nd ref='12945023051'/>
+    <nd ref='4081096098'/>
+    <nd ref='4081096097'/>
+    <tag k='addr:city' v='Göttingen'/>
+    <tag k='addr:country' v='DE'/>
+    <tag k='addr:housenumber' v='40'/>
+    <tag k='addr:postcode' v='37075'/>
+    <tag k='addr:street' v='Robert-Koch-Straße'/>
+    <tag k='addr:suburb' v='Weende'/>
+    <tag k='amenity' v='library'/>
+    <tag k='contact:phone' v='+49 551 398395'/>
+    <tag k='level' v='0'/>
+    <tag k='name' v='Bereichsbibliothek Medizin'/>
+    <tag k='opening_hours' v='Mo-Fr 08:00-24:00, Sa,Su 08:00-20:00, PH 10:00-20:00'/>
+    <tag k='short_name' v='BBM'/>
+    <tag k='upload' v='false'/>
+    <tag k='wheelchair' v='yes'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='484367247' action='modify' version='10' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh'>
+    <nd ref='1972026812'/>
+    <nd ref='-33192'/>
+    <nd ref='5336966943'/>
+    <nd ref='-33193'/>
+    <nd ref='-33155'/>
+    <nd ref='5327362378'/>
+    <nd ref='318905300'/>
+    <tag k='access' v='private'/>
+    <tag k='bus' v='yes'/>
+    <tag k='dog' v='no'/>
+    <tag k='highway' v='service'/>
+    <tag k='lanes' v='2'/>
+    <tag k='level' v='0.5'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='sidewalk' v='right'/>
+    <tag k='source:maxspeed' v='sign'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='traffic_sign' v='DE:250,"außer Berechtigte"'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='484391189' action='modify' version='7' changeset='171173210' timestamp='2025-08-29T09:20:01Z' uid='8804172' user='ayxis'>
+    <nd ref='438253594'/>
+    <nd ref='316635818'/>
+    <tag k='access' v='private'/>
+    <tag k='bicycle' v='yes'/>
+    <tag k='dog' v='no'/>
+    <tag k='emergency' v='yes'/>
+    <tag k='foot' v='yes'/>
+    <tag k='highway' v='service'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='psv' v='yes'/>
+    <tag k='sidewalk' v='both'/>
+    <tag k='source:maxspeed' v='DE:zone10'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='survey:date' v='2020-01-16'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='720434003' action='modify' version='9' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh'>
+    <nd ref='316635823'/>
+    <nd ref='-33240'/>
+    <nd ref='441538876'/>
+    <nd ref='-33273'/>
+    <nd ref='12396969749'/>
+    <tag k='access' v='private'/>
+    <tag k='bicycle' v='yes'/>
+    <tag k='cycleway:left' v='lane'/>
+    <tag k='dog' v='no'/>
+    <tag k='foot' v='yes'/>
+    <tag k='highway' v='service'/>
+    <tag k='level' v='0'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='psv' v='yes'/>
+    <tag k='sidewalk' v='both'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='traffic_sign:backward' v='DE:250,"für Notfälle frei"'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='764144533' action='modify' version='3' changeset='159275347' timestamp='2024-11-18T09:59:10Z' uid='1468043' user='jengelh'>
+    <nd ref='7138956833'/>
+    <nd ref='7138956834'/>
+    <nd ref='7138956835'/>
+    <tag k='access' v='private'/>
+    <tag k='dog' v='no'/>
+    <tag k='highway' v='service'/>
+    <tag k='lit' v='yes'/>
+    <tag k='service' v='driveway'/>
+    <tag k='sidewalk' v='no'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='1340184480' action='delete' version='1' changeset='159938256' timestamp='2024-12-05T01:10:46Z' uid='1468043' user='jengelh'>
+    <tag k='cycleway:surface' v='asphalt'/>
+    <tag k='dog' v='no'/>
+    <tag k='foot' v='yes'/>
+    <tag k='footway:surface' v='concrete'/>
+    <tag k='highway' v='cycleway'/>
+    <tag k='lay' v='1'/>
+    <tag k='lit' v='yes'/>
+    <tag k='segregated' v='yes'/>
+    <tag k='surface' v='paved'/>
+    <tag k='traffic_sign' v='DE:241'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='1375964053' action='modify' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh'>
+    <nd ref='-33147'/>
+    <nd ref='1972026846'/>
+    <nd ref='12739938473'/>
+    <nd ref='1972026872'/>
+    <nd ref='1972026881'/>
+    <nd ref='12739938474'/>
+    <nd ref='1972026889'/>
+    <nd ref='12739938475'/>
+    <nd ref='254919193'/>
+    <nd ref='4771475588'/>
+    <nd ref='-33148'/>
+    <nd ref='12739938471'/>
+    <nd ref='12739938470'/>
+    <nd ref='12739938469'/>
+    <nd ref='12739938468'/>
+    <nd ref='-33149'/>
+    <nd ref='12739938467'/>
+    <nd ref='-33150'/>
+    <nd ref='12739938466'/>
+    <nd ref='12739938465'/>
+    <nd ref='12739938464'/>
+    <nd ref='12739938460'/>
+    <nd ref='-33143'/>
+    <nd ref='-33145'/>
+    <nd ref='12739960117'/>
+    <nd ref='12739960116'/>
+    <nd ref='12739960115'/>
+    <nd ref='12739960114'/>
+    <nd ref='-33137'/>
+    <nd ref='12739960113'/>
+    <nd ref='12739960125'/>
+    <nd ref='12739960124'/>
+    <nd ref='12739960123'/>
+    <nd ref='12739960122'/>
+    <nd ref='12739960121'/>
+    <nd ref='12739960120'/>
+    <nd ref='-33140'/>
+    <nd ref='12739960119'/>
+    <nd ref='-33138'/>
+    <nd ref='12739960118'/>
+    <nd ref='-33144'/>
+    <nd ref='-33239'/>
+    <nd ref='-33139'/>
+    <nd ref='-33147'/>
+    <tag k='landuse' v='grass'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='1375964061' action='delete' version='1' changeset='164697732' timestamp='2025-04-08T21:00:20Z' uid='1468043' user='jengelh'>
+    <tag k='landuse' v='grass'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+  <way id='1501950581' action='modify' version='1' changeset='181632802' timestamp='2026-04-21T15:20:56Z' uid='1468043' user='jengelh'>
+    <nd ref='-33129'/>
+    <nd ref='-33133'/>
+    <nd ref='-33126'/>
+    <nd ref='-33127'/>
+    <nd ref='-33210'/>
+    <nd ref='-33212'/>
+    <nd ref='-33208'/>
+    <nd ref='-33209'/>
+    <nd ref='-33128'/>
+    <nd ref='13749466196'/>
+    <tag k='access' v='permissive'/>
+    <tag k='bridge' v='yes'/>
+    <tag k='cycleway:both' v='no'/>
+    <tag k='dog' v='no'/>
+    <tag k='highway' v='service'/>
+    <tag k='layer' v='2'/>
+    <tag k='level' v='1'/>
+    <tag k='lit' v='yes'/>
+    <tag k='maxspeed' v='10'/>
+    <tag k='maxweight' v='12 t'/>
+    <tag k='mofa' v='no'/>
+    <tag k='moped' v='no'/>
+    <tag k='motorcycle' v='no'/>
+    <tag k='oneway' v='yes'/>
+    <tag k='psv' v='yes'/>
+    <tag k='surface' v='asphalt'/>
+    <tag k='traffic_sign' v='DE:262, DE:274, DE:250, DE:10XX-XX'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/klinikum/index.html'/>
+  </way>
+</osm>

@@ -1,0 +1,539 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version='0.6' generator='osm_tool'>
+  <node id='-33349' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425692' lon='9.9369354'/>
+  <node id='-33350' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426484' lon='9.9369149'>
+    <tag k='emergency' v='fire_service_inlet'/>
+    <tag k='fire_mains' v='dry'/>
+    <tag k='note' v='*wet* riser, for pressure increase'/>
+  </node>
+  <node id='-33351' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.542821' lon='9.9368703'/>
+  <node id='-33352' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428523' lon='9.9368008'/>
+  <node id='-33353' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428119' lon='9.9363958'/>
+  <node id='-33354' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427686' lon='9.9363455'/>
+  <node id='-33355' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425167' lon='9.9364106'/>
+  <node id='-33356' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5424855' lon='9.9364801'/>
+  <node id='-33357' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5424942' lon='9.9365679'/>
+  <node id='-33358' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425001' lon='9.9366261'>
+    <tag k='entrance' v='main'/>
+    <tag k='indoor' v='yes'/>
+    <tag k='level' v='0'/>
+  </node>
+  <node id='-33359' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425117' lon='9.9367427'>
+    <tag k='entrance' v='main'/>
+    <tag k='indoor' v='yes'/>
+    <tag k='level' v='0'/>
+  </node>
+  <node id='-33360' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425175' lon='9.9368013'/>
+  <node id='-33361' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425259' lon='9.9368851'/>
+  <node id='-33362' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427463' lon='9.9364683'/>
+  <node id='-33363' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427759' lon='9.9367649'/>
+  <node id='-33364' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425915' lon='9.9368126'/>
+  <node id='-33365' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425618' lon='9.9365159'/>
+  <node id='-33366' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426894' lon='9.9354998'/>
+  <node id='-33367' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427686' lon='9.9354793'>
+    <tag k='emergency' v='fire_service_inlet'/>
+    <tag k='fire_mains' v='dry'/>
+    <tag k='note' v='*wet* riser, for pressure increase'/>
+  </node>
+  <node id='-33368' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5429412' lon='9.9354347'/>
+  <node id='-33369' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5429725' lon='9.9353652'/>
+  <node id='-33370' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5429321' lon='9.9349602'/>
+  <node id='-33371' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428888' lon='9.9349099'/>
+  <node id='-33372' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426369' lon='9.934975'/>
+  <node id='-33373' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426057' lon='9.9350445'/>
+  <node id='-33374' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426144' lon='9.9351323'/>
+  <node id='-33375' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426203' lon='9.9351905'>
+    <tag k='entrance' v='main'/>
+    <tag k='indoor' v='yes'/>
+    <tag k='level' v='0'/>
+  </node>
+  <node id='-33376' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426319' lon='9.9353071'>
+    <tag k='entrance' v='main'/>
+    <tag k='indoor' v='yes'/>
+    <tag k='level' v='0'/>
+  </node>
+  <node id='-33377' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426377' lon='9.9353657'/>
+  <node id='-33378' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426461' lon='9.9354495'/>
+  <node id='-33379' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428665' lon='9.9350327'/>
+  <node id='-33380' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428961' lon='9.9353293'/>
+  <node id='-33381' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427117' lon='9.935377'/>
+  <node id='-33382' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.542682' lon='9.9350803'/>
+  <node id='-33383' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426634' lon='9.9363723'/>
+  <node id='-33384' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426129' lon='9.9363841'>
+    <tag k='entrance' v='yes'/>
+    <tag k='indoor' v='yes'/>
+    <tag k='level' v='0'/>
+  </node>
+  <node id='-33385' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425546' lon='9.9363977'/>
+  <node id='-33386' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425069' lon='9.9358675'/>
+  <node id='-33387' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5424556' lon='9.9358792'/>
+  <node id='-33388' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5424455' lon='9.9357756'>
+    <tag k='entrance' v='yes'/>
+    <tag k='indoor' v='yes'/>
+    <tag k='level' v='0'/>
+  </node>
+  <node id='-33389' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5424342' lon='9.9356614'/>
+  <node id='-33390' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.542526' lon='9.9356401'/>
+  <node id='-33391' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425712' lon='9.9356295'/>
+  <node id='-33392' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427497' lon='9.935588'/>
+  <node id='-33393' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427404' lon='9.9354845'/>
+  <node id='-33394' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428865' lon='9.9354505'/>
+  <node id='-33395' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.542895' lon='9.935545'/>
+  <node id='-33396' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430379' lon='9.9357313'/>
+  <node id='-33397' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5429148' lon='9.93576'/>
+  <node id='-33398' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426934' lon='9.9363654'/>
+  <node id='-33399' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430277' lon='9.9356176'>
+    <tag k='entrance' v='yes'/>
+    <tag k='indoor' v='yes'/>
+    <tag k='level' v='0'/>
+  </node>
+  <node id='-33400' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430185' lon='9.9355162'/>
+  <node id='-33401' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426446' lon='9.9358229'/>
+  <node id='-33402' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.543056' lon='9.9356515'/>
+  <node id='-33403' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430312' lon='9.935657'/>
+  <node id='-33404' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430256' lon='9.9355906'/>
+  <node id='-33405' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430504' lon='9.9355852'/>
+  <node id='-33406' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430532' lon='9.9356183'>
+    <tag k='entrance' v='main'/>
+    <tag k='level' v='0'/>
+    <tag k='opening_hours' v='Mo-Fr 06:00-24:00; Sa,Su 10:00-22:00'/>
+    <tag k='wheelchair' v='limited'/>
+  </node>
+  <node id='-33407' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428234' lon='9.9358223'/>
+  <node id='-33408' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428194' lon='9.9357825'/>
+  <node id='-33409' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428606' lon='9.9357719'/>
+  <node id='-33410' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428645' lon='9.9358117'/>
+  <node id='-33411' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.542844' lon='9.935817'>
+    <tag k='entrance' v='main'/>
+    <tag k='level' v='0'/>
+    <tag k='opening_hours' v='Mo-Fr 06:00-24:00; Sa,Su 10:00-22:00'/>
+    <tag k='wheelchair' v='limited'/>
+  </node>
+  <node id='-33412' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425071' lon='9.9361556'/>
+  <node id='-33413' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425319' lon='9.9361498'/>
+  <node id='-33414' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425379' lon='9.9362162'/>
+  <node id='-33415' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.542513' lon='9.9362218'/>
+  <node id='-33416' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425101' lon='9.9361888'>
+    <tag k='entrance' v='main'/>
+    <tag k='level' v='0'/>
+    <tag k='opening_hours' v='Mo-Fr 06:00-24:00; Sa,Su 10:00-22:00'/>
+    <tag k='wheelchair' v='limited'/>
+  </node>
+  <node id='-33417' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427014' lon='9.9361698'/>
+  <node id='-33418' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426766' lon='9.9361757'/>
+  <node id='-33419' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426705' lon='9.9361094'/>
+  <node id='-33420' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426953' lon='9.9361036'/>
+  <node id='-33421' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426984' lon='9.9361366'>
+    <tag k='entrance' v='main'/>
+    <tag k='level' v='0'/>
+    <tag k='opening_hours' v='Mo-Fr 06:00-24:00; Sa,Su 10:00-22:00'/>
+    <tag k='wheelchair' v='limited'/>
+  </node>
+  <node id='-33422' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425648' lon='9.9355902'/>
+  <node id='-33423' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425681' lon='9.9356301'/>
+  <node id='-33424' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425267' lon='9.9356389'/>
+  <node id='-33425' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425235' lon='9.935599'/>
+  <node id='-33426' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425441' lon='9.9355946'>
+    <tag k='entrance' v='main'/>
+    <tag k='level' v='0'/>
+    <tag k='opening_hours' v='Mo-Fr 06:00-24:00; Sa,Su 10:00-22:00'/>
+    <tag k='wheelchair' v='limited'/>
+  </node>
+  <node id='-33427' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428519' lon='9.9365127'/>
+  <node id='-33428' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5429161' lon='9.9371771'/>
+  <node id='-33429' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5435311' lon='9.9368335'/>
+  <node id='-33430' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5434271' lon='9.9365223'/>
+  <node id='-33431' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5432386' lon='9.9364102'/>
+  <node id='-33432' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5432968' lon='9.936633'/>
+  <node id='-33433' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5434752' lon='9.936899'/>
+  <node id='-33434' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.542648' lon='9.9346213'/>
+  <node id='-33435' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5428776' lon='9.9346164'/>
+  <node id='-33436' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427222' lon='9.9340954'/>
+  <node id='-33437' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5425674' lon='9.934131'/>
+  <node id='-33438' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426027' lon='9.9345021'/>
+  <node id='-33439' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426184' lon='9.934589'/>
+  <node id='-33440' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430561' lon='9.9355104'/>
+  <node id='-33441' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5427216' lon='9.9363395'/>
+  <node id='-33442' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5432817' lon='9.9361895'/>
+  <node id='-33443' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.543274' lon='9.9359575'/>
+  <node id='-33444' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5432569' lon='9.9358417'/>
+  <node id='-33445' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5431511' lon='9.9354812'/>
+  <node id='-33446' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430755' lon='9.9357232'/>
+  <node id='-33447' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5430785' lon='9.9357688'/>
+  <node id='-33448' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5426796' lon='9.9358697'/>
+  <node id='63535708' action='delete' visible='false' version='5' changeset='174621772' timestamp='2025-11-13T20:13:21Z' uid='1468043' user='jengelh'/>
+  <node id='442637183' action='delete' visible='false' version='21' changeset='181657032' timestamp='2026-04-22T06:47:24Z' uid='1468043' user='jengelh'/>
+  <node id='527204041' action='delete' visible='false' version='3' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='646504794' action='delete' visible='false' version='9' changeset='180364679' timestamp='2026-03-24T17:40:06Z' uid='251543' user='ChrissW-R1'/>
+  <node id='1022708565' action='delete' visible='false' version='4' changeset='179051285' timestamp='2026-02-25T18:32:52Z' uid='1468043' user='jengelh'/>
+  <node id='1022709201' action='delete' visible='false' version='4' changeset='179051285' timestamp='2026-02-25T18:32:52Z' uid='1468043' user='jengelh'/>
+  <node id='1396917614' action='delete' visible='false' version='3' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='1396952652' action='delete' visible='false' version='2' changeset='179049691' timestamp='2026-02-25T18:00:07Z' uid='1468043' user='jengelh'/>
+  <node id='1396952653' action='delete' visible='false' version='2' changeset='179049691' timestamp='2026-02-25T18:00:07Z' uid='1468043' user='jengelh'/>
+  <node id='1534302783' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='1534302797' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='1534302803' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='1534302839' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='1534302863' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='1534302896' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='1534302944' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='1861590522' action='delete' visible='false' version='2' changeset='174611959' timestamp='2025-11-13T15:50:02Z' uid='1468043' user='jengelh'/>
+  <node id='1861590528' action='delete' visible='false' version='2' changeset='174611959' timestamp='2025-11-13T15:50:02Z' uid='1468043' user='jengelh'/>
+  <node id='1861590530' action='delete' visible='false' version='2' changeset='174611959' timestamp='2025-11-13T15:50:02Z' uid='1468043' user='jengelh'/>
+  <node id='1861590533' action='delete' visible='false' version='2' changeset='174611959' timestamp='2025-11-13T15:50:02Z' uid='1468043' user='jengelh'/>
+  <node id='1874351593' action='delete' visible='false' version='3' changeset='179051285' timestamp='2026-02-25T18:32:52Z' uid='1468043' user='jengelh'/>
+  <node id='1874351598' action='delete' visible='false' version='3' changeset='179051285' timestamp='2026-02-25T18:32:52Z' uid='1468043' user='jengelh'/>
+  <node id='2290414162' action='delete' visible='false' version='3' changeset='184804250' timestamp='2026-06-29T16:06:41Z' uid='1468043' user='jengelh'/>
+  <node id='2290414164' action='delete' visible='false' version='3' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='2290414165' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='2290414166' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='2290414179' action='delete' visible='false' version='2' changeset='174621009' timestamp='2025-11-13T19:47:45Z' uid='1468043' user='jengelh'/>
+  <node id='2327312446' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='2327312543' action='delete' visible='false' version='3' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='2327329215' action='delete' visible='false' version='3' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='2329971176' action='delete' visible='false' version='3' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='2329971325' action='delete' visible='false' version='3' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='2330717629' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='2404886139' action='delete' visible='false' version='4' changeset='180511872' timestamp='2026-03-27T16:38:02Z' uid='496201' user='Nakaner'/>
+  <node id='2446572616' action='delete' visible='false' version='3' changeset='179723028' timestamp='2026-03-11T21:22:08Z' uid='1468043' user='jengelh'/>
+  <node id='2472504861' action='delete' visible='false' version='4' changeset='174620971' timestamp='2025-11-13T19:46:24Z' uid='1468043' user='jengelh'/>
+  <node id='2472504867' action='delete' visible='false' version='3' changeset='174620971' timestamp='2025-11-13T19:46:24Z' uid='1468043' user='jengelh'/>
+  <node id='2472504871' action='delete' visible='false' version='4' changeset='174620971' timestamp='2025-11-13T19:46:24Z' uid='1468043' user='jengelh'/>
+  <node id='2472504877' action='delete' visible='false' version='3' changeset='174620971' timestamp='2025-11-13T19:46:24Z' uid='1468043' user='jengelh'/>
+  <node id='2593366128' action='delete' visible='false' version='6' changeset='180366572' timestamp='2026-03-24T17:39:59Z' uid='251543' user='ChrissW-R1'/>
+  <node id='2593366130' action='delete' visible='false' version='6' changeset='180366572' timestamp='2026-03-24T17:39:59Z' uid='251543' user='ChrissW-R1'/>
+  <node id='2593366133' action='delete' visible='false' version='6' changeset='180366572' timestamp='2026-03-24T17:39:59Z' uid='251543' user='ChrissW-R1'/>
+  <node id='2593366138' action='delete' visible='false' version='6' changeset='180366572' timestamp='2026-03-24T17:39:58Z' uid='251543' user='ChrissW-R1'/>
+  <node id='2593366143' action='delete' visible='false' version='6' changeset='180366572' timestamp='2026-03-24T17:39:58Z' uid='251543' user='ChrissW-R1'/>
+  <node id='2593366150' action='delete' visible='false' version='6' changeset='180366572' timestamp='2026-03-24T17:39:58Z' uid='251543' user='ChrissW-R1'/>
+  <node id='2594782614' action='delete' visible='false' version='2' changeset='184321325' timestamp='2026-06-19T15:29:49Z' uid='9627921' user='hauke-stieler'/>
+  <node id='2594782679' action='delete' visible='false' version='4' changeset='180364679' timestamp='2026-03-24T17:40:07Z' uid='251543' user='ChrissW-R1'/>
+  <node id='2594846887' action='delete' visible='false' version='2' changeset='184804099' timestamp='2026-06-29T16:04:22Z' uid='1468043' user='jengelh'/>
+  <node id='2594846895' action='delete' visible='false' version='2' changeset='184804099' timestamp='2026-06-29T16:04:22Z' uid='1468043' user='jengelh'/>
+  <node id='2752787914' action='delete' visible='false' version='2' changeset='174621772' timestamp='2025-11-13T20:13:21Z' uid='1468043' user='jengelh'/>
+  <node id='2752787919' action='delete' visible='false' version='2' changeset='174621772' timestamp='2025-11-13T20:13:21Z' uid='1468043' user='jengelh'/>
+  <node id='2752787923' action='delete' visible='false' version='2' changeset='174621772' timestamp='2025-11-13T20:13:21Z' uid='1468043' user='jengelh'/>
+  <node id='3026730632' action='delete' visible='false' version='4' changeset='179686023' timestamp='2026-03-11T10:07:54Z' uid='1468043' user='jengelh'/>
+  <node id='3026730733' action='delete' visible='false' version='4' changeset='179686023' timestamp='2026-03-11T10:07:54Z' uid='1468043' user='jengelh'/>
+  <node id='3026730734' action='delete' visible='false' version='4' changeset='179686023' timestamp='2026-03-11T10:07:54Z' uid='1468043' user='jengelh'/>
+  <node id='3139112576' action='delete' visible='false' version='3' changeset='174621009' timestamp='2025-11-13T19:47:45Z' uid='1468043' user='jengelh'/>
+  <node id='3203057412' action='delete' visible='false' version='2' changeset='174621009' timestamp='2025-11-13T19:47:45Z' uid='1468043' user='jengelh'/>
+  <node id='3295565386' action='delete' visible='false' version='9' changeset='179491864' timestamp='2026-03-07T13:12:01Z' uid='1468043' user='jengelh'/>
+  <node id='3295565390' action='delete' visible='false' version='9' changeset='174620892' timestamp='2025-11-13T19:44:12Z' uid='1468043' user='jengelh'/>
+  <node id='3439928109' action='delete' visible='false' version='10' changeset='179050649' timestamp='2026-02-25T18:20:47Z' uid='1468043' user='jengelh'/>
+  <node id='3559507895' action='delete' visible='false' version='3' changeset='175711262' timestamp='2025-12-09T12:31:18Z' uid='16354439' user='unni-geo'/>
+  <node id='3654841789' action='delete' visible='false' version='9' changeset='179809968' timestamp='2026-03-13T12:58:14Z' uid='23934964' user='Klartext GmbH'/>
+  <node id='3919556920' action='delete' visible='false' version='10' changeset='180532211' timestamp='2026-03-28T08:21:27Z' uid='1468043' user='jengelh'/>
+  <node id='3919556921' action='delete' visible='false' version='6' changeset='180532211' timestamp='2026-03-28T08:21:27Z' uid='1468043' user='jengelh'/>
+  <node id='3919556925' action='delete' visible='false' version='7' changeset='180532211' timestamp='2026-03-28T08:21:27Z' uid='1468043' user='jengelh'/>
+  <node id='3936330115' action='delete' visible='false' version='2' changeset='179686023' timestamp='2026-03-11T10:07:54Z' uid='1468043' user='jengelh'/>
+  <node id='4033989441' action='delete' visible='false' version='3' changeset='174620971' timestamp='2025-11-13T19:46:24Z' uid='1468043' user='jengelh'/>
+  <node id='4034464974' action='delete' visible='false' version='2' changeset='179491864' timestamp='2026-03-07T13:12:01Z' uid='1468043' user='jengelh'/>
+  <node id='4213484132' action='delete' visible='false' version='2' changeset='174622072' timestamp='2025-11-13T20:24:18Z' uid='1468043' user='jengelh'/>
+  <node id='4560052053' action='delete' visible='false' version='3' changeset='181459104' timestamp='2026-04-17T13:42:11Z' uid='1468043' user='jengelh'/>
+  <node id='4560052055' action='delete' visible='false' version='3' changeset='181459104' timestamp='2026-04-17T13:42:11Z' uid='1468043' user='jengelh'/>
+  <node id='4560052058' action='delete' visible='false' version='4' changeset='181459104' timestamp='2026-04-17T13:42:11Z' uid='1468043' user='jengelh'/>
+  <node id='4782537671' action='delete' visible='false' version='4' changeset='184804111' timestamp='2026-06-29T16:04:33Z' uid='1468043' user='jengelh'/>
+  <node id='4782539168' action='delete' visible='false' version='2' changeset='183517075' timestamp='2026-06-01T20:05:27Z' uid='20449479' user='anghenfil'/>
+  <node id='4793273594' action='delete' visible='false' version='5' changeset='179723034' timestamp='2026-03-11T21:22:16Z' uid='1468043' user='jengelh'/>
+  <node id='4920295007' action='delete' visible='false' version='9' changeset='180532211' timestamp='2026-03-28T08:21:27Z' uid='1468043' user='jengelh'/>
+  <node id='4932068639' action='delete' visible='false' version='5' changeset='178407195' timestamp='2026-02-11T13:31:52Z' uid='9958834' user='Suahuen'/>
+  <node id='5357585303' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='5357585304' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='5357586340' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='5357586368' action='delete' visible='false' version='6' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='6240645271' action='delete' visible='false' version='2' changeset='179686023' timestamp='2026-03-11T10:07:54Z' uid='1468043' user='jengelh'/>
+  <node id='7507115196' action='delete' visible='false' version='4' changeset='182026057' timestamp='2026-04-30T10:08:46Z' uid='1468043' user='jengelh'/>
+  <node id='7507115198' action='delete' visible='false' version='4' changeset='182026054' timestamp='2026-04-30T10:08:42Z' uid='1468043' user='jengelh'/>
+  <node id='7507115199' action='delete' visible='false' version='4' changeset='182026054' timestamp='2026-04-30T10:08:42Z' uid='1468043' user='jengelh'/>
+  <node id='8910677975' action='delete' visible='false' version='3' changeset='174622072' timestamp='2025-11-13T20:24:18Z' uid='1468043' user='jengelh'/>
+  <node id='9860728024' action='delete' visible='false' version='2' changeset='175003841' timestamp='2025-11-22T20:10:47Z' uid='1468043' user='jengelh'/>
+  <node id='10089388032' action='delete' visible='false' version='3' changeset='180366572' timestamp='2026-03-24T17:39:58Z' uid='251543' user='ChrissW-R1'/>
+  <node id='10089388033' action='delete' visible='false' version='3' changeset='180366572' timestamp='2026-03-24T17:39:58Z' uid='251543' user='ChrissW-R1'/>
+  <node id='10089388034' action='delete' visible='false' version='3' changeset='180366572' timestamp='2026-03-24T17:39:59Z' uid='251543' user='ChrissW-R1'/>
+  <node id='10089388035' action='delete' visible='false' version='3' changeset='180366572' timestamp='2026-03-24T17:39:59Z' uid='251543' user='ChrissW-R1'/>
+  <node id='10089388036' action='delete' visible='false' version='3' changeset='180366572' timestamp='2026-03-24T17:39:59Z' uid='251543' user='ChrissW-R1'/>
+  <node id='10139509554' action='delete' visible='false' version='2' changeset='176816174' timestamp='2026-01-04T12:06:50Z' uid='1468043' user='jengelh'/>
+  <node id='10681831978' action='delete' visible='false' version='6' changeset='182026054' timestamp='2026-04-30T10:08:42Z' uid='1468043' user='jengelh'/>
+  <node id='10760202934' action='delete' visible='false' version='2' changeset='177602372' timestamp='2026-01-23T10:32:54Z' uid='1468043' user='jengelh'/>
+  <node id='10760202938' action='delete' visible='false' version='3' changeset='177602352' timestamp='2026-01-23T10:32:26Z' uid='1468043' user='jengelh'/>
+  <node id='10763639637' action='delete' visible='false' version='2' changeset='182026054' timestamp='2026-04-30T10:08:42Z' uid='1468043' user='jengelh'/>
+  <node id='11047591697' action='delete' visible='false' version='2' changeset='182026054' timestamp='2026-04-30T10:08:42Z' uid='1468043' user='jengelh'/>
+  <node id='11047591698' action='delete' visible='false' version='2' changeset='182026054' timestamp='2026-04-30T10:08:42Z' uid='1468043' user='jengelh'/>
+  <node id='11047591699' action='delete' visible='false' version='2' changeset='182026054' timestamp='2026-04-30T10:08:42Z' uid='1468043' user='jengelh'/>
+  <node id='11047591700' action='delete' visible='false' version='2' changeset='182026054' timestamp='2026-04-30T10:08:42Z' uid='1468043' user='jengelh'/>
+  <node id='11350054611' action='delete' visible='false' version='3' changeset='180532211' timestamp='2026-03-28T08:21:27Z' uid='1468043' user='jengelh'/>
+  <node id='11350054612' action='delete' visible='false' version='3' changeset='180532211' timestamp='2026-03-28T08:21:27Z' uid='1468043' user='jengelh'/>
+  <node id='11350054613' action='delete' visible='false' version='2' changeset='180532211' timestamp='2026-03-28T08:21:27Z' uid='1468043' user='jengelh'/>
+  <node id='11547070675' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='11547070676' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='11547070685' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='11547070690' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='11547070691' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='11547070700' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='11547070705' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <node id='12709617250' action='delete' visible='false' version='2' changeset='179686575' timestamp='2026-03-11T10:14:11Z' uid='1468043' user='jengelh'/>
+  <node id='12709617251' action='delete' visible='false' version='2' changeset='179686575' timestamp='2026-03-11T10:14:11Z' uid='1468043' user='jengelh'/>
+  <node id='12709617252' action='delete' visible='false' version='2' changeset='179686575' timestamp='2026-03-11T10:14:11Z' uid='1468043' user='jengelh'/>
+  <node id='12709617253' action='delete' visible='false' version='2' changeset='179686575' timestamp='2026-03-11T10:14:11Z' uid='1468043' user='jengelh'/>
+  <node id='12997230940' action='delete' visible='false' version='2' changeset='179686023' timestamp='2026-03-11T10:07:54Z' uid='1468043' user='jengelh'/>
+  <node id='12997230941' action='delete' visible='false' version='2' changeset='179686023' timestamp='2026-03-11T10:07:54Z' uid='1468043' user='jengelh'/>
+  <node id='12997230944' action='delete' visible='false' version='2' changeset='179686023' timestamp='2026-03-11T10:07:54Z' uid='1468043' user='jengelh'/>
+  <way id='-52843' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33349'/>
+    <nd ref='-33350'/>
+    <nd ref='-33351'/>
+    <nd ref='-33352'/>
+    <nd ref='-33353'/>
+    <nd ref='-33354'/>
+    <nd ref='-33355'/>
+    <nd ref='-33356'/>
+    <nd ref='-33357'/>
+    <nd ref='-33358'/>
+    <nd ref='-33359'/>
+    <nd ref='-33360'/>
+    <nd ref='-33361'/>
+    <nd ref='-33349'/>
+    <tag k='addr:city' v='Göttingen'/>
+    <tag k='addr:country' v='DE'/>
+    <tag k='addr:housenumber' v='5'/>
+    <tag k='addr:postcode' v='37073'/>
+    <tag k='addr:street' v='Platz der Göttinger Sieben'/>
+    <tag k='alt_name' v='Mehrzweckgebäude'/>
+    <tag k='architect' v='Neue Heimat Kommunal GmbH; Neue Heimat Städtebau GmbH'/>
+    <tag k='building' v='university'/>
+    <tag k='building:levels' v='17'/>
+    <tag k='building:levels:underground' v='1'/>
+    <tag k='building:material' v='glass'/>
+    <tag k='construction_date' v='1968-10'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='name' v='Blauer Turm'/>
+    <tag k='ref' v='MZG'/>
+    <tag k='ref:PIZ' v='5237'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='short_name' v='MZG'/>
+    <tag k='start_date' v='1972-12'/>
+    <tag k='upload' v='false'/>
+    <tag k='wheelchair' v='yes'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52844' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33362'/>
+    <nd ref='-33363'/>
+    <nd ref='-33364'/>
+    <nd ref='-33365'/>
+    <nd ref='-33362'/>
+    <tag k='building:levels' v='18'/>
+    <tag k='building:material' v='concrete'/>
+    <tag k='building:min_level' v='17'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='upload' v='false'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52845' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33366'/>
+    <nd ref='-33367'/>
+    <nd ref='-33368'/>
+    <nd ref='-33369'/>
+    <nd ref='-33370'/>
+    <nd ref='-33371'/>
+    <nd ref='-33372'/>
+    <nd ref='-33373'/>
+    <nd ref='-33374'/>
+    <nd ref='-33375'/>
+    <nd ref='-33376'/>
+    <nd ref='-33377'/>
+    <nd ref='-33378'/>
+    <nd ref='-33366'/>
+    <tag k='addr:city' v='Göttingen'/>
+    <tag k='addr:country' v='DE'/>
+    <tag k='addr:housenumber' v='5'/>
+    <tag k='addr:postcode' v='37073'/>
+    <tag k='addr:street' v='Platz der Göttinger Sieben'/>
+    <tag k='alt_name' v='Mehrzweckgebäude'/>
+    <tag k='architect' v='Neue Heimat Kommunal GmbH; Neue Heimat Städtebau GmbH'/>
+    <tag k='building' v='university'/>
+    <tag k='building:levels' v='20'/>
+    <tag k='building:levels:underground' v='1'/>
+    <tag k='building:material' v='glass'/>
+    <tag k='construction_date' v='1968-10'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='name' v='Blauer Turm'/>
+    <tag k='ref' v='MZG'/>
+    <tag k='ref:PIZ' v='5237'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='short_name' v='MZG'/>
+    <tag k='start_date' v='1972-12'/>
+    <tag k='upload' v='false'/>
+    <tag k='wheelchair' v='yes'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52846' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33379'/>
+    <nd ref='-33380'/>
+    <nd ref='-33381'/>
+    <nd ref='-33382'/>
+    <nd ref='-33379'/>
+    <tag k='building:levels' v='21'/>
+    <tag k='building:material' v='concrete'/>
+    <tag k='building:min_level' v='20'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='upload' v='false'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52847' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33383'/>
+    <nd ref='-33384'/>
+    <nd ref='-33385'/>
+    <nd ref='-33386'/>
+    <nd ref='-33387'/>
+    <nd ref='-33388'/>
+    <nd ref='-33389'/>
+    <nd ref='-33390'/>
+    <nd ref='-33391'/>
+    <nd ref='-33392'/>
+    <nd ref='-33393'/>
+    <nd ref='-33394'/>
+    <nd ref='-33395'/>
+    <nd ref='-33400'/>
+    <nd ref='-33396'/>
+    <nd ref='-33397'/>
+    <nd ref='-33401'/>
+    <nd ref='-33398'/>
+    <nd ref='-33383'/>
+    <tag k='building:levels' v='2'/>
+    <tag k='building:material' v='glass'/>
+    <tag k='building:part' v='university'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='upload' v='false'/>
+    <tag k='wheelchair' v='yes'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52848' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33402'/>
+    <nd ref='-33403'/>
+    <nd ref='-33404'/>
+    <nd ref='-33405'/>
+    <nd ref='-33406'/>
+    <nd ref='-33402'/>
+    <tag k='building:levels' v='1'/>
+    <tag k='building:material' v='glass'/>
+    <tag k='building:part' v='university'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='upload' v='false'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52849' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33407'/>
+    <nd ref='-33408'/>
+    <nd ref='-33409'/>
+    <nd ref='-33410'/>
+    <nd ref='-33411'/>
+    <nd ref='-33407'/>
+    <tag k='building:levels' v='1'/>
+    <tag k='building:material' v='glass'/>
+    <tag k='building:part' v='university'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='upload' v='false'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52850' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33412'/>
+    <nd ref='-33413'/>
+    <nd ref='-33414'/>
+    <nd ref='-33415'/>
+    <nd ref='-33416'/>
+    <nd ref='-33412'/>
+    <tag k='building:levels' v='1'/>
+    <tag k='building:material' v='glass'/>
+    <tag k='building:part' v='university'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='upload' v='false'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52851' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33417'/>
+    <nd ref='-33418'/>
+    <nd ref='-33419'/>
+    <nd ref='-33420'/>
+    <nd ref='-33421'/>
+    <nd ref='-33417'/>
+    <tag k='building:levels' v='1'/>
+    <tag k='building:material' v='glass'/>
+    <tag k='building:part' v='university'/>
+  </way>
+  <way id='-52852' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33422'/>
+    <nd ref='-33423'/>
+    <nd ref='-33424'/>
+    <nd ref='-33425'/>
+    <nd ref='-33426'/>
+    <nd ref='-33422'/>
+    <tag k='building:levels' v='1'/>
+    <tag k='building:material' v='glass'/>
+    <tag k='building:part' v='university'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='upload' v='false'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52853' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33427'/>
+    <nd ref='-33428'/>
+    <nd ref='-33433'/>
+    <nd ref='-33429'/>
+    <nd ref='-33430'/>
+    <nd ref='-33432'/>
+    <nd ref='-33431'/>
+    <nd ref='-33427'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='natural' v='scrub'/>
+    <tag k='upload' v='false'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52854' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33434'/>
+    <nd ref='-33435'/>
+    <nd ref='-33436'/>
+    <nd ref='-33437'/>
+    <nd ref='-33438'/>
+    <nd ref='-33439'/>
+    <nd ref='-33434'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='natural' v='scrub'/>
+    <tag k='survey:date' v='2013-12-28'/>
+    <tag k='upload' v='false'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='-52855' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-33440'/>
+    <nd ref='-33446'/>
+    <nd ref='-33447'/>
+    <nd ref='-33448'/>
+    <nd ref='-33441'/>
+    <nd ref='-33442'/>
+    <nd ref='-33443'/>
+    <nd ref='-33444'/>
+    <nd ref='-33445'/>
+    <nd ref='-33440'/>
+    <tag k='amenity' v='bicycle_parking'/>
+    <tag k='bicycle_parking' v='bollard'/>
+    <tag k='covered' v='no'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='upload' v='false'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/gwz/index.html'/>
+  </way>
+  <way id='87979697' action='delete' visible='false' version='9' changeset='179051285' timestamp='2026-02-25T18:32:52Z' uid='1468043' user='jengelh'/>
+  <way id='140029662' action='delete' visible='false' version='5' changeset='180581437' timestamp='2026-03-29T12:43:47Z' uid='1468043' user='jengelh'/>
+  <way id='176954175' action='delete' visible='false' version='7' changeset='179051285' timestamp='2026-02-25T18:32:52Z' uid='1468043' user='jengelh'/>
+  <way id='187248564' action='delete' visible='false' version='5' changeset='184804250' timestamp='2026-06-29T16:06:41Z' uid='1468043' user='jengelh'/>
+  <way id='253571172' action='delete' visible='false' version='5' changeset='184804099' timestamp='2026-06-29T16:04:22Z' uid='1468043' user='jengelh'/>
+  <way id='1189784479' action='delete' visible='false' version='2' changeset='182026054' timestamp='2026-04-30T10:08:42Z' uid='1468043' user='jengelh'/>
+  <way id='1242572713' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <way id='1242572714' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <way id='1242572715' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <way id='1242572723' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <way id='1242572724' action='delete' visible='false' version='2' changeset='184841816' timestamp='2026-06-30T08:42:25Z' uid='1468043' user='jengelh'/>
+  <way id='1372638933' action='delete' visible='false' version='2' changeset='179686575' timestamp='2026-03-11T10:14:11Z' uid='1468043' user='jengelh'/>
+</osm>

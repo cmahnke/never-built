@@ -1,0 +1,36 @@
+[
+  {
+    "image": "page136.jxl",
+    "size": [4814, 6989],
+    "areas": [
+      {
+        "name": "model-current",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 4697,
+          "y": 3168
+        }
+      },
+      {
+        "name": "model-planned",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 3780
+        },
+        "size": {
+          "x": 4708,
+          "y": 3152
+        }
+      }
+    ]
+  },
+  {
+    "image": "page137.jxl",
+    "size": [4801, 6984]
+  }
+]
