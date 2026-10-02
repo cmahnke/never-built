@@ -240,9 +240,9 @@ function getAlignment(elem) {
 function disableTransition(elem, func) {
   let computedStyle = window.getComputedStyle(elem)
   const transition = computedStyle.getPropertyValue("transition")
-  element.style.transition = ""
+  elem.style.transition = ""
   func()
-  element.style.transition = transition
+  elem.style.transition = transition
 }
 
 /* Trigger functions */
@@ -292,43 +292,47 @@ function scrollTrigger(effects, targetOffset = null, containerOffset = null) {
       if (!functionMap[effect.name].meta.scrollable) {
         throw new Error("Effect is not scrollable!");
       }
-      if (effect !== undefined) {
-        let offset = ["start end", "start 30%"];
+        if (effect !== undefined) {
+          let offset = ["start end", "start 30%"];
 
-        if (targetOffset === null && containerOffset === null) {
-          /*
-          const box = target.getBoundingClientRect();
-          if (box.height > window.innerWidth / 3) {
-            offset[0] = "end start";
-          }
-          */
-        } else {
-          if (!isNaN(targetOffset)) {
-            targetOffset += "%";
-          }
-          if (!isNaN(containerOffset)) {
-            containerOffset += "%";
+          if (targetOffset === null && containerOffset === null) {
+            /*
+            const box = target.getBoundingClientRect();
+            if (box.height > window.innerWidth / 3) {
+              offset[0] = "end start";
+            }
+            */
+          } else {
+            if (!isNaN(targetOffset)) {
+              targetOffset += "%";
+            }
+            if (!isNaN(containerOffset)) {
+              containerOffset += "%";
+            }
+
+            offset = [`${targetOffset} ${containerOffset}`]
           }
 
-          offset = [`${targetOffset} ${containerOffset}`]
+          if (arguments.length >= 5) {
+            if (!isNaN(arguments[3])) {
+              arguments[3] += "%";
+            }
+            if (!isNaN(arguments[4])) {
+              arguments[4] += "%";
+            }
+
+            offset.push(`${arguments[3]} ${arguments[4]}`)
+          }
+
+          const animation = exec(effect)
+          if (animation === undefined || animation === null) {
+            return
+          }
+          scroll(animation, {
+            target: target,
+            offset: offset
+          })
         }
-
-        if (arguments.length >= 5) {
-          if (!isNaN(arguments[3])) {
-            arguments[3] += "%";
-          }
-          if (!isNaN(arguments[4])) {
-            arguments[4] += "%";
-          }
-
-          offset.push(`${arguments[3]} ${arguments[4]}`)
-        }
-
-        scroll(exec(effect), {
-          target: target,
-          offset: offset
-        })
-      }
     });
   }
 }
@@ -337,13 +341,14 @@ function scrollTrigger(effects, targetOffset = null, containerOffset = null) {
 
 function fade (direction = 'in', duration = 1000) {
   let computedStyle = window.getComputedStyle(this)
-  if (direction === 'in' || computedStyle.getPropertyValue("opacity") !== 1) {
+  let opacity
+  if (direction === 'in' || computedStyle.getPropertyValue("opacity") !== "1") {
     opacity = 1
   } else {
     opacity = 0
   }
 
-  return animate(this, { opacity: opacity, duration: duration })
+  return animate(this, { opacity: opacity }, { duration: duration / 1000 })
 }
 
 function shiftHorizontal(direction = 'in', distance = "10%", safe = false, duration = 1000) {
@@ -352,8 +357,9 @@ function shiftHorizontal(direction = 'in', distance = "10%", safe = false, durat
     distance += "%";
   }
   if (alignment === "center" && safe) {
-    return animate(this)
+    return undefined
   }
+  let translatePos
   if (direction === 'in' && alignment === 'right') {
     translatePos = [0, `-${distance}`]
   } else if (direction === 'out' && alignment === 'left') {
@@ -362,9 +368,11 @@ function shiftHorizontal(direction = 'in', distance = "10%", safe = false, durat
     translatePos = [0, `${distance}`]
   } else if (direction === 'out' && alignment === 'right') {
     translatePos = [0, `${distance}`]
+  } else {
+    return undefined
   }
 
-  return animate(this, { translate: translatePos, duration: duration })
+  return animate(this, { translate: translatePos }, { duration: duration / 1000 })
 }
 
 function translateHorizontal (direction = 'in', duration = 1000) {
@@ -385,7 +393,7 @@ function translateHorizontal (direction = 'in', duration = 1000) {
   } else {
     throw new Error(`Unhandled alignment '${direction}' for `, this);
   }
-  return animate(this, { translate: translatePos, duration: duration })
+  return animate(this, { translate: translatePos }, { duration: duration / 1000 })
 }
 
 function scale (direction = 'in', factor = 200, duration = 1000) {
@@ -403,28 +411,28 @@ function scale (direction = 'in', factor = 200, duration = 1000) {
   }
   */
 
-  return animate(this, { ...origin, scale: factor/100, duration: duration })
+  return animate(this, { ...origin, scale: factor/100 }, { duration: duration / 1000 })
 }
 
 function blur(radius = 5, duration = 1000) {
-  if (!radius.match(/.+\w{2,3}$/gm)) {
+  if (!String(radius).match(/.+\w{2,3}$/gm)) {
     radius += "px";
   }
-  return animate(this, { filter: `blur(${radius})`, duration: duration })
+  return animate(this, { filter: `blur(${radius})` }, { duration: duration / 1000 })
 }
 
 function textBackground(background = '#fff', scale = 1.05, duration = 1000) {
   const currentBackground = window.getComputedStyle(this).getPropertyValue('--page-background');
-  return animate(this, { scale: scale, background: [currentBackground, background], duration: duration })
+  return animate(this, { scale: scale, background: [currentBackground, background] }, { duration: duration / 1000 })
 }
 
 function textEmphasis(scale = 1.05, duration = 1000) {
-  return animate(this, { scale: scale, background: background, duration: duration })
+  return animate(this, { scale: scale }, { duration: duration / 1000 })
 }
 
 
-function textShadow (x = 10, y = 10, blur = 10, color = "#fff") {
-  return animate(this, { scale: scale, textShadow: `${x} ${y} ${blur} ${color}`, duration: duration })
+function textShadow (x = 10, y = 10, blur = 10, color = "#fff", duration = 1000) {
+  return animate(this, { textShadow: `${x}px ${y}px ${blur}px ${color}` }, { duration: duration / 1000 })
 }
 
 function addClass(cls) {
