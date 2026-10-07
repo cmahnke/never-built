@@ -1,0 +1,44 @@
+[
+  {
+    "image": "front.jxl",
+    "size": [7957, 27841],
+    "areas": [
+      {
+        "name": "north",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 1166,
+          "y": 5236
+        },
+        "size": {
+          "x": 5544,
+          "y": 3762
+        }
+      },
+      {
+        "name": "medical-center",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 1160,
+          "y": 12199
+        },
+        "size": {
+          "x": 5518,
+          "y": 5512
+        }
+      },
+      {
+        "name": "central",
+        "postprocess": ["white_balance", "preview", "enhance_ai"],
+        "position": {
+          "x": 1166,
+          "y": 19162
+        },
+        "size": {
+          "x": 5555,
+          "y": 5522
+        }
+      }
+    ]
+  }
+]
