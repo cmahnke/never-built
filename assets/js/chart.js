@@ -1,6 +1,6 @@
 import * as echarts from 'echarts';
 
-defaultHeightVH = 20;
+const defaultHeightVH = 20;
 
 function between(x, min, max) {
   return x >= min && x <= max;
@@ -96,7 +96,7 @@ function setupChart(element, data, options) {
   });
 
   if ("duration" in options) {
-    animationDuration = duration
+    animationDuration = options.duration
   }
 
   if ("scale" in options && options.scale == true) {
@@ -113,7 +113,7 @@ function setupChart(element, data, options) {
     //type = 'time'
   }
 
-  chartOptions = {
+  const chartOptions = {
     xAxis: {
       type: type,
       label: xAxisName,
