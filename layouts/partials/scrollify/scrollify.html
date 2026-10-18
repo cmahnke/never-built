@@ -15,7 +15,7 @@
       {{- $pageContext := . -}}
       {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-item" -}}
       {{- $target := printf "heading-anchor-%s" .File.ContentBaseName -}}
-      <a name="{{ $target }}" id ="{{ $target }}"></a>
+      <a id="{{ $target }}"></a>
       <article class="list-item article {{ $class }} scroll-item {{ $animationClass }}" itemscope itemtype="http://schema.org/Blog">
         {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-header" -}}
         <div class="list-item-head scroll-header {{ $animationClass }}">
@@ -45,9 +45,9 @@
           <div class="preview-container scroll-preview-container {{ $class }} {{ $animationClass }}"{{ if ne $data "" }} data-image-regions="{{  $data }}"{{ end }}>
             {{- range $i, $img := $previewNames -}}
               {{- with $pageContext.Resources.GetMatch $img -}}
-                <a class="cover-link" href="{{ $pageContext.Permalink }}">
+                <a class="cover-link" href="{{ $pageContext.Permalink }}" aria-label="{{ $title }}">
                   {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-preview-overlay-image" -}}
-                  <img class="preview {{printf "img-%d" $i}} {{ $class }} {{ $animationClass }}" src="{{ (.Fit $fit).RelPermalink }}" data-image-name="{{ $img}}" />
+                  <img class="preview {{printf "img-%d" $i}} {{ $class }} {{ $animationClass }}" src="{{ (.Fit $fit).RelPermalink }}" alt="{{ $title }}" data-image-name="{{ $img}}" />
                 </a>
               {{- else -}}
                 {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $pageContext.Path $img -}}
@@ -61,9 +61,9 @@
               {{- with $previewImg -}}
 
                 <div class="scan-container {{ $class }} scroll-preview-scan-image">
-                  <a class="cover-link" href="{{ $pageContext.Permalink }}">
+                  <a class="cover-link" href="{{ $pageContext.Permalink }}" aria-label="{{ $title }}">
                     {{- $animationClass := partial "scrollify/class-resolver.html" "scroll-preview-scan-image" -}}
-                    <img class="preview scan {{ $animationClass }}" src="{{ $previewImg.RelPermalink }}" />
+                    <img class="preview scan {{ $animationClass }}" src="{{ $previewImg.RelPermalink }}" alt="{{ $title }}" />
                   </a>
                 </div>
               {{ end }}

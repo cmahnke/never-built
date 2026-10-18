@@ -32,7 +32,7 @@ function addOverlay(elem, cls, additionalClasses) {
   const body = document.querySelector('body');
   const overlay = document.createElement("div");
   overlay.addEventListener("pointerdown", (event) => {
-    e.preventDefault();
+    event.preventDefault();
   })
   const container = document.createElement("div");
   overlay.classList.add(cls);

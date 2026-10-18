@@ -15,7 +15,7 @@
 
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#e0e0e0">
 
     {{- partial "html/head/style.html" (dict "context" . "css" "css/style.css") -}}
@@ -83,10 +83,11 @@
     {{ $class = printf "%s %s" $class "meta" }}
   {{ end }}
   <body class="{{ $class }} {{ if .IsHome }}home{{ end }}">
+    <a class="skip-link" href="#main">{{ i18n "skipToContent" }}</a>
     {{ partial "header.html" . }}
-    <div class="main">
+    <main class="main" id="main">
       {{ block "content" . }}{{ end }}
-    </div>
+    </main>
     {{ partial "footer.html" . }}
   </body>
  </html>

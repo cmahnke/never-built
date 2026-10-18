@@ -32,7 +32,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
   text-decoration: none;
   position: relative;
 
-  &:focus {
+  &:focus:not(:focus-visible) {
     outline: none
   }
 

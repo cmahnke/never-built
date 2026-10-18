@@ -83,6 +83,24 @@ $fullscreen-color: var(--base07);
     z-index: 99;
 }
 
+/*
+ * Skip link (baseof.html): visually hidden until focused. Fixed
+ * high-contrast colors, independent of the site palette (WCAG 2.4.1).
+ */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  z-index: 10000;
+  padding: 0.5em 1em;
+  background: #212121;
+  color: #fafafa;
+
+  &:focus {
+    left: 0;
+  }
+}
+
 :root {
   --text-font: #{$text-font};
   --heading-font: #{$heading-font};
@@ -106,7 +124,9 @@ $fullscreen-color: var(--base07);
 }
 
 html {
-  scroll-behavior: smooth;
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
 }
 
 html,body {
@@ -127,7 +147,9 @@ body {
   font-family: $text-font;
   display: flex;
   flex-direction: column;
-  scroll-behavior: smooth;
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
   /*background-color: var(--page-background);*/
 
   @media (min-width: 768px) {

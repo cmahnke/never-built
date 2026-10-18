@@ -46,7 +46,7 @@
                   {{- $class = $class -}}
                 {{- end -}}
                 {{- $previewImage := (.Fit $fit).Process "webp" -}}
-                <img class="{{printf "post-featured img-%d" $i}} {{ $class }}" src="{{ $previewImage.RelPermalink }}"  data-image-name="{{ $img }}" data-full-src="{{ $originalImage.RelPermalink }}" data-full-width="{{ $originalImage.Width }}" data-full-height="{{ $originalImage.Height }}" />
+                <img class="{{printf "post-featured img-%d" $i}} {{ $class }}" src="{{ $previewImage.RelPermalink }}" alt="{{ $.Title }}" data-image-name="{{ $img }}" data-full-src="{{ $originalImage.RelPermalink }}" data-full-width="{{ $originalImage.Width }}" data-full-height="{{ $originalImage.Height }}" />
               </div>
             {{- else -}}
               {{- errorf "[partials/book-toc.html] Can't find file %s/%s" $.Path $img -}}
@@ -98,7 +98,7 @@
           <h3 class="parent-section-heading">{{ i18n "post-source" }}</h3>
           <div class="parent-section">
             {{ i18n "sectionParent" }}
-            <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}" data-animation-classes="meta">{{ .CurrentSection.Title }}</a> <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}" data-animation-classes="meta"><i class="book-reference"></i></a>
+            <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}" data-animation-classes="meta">{{ .CurrentSection.Title }}</a>             <a class="reference" href="{{ .CurrentSection.RelPermalink }}" title="{{ .CurrentSection.Title }}" aria-label="{{ i18n "sectionParent" }}: {{ .CurrentSection.Title }}" data-animation-classes="meta"><i class="book-reference" aria-hidden="true"></i></a>
           </div>
         {{- end -}}
         <div class="tag-container">

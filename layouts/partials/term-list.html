@@ -62,10 +62,10 @@
 <div class="pagination">
   <div class="pagination-links">
     {{- if $paginator.HasPrev -}}
-      <a class="pagination-prev no-animation" href="{{ $paginator.Prev.URL }}">&#x276E; {{ i18n "next_page" }}</a>
+      <a class="pagination-prev no-animation" href="{{ $paginator.Prev.URL }}"><span aria-hidden="true">&#x276E;</span> {{ i18n "previous_page" }}</a>
     {{- end -}}
     {{- if $paginator.HasNext -}}
-      <a class="pagination-next no-animation" href="{{ $paginator.Next.URL }}">{{ i18n "previous_page" }} &#x276F;</a>
+      <a class="pagination-next no-animation" href="{{ $paginator.Next.URL }}">{{ i18n "next_page" }} <span aria-hidden="true">&#x276F;</span></a>
     {{- end -}}
   </div>
 </div>

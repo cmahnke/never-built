@@ -45,10 +45,6 @@ $scale-factor: 1.05 !default;
       vertical-align: super;
     }
 
-    &:focus {
-      outline: none;
-    }
-
     &:hover {
       /*
       border: 0.4ex solid black;
@@ -106,10 +102,6 @@ $scale-factor: 1.05 !default;
 
     &.glide__bullet--active {
       background-color: black;
-    }
-
-    &:focus {
-      outline: none;
     }
 
     &:hover, &:focus {

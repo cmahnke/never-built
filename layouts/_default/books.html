@@ -34,9 +34,9 @@
 
                 {{- if $previewImg -}}
                   {{- $class := "preview" -}}
-                  <a class="cover-link" href="{{ $link }}">
+                  <a class="cover-link" href="{{ $link }}" aria-label="{{ $title }}">
                     {{- with $previewImg -}}
-                      <img class="{{ $class }}" src="{{ (.Process "webp").RelPermalink }}" />
+                      <img class="{{ $class }}" src="{{ (.Process "webp").RelPermalink }}" alt="{{ $title }}" />
                     {{ end }}
                   </a>
                 {{- end -}}
@@ -57,10 +57,10 @@
       <div class="pagination">
         <div class="pagination-links">
           {{- if $paginator.HasPrev -}}
-            <a class="pagination-prev no-animation" href="{{ $paginator.Prev.URL }}">&#x276E; {{ i18n "next_page" }}</a>
+            <a class="pagination-prev no-animation" href="{{ $paginator.Prev.URL }}"><span aria-hidden="true">&#x276E;</span> {{ i18n "previous_page" }}</a>
           {{- end -}}
           {{- if $paginator.HasNext -}}
-            <a class="pagination-next no-animation" href="{{ $paginator.Next.URL }}">{{ i18n "previous_page" }} &#x276F;</a>
+            <a class="pagination-next no-animation" href="{{ $paginator.Next.URL }}">{{ i18n "next_page" }} <span aria-hidden="true">&#x276F;</span></a>
           {{- end -}}
         </div>
       </div>

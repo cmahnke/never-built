@@ -102,7 +102,7 @@
 {{- $id := md5 $geojson -}}
 {{- $var := printf "_%s" $id -}}
 <div class="map-wrapper {{ $class }}">
-  <div class="map" id="{{ $id }}"></div>
+  <div class="map" id="{{ $id }}" role="region" aria-label="{{ i18n "interactiveMap" }}"></div>
 </div>
 {{- if $download -}}
   <div class="share map-share"><a href="{{ $geojson }}" title="{{ i18n "download-geojson" }}" download>{{ i18n "download-geojson" }}</a></div>

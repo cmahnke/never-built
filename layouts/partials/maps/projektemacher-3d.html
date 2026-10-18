@@ -119,9 +119,9 @@
 {{- $id := md5 $geojson -}}
 {{- $var := printf "_%s" $id -}}
 <div class="map-wrapper {{ $class }}">
-  <div class="map map-3d" id="{{ $id }}"></div>
+  <div class="map map-3d" id="{{ $id }}" role="region" aria-label="{{ i18n "interactiveMap" }}"></div>
   <div id="map-loading">
-    <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" fill="none" aria-hidden="true">
       <rect x="3" y="3" width="36" height="36" rx="2" stroke="#000" stroke-width="4" />
     </svg>
   </div>

@@ -55,7 +55,7 @@
     </div>
     <div class="glide__bullets" data-glide-el="controls[nav]">
       {{- range seq $slideNum -}}
-        <button class="glide__bullet" data-glide-dir="={{ . }}"></button>
+        <button class="glide__bullet" data-glide-dir="={{ . }}" aria-label="{{ i18n "gotoSlide" (add . 1) }}"></button>
       {{- end -}}
     </div>
   </div>

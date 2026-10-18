@@ -16,10 +16,11 @@
       {{- $pageContext := . -}}
       <li class="toc-item">
         {{- $target := printf "heading-anchor-%s" .File.ContentBaseName -}}
-        <a class="toc-item-link" onclick="anchorTop('{{ $target }}')">
+        <a class="toc-item-link" href="#{{ $target }}" onclick="anchorTop('{{ $target }}');return false;">
           {{- .Title -}}
         </a>
       </li>
     {{- end -}}
+    </ul>
   </div>
 {{- end -}}

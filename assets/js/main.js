@@ -28,7 +28,7 @@ if (browser && (browser.name === 'ios' || browser.name === 'ios-webview')) {
 window.anchorTop = (anchor) => {
   const heading = document.querySelector(`.header-background`)
   const topHeight = Number(window.getComputedStyle(heading).getPropertyValue('height').replace('px', ''))
-  const target = document.querySelector(`a[name="${anchor}"]`)
+  const target = document.querySelector(`a[id="${anchor}"], a[name="${anchor}"]`)
   const targetTop = target.getBoundingClientRect().top;
   const to = targetTop + window.pageYOffset - topHeight;
 

@@ -89,3 +89,11 @@ other = "Orte in diesem Buch"
 
 [download-geojson]
 other = "GeoJSON herunterladen"
+
+# Slider
+[gotoSlide]
+other = "Zu Folie {{ . }} wechseln"
+
+# 3D model
+[3d-model]
+other = "3D-Modell"

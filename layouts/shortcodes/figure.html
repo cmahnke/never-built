@@ -16,13 +16,11 @@
             {{- $permalink_pretty := $.Page.Permalink | replaceRE "\\.html$" "/" -}}
             <img src="{{ (printf "%s%s" $permalink_pretty $image) }}"
           {{- end -}}
-            {{- if (or (.Get "alt") (.Get "caption")) -}}
-                {{- with .Get "alt"}}
+            {{- with .Get "alt"}}
                     {{- printf " alt=\"%s\"" . | safeHTMLAttr -}}
                 {{- else -}}
-                    {{- printf " alt=\"%s\"" (.Get "caption" | markdownify | plainify) | safeHTMLAttr -}}
-                {{- end -}}
-          {{- end -}}
+                    {{- printf " alt=\"%s\"" (.Get "caption" | default "" | markdownify | plainify) | safeHTMLAttr -}}
+            {{- end -}}
             {{- with .Get "width" }} width="{{ . }}"{{ end -}}
             {{- with .Get "height" }} height="{{ . }}"{{ end -}}
           /><!-- Closing img tag -->
