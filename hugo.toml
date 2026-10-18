@@ -127,13 +127,6 @@ enableRobotsTXT = true
     baseName = "map"
     notAlternative = true
 
-  [outputFormats.iiif]
-    mediaType = "application/ld+json"
-    isPlainText = true
-    isHTML = false
-    baseName = "manifest"
-    notAlternative = true
-
   [outputFormats.iiif-manifest]
     mediaType = "application/ld+json"
     isPlainText = true
@@ -165,7 +158,7 @@ enableRobotsTXT = true
 [module]
   [module.hugoVersion]
     extended = true
-    min = '0.146.3'
+    min = '0.165.0'
 
   [[module.mounts]]
     source = "assets/scss"

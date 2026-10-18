@@ -1,24 +1,15 @@
 {{/*
 Hugo Shortcode for IIIF Image API integration using OpenLayers
-Make sure to integrate the CSS styles of OpenLayers
 
 Parameters:
 * src - The url to the 'info.json' file
-* includeSources - Include JavaScript sources (optional - default 'false')
 * share - Add share links (optional)
 * contextPath - directory to load the info.json file from
 */}}
 
 {{/* TODO: The logic of this is flawed */}}
 
-{{- if not (.Get "includeSources") -}}
-    {{/* JavaScript */}}
-    {{- $defines := dict "process.env.NODE_ENV" `"development"` -}}
-    {{- $opts := dict "targetPath" "js/main.js" "defines" $defines -}}
-    {{- $iiifViewer := resources.Get "js/iiif-image-viewer.js" | js.Build $opts -}}
-    {{- $js := slice $iiifViewer | resources.Concat "js/iiif-ol.js" | minify | fingerprint -}}
-    <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
-{{ end }}
+{{/* The viewer script is loaded via the shortcode metadata below */}}
 
 {{- $src := .Get "src" -}}
 {{- $baseURL := path.Dir $src -}}
@@ -60,3 +51,7 @@ Parameters:
 {{- end -}}
 
 {{ partial "iiif/_iiif-image.html" (dict "infoJson" $src "share" $share "downloadURL" $downloadURL "baseURL" $baseURL "hdr" $hdr) }}
+
+{{- define "_partials/shortcodes/iiif/iiif-metadata.html" -}}
+  {{- (dict "css" slice "js" (slice "ts/iiif-image-viewer.ts") "scss" (slice "scss/iiif.scss")) | jsonify -}}
+{{- end -}}

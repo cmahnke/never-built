@@ -9,6 +9,29 @@ $animation-duration: 750ms !default;
 @use "link" as *;
 @use "sass:math";
 
+/* Open state transforms for the burger icon, shared by the no-JS
+   checkbox hack (#menu-toggle:checked + label) and the JS enhanced
+   button (nav[data-menu-open="true"], see assets/ts/menu.ts). */
+@mixin menu-icon-open {
+  .menu-icon {
+    transform: rotateZ(-45deg);
+    transform-origin: top right;
+    width: math.hypot($button-width, $button-width);
+
+    &:before {
+      opacity: 0;
+      transform: scale(0);
+      top: 0;
+      transform: rotateZ(45deg);
+    }
+
+    &:after {
+      width: math.hypot($button-width, $button-width);
+      transform: rotateZ(90deg) translateX(0 - math.div(math.hypot($button-width, $button-width), 2) - math.div(math.div($button-height, 5), 2));
+    }
+  }
+}
+
 header .menu {
   position: fixed;
   /*height: fit-content;*/
@@ -30,7 +53,8 @@ header .menu {
     transition: all $animation-duration;
   }
 
-  &:has(nav #menu-toggle:checked ) {
+  &:has(nav #menu-toggle:checked),
+  &:has(nav[data-menu-open="true"]) {
     z-index: 8;
   }
 
@@ -68,27 +92,28 @@ header .menu {
           transform: unset;
         }
 
-        .menu-icon {
-          transform: rotateZ(-45deg);
-          transform-origin: top right;
-          width: math.hypot($button-width, $button-width);
-
-          &:before {
-            opacity: 0;
-            transform: scale(0);
-            top: 0;
-            transform: rotateZ(45deg);
-          }
-
-          &:after {
-            width: math.hypot($button-width, $button-width);
-            transform: rotateZ(90deg) translateX(0 - math.div(math.hypot($button-width, $button-width), 2) - math.div(math.div($button-height, 5), 2));
-          }
-        }
+        @include menu-icon-open;
       }
     }
 
-    label.menu-button {
+    /* JS enhanced mode: menu.ts replaces the <label> with a real
+       <button> and keys the open state on nav[data-menu-open]. */
+    &[data-menu-open="true"] {
+      ul {
+        transform: unset;
+      }
+
+      .menu-button {
+        @include menu-icon-open;
+      }
+    }
+
+    .menu-button {
+      appearance: none;
+      border: none;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
       font-size: unset;
       padding: $button-padding;
       position: fixed;
@@ -97,6 +122,11 @@ header .menu {
       width: $button-width;
       height: $button-height;
       background: black;
+
+      &:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+      }
 
       @media (min-width: 768px) {
         background: unset;
@@ -247,5 +277,17 @@ header .menu {
   a:visited {
     color: var(--menu-text-color);
     text-decoration: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header .menu,
+  header .menu:before,
+  header .menu nav ul,
+  header .menu nav .menu-button,
+  header .menu nav .menu-button .menu-icon,
+  header .menu nav .menu-button .menu-icon:before,
+  header .menu nav .menu-button .menu-icon:after {
+    transition: none;
   }
 }

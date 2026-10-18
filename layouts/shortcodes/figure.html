@@ -33,11 +33,11 @@
                 {{ with (.Get "title") }}
                     <h4>{{ . }}</h4>
                 {{ end }}
-                {{ if (or (.Get "caption") (.Get "attr")) }}<p>
-                    {{ .Get "caption" | markdownify }}
+                {{ if (or (.Get "caption") (.Get "attr")) }}
+                    {{ .Get "caption" | markdownify | replaceRE "<p>(.*?)</p>" "$1" | safeHTML }}
                     {{ with .Get "attrlink" }}<a href="{{ . }}"> {{ end }}
                         {{ .Get "attr" | markdownify }}
-                        {{ if .Get "attrlink" }}</a>{{ end }}</p>
+                        {{ if .Get "attrlink" }}</a>{{ end }}
                 {{ end }}
             </figcaption>
         {{- end -}}
