@@ -164,6 +164,12 @@ enableRobotsTXT = true
     source = "assets/scss"
     target = "assets/scss"
 
+  # Theme SCSS partials (share, iiif, ol-iiif, fonts, functions) must be
+  # reachable as relative imports from the site's base.scss
+  [[module.mounts]]
+    source = "themes/projektemacher-base/assets/scss"
+    target = "assets/scss"
+
   [[module.mounts]]
     source = "static"
     target = "static"
