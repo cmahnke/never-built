@@ -18,7 +18,7 @@ import { UAParser } from "ua-parser-js";
 import type { GeoJSON } from "geojson";
 import type { FeatureTag } from "./maplibregl-util";
 
-import type { MapOptions, LngLatLike, RasterDEMSourceSpecification, StyleSpecification, LngLatBoundsLike } from "maplibre-gl";
+import type { MapOptions, LngLatLike, RasterDEMSourceSpecification, StyleSpecification, LngLatBoundsLike, WebGLContextAttributesWithType, LayerSpecification } from "maplibre-gl";
 
 export interface CameraPositionConfig {
   cameraLngLat: LngLatLike;
@@ -51,8 +51,11 @@ interface MaplibreMapInternal extends MapLibreMap {
 }
 
 interface MapOptionsInternal extends MapOptions {
+  canvasContextAttributes: WebGLContextAttributesWithType;
   calculateTileZoomFunction?: (zoom: number) => number;
 }
+
+type PaintPropertyName = Parameters<MapLibreMap["setPaintProperty"]>[1];
 
 /* Defaults */
 export const BUILDING_LAYER_NAME = "projektemacher-building";
@@ -112,7 +115,7 @@ export async function projektemacher3DMap(
 
   if (initialPos !== undefined) {
     mapOptions = { ...mapOptions, pitch: initialPos.pitch, bearing: initialPos.bearing };
-    if ("zoom" in initialPos) {
+    if (initialPos.zoom !== undefined) {
       zoom = initialPos.zoom;
     }
   }
@@ -148,9 +151,9 @@ export async function projektemacher3DMap(
 
   let centerObj: LngLatLike;
 
-  let geojsonObj: GeoJSON;
+  let geojsonObj: GeoJSON.FeatureCollection | undefined;
   if (geojson !== undefined) {
-    geojsonObj = typeof geojson === "string" ? ((await loadOrParse(geojson as string)) as GeoJSON) : (geojson as GeoJSON);
+    geojsonObj = typeof geojson === "string" ? ((await loadOrParse(geojson as string)) as GeoJSON.FeatureCollection) : geojson;
   }
   let geojsonLayerNames: string[] = [];
 
@@ -178,7 +181,7 @@ export async function projektemacher3DMap(
     throw new Error("No BBox URL!");
   }
 
-  if (centerObj[0] === 0 && centerObj[1] === 0 && bboxObj.length !== 0) {
+  if ((centerObj as number[])[0] === 0 && (centerObj as number[])[1] === 0 && bboxObj.length !== 0) {
     const [[w, s], [e, n]] = bboxObj;
     centerObj = [(w + e) / 2, (s + n) / 2];
   }
@@ -198,7 +201,7 @@ export async function projektemacher3DMap(
     const styleDef = (await loadOrParse(styleJson as string)) as StyleSpecification;
     style = updateStyle(
       styleDef,
-      source,
+      source as string,
       initialZoom,
       minZoom,
       maxZoom,
@@ -211,14 +214,14 @@ export async function projektemacher3DMap(
       attribution
     );
   } else {
-    style = setupDefaultStyle(source, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
+    style = setupDefaultStyle(source as string, initialZoom, minZoom, maxZoom, bboxObj, centerObj, background);
   }
 
-  // @ts-expect-error This will report an error since TS handles `const` like a type decleration
-  if (BUILDING_LAYER_NAME !== undefined && BUILDING_LAYER_NAME != "") {
+  if (BUILDING_LAYER_NAME) {
     style.layers.forEach((layer) => {
-      if (layer["source-layer"] === "building") {
-        layer["source-layer"] = BUILDING_LAYER_NAME;
+      const sourceLayerLayer = layer as LayerSpecification & { "source-layer"?: string };
+      if (sourceLayerLayer["source-layer"] === "building") {
+        sourceLayerLayer["source-layer"] = BUILDING_LAYER_NAME;
       }
     });
   }
@@ -243,13 +246,14 @@ export async function projektemacher3DMap(
 
   style.layers = style.layers.map((layer) => {
     if (layer.id.includes("label")) {
-      layer.paint = layer.paint || {};
+      const paintLayer = layer as LayerSpecification & { paint?: Record<string, unknown> };
+      paintLayer.paint = paintLayer.paint || {};
 
-      if (layer.type === "symbol") {
-        layer.paint["text-opacity"] = 0;
-        layer.paint["icon-opacity"] = 0;
+      if (paintLayer.type === "symbol") {
+        paintLayer.paint["text-opacity"] = 0;
+        paintLayer.paint["icon-opacity"] = 0;
       } else {
-        layer.paint["opacity"] = 0;
+        paintLayer.paint["opacity"] = 0;
       }
     }
     return layer;
@@ -261,7 +265,7 @@ export async function projektemacher3DMap(
 
   const terrainSourceDef: RasterDEMSourceSpecification = {
     type: "raster-dem",
-    tiles: [topoRasterTiles],
+    tiles: [topoRasterTiles as string],
     tileSize: 256,
     minzoom: minZoom,
     maxzoom: Math.min(16, maxZoom),
@@ -280,7 +284,6 @@ export async function projektemacher3DMap(
   await preloadStyleFonts(style, resolvedFontPath);
 
   const map = new MapLibreMap({
-    container: container,
     style,
     center: centerObj,
     maxBounds: bboxObj ? (bboxObj as LngLatBoundsLike) : undefined,
@@ -417,7 +420,7 @@ export async function projektemacher3DMap(
 
   function applyBuildingFilter(m: MapLibreMap, onlyNeverBuilt: boolean): void {
     const filter: maplibregl.FilterSpecification = onlyNeverBuilt
-      ? ["all", BASE_BUILDING_FILTER, NEVER_BUILT_FILTER]
+      ? (["all", BASE_BUILDING_FILTER, NEVER_BUILT_FILTER] as unknown as maplibregl.FilterSpecification)
       : BASE_BUILDING_FILTER;
 
     if (m.getLayer("3d-buildings")) {
@@ -445,7 +448,7 @@ export async function projektemacher3DMap(
             ["case", ["has", "color"], ["get", "color"], "#aaa"]
           ]
         : buildingFillColor;
-      m.setPaintProperty("3d-buildings", "fill-extrusion-color", color as maplibregl.ColorSpecification);
+      m.setPaintProperty("3d-buildings", "fill-extrusion-color", color as unknown as maplibregl.ColorSpecification);
     }
 
     // In top-down view, the fill only applies to highlighted buildings.
@@ -564,7 +567,7 @@ export async function projektemacher3DMap(
           m.setPaintProperty(id, "text-opacity", labelOpacity);
           m.setPaintProperty(id, "icon-opacity", labelOpacity);
         } else {
-          m.setPaintProperty(id, "opacity", labelOpacity);
+          m.setPaintProperty(id, "opacity" as unknown as PaintPropertyName, labelOpacity);
         }
       }
     }
@@ -592,7 +595,7 @@ export async function projektemacher3DMap(
           } else if (layer.type === "fill-extrusion") {
             m.setPaintProperty(layerId, "fill-extrusion-opacity", geojsonOpacity);
           } else {
-            m.setPaintProperty(layerId, "opacity", geojsonOpacity);
+            m.setPaintProperty(layerId, "opacity" as unknown as PaintPropertyName, geojsonOpacity);
           }
         } catch (e) {
           console.warn(`Property '${layer.type}' doesn't exist for the layer ${layerId}`, e);
@@ -848,7 +851,7 @@ export async function projektemacher3DMap(
     treeLayer.heightProperty = "height";
     treeLayer.baseHeightMeters = 6;
     treeLayer.treeRowSpacing = 3;
-    treeLayer.debug = debug;
+    treeLayer.debug = debug ?? false;
     treeLayer.terrainExaggeration = BASE_TERRAIN_EXAGGERATION;
     treeLayer.minzoom = 13;
     treeLayer.addTo(map);
@@ -962,7 +965,7 @@ export async function projektemacher3DMap(
         if (e.features?.length) {
           const props = e.features[0].properties;
           if ("projektemacher:url" in props) {
-            let html = `<h4><a href="${props["projektemacher:url"]}" title="${i18next.t("3d:buildingPost")}">${i18next.t("3d:buildingPost")}</a></h4>`;
+            const html = `<h4><a href="${props["projektemacher:url"]}" title="${i18next.t("3d:buildingPost")}">${i18next.t("3d:buildingPost")}</a></h4>`;
             closeActivePopup();
             activePopup = new maplibregl.Popup({maxWidth: "16rem"}).setLngLat(e.lngLat).setHTML(html).addTo(map);
           }

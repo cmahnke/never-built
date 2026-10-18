@@ -1,27 +1,25 @@
 export const defaultIgnoreProperties = ["overflow", "word-break", "letter-spacing", "text-shadow", "transition", "transform", "background"];
 
-export function cloneElement(elem, ignoreProperties, recursive) {
-  if (ignoreProperties === undefined) {
-    ignoreProperties = defaultIgnoreProperties;
-  }
+export function cloneElement(elem: Element, ignoreProperties?: string[], recursive?: boolean): HTMLElement {
+  const ignored = ignoreProperties === undefined ? defaultIgnoreProperties : ignoreProperties;
 
-  if ((recursive !== undefined && recursive !== false) || recursive === undefined) {
+  if ((recursive !== undefined && recursive !== false) || recursive === undefined) {
     if (elem.firstElementChild) {
       throw new Error("Cloning with CSS only works for nodes without child elements!");
     }
   } else {
     throw new Error("Recursive cloning isn't immplemented yet!");
   }
-  const clone = elem.cloneNode(true);
+  const clone = elem.cloneNode(true) as HTMLElement;
   const compStyles = window.getComputedStyle(elem);
   Array.from(compStyles).forEach(key => {
-    if (!key.startsWith('animation') && !key.startsWith("-") && !ignoreProperties.includes(key)) {
-      clone.style.setProperty(key, compStyles.getPropertyValue(key)) //, compStyles.getPropertyPriority(key)
+    if (!key.startsWith('animation') && !key.startsWith("-") && !ignored.includes(key)) {
+      clone.style.setProperty(key, compStyles.getPropertyValue(key))
     }
   });
 
   clone.style.setProperty("position", "absolute", "important")
-  clone.style.setProperty("z-index", 1001, "important")
+  clone.style.setProperty("z-index", "1001", "important")
   clone.style.setProperty("display", "block", "important")
   const pos = elem.getBoundingClientRect();
   clone.style.setProperty("top", `${pos.top}px`);

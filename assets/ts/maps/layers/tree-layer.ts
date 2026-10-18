@@ -447,7 +447,7 @@ export class TreeLayer implements CustomLayerInterface {
         features = this.map.querySourceFeatures(this.source, {
           sourceLayer,
           filter: this.layerFilter
-        });
+        }) as MapGeoJSONFeature[];
       } catch {
         continue;
       }

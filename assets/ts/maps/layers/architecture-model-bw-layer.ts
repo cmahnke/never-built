@@ -1,6 +1,6 @@
 // assets/ts/layers/architecture-model-bw-layer.ts
 
-import type { CustomLayerInterface, Map as MapLibreMap } from "maplibre-gl";
+import type { CustomLayerInterface, Map as MapLibreMap, CustomRenderMethodInput } from "maplibre-gl";
 
 type GL = WebGLRenderingContext | WebGL2RenderingContext;
 
@@ -326,7 +326,7 @@ export class ArchitectureModelBWLayer implements CustomLayerInterface {
     gl.deleteTexture(this.sceneTexture);
   }
 
-  render(gl: GL, _matrix: number[]): void {
+  render(gl: GL, _options: CustomRenderMethodInput): void {
     if (!this.enabled) return;
 
     const width = gl.drawingBufferWidth;

@@ -20,11 +20,17 @@
     "@gltf-transform/extensions": "^4.5.1",
     "@gltf-transform/functions": "^4.5.1",
     "@maplibre/maplibre-gl-style-spec": "26.4.4",
+    "@types/chroma-js": "^3.1.2",
+    "@types/glidejs__glide": "^3.6.6",
+    "@types/three": "^0.186.0",
     "cssnano": "^9.8.0",
     "gltf-pipeline": "^4.3.1",
     "obj2gltf": "^3.2.0",
     "postcss": "^8.5.30"
   },
   "name": "never-build",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "scripts": {
+    "lint-js": "eslint -c themes/projektemacher-base/eslint.config.mjs 'assets/js' 'assets/ts'"
+  }
 }

@@ -49,7 +49,7 @@ export function updateStyle(
 
   if (minzoom !== undefined) source.minzoom = minzoom;
   if (maxzoom !== undefined) source.maxzoom = maxzoom;
-  const flattened = bounds.flat().map((e: number) => Number(e));
+  const flattened = (bounds ?? []).flat().map(Number);
   if (flattened.length === 4) {
     source.bounds = flattened as [number, number, number, number];
   }
@@ -163,7 +163,7 @@ export function setupDefaultStyle(
   if (minzoom !== undefined) src.minzoom = minzoom;
   if (maxzoom !== undefined) src.maxzoom = maxzoom;
 
-  const flattened = bounds.flat().map((e: number) => Number(e));
+  const flattened = (bounds ?? []).flat().map(Number);
   if (flattened.length === 4) {
     src.bounds = flattened as [number, number, number, number];
   }

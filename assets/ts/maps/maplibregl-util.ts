@@ -77,8 +77,8 @@ export async function addGeoJSONLayersAndInteractions({
   geojson: FeatureCollection;
   cluster?: boolean;
   marker?: MarkerOptions;
-  disabled: boolean;
-  popup: boolean;
+  disabled?: boolean;
+  popup?: boolean;
 }): Promise<string[]> {
   const sourceId = "geojson-source";
   const layerIds: string[] = [];
