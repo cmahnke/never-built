@@ -1,11 +1,9 @@
 [params]
-  paginate = 5
   copyrightYears = "MMXXV - MMXXVI"
   enableBlogPost = true
   enableTOC = true
   favicon_svg = "/images/cm.svg"
   contacts = ['<h4 class="contact-link">Mail</h4><a href="mailto:mail@christianmahnke.de" title="E-Mail senden">mail@christianmahnke.de</a>']
-  disableScale = true
   description = "Das nicht gebaute Göttingen"
   subTitle = "Das nicht gebaute Göttingen"
   wikidata = true
