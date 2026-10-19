@@ -10,7 +10,6 @@ disableKinds = ["taxonomy"]
 ignoreErrors = ["error-disable-taxonomy"]
 theme = ["projektemacher-base"]
 enableGitInfo = true
-preserveTaxonomyNames = true
 enableRobotsTXT = true
 
 
@@ -162,12 +161,6 @@ enableRobotsTXT = true
 
   [[module.mounts]]
     source = "assets/scss"
-    target = "assets/scss"
-
-  # Theme SCSS partials (share, iiif, ol-iiif, fonts, functions) must be
-  # reachable as relative imports from the site's base.scss
-  [[module.mounts]]
-    source = "themes/projektemacher-base/assets/scss"
     target = "assets/scss"
 
   [[module.mounts]]
