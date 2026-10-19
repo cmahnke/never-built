@@ -146,11 +146,6 @@ enableRobotsTXT = true
     isPlainText = true
     notAlternative = true
 
-[privacy]
-  [privacy.instagram]
-    disable = false
-    simple = false
-
 [sitemap]
   changeFreq = 'weekly'
 

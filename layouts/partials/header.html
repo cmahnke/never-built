@@ -4,9 +4,9 @@
   </div>
   {{- $defaultHeaderImage := "/images/header.svg" -}}
   {{- $headerImage := "" -}}
-  {{- if ne $.Site.Params.headerimage "" -}}
-    {{- $headerImage = $.Site.Params.headerimage -}}
-    {{ if and (eq (printf "%T" $.Site.Params.headerimage) "bool") (not $.Site.Params.headerimage) }}
+  {{- if ne site.Params.headerimage "" -}}
+    {{- $headerImage = site.Params.headerimage -}}
+    {{ if and (eq (printf "%T" site.Params.headerimage) "bool") (not site.Params.headerimage) }}
       {{- $headerImage = "" -}}
     {{- end -}}
   {{- else -}}
@@ -16,9 +16,9 @@
   <div class="header-container">
     <a href="/">
       {{- if ne $headerImage "" -}}
-        <img class="header-logo" alt="{{ .Site.Title }}" src="{{ $headerImage }}">
+        <img class="header-logo" alt="{{ site.Title }}" src="{{ $headerImage }}">
       {{- end -}}
-      <h1 class="header-title">{{ $.Site.Title }}</h1>
+      <h1 class="header-title">{{ site.Title }}</h1>
       {{- $subtitle := .Params.subtitle | default "" -}}
       {{- if ne $subtitle "" -}}
         <h2 class="header-subtitle">{{ $subtitle }}</h2>

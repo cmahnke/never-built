@@ -78,9 +78,6 @@ other = "Originalseiten"
 [oldPosts]
 other = "Ältere Beiträge"
 
-[source]
-other = "Quelle"
-
 [post-source]
 other = "Herkunft des Beitrags"
 
@@ -95,5 +92,3 @@ other = "GeoJSON herunterladen"
 other = "Zu Folie {{ . }} wechseln"
 
 # 3D model
-[3d-model]
-other = "3D-Modell"

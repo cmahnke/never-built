@@ -19,7 +19,7 @@
   <div class="post">
     {{- $pages := .Pages -}}
     {{- if .IsHome -}}
-      {{- $pages = .Site.RegularPages -}}
+      {{- $pages = site.RegularPages -}}
     {{- end -}}
     {{- $pages = where $pages "Params.metaPage" "!=" true -}}
     {{- $pages = where $pages "Kind" "!=" "section" -}}

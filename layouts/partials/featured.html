@@ -3,7 +3,7 @@
 <div class="featured">
   <div data-glide-el="track" class="glide__track">
     <ul class="glide__slides">
-      {{- $pages := .Site.RegularPages.ByDate -}}
+      {{- $pages := site.RegularPages.ByDate -}}
       {{- $pages = where $pages "Params.featured" "=" true -}}
       {{- $pages = where $pages "Kind" "!=" "section" -}}
       {{- range $page := $pages -}}

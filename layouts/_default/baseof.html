@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}">
+<html lang="{{ site.Language.Lang }}">
 
   <head>
     <meta charset="utf-8">
@@ -42,10 +42,10 @@
       {{- partial "html/head/script.html" (dict "context" . "js" $jsIncludes) -}}
     {{- end -}}
 
-    <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_32 | default "/images/favicon-32.png" | absURL }}" sizes="32x32">
-    <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_16 | default "/images/favicon-16.png" | absURL }}" sizes="16x16">
-    {{ if .Site.Params.favicon_svg }}
-        <link rel="icon" type="image/svg+xml" href="{{ .Site.Params.favicon_svg }}">
+    <link rel="icon" type="image/png" href="{{ site.Params.favicon_32 | default "/images/favicon-32.png" | absURL }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ site.Params.favicon_16 | default "/images/favicon-16.png" | absURL }}" sizes="16x16">
+    {{ if site.Params.favicon_svg }}
+        <link rel="icon" type="image/svg+xml" href="{{ site.Params.favicon_svg }}">
     {{ end }}
     <link rel="icon" href="{{ "/images/favicon.ico" | absURL }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ "/images/favicon.ico" | absURL }}" type="image/x-icon">

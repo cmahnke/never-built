@@ -1,7 +1,7 @@
 {{- $section := "catalogue" -}}
 {{- $indexTypes := slice "place" "store" "retail_chain" "type" "feature" "purpose" "brand" "material" "other" -}}
 
-{{- $printSection := where .Site.Pages "Section" "eq" $section -}}
+{{- $printSection := where site.Pages "Section" "eq" $section -}}
 {{- $sectionPage := (index $printSection 0).Parent -}}
 {{- $printSection = where $printSection ".Params.print" "eq" true -}}
 

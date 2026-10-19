@@ -1,5 +1,5 @@
 {{ define "title" }}
-  {{ .Title }} · {{ .Site.Title }}
+  {{ .Title }} · {{ site.Title }}
 {{ end }}
 
 {{ define "content" }}
@@ -13,7 +13,7 @@
     </div>
     <div class="list">
       <div class="books">
-        {{- $pages := .Site.Pages -}}
+        {{- $pages := site.Pages -}}
         {{- $pages = where $pages "Params.metaPage" "!=" true -}}
         {{- $pages = where $pages "Kind" "section" -}}
         {{- $pages = where $pages "Params.type" "book" -}}

@@ -16,7 +16,7 @@ Parameters:
 
 {{ if (.Get "contextPath") }}
   {{- $src = printf "%s/%s" (.Get "contextPath") $src -}}
-  {{- $suffix := substr (path.Dir $src) (len (.Get "contextPath")) -}}
+  {{- $suffix := strings.Substr (path.Dir $src) (len (.Get "contextPath")) -}}
   {{- $baseURL = printf "%s%s" (.Get "contextPath") $suffix -}}
 {{- else -}}
   {{- if .Page.IsTranslated -}}
