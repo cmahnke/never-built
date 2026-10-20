@@ -78,3 +78,9 @@ assets/scss/npm-fonts
 static/map
 planetiler-data/*
 content/**/tmp
+
+/package-lock.json
+
+/npm-shrinkwrap.json
+
+/pnpm-lock.yaml
