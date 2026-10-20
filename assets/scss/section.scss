@@ -1,3 +1,7 @@
+@use "config" as *;
+@use "never-build-icons" as *;
+@use "link" as *;
+
 /*
 @use "link" as * with (
   $accent-color: $accent-color

@@ -1,7 +1,3 @@
-@use 'sass:color';
-
-$accent-color: color.adjust(black, $lightness: 90%) !default;
-
 @mixin underline-link ($thickness: 0.3ex, $color: #000, $duration: .45s) {
   text-decoration: none;
   background-image: linear-gradient($color, $color);

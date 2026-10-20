@@ -1,3 +1,6 @@
+@use "config" as *;
+@use "never-build-icons" as *;
+
 $button-width: 2rem !default;
 $button-height: 2rem !default;
 $button-padding: 1.6rem !default;

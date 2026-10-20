@@ -1,79 +1,39 @@
-@use 'sass:color';
-@use "functions/color" as *;
+@use "config" as *;
 @use "link" as *;
-
-/*
-@import "terminal";
-*/
-
-$heading-font: 'League Spartan Variable', sans-serif;
-$special-font: 'Newsreader Variable', sans-serif;
-$text-font: 'Roboto Mono Variable', sans-serif;
-$text-color: rgba(255,255,255,.8);
-$color-light: #fff;
-$color-dark: #000;
-$post-background: #e0e0e0;
-$meta-background: #eee;
-$term-background: #bababa;
-$icon-fill: $color-dark;
-$animation-duration: 750ms;
-$page-elements-duration: 1600ms;
-$show-page-duration: $animation-duration;
-$header-height: 4rem;
-$button-width: 3rem;
-$button-height: 3rem;
-$button-padding: 1.6rem;
-$scale-factor: 1.05;
-$accent-color: color.adjust(black, $lightness: 90%);
-$text-font-size: 1rem;
-$map-font-site: 1rem;
-$ol-touch-botton-size: 1.2rem;
-$image-zoom-width: 1080px;
-$menu-width: 10vw;
-
-@import "npm-fonts/league-spartan";
-@import "npm-fonts/newsreader";
-@import "npm-fonts/roboto-mono";
-@import "npm-fonts/noto-serif-display";
-
-@import "normalize";
-@import "iiif";
-@import "ol-iiif";
-@import "share";
-@import "maps/projektemacher";
-@import "maps/3d-map";
-
-$font-color-body: $text-color;
-$secondary-icon-color: #69c;
-$frame-bg-color: var(--base01);
-$color-body-text: var(white);
-$fullscreen-color: var(--base07);
-
-/* Site includes */
-@import "home";
-@import "never-build-icons";
-@import "animated-link";
-@import "header";
-@import "footer";
-@import "menu";
-@import "featured";
-@import "list";
-@import "toc";
-@import "scrollify";
-@import "link";
-@import "section";
-@import "404";
-@import "pagination";
-@import "never-build-map";
-@import "never-build-gallery";
-@import "page";
-@import "headings";
-@import "never-build-iiif";
-@import "content";
-@import "term";
-@import "pagefind";
-@import "images";
-@import "maps/projektemacher";
+@use "npm-fonts/league-spartan";
+@use "npm-fonts/newsreader";
+@use "npm-fonts/roboto-mono";
+@use "npm-fonts/noto-serif-display";
+@use "normalize";
+@use "iiif";
+@use "ol-iiif" as * with (
+  $icon-fill: #000
+);
+@use "share";
+@use "maps/projektemacher";
+@use "maps/3d-map" as *;
+@use "home";
+@use "never-build-icons";
+@use "animated-link";
+@use "header";
+@use "footer";
+@use "menu";
+@use "featured";
+@use "list";
+@use "toc";
+@use "scrollify";
+@use "section";
+@use "404" as *;
+@use "pagination";
+@use "never-build-map";
+@use "never-build-gallery";
+@use "page";
+@use "headings";
+@use "never-build-iiif";
+@use "content";
+@use "term";
+@use "pagefind";
+@use "images";
 
 :where(:focus-visible) {
     outline: .1875rem dashed #000;

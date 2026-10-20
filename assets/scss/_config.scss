@@ -1,0 +1,32 @@
+@use 'sass:color';
+
+$heading-font: 'League Spartan Variable', sans-serif;
+$special-font: 'Newsreader Variable', sans-serif;
+$text-font: 'Roboto Mono Variable', sans-serif;
+$text-color: rgba(255,255,255,.8);
+$color-light: #fff;
+$color-dark: #000;
+$post-background: #e0e0e0;
+$meta-background: #eee;
+$term-background: #bababa;
+$icon-fill: $color-dark;
+$animation-duration: 750ms;
+$page-elements-duration: 1600ms;
+$show-page-duration: $animation-duration;
+$header-height: 4rem;
+$button-width: 3rem;
+$button-height: 3rem;
+$button-padding: 1.6rem;
+$scale-factor: 1.05;
+$accent-color: color.adjust(black, $lightness: 90%);
+$text-font-size: 1rem;
+$map-font-site: 1rem;
+$ol-touch-botton-size: 1.2rem;
+$image-zoom-width: 1080px;
+$menu-width: 10vw;
+
+$font-color-body: $text-color;
+$secondary-icon-color: #69c;
+$frame-bg-color: var(--base01);
+$color-body-text: var(white);
+$fullscreen-color: var(--base07);

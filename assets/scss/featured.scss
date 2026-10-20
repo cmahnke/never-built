@@ -1,4 +1,5 @@
-@import "glide";
+@use "glide";
+@use "config" as *;
 
 $button-width: 2em !default;
 $button-height: 2em !default;

@@ -1,3 +1,5 @@
+@use "link" as *;
+
 $max-sections: 3 !default;
 
 html:has(.scroll-layout) {
