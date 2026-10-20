@@ -1,0 +1,32 @@
+[
+  {
+    "image": "page120.jxl",
+    "size": [4806, 6994],
+    "areas": [
+      {
+        "name": "drawing",
+        "postprocess": ["grayscale_simple", "preview"],
+        "position": {
+          "x": 253,
+          "y": 39
+        },
+        "size": {
+          "x": 4472,
+          "y": 1518
+        }
+      },
+      {
+        "name": "blueprint",
+        "postprocess": ["grayscale_simple", "preview"],
+        "position": {
+          "x": 213,
+          "y": 3758
+        },
+        "size": {
+          "x": 4506,
+          "y": 3035
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "image": "page023.jxl",
+    "size": [5040, 6990],
+    "areas": [
+      {
+        "name": "blueprint",
+        "postprocess": ["white_balance", "grayscale_simple", "preview"],
+        "position": {
+          "x": 1522,
+          "y": 170
+        },
+        "size": {
+          "x": 2381,
+          "y": 1507
+        }
+      },
+      {
+        "name": "model-current",
+        "postprocess": ["smoothen_median", "preview", "enhance_ai"],
+        "position": {
+          "x": 1546,
+          "y": 2184
+        },
+        "size": {
+          "x": 2365,
+          "y": 2112
+        }
+      },
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 1561,
+          "y": 4686
+        },
+        "size": {
+          "x": 3320,
+          "y": 2112
+        }
+      }
+    ]
+  }
+]
