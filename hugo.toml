@@ -235,3 +235,6 @@ enableRobotsTXT = true
       kind = '{home}'
       lang = "de"
       output = '{print}'
+
+[params]
+  js = 'esm'

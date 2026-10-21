@@ -127,7 +127,7 @@ jobs:
       #     docker run -v `pwd`:`pwd` -w `pwd` yeslogic/prince:latest --fileroot `pwd`/future ./future/print.html -o book.pdf
 
       - name: Puppeteer
-        run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh -g -l
+        run: ./themes/projektemacher-base/scripts/github/check-js-errors.sh -g -l -i
 
       - name: Setup Mock
         run: |
