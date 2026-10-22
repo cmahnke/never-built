@@ -241,3 +241,6 @@ enableRobotsTXT = true
 
 [params]
   js = 'esm'
+
+[params.robots]
+  llmsTXT = true

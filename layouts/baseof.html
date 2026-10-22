@@ -50,6 +50,7 @@
     <link rel="icon" href="{{ "/images/favicon.ico" | absURL }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ "/images/favicon.ico" | absURL }}" type="image/x-icon">
     {{- partial "metadata/schema.org/schema.org.html" . -}}
+    {{- partialCached "html/head/webmention.html" . "webmentions" -}}
   </head>
 
   {{- $class := "" }}
