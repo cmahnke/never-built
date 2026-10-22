@@ -1,10 +1,11 @@
 ---
 title: "Catalogue"
-metaPage: true
-displayinlist: false
-archive: false
-news: false
-sectionContent: false
+params:
+  metaPage: true
+  displayinlist: false
+  archive: false
+  news: false
+  sectionContent: false
 sitemap:
   disable: true
 build:

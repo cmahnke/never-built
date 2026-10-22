@@ -1,7 +1,8 @@
 ---
 title: Never build Göttingen
-displayinlist: false
-metaPage: true
+params:
+  displayinlist: false
+  metaPage: true
 description: ""
 outputs:
 - html

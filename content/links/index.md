@@ -1,7 +1,8 @@
 ---
 title: "Links"
-metaPage: true
-displayinlist: false
+params:
+  metaPage: true
+  displayinlist: false
 ---
 
 

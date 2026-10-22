@@ -1,7 +1,8 @@
 ---
 title: "Bücher"
-metaPage: true
-displayinlist: false
+params:
+  metaPage: true
+  displayinlist: false
 layout: books
 ---
 

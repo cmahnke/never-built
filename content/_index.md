@@ -1,6 +1,7 @@
 ---
 title: "Never Build Göttingen"
-displayinlist: false
+params:
+  displayinlist: false
 outputs:
   - iiif-collection
   - html

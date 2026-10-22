@@ -1,7 +1,7 @@
 baseURL = 'https://never-built.goettingen.xyz/'
 locale = 'de'
 title = 'Never Built Göttingen'
-defaultcontentlanguage = "de"
+defaultContentLanguage = "de"
 copyright = "Christian Mahnke"
 publishDir = "docs"
 canonifyURLs = true

@@ -3,9 +3,6 @@ title: "Städteforum 1/71 Göttingen"
 date: 2025-02-26T17:15:07+02:00
 tags:
 - book
-js:
-  - ts/maps/map.ts
-worldcat: https://search.worldcat.org/de/title/249241233
 outputs:
   - iiif-manifest
   - html
@@ -13,6 +10,9 @@ params:
   iiifContext: http://iiif.io/api/image/2/context.json
   type: book
   year: 1971
+  js:
+    - ts/maps/map.ts
+  worldcat: https://search.worldcat.org/de/title/249241233
 resources:
 - src: "front.jxl"
   name: front
