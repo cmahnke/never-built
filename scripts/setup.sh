@@ -16,6 +16,7 @@ done
 
 # Get map
 ./scripts/get-map-tiles.sh
+./scripts/get-planetiler-sources.sh
 python ./scripts/generate-3d-map.py --merge patch
 
 python ./scripts/extract-images.py -d
