@@ -15,7 +15,7 @@ concurrency:
 env:
   HUGO_VERSION: 0.168.0
   DEPENDENCY_MANAGER: npm
-  PYTHON_VERSION: '3.13
+  PYTHON_VERSION: '3.13'
   PLANETILER_JAVA_OPTS: '-Xmx14g'
 
 jobs:
