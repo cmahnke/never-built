@@ -36,3 +36,6 @@
     template = "./Source Files/Other/preview-template.svg"
     scale = "width"
     removeMissing = true
+
+[params.webMcpSearch]
+  enabled = true
