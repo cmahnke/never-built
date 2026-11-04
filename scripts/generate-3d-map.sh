@@ -24,6 +24,8 @@ if [ -z "$PLANETILER_JAVA_OPTS" ] ; then
   PLANETILER_JAVA_OPTS="-Xmx8g"
 fi
 
+echo "Using image $DOCKER_IMAGE with $PLANETILER_JAVA_OPTS"
+
 # https://wiki.openstreetmap.org/wiki/JOSM_file_format
 
 FILES=$(find ./content -path '*/osm/*' \( -name "*.osm.pbf" -o -name "*.osm" \))
