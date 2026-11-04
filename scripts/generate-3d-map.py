@@ -11,6 +11,7 @@ from argparse import Namespace
 import logging
 from pathlib import Path
 import docker
+import osmium
 from json import dumps
 import tarfile
 import io
@@ -36,6 +37,7 @@ PLANETILER_OPTS = [
     "--nodemap-type=sparsearray"
 ]
 DEFAULT_BBOX = "9.7,51.45,10.1,51.6"
+MAX_OSM_ID = 50_000_000_000
 
 # ---------------------------------------------------------
 # Memory settings
@@ -340,6 +342,27 @@ def get_bbox() -> str:
         logger.error(f"Error reading metadata.json bbox: {e}")
     return DEFAULT_BBOX
 
+
+def validate_osm_ids(map_file: Path) -> None:
+    max_ids = {'node': 0, 'way': 0}
+
+    class MaxIdCollector(osmium.SimpleHandler):
+        def node(self, n):
+            max_ids['node'] = max(max_ids['node'], n.id)
+
+        def way(self, w):
+            max_ids['way'] = max(max_ids['way'], w.id)
+
+    MaxIdCollector().apply_file(str(map_file), locations=False)
+    oversized = {kind: value for kind, value in max_ids.items() if value > MAX_OSM_ID}
+    if oversized:
+        logger.error(
+            f"{map_file} contains oversized OSM IDs {oversized} (limit {MAX_OSM_ID}). "
+            "This would exhaust Planetiler's node map; regenerate the merged map."
+        )
+        sys.exit(1)
+
+
 def find_index_dir(file_path: Path) -> Path | None:
     current = file_path.resolve()
     if current.is_file():
@@ -478,6 +501,8 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
     if not map_file.is_file():
         logger.error("No input file, generation might have failed!")
         sys.exit(1)
+
+    validate_osm_ids(map_file)
 
     try:
         docker_client.images.get(DOCKER_IMAGE)

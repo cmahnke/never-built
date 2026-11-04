@@ -6,7 +6,6 @@ import logging
 import os
 import math
 import json
-import time
 import tempfile
 import geopandas
 import osmium
@@ -139,6 +138,24 @@ def normalize_ids_to_positive(
     with osmium.SimpleWriter(output_path, overwrite=True) as writer:
         handler = IDChanger(writer, offset=offset)
         osmium.apply(input_path, handler)
+
+
+def _get_max_ids(path: str) -> Dict[str, int]:
+    max_ids = {'node': 0, 'way': 0, 'relation': 0}
+
+    class MaxIdCollector(osmium.SimpleHandler):
+        def node(self, n):
+            max_ids['node'] = max(max_ids['node'], n.id)
+
+        def way(self, w):
+            max_ids['way'] = max(max_ids['way'], w.id)
+
+        def relation(self, r):
+            max_ids['relation'] = max(max_ids['relation'], r.id)
+
+    MaxIdCollector().apply_file(path, locations=False)
+    return max_ids
+
 
 # --- Bounding Box ---
 class BoundingBoxHandler(osmium.SimpleHandler):
@@ -1034,7 +1051,7 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         that fall inside the patch's polygons as candidates for exclusion.
         Open ways are clipped by the patch polygons (mask).
         """
-        def __init__(self, target_polygons, mask_polygon, open_way_mask, protected_node_ids, protected_way_ids, protected_relation_ids, patch_actions_map, marker_tags):
+        def __init__(self, target_polygons, mask_polygon, open_way_mask, protected_node_ids, protected_way_ids, protected_relation_ids, patch_actions_map, marker_tags, new_node_id_start, new_way_id_start):
             super().__init__()
             self.target_polygons = target_polygons
             self.mask_polygon = mask_polygon
@@ -1047,11 +1064,8 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
             self.new_ways = [] # list of (way_id, node_ids, tags_dict)
             self.new_nodes = {} # node_id -> (lon, lat)
 
-            # Generate a unique, large positive ID base using the current time to avoid
-            # collisions with real OSM IDs, ID_OFFSET_FALLBACK, and previous runs.
-            base_id = 2_000_000_000_000_000 + int(time.time() * 1_000_000)
-            self.node_id_counter = base_id
-            self.way_id_counter = base_id
+            self.node_id_counter = new_node_id_start
+            self.way_id_counter = new_way_id_start
             self.intersection_node_cache = {}
 
             self.protected_node_ids = protected_node_ids or set()
@@ -1429,13 +1443,16 @@ def patch(base_file, patch_files, output_file, overwrite, masked_base_output: Op
         else:
             open_way_mask = shapely.geometry.Polygon()
 
+        max_ids = _get_max_ids(current_base_file)
         handler = IntersectionHandler(
             polygons, mask_polygon, open_way_mask,
             protected_node_ids=patch_node_ids,
             protected_way_ids=patch_way_ids,
             protected_relation_ids=patch_relation_ids,
             patch_actions_map=patch_actions_map,
-            marker_tags=marker_tags
+            marker_tags=marker_tags,
+            new_node_id_start=max_ids['node'] + 1,
+            new_way_id_start=max_ids['way'] + 1
         )
         handler.apply_file(current_base_file, locations=True, idx='flex_mem')
 
