@@ -8,7 +8,7 @@ fi
 
 set -euo pipefail
 
-DOCKER_IMAGE=ghcr.io/cmahnke/map-tools/planetiler:latest
+DOCKER_IMAGE=ghcr.io/cmahnke/map-tools/planetiler:0.10.2-data
 DATA_IMAGE=ghcr.io/cmahnke/map-data/goettingen:latest
 TILES_DIR="$(dirname "$(realpath "$0")")/../static/map/"
 COVERAGE=goettingen
@@ -24,7 +24,7 @@ if [ -z "$PLANETILER_JAVA_OPTS" ] ; then
   PLANETILER_JAVA_OPTS="-Xmx8g"
 fi
 
-echo "Using image $DOCKER_IMAGE with $PLANETILER_JAVA_OPTS"
+echo "Using image $DOCKER_IMAGE with Java args '$PLANETILER_JAVA_OPTS' and opts '$PLANETILER_OPTS'"
 
 # https://wiki.openstreetmap.org/wiki/JOSM_file_format
 
