@@ -538,22 +538,25 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
 
     logger.debug(f"RUN DOCKER MODULE: Image={DOCKER_IMAGE}, Command={' '.join(command)}")
 
+    container = None
     try:
-        container_logs = docker_client.containers.run(
+        container = docker_client.containers.create(
             DOCKER_IMAGE,
             command=command,
             volumes={str(current_pwd): {'bind': str(current_pwd), 'mode': 'rw'}},
             working_dir=str(current_pwd),
             tty=False,
-            remove=True,
-            stream=True,
             mem_limit=DOCKER_MAX_MEMORY,
             memswap_limit=DOCKER_MAX_MEMORY + parse_suffixed_int("2g")
         )
+        container.start()
 
+        output = []
         buffer = ""
-        for chunk in container_logs:
-            buffer += chunk.decode('utf-8', errors='replace')
+        for chunk in container.logs(stream=True, follow=True, stdout=True, stderr=True):
+            text = chunk.decode('utf-8', errors='replace')
+            output.append(text)
+            buffer += text
             while "\n" in buffer:
                 line, buffer = buffer.split("\n", 1)
                 if line.strip():
@@ -561,12 +564,21 @@ def execute_osm_patch_processing(patch_file_path: Path | list[Path], file_base_n
         if buffer.strip():
             logger.debug(f"Docker: {buffer.strip()}")
 
-    except docker.errors.ContainerError as e:
-        logger.error(f"Failed process Tiles, container exited with error: {e}")
-        sys.exit(1)
+        exit_status = container.wait()["StatusCode"]
+        if exit_status != 0:
+            logger.error(
+                f"Planetiler failed with exit code {exit_status}:\n{''.join(output).rstrip()}"
+            )
+            sys.exit(1)
     except docker.errors.APIError as e:
         logger.error(f"Docker API error, is the daemon running?: {e}")
         sys.exit(1)
+    finally:
+        if container is not None:
+            try:
+                container.remove(force=True)
+            except docker.errors.APIError:
+                pass
 
     if post_tiles.is_dir():
         shutil.rmtree(post_tiles, ignore_errors=True)
