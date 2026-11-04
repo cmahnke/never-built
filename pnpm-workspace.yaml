@@ -10,5 +10,8 @@ allowBuilds:
   tify: true
 blockExoticSubdeps: false
 ignoreScripts: false
+# Required by Hugo >= 0.161 (gohugoio/hugo#14852): symlinked .bin entries in
+# node_modules; pnpm >= 10 ignores node-linker in .npmrc
+nodeLinker: hoisted
 minimumReleaseAgeExclude:
   - mapbox-gl@3.26.0
