@@ -148,7 +148,8 @@ header .menu {
         display: inline-block;
         height: math.div($button-height, 5);
         width: $button-width;
-        top: calc(0% - math.div($button-height, 5));
+        //top: calc(0% - math.div($button-height, 5));
+        top: calc(0% - 1rem);
         background-color: #fff;
         position: relative;
         vertical-align: middle;
