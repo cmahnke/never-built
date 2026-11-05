@@ -52,6 +52,14 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
     mix-blend-mode: difference;
     opacity: 1;
 
+    /* The fixed container must span dynamically between the burger button
+       and the viewport edge on mobile. Chrome resolves fit-content on
+       abspos boxes to max-content (no available-space clamp), so the
+       title box overflows the viewport instead of wrapping. */
+    @media (max-width: 767.98px) {
+      max-width: none;
+    }
+
     @media (orientation: landscape) {
       justify-self: flex-end;
       padding-right: .8rem;
