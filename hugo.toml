@@ -247,3 +247,10 @@ enableRobotsTXT = true
 
 [params.robots]
   llmsTXT = true
+
+[params.css]
+  # Site is German-only: skip preloading greek, cyrillic, vietnamese, …
+  # font subsets. 'latin' also matches latin-ext (safety net for
+  # special characters). Only affects <link rel="preload"> tags - the
+  # @font-face rules and font files are left untouched.
+  fontPreloadPattern = "latin"
