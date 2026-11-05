@@ -1,5 +1,5 @@
 ---
-title: "Never Build Göttingen"
+title: "Never Built Göttingen"
 params:
   displayinlist: false
 outputs:

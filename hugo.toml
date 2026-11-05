@@ -121,6 +121,9 @@ enableRobotsTXT = true
     suffixes = ["css"]
     mimes = ["text/css"]
 
+[outputs]
+  section = ["html"]
+
 [outputFormats]
   [outputFormats.geojson]
     mediaType = "application/geo+json"

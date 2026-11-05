@@ -49,6 +49,10 @@
     {{ end }}
     <link rel="icon" href="{{ "/images/favicon.ico" | absURL }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ "/images/favicon.ico" | absURL }}" type="image/x-icon">
+    {{- with .OutputFormats.Get "RSS" -}}
+    <link href="{{ .RelPermalink }}" rel="alternate" type="application/rss+xml" title="{{ site.Title | default "" }}" />
+    <link href="{{ .RelPermalink }}" rel="feed" type="application/rss+xml" title="{{ site.Title | default "" }}" />
+    {{- end -}}
     {{- partial "metadata/schema.org/schema.org.html" . -}}
     {{- partialCached "html/head/webmention.html" . "webmentions" -}}
   </head>
