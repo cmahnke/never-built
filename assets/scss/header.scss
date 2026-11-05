@@ -27,6 +27,7 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
   .header-background {
     display: flex;
     position: fixed;
+    top: 0;
     left: calc($button-width + 2 * $button-padding);
     height: calc($button-height + 2 * $button-padding);
     width: 100%;
@@ -73,6 +74,9 @@ $accent-color: color.adjust(black, $lightness: 90%) !default;
       text-decoration: none;
       cursor: default;
       width: max-content;
+      /* Let the title shrink back into the fixed header strip instead of
+         running off the right edge on small viewports. */
+      max-width: 100%;
       display: inline-block;
 
       @media (min-width: 768px) {

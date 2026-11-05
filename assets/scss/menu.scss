@@ -120,6 +120,11 @@ header .menu {
       color: inherit;
       cursor: pointer;
       font-size: unset;
+      /* UA gives <button> box-sizing: border-box, which would collapse
+         the content box (3rem width minus 2 x 1.6rem padding) and leave
+         a gap next to the mobile header background. The old <label> was
+         content-box - keep the same geometry for the swapped <button>. */
+      box-sizing: content-box;
       padding: $button-padding;
       position: fixed;
       top: 0;
@@ -154,6 +159,10 @@ header .menu {
           content: '';
           height: math.div($button-height, 5);
           width: $button-width;
+          /* Anchor horizontally: UA button layout centers content, so the
+             static position of the pseudo bars (left: auto) shifts them
+             off the element bar when the label was swapped for a button. */
+          left: 0;
           background-color: #fff;
           display: inline-block;
           border-radius: 0;
