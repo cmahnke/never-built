@@ -66,8 +66,8 @@
     {{- end -}}
   {{- end -}}
 
-  {{- if .Params.layout -}}
-    {{- $class = printf "%s %s" $class .Params.layout -}}
+  {{- if .Layout -}}
+    {{- $class = printf "%s %s" $class .Layout -}}
   {{- end -}}
 
   {{- if .Params.class -}}

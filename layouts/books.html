@@ -16,7 +16,7 @@
         {{- $pages := site.Pages -}}
         {{- $pages = where $pages "Params.metaPage" "!=" true -}}
         {{- $pages = where $pages "Kind" "section" -}}
-        {{- $pages = where $pages "Params.type" "book" -}}
+        {{- $pages = where $pages "Type" "book" -}}
         {{- $paginator := .Paginate $pages -}}
         {{- range $paginator.Pages -}}
           <article class="list-item book" itemscope itemtype="http://schema.org/Blog">
