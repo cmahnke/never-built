@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version='0.6' generator='osm_tool'>
+  <node id='-32737' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5628218' lon='9.9710129'/>
+  <node id='-32738' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5629465' lon='9.9708123'/>
+  <node id='-32739' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5629104' lon='9.9708719'/>
+  <node id='-32740' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5628583' lon='9.9709549'/>
+  <node id='-32741' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5628211' lon='9.9710143'/>
+  <node id='-32742' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.563026' lon='9.9713463'/>
+  <node id='-32743' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5631163' lon='9.9712021'/>
+  <node id='-32744' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5630392' lon='9.9706662'/>
+  <node id='-32745' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5631515' lon='9.9709992'/>
+  <node id='-32746' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.563046' lon='9.9708284'/>
+  <node id='-32747' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5629151' lon='9.9710374'/>
+  <node id='-32748' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5630206' lon='9.9712083'/>
+  <node id='-32749' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5632212' lon='9.9713887'/>
+  <node id='-32750' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5633115' lon='9.9712445'/>
+  <node id='-32751' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5634393' lon='9.9710405'/>
+  <node id='-32752' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5632344' lon='9.9707086'/>
+  <node id='-32753' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5631493' lon='9.9708445'/>
+  <node id='-32754' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5631111' lon='9.9712103'/>
+  <node id='-32755' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.563324' lon='9.9710444'/>
+  <node id='-32756' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5632185' lon='9.9708736'/>
+  <node id='-32757' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.563244' lon='9.9709968'/>
+  <node id='-32758' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5631931' lon='9.9712535'/>
+  <node id='-32759' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5631927' lon='9.9709147'/>
+  <node id='-32760' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5631381' lon='9.971167'/>
+  <node id='-32777' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5627245' lon='9.970855'/>
+  <node id='-32778' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5627244' lon='9.970855'/>
+  <node id='-32779' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5627244' lon='9.970855'/>
+  <node id='-32783' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5628357' lon='9.9706772'/>
+  <node id='-32784' action='modify' timestamp='1970-01-01T00:00:00Z' lat='51.5628357' lon='9.9706772'/>
+  <node id='2502054153' action='modify' version='3' changeset='150464211' timestamp='2024-04-24T19:30:13Z' uid='1468043' user='jengelh' lat='51.5628503' lon='9.970654'/>
+  <way id='-48266' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-32777'/>
+    <nd ref='2502054153'/>
+    <nd ref='-32738'/>
+    <nd ref='-32737'/>
+    <nd ref='-32777'/>
+    <tag k='building:levels' v='1'/>
+    <tag k='building:part' v='true'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/mpi/index.html'/>
+  </way>
+  <way id='-48267' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-32739'/>
+    <nd ref='-32740'/>
+    <nd ref='-32741'/>
+    <nd ref='-32742'/>
+    <nd ref='-32754'/>
+    <nd ref='-32743'/>
+    <nd ref='-32760'/>
+    <nd ref='-32757'/>
+    <nd ref='-32759'/>
+    <nd ref='-32753'/>
+    <nd ref='-32744'/>
+    <nd ref='-32739'/>
+    <tag k='building:levels' v='4'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='name' v='Turm 6'/>
+    <tag k='ref' v='T5'/>
+    <tag k='ref:PIZ' v='0775'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/mpi/index.html'/>
+  </way>
+  <way id='-48268' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-32745'/>
+    <nd ref='-32746'/>
+    <nd ref='-32747'/>
+    <nd ref='-32748'/>
+    <nd ref='-32745'/>
+    <tag k='building:levels' v='5'/>
+    <tag k='building:min_level' v='4'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/mpi/index.html'/>
+  </way>
+  <way id='-48269' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-32757'/>
+    <nd ref='-32760'/>
+    <nd ref='-32754'/>
+    <nd ref='-32749'/>
+    <nd ref='-32750'/>
+    <nd ref='-32751'/>
+    <nd ref='-32752'/>
+    <nd ref='-32753'/>
+    <nd ref='-32759'/>
+    <nd ref='-32757'/>
+    <tag k='building:levels' v='3'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='name' v='Turm 6'/>
+    <tag k='ref' v='T5'/>
+    <tag k='ref:PIZ' v='0775'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/mpi/index.html'/>
+  </way>
+  <way id='-48270' action='modify' timestamp='1970-01-01T00:00:00Z'>
+    <nd ref='-32755'/>
+    <nd ref='-32756'/>
+    <nd ref='-32759'/>
+    <nd ref='-32757'/>
+    <nd ref='-32760'/>
+    <nd ref='-32758'/>
+    <nd ref='-32755'/>
+    <tag k='building:levels' v='4'/>
+    <tag k='building:min_level' v='3'/>
+    <tag k='building:part' v='yes'/>
+    <tag k='name' v='Turm 6'/>
+    <tag k='roof:shape' v='flat'/>
+    <tag k='upload' v='false'/>
+    <tag k='meta' v='never-built'/>
+    <tag k='projektemacher:url' v='https://never-built.goettingen.xyz/post/staedte-forum-1-71-goettingen/mpi/index.html'/>
+  </way>
+</osm>

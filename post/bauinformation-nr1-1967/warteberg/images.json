@@ -1,0 +1,32 @@
+[
+  {
+    "image": "page073.jxl",
+    "size": [4931, 7009],
+    "areas": [
+      {
+        "name": "blueprint",
+        "postprocess": ["grayscale_simple", "preview"],
+        "position": {
+          "x": 138,
+          "y": 2770
+        },
+        "size": {
+          "x": 2794,
+          "y": 2372
+        }
+      },
+      {
+        "name": "drawing-front",
+        "postprocess": ["grayscale_simple", "preview"],
+        "position": {
+          "x": 864,
+          "y": 5230
+        },
+        "size": {
+          "x": 4064,
+          "y": 1568
+        }
+      }
+    ]
+  }
+]
