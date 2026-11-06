@@ -9,7 +9,7 @@
   {{- end -}}
   {{- $prefix := i18n "Tag" -}}
   {{- $type := "" -}}
-  {{- with $params.type -}}
+  {{- with $params.itemType -}}
     {{- if ne (i18n .) "" -}}
       {{- $prefix = i18n . -}}
       {{- $type = . -}}

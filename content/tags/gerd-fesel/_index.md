@@ -4,6 +4,6 @@ description: ''
 draft: true
 params:
   archinform: arch/20768
-  type: person
+  itemType: person
   gnd: 123984475
 ---

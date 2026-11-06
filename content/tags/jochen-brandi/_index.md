@@ -4,7 +4,7 @@ description: ''
 draft: true
 params:
   archinform: arch/2012
-  type: person
+  itemType: person
   wikipedia: https://de.wikipedia.org/wiki/Jochen_Brandi
   gnd: 123301335
   wikidata: Q106097121

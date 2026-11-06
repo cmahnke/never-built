@@ -8,7 +8,7 @@ outputs:
   - html
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
-  type: book
+  itemType: book
   year: 1971
   js:
     - ts/maps/map.ts

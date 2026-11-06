@@ -10,7 +10,7 @@ outputs:
   - html
 params:
   iiifContext: http://iiif.io/api/image/2/context.json
-  type: frame
+  itemType: frame
   featured: true
   featured_is_ai: true
   cover: north.jpg

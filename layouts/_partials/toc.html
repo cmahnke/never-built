@@ -2,7 +2,7 @@
 {{- if gt (len $pages) 0 -}}
   <div class="toc-list">
     <h2 class="toc-list-heading">
-      {{- if and (isset .Params "type") (eq .Params.type "book") -}}
+      {{- if and (isset .Params "itemtype") (eq .Params.itemType "book") -}}
         {{ i18n "section-heading" }} {{ i18n "book" }}
       {{- else -}}
         {{ i18n "section-heading" }} {{ i18n "list" }}
