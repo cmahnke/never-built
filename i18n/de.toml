@@ -91,4 +91,8 @@ other = "GeoJSON herunterladen"
 [gotoSlide]
 other = "Zu Folie {{ . }} wechseln"
 
+# IIIF manifest metadata
+[iiifYearOfPublication]
+other = "Baujahr(e)"
+
 # 3D model
