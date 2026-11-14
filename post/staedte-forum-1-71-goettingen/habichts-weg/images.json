@@ -1,0 +1,32 @@
+[
+  {
+    "image": "page106.jxl",
+    "size": [4747, 6996],
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["smoothen_median", "preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 4697,
+          "y": 3234
+        }
+      },
+      {
+        "name": "blueprint",
+        "postprocess": ["white_balance", "grayscale_simple", "preview"],
+        "position": {
+          "x": 0,
+          "y": 5170
+        },
+        "size": {
+          "x": 4730,
+          "y": 1672
+        }
+      }
+    ]
+  }
+]
