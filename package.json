@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@glidejs/glide": "^3.7.1",
-    "motion": "^14.13.0",
+    "motion": "^14.14.0",
     "terminal.css": "^0.7.5",
     "chroma-js": "^3.3.0",
     "maplibre-gl": "^6.18.0",
