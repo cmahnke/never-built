@@ -1,0 +1,24 @@
+[
+  {
+    "image": "page038.jxl",
+    "size": [4885, 6582],
+    "areas": [
+      {
+        "name": "blueprint",
+        "postprocess": ["white_balance", "preview"],
+        "position": {
+          "x": 1707,
+          "y": 4455
+        },
+        "size": {
+          "x": 3177,
+          "y": 2123
+        }
+      }
+    ]
+  },
+  {
+    "image": "page039.jxl",
+    "size": [4912, 6589]
+  }
+]

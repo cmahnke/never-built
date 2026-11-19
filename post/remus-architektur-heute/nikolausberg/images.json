@@ -1,0 +1,38 @@
+[
+  {
+    "image": "page044.jxl",
+    "size": [4911, 6601],
+    "areas": [
+      {
+        "name": "cut-1",
+        "postprocess": ["white_balance", "preview"],
+        "position": {
+          "x": 77,
+          "y": 4741
+        },
+        "size": {
+          "x": 4829,
+          "y": 913
+        }
+      }
+    ]
+  },
+  {
+    "image": "page045.jxl",
+    "size": [4893, 6587],
+    "areas": [
+      {
+        "name": "cut-2",
+        "postprocess": ["white_balance", "preview"],
+        "position": {
+          "x": 0,
+          "y": 2486
+        },
+        "size": {
+          "x": 4796,
+          "y": 2992
+        }
+      }
+    ]
+  }
+]
