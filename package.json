@@ -4,7 +4,7 @@
     "motion": "^14.14.0",
     "terminal.css": "^0.7.5",
     "chroma-js": "^3.3.0",
-    "maplibre-gl": "^6.18.0",
+    "maplibre-gl": "^6.19.0",
     "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {
