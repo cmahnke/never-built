@@ -1,0 +1,21 @@
+[
+  {
+    "image": "page138.jxl",
+    "size": [4860, 6988],
+    "areas": [
+      {
+        "name": "model",
+        "postprocess": ["preview", "enhance_ai"],
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "size": {
+          "x": 4741,
+          "y": 3454
+        }
+      }
+    ]
+  }
+
+]
